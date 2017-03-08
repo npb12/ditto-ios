@@ -8,7 +8,14 @@
 
 #import "AppDelegate.h"
 
+#import "NSUserDefaults+DemoSettings.h"
+
+
 @interface AppDelegate ()
+
+@property (nonatomic, strong) TFDailyVC *homeVC;
+@property (nonatomic, strong) RootViewController *rootVC;
+
 
 @end
 
@@ -17,6 +24,22 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+        self.window.rootViewController = [[UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]] instantiateInitialViewController];
+    
+    
+    [NSUserDefaults saveIncomingAvatarSetting:YES];
+    [NSUserDefaults saveOutgoingAvatarSetting:YES];
+    
+    
+    if ([self.window.rootViewController isKindOfClass:[RootViewController class]])
+    {
+        self.rootVC = (RootViewController*)self.window.rootViewController;
+    }
+    
+
+    
+    
     return YES;
 }
 
@@ -45,6 +68,21 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [[FBSDKApplicationDelegate sharedInstance] application:application
+                                                          openURL:url
+                                                sourceApplication:sourceApplication
+                                                       annotation:annotation
+            ];
+}
+
+- (CGSize) safeScreenSize
+{
+    return [self.homeVC safeScreenSize];
 }
 
 

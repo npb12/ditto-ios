@@ -1,0 +1,92 @@
+//
+//  Includes.h
+//  DateApp
+//
+//  Created by Neil Ballard on 10/2/16.
+//  Copyright © 2016 Neil Ballard. All rights reserved.
+//
+
+#ifndef Includes_h
+#define Includes_h
+
+
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
+#import <CoreData/CoreData.h>
+#import <MessageUI/MessageUI.h>
+#import <MediaPlayer/MediaPlayer.h>
+#import <EventKit/EventKit.h>
+
+
+
+#import "TFCellManager.h"
+
+//Data Models
+#import "TFCellData.h"
+
+#import "TFHorizontalCollectionLayout.h"
+
+
+#import "TFStyle.h"
+
+#import "MatchViewController.h"
+
+
+
+//Daily
+#import "TFDailyVC.h"
+#import "TFDailyCollectionCell.h"
+#import "TFDailyCollectionViewLayout.h"
+
+#import "TFConstants.h"
+
+#import "ProfileViewController.h"
+
+#import "TFHeartAnimationView.h"
+
+#import "RootViewController.h"
+
+#import "PhotosCollectionViewCell.h"
+
+#import "SettingsViewController.h"
+
+#import "MenuViewController.h"
+#import "MyProfileViewController.h"
+
+#import "DataAccess.h"
+
+#import "BioViewController.h"
+#import "EduViewController.h"
+#import "OccupationViewController.h"
+
+#import "PhotoManager.h"
+
+
+#import "TFDailyItem.h"
+#import "TFDailyTableCell.h"
+
+#import "AppDelegate.h"
+
+#import "FBPhotosViewController.h"
+
+#import "SinglePhotoViewController.h"
+
+#import "EditPhotosViewController.h"
+
+#import "NewMatchConflictViewController.h"
+
+#import "NewMatchViewController.h"
+
+
+#import "MessageViewController.h"
+
+#import "SettingsTableViewCell.h"
+
+#import "LocationManager.h"
+
+#import "SwipeViewController.h"
+
+
+#endif

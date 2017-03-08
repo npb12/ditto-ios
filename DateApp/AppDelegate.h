@@ -6,7 +6,9 @@
 //  Copyright © 2016 Neil Ballard. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "Includes.h"
+#import <FBSDKCoreKit/FBSDKCoreKit.h>
+#import <FBSDKLoginKit/FBSDKLoginKit.h>
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
