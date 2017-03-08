@@ -112,9 +112,9 @@ static const int MAX_BUFFER_SIZE = 2;
     CGFloat pad = 0, x_pad;
 
     
-        pad = 10;
+        pad = 30;
         x_pad = 5;
-        CARD_HEIGHT = self.frame.size.height - 90;
+        CARD_HEIGHT = self.frame.size.height - 110;
         CARD_WIDTH = self.frame.size.width - 10;
 
     

@@ -15,15 +15,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gmx-hU-w7j">
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gmx-hU-w7j">
                     <rect key="frame" x="3" y="3" width="369" height="661"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </scrollView>
-                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Ekl-y9-37G">
+                <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Ekl-y9-37G">
                     <rect key="frame" x="336" y="15" width="39" height="37"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="39" id="QNy-g8-522"/>
-                        <constraint firstAttribute="height" constant="37" id="Ws5-Gw-A2G"/>
-                    </constraints>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="currentPageIndicatorTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </pageControl>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="17k-iJ-4Ye">
@@ -142,15 +140,9 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="Gmx-hU-w7j" secondAttribute="bottom" constant="3" id="8mW-X2-mJR"/>
-                <constraint firstItem="Ekl-y9-37G" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="15" id="EBF-fj-Foj"/>
-                <constraint firstItem="Gmx-hU-w7j" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="3" id="FKY-hU-tph"/>
                 <constraint firstAttribute="bottom" secondItem="17k-iJ-4Ye" secondAttribute="bottom" constant="7" id="Uvo-SC-i87"/>
                 <constraint firstItem="17k-iJ-4Ye" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="7" id="W7C-Jn-dZJ"/>
                 <constraint firstAttribute="trailing" secondItem="17k-iJ-4Ye" secondAttribute="trailing" constant="7" id="X27-yV-NUw"/>
-                <constraint firstAttribute="trailing" secondItem="Ekl-y9-37G" secondAttribute="trailing" id="XQE-ou-4ow"/>
-                <constraint firstAttribute="trailing" secondItem="Gmx-hU-w7j" secondAttribute="trailing" constant="3" id="pMd-f6-pe7"/>
-                <constraint firstItem="Gmx-hU-w7j" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="3" id="uiD-aa-MCG"/>
             </constraints>
             <connections>
                 <outlet property="bottomScrollView" destination="dU7-fX-w7C" id="sge-ny-uHx"/>

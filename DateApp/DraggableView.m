@@ -10,7 +10,7 @@
 #define SCALE_STRENGTH 4 //%%% how quickly the card shrinks. Higher = slower shrinking
 #define SCALE_MAX .93 //%%% upper bar for how much the card shrinks. Higher = shrinks less
 #define ROTATION_MAX 1 //%%% the maximum rotation allowed in radians.  Higher = card can keep rotating longer
-#define ROTATION_STRENGTH 320 //%%% strength of rotation. Higher = weaker rotation
+#define ROTATION_STRENGTH 350 //%%% strength of rotation. Higher = weaker rotation
 #define ROTATION_ANGLE M_PI/8 //%%% Higher = stronger rotation angle
 
 
@@ -59,11 +59,9 @@
         
         [self addGestureRecognizer:panGestureRecognizer];
         
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(expandView:)];
+
         
-        [self.bottomView  addGestureRecognizer:tapGesture];
-        [self.bottomScrollView setExclusiveTouch:NO];
-        self.bottomScrollView.userInteractionEnabled = NO;
+
         
 
         UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(processSingleTap:)];
@@ -96,6 +94,17 @@
     self.layer.shadowOpacity = 0.2;
     self.layer.shadowOffset = CGSizeMake(1, 1);
     self.layer.masksToBounds = YES;
+
+    
+    self.pageControl.frame = CGRectMake(self.frame.size.width - 40, 15, 39, 37);
+    
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(expandView:)];
+
+    
+    [self.bottomView  addGestureRecognizer:tapGesture];
+    [self.bottomScrollView setExclusiveTouch:NO];
+    self.bottomScrollView.userInteractionEnabled = NO;
 }
 
 
@@ -107,6 +116,7 @@
     self.pageControl.transform = CGAffineTransformMakeRotation(M_PI_2);
     
     
+    self.scrollView.frame = CGRectMake(3, 3, self.frame.size.width - 6, self.frame.size.height - 6);
     
     self.tempView = [[UIView alloc] init];
     //  [self.tempView setFrame:fullScreenRect];
@@ -192,7 +202,7 @@
     self.pic.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic invalidateIntrinsicContentSize];
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
-    self.pic.image = [UIImage imageNamed:@"photo3"];
+    self.pic.image = [UIImage imageNamed:@"girl1"];
     self.pic.clipsToBounds = YES;
     
     
@@ -327,6 +337,7 @@
             //%%% rotate by certain amount
             CGAffineTransform transform = CGAffineTransformMakeRotation(rotationAngel);
             
+            
             //%%% scale by certain amount
             CGAffineTransform scaleTransform = CGAffineTransformScale(transform, scale, scale);
             
@@ -408,37 +419,6 @@
     NSLog(@"NO");
 }
 
--(void)rightClickAction
-{
-    CGPoint finishPoint = CGPointMake(600, self.center.y);
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.center = finishPoint;
-                         self.transform = CGAffineTransformMakeRotation(1);
-                     }completion:^(BOOL complete){
-                         [self removeFromSuperview];
-                     }];
-    
-    [delegate cardSwipedRight:self];
-    
-    NSLog(@"YES");
-}
-
--(void)leftClickAction
-{
-    CGPoint finishPoint = CGPointMake(-600, self.center.y);
-    [UIView animateWithDuration:0.3
-                     animations:^{
-                         self.center = finishPoint;
-                         self.transform = CGAffineTransformMakeRotation(-1);
-                     }completion:^(BOOL complete){
-                         [self removeFromSuperview];
-                     }];
-    
-    [delegate cardSwipedLeft:self];
-    
-    NSLog(@"NO");
-}
 
 
 

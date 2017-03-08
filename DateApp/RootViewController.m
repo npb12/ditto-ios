@@ -219,7 +219,7 @@
     } else {
         [UIView animateWithDuration:duration animations:^{
             btn0.frame = CGRectMake(-width,27,30,30);
-            btn1.frame = CGRectMake(10,27,46,30);
+            btn1.frame = CGRectMake(2,27,46,30);
            // btn2.frame = CGRectMake(width/2-15, 27, 46, 30);
             btn2.frame = CGRectMake(width/5.25,27,200,30);
 
