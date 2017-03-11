@@ -17,6 +17,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    [self.view.layer insertSublayer:gradient atIndex:0];
+    gradient.frame = self.view.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor whiteColor].CGColor),(id)([UIColor colorWithRed:0.95 green:0.95 blue:0.98 alpha:1.0].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.25,0.0);
+    gradient.endPoint = CGPointMake(0.25,1.0);
+    self.view.layer.masksToBounds = YES;
 }
 
 - (void)didReceiveMemoryWarning {

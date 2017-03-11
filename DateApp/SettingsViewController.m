@@ -28,25 +28,16 @@
     // Do any additional setup after loading the view.
     
     
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.navbar.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.25,0.0);
-    gradient.endPoint = CGPointMake(0.25,1.0);
-    [self.navbar.layer insertSublayer:gradient atIndex:0];
-    
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView sizeToFit];
+    
 }
 
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
     
-
-
-
 }
 
 - (void)didReceiveMemoryWarning {
@@ -123,7 +114,7 @@
             
         }else if (indexPath.section == 2) {
             cell = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"AgeReuseIdentifier"];
-            self.ageRangeSlider = [[CERangeSlider alloc] initWithFrame:CGRectMake(10, cell.frame.size.height /4, self.view.frame.size.width - 50, 32)];
+            self.ageRangeSlider = [[CERangeSlider alloc] initWithFrame:CGRectMake(20, cell.frame.size.height /4, self.view.frame.size.width - 45, 32)];
             self.ageRangeSlider.backgroundColor = [UIColor clearColor];
             
             [self.ageRangeSlider addTarget:self
@@ -304,7 +295,7 @@
                 lbl2.textAlignment = NSTextAlignmentLeft;
                 [lbl2 setNumberOfLines:1];
                 [lbl2 setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
-                [lbl2 setTextColor:[UIColor blackColor]];
+                [lbl2 setTextColor:[self othBlueColor]];
                 [footer addSubview:lbl2];
 
             }else{
@@ -315,7 +306,7 @@
                 lbl2.textAlignment = NSTextAlignmentLeft;
                 [lbl2 setNumberOfLines:1];
                 [lbl2 setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
-                [lbl2 setTextColor:[UIColor blackColor]];
+                [lbl2 setTextColor:[self othBlueColor]];
                 [footer addSubview:lbl2];
 
             }
@@ -394,11 +385,17 @@
     return footer;
 }
 
+-(UIColor*)blueColor{
+    return [UIColor colorWithRed:0.18 green:0.49 blue:0.83 alpha:1.0];
+}
+
 
 - (IBAction)go_back:(id)sender {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
-
+-(UIColor*)othBlueColor{
+    return [UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0];
+}
 
 @end

@@ -12,11 +12,34 @@
     CGPoint p;
     UIImageView *x_image;
     BOOL adding;
+    CGFloat cellWidth, cellHeight;
 }
 
 @property (strong,nonatomic) NSMutableArray *photo_arary;
 @property (nonatomic) BOOL didChangeOrder;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bgWidth;
+
+@property (strong, nonatomic) IBOutlet UIView *view1;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view1Height;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view1Width;
+
+
+@property (strong, nonatomic) IBOutlet UIView *view2;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view2Width;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view2Height;
+
+@property (strong, nonatomic) IBOutlet UIView *view3;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view3Height;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view3Width;
+
+@property (strong, nonatomic) IBOutlet UIView *view4;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view4Width;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view4Height;
+
+@property (strong, nonatomic) IBOutlet UIView *view5;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view5Width;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view5Height;
 
 @end
 
@@ -24,6 +47,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    [self.view.layer insertSublayer:gradient atIndex:0];
+    gradient.frame = self.view.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor whiteColor].CGColor),(id)([UIColor colorWithRed:0.95 green:0.95 blue:0.98 alpha:1.0].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.25,0.0);
+    gradient.endPoint = CGPointMake(0.25,1.0);
+    self.view.layer.masksToBounds = YES;
     
     self.didChangeOrder = NO;
     
@@ -33,18 +64,46 @@
     
     adding = NO;
 
+    CGFloat commonWidth = self.view.frame.size.width / 1.1;
     
-    self.collectionViewWidth.constant = self.view.frame.size.width / 1.1;
+    self.collectionViewWidth.constant = commonWidth;
     
-    self.bio_textview.layer.borderWidth = 1;
-    self.bio_textview.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.bgWidth.constant = commonWidth;
     
-    self.edu_textview.layer.borderWidth = 1;
-    self.edu_textview.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    cellWidth = self.view.bounds.size.width / 3.4;
+    cellHeight = self.view.bounds.size.width / 3.4;
     
-    self.occu_textview.layer.borderWidth = 1;
-    self.occu_textview.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.view1.layer.borderWidth = 2;
+    self.view1.layer.borderColor = [self blueColor].CGColor;
+    self.view1Height.constant = cellHeight;
+    self.view1Width.constant = cellWidth;
+    self.view1.layer.cornerRadius = 5;
     
+    self.view2.layer.borderWidth = 2;
+    self.view2.layer.borderColor = [UIColor grayColor].CGColor;
+    self.view2Height.constant = cellHeight;
+    self.view2Width.constant = cellWidth;
+    self.view2.layer.cornerRadius = 5;
+    
+    self.view3.layer.borderWidth = 2;
+    self.view3.layer.borderColor = [UIColor grayColor].CGColor;
+    self.view3Height.constant = cellHeight;
+    self.view3Width.constant = cellWidth;
+    self.view3.layer.cornerRadius = 5;
+    
+    self.view4.layer.borderWidth = 2;
+    self.view4.layer.borderColor = [UIColor grayColor].CGColor;
+    self.view4Height.constant = cellHeight;
+    self.view4Width.constant = cellWidth;
+    self.view4.layer.cornerRadius = 5;
+    
+    self.view5.layer.borderWidth = 2;
+    self.view5.layer.borderColor = [UIColor grayColor].CGColor;
+    self.view5Height.constant = cellHeight;
+    self.view5Width.constant = cellWidth;
+    self.view5.layer.cornerRadius = 5;
+    
+
     UILongPressGestureRecognizer *lpgr
     = [[UILongPressGestureRecognizer alloc]
        initWithTarget:self action:@selector(handleLongPress:)];
@@ -89,13 +148,21 @@
 
 -(void)getPhotos{
 
+    /*
     UIImage* image = [[DataAccess singletonInstance] getProfileImage];
     UIImage* image2 = [[DataAccess singletonInstance] getProfileImage2];
     UIImage* image3 = [[DataAccess singletonInstance] getProfileImage3];
     UIImage* image4 = [[DataAccess singletonInstance] getProfileImage4];
-    UIImage* image5 = [[DataAccess singletonInstance] getProfileImage5];
+    UIImage* image5 = [[DataAccess singletonInstance] getProfileImage5]; */
+    
+    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
+    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
+    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
+    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
+ //   [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
 
     
+    /*
     if (image != nil) {
         [self.photo_arary addObject:image];
     }
@@ -114,7 +181,7 @@
     
     if (image5 != nil) {
         [self.photo_arary addObject:image5];
-    }
+    } */
     
     
 
@@ -139,6 +206,7 @@
     PhotosCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
     
     cell.photo.image = [self.photo_arary objectAtIndex:indexPath.row];
+
     
     
     [cell setBackgroundColor:[UIColor lightGrayColor]];
@@ -216,13 +284,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
-    CGFloat width = self.view.bounds.size.width / 3.4;
-    CGFloat height = self.view.bounds.size.width / 3.4;
-    
-    
-    return CGSizeMake(width, height);
+    return CGSizeMake(cellWidth, cellHeight);
 }
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
@@ -472,6 +534,10 @@
         }
     }
     
+}
+
+-(UIColor*)blueColor{
+    return [UIColor colorWithRed:0.18 green:0.49 blue:0.83 alpha:1.0];
 }
 
 

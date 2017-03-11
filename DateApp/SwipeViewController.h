@@ -20,7 +20,7 @@
 
 
 -(void) pushDetailView:(id)sender;
-
+-(void)likeCurrentCard;
 @property NSUInteger pageIndex;
 
 

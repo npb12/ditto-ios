@@ -21,6 +21,14 @@
     [super viewDidLoad];
    // [self addMainView];
     [self.backgroundView createView];
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    [self.backgroundView.layer insertSublayer:gradient atIndex:0];
+    gradient.frame = self.backgroundView.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor whiteColor].CGColor),(id)([UIColor colorWithRed:0.95 green:0.95 blue:0.98 alpha:1.0].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.25,0.0);
+    gradient.endPoint = CGPointMake(0.25,1.0);
+    self.backgroundView.layer.masksToBounds = YES;
 
 }
 
@@ -50,6 +58,7 @@
     CGFloat width = CGRectGetWidth([[UIScreen mainScreen] bounds]);
     draggableBackground.translatesAutoresizingMaskIntoConstraints = NO;
     [draggableBackground invalidateIntrinsicContentSize];
+    
     
  //   draggableBackground.layer.masksToBounds = NO;
  //   self.tableBack.layer.shadowOffset = CGSizeMake(-.1, .2);
@@ -160,7 +169,9 @@
 }
 
 
-
+-(void)likeCurrentCard{
+    [self.backgroundView likedCurrent];
+}
 
 /*
 #pragma mark - Navigation

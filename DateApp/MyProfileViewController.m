@@ -25,7 +25,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *edu_job;
 @property (strong, nonatomic) IBOutlet UILabel *edit_header;
 
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *photoHeight;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
 @property (strong, nonatomic) IBOutlet UIImageView *pic;
@@ -33,6 +32,11 @@
 @property (strong, nonatomic) IBOutlet UIImageView *pic3;
 @property (strong, nonatomic) UIView *tempView;
 @property (strong, nonatomic) IBOutlet UIPageControl *pageControl;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view_height;
+
+@property (nonatomic) CGFloat scroll_content_height;
+@property (strong, nonatomic) IBOutlet UIView *scrollChildView;
 
 @end
 
@@ -51,7 +55,6 @@
     gradient.endPoint = CGPointMake(0.25,1.0);
     [self.navbar.layer insertSublayer:gradient atIndex:0]; */
     
-    self.photoHeight.constant = self.view.frame.size.height / 2;
     
     
     self.name_label.text = @"Neil";
@@ -73,9 +76,21 @@
     
     CGRect fullScreenRect=[[UIScreen mainScreen] bounds];
     
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    [self.scrollChildView.layer insertSublayer:gradient atIndex:0];
+    gradient.frame = self.scrollChildView.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor whiteColor].CGColor),(id)([UIColor colorWithRed:0.95 green:0.95 blue:0.98 alpha:1.0].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.25,0.0);
+    gradient.endPoint = CGPointMake(0.25,1.0);
+    self.scrollChildView.layer.masksToBounds = YES;
+    
     self.scrollView.showsHorizontalScrollIndicator = NO;
     
+    self.view_height.constant = self.view.frame.size.height / 1.75;
+
     
+    self.scroll_content_height = self.view.frame.size.height - self.view_height.constant;
     
     
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -108,7 +123,7 @@
     
     
     
-    [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:self.photoHeight.constant]];
+    [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:self.view_height.constant]];
     
     [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:scroll_width]];
     
@@ -124,9 +139,11 @@
     self.pic = [[UIImageView alloc]init];
     
     self.pic.backgroundColor = [UIColor blueColor];
-    CGFloat width = CGRectGetWidth([[UIScreen mainScreen] bounds]);
+    //  CGFloat width = CGRectGetWidth([[UIScreen mainScreen] bounds]);
     self.pic.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic invalidateIntrinsicContentSize];
+    self.pic.layer.cornerRadius = 10;
+    [self.pic setClipsToBounds:YES];
     
     self.pic.image = [UIImage imageNamed:@"girl1"];
     
@@ -137,15 +154,15 @@
     
     
     NSDictionary *viewsDictionary = @{@"image":self.pic};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view_height.constant];
     [self.tempView addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:width];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width - 30];
     [self.tempView addConstraint:constraint4];
     
 }
@@ -155,10 +172,11 @@
     
     self.pic2 = [[UIImageView alloc]init];
     
-    CGFloat width = CGRectGetWidth([[UIScreen mainScreen] bounds]);
+    CGFloat width = self.view.frame.size.width;
     self.pic2.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic2 invalidateIntrinsicContentSize];
-    
+    self.pic2.layer.cornerRadius = 10;
+    [self.pic2 setClipsToBounds:YES];
     self.pic2.image = [UIImage imageNamed:@"girl1"];
     
     self.pic2.alpha = 2.0;
@@ -172,15 +190,15 @@
     
     
     NSDictionary *viewsDictionary = @{@"image":self.pic2, @"pic1":self.pic};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic1]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic1]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:30]} views:viewsDictionary];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view_height.constant];
     [self.tempView addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:width];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width - 30];
     [self.tempView addConstraint:constraint4];
     
 }
@@ -189,9 +207,11 @@
     
     self.pic3 = [[UIImageView alloc]init];
     
-    CGFloat width = CGRectGetWidth([[UIScreen mainScreen] bounds]);
+    CGFloat width = self.view.frame.size.width;
     self.pic3.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic3 invalidateIntrinsicContentSize];
+    self.pic3.layer.cornerRadius = 10;
+    [self.pic3 setClipsToBounds:YES];
     
     self.pic3.image = [UIImage imageNamed:@"girl1"];
     
@@ -204,18 +224,19 @@
     
     
     NSDictionary *viewsDictionary = @{@"image":self.pic3, @"pic2":self.pic2};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic2]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic2]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:30]} views:viewsDictionary];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view_height.constant];
     [self.tempView addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:width];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width - 30];
     [self.tempView addConstraint:constraint4];
     
 }
+
 
 
 - (void)didReceiveMemoryWarning {

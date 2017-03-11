@@ -14,9 +14,14 @@
     UIButton* btn1;
     UIButton* btn2;
     UIColor* purpleColor;
+    CAGradientLayer *gradient;
 }
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
+@property (strong, nonatomic) SwipeViewController *swipeVC;
+@property (strong, nonatomic) MatchViewController *matchVC;
+@property (strong, nonatomic) MenuViewController *menuVC;
+
 @property (strong, nonatomic) NSArray *pageTitles;
 @property (strong, nonatomic) NSArray *pageImages;
 
@@ -34,6 +39,8 @@
     
     purpleColor = self.topview.backgroundColor;
     
+
+    
     /*
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.topview.bounds;
@@ -42,11 +49,11 @@
     gradient.endPoint = CGPointMake(0.25,1.0);
     [self.topview.layer insertSublayer:gradient atIndex:0]; */
     
-    if ([[DataAccess singletonInstance] UserIsLoggedIn]) {
+  //  if ([[DataAccess singletonInstance] UserIsLoggedIn]) {
         [self initViewController];
         [LocationManager sharedInstance];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToMessaging:) name:@"goToMessaging" object:nil];
-    }
+  //  }
     
     
 }
@@ -54,9 +61,10 @@
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:NO];
    
+    /*
     if (![[DataAccess singletonInstance] UserIsLoggedIn]) {
         [self performSegueWithIdentifier:@"loginSegue" sender:self];
-    }
+    } */
   //  else{
   //      [self initViewController];
   //  }
@@ -72,39 +80,53 @@
     self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
     self.pageViewController.delegate = self;
     
+  //  SwipeViewController *startingViewController = [self dailyControllerAtIndex:1];
     SwipeViewController *startingViewController = [self dailyControllerAtIndex:1];
+
     NSArray *viewControllers = @[startingViewController];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    nCurIdx = 1;
     
-    // Change the size of page view controller
-    self.pageViewController.view.frame = CGRectMake(0, self.nav_height.constant, self.view.frame.size.width, self.view.frame.size.height);
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     
+    // Change the size of page view controller
+    self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     
-    btn0 = [[UIButton alloc] initWithFrame:CGRectMake(10,27,30,30)];
-    [btn0 setImage:[UIImage imageNamed:@"gear"] forState:UIControlStateNormal];
-    [btn0 setImage:[UIImage imageNamed:@"gear_1"] forState:UIControlStateDisabled];
+    btn0 = [[UIButton alloc] initWithFrame:CGRectMake(10,15,45,45)];
+    [btn0 setBackgroundColor:[self othBlueColor]];
+    btn0.layer.cornerRadius = 22.5;
+    btn0.layer.borderWidth = 2;
+    btn0.layer.borderColor = [UIColor whiteColor].CGColor;
+    [btn0 setImage:[UIImage imageNamed:@"Settings_Big"] forState:UIControlStateNormal];
+    btn0.layer.masksToBounds = NO;
     [btn0 addTarget:self action:@selector(onLeftClick) forControlEvents:UIControlEventTouchUpInside];
     [_topview addSubview:btn0];
     
 
     
-    btn1 = [[UIButton alloc] initWithFrame:CGRectMake(width/2.75,27,92,30)];
-    [btn1 setTitle:@"PairMe" forState:UIControlStateNormal];
-    btn1.titleLabel.font = [UIFont fontWithName:@"Playball" size:28];
-    [btn1 setTitleColor:[self blueColor] forState:UIControlStateNormal];
-    [btn1 setTitleColor:[self blueColor] forState:UIControlStateDisabled];
-   // [btn1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-   // [btn1 setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
-  //  [btn1 setImage:[UIImage imageNamed:@"pairme_logo"] forState:UIControlStateNormal];
+    btn1 = [[UIButton alloc] initWithFrame:CGRectMake(width/2 - 37.5,-10,75,75)];
+  //  [btn1 setTitle:@"PairMe" forState:UIControlStateNormal];
+    [btn1 setImage:[UIImage imageNamed:@"Icon_HeartWithShadow_Active"] forState:UIControlStateNormal];
+    [self addGradientLayer:btn1];
+    btn1.layer.cornerRadius = 37.5;
+    btn1.layer.shadowColor = [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] CGColor];
+    btn1.layer.shadowOffset = CGSizeMake(0, 2.5f);
+    btn1.layer.shadowOpacity = 1.0f;
+    btn1.layer.shadowRadius = 0.0f;
     [btn1 addTarget:self action:@selector(onMiddleClick) forControlEvents:UIControlEventTouchUpInside];
-    btn1.enabled = false;
+    btn1.enabled = YES;
+    btn1.layer.borderWidth = 2;
+    btn1.layer.borderColor = [UIColor whiteColor].CGColor;
     [_topview addSubview:btn1];
     
-    btn2 = [[UIButton alloc] initWithFrame:CGRectMake(width-40,27,30,30)];
-    [btn2 setImage:[UIImage imageNamed:@"heart_icon"] forState:UIControlStateNormal];
-    [btn2 setImage:[UIImage imageNamed:@"heart_1"] forState:UIControlStateDisabled];
+    btn2 = [[UIButton alloc] initWithFrame:CGRectMake(width-55,15,45,45)];
+    [btn2 setBackgroundColor:[self othBlueColor]];
+    btn2.layer.cornerRadius = 22.5;
+    btn2.layer.borderWidth = 2;
+    btn2.layer.borderColor = [UIColor whiteColor].CGColor;
+    [btn2 setImage:[UIImage imageNamed:@"heart2_Icon"] forState:UIControlStateNormal];
+    btn2.layer.masksToBounds = NO;
     [btn2 addTarget:self action:@selector(onRightClick) forControlEvents:UIControlEventTouchUpInside];
     [_topview addSubview:btn2];
     
@@ -112,14 +134,37 @@
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
+    [self.view bringSubviewToFront:self.topview];
 }
 
 
 -(void) onLeftClick {
   //  self.topview.backgroundColor = purpleColor;
     [self offsetScrol:0];
-    [btn1 setTitle:@"" forState:UIControlStateNormal];
-    [btn1 setImage:[UIImage imageNamed:@"falling_heart"] forState:UIControlStateNormal];
+    
+    [btn0 setImage:[UIImage imageNamed:@"gear_1"] forState:UIControlStateNormal];
+    btn0.layer.cornerRadius = 37.5;
+ /*   btn0.layer.shadowColor = [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] CGColor];
+    btn0.layer.shadowOffset = CGSizeMake(0, 2.5f);
+    btn0.layer.shadowOpacity = 1.0f;
+    btn0.layer.shadowRadius = 0.0f; */
+    btn0.layer.masksToBounds = NO;
+    btn0.backgroundColor = [self purpleColor];
+    /*
+    [self removeGradientLayer:btn1];
+   // [btn1 setBackgroundColor:[self othBlueColor]];
+    btn1.layer.cornerRadius = 22.5;
+    btn1.layer.masksToBounds = NO;
+    btn1.layer.shadowOffset = CGSizeMake(0, 0.0f);
+    btn1.layer.shadowOpacity = 0.0f;
+    btn1.layer.shadowRadius = 0.0f; */
+    [btn1 setImage:[UIImage imageNamed:@"Icon_HeartWithShadow_Inactive"] forState:UIControlStateNormal];
+    btn1.layer.cornerRadius = 22.5;
+
+    
+    
+    
+    
     MenuViewController *oneVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MenuVC"];
     oneVC.pageIndex = 0;
     if( oneVC ) {
@@ -134,14 +179,50 @@
 
 -(void) onMiddleClick {
     
+    
+    if (nCurIdx == 1) {
+        
+        NSArray * controllerArray = self.pageViewController.childViewControllers;
+        
+        
+
+        SwipeViewController *swipeVC;
+        
+        for (UIViewController *controller in controllerArray){
+            if([controller isKindOfClass:[SwipeViewController class]])
+            {
+                swipeVC = (SwipeViewController*) controller;
+            }
+        }
+        
+      //  SwipeViewController *swipeVC = [ firstObject];
+        if (swipeVC) {
+            [swipeVC likeCurrentCard];
+        }
+        return;
+    }
+    
 //   self.topview.backgroundColor = purpleColor;
     NSInteger orient;
-  //  [btn1 setImage:[UIImage imageNamed:@"pairme_logo"] forState:UIControlStateNormal];
-    [btn1 setImage:nil forState:UIControlStateNormal];
-    [btn1 setTitle:@"PairMe" forState:UIControlStateNormal];
-    [btn2 setTitle:@"" forState:UIControlStateNormal];
-    [btn2 setImage:[UIImage imageNamed:@"heart_icon"] forState:UIControlStateNormal];
-    [btn2 setImage:[UIImage imageNamed:@"heart_1"] forState:UIControlStateDisabled];
+    [btn0 setImage:[UIImage imageNamed:@"Settings_Big"] forState:UIControlStateNormal];
+    [btn0 setBackgroundColor:[self othBlueColor]];
+    btn0.layer.cornerRadius = 22.5;
+    btn0.layer.masksToBounds = NO;
+    btn0.layer.shadowOffset = CGSizeMake(0, 0.0f);
+    btn0.layer.shadowOpacity = 0.0f;
+    btn0.layer.shadowRadius = 0.0f;
+    
+
+    [btn1 setImage:[UIImage imageNamed:@"Icon_HeartWithShadow_Active"] forState:UIControlStateNormal];
+    btn1.layer.cornerRadius = 37.5;
+    [btn2 setBackgroundColor:[self othBlueColor]];
+    btn2.layer.cornerRadius = 22.5;
+    [btn2 setImage:[UIImage imageNamed:@"heart2_Icon"] forState:UIControlStateNormal];
+    btn2.layer.masksToBounds = NO;
+    btn2.layer.shadowOffset = CGSizeMake(0, 0.0f);
+    btn2.layer.shadowOpacity = 0.0f;
+    btn2.layer.shadowRadius = 0.0f;
+    
   //  btn1.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:30];
     if( btn0.frame.origin.x < 0 )
         orient = UIPageViewControllerNavigationDirectionReverse;
@@ -162,14 +243,34 @@
 
 -(void) onRightClick {
  //   self.topview.backgroundColor = [UIColor clearColor];
+    
+    if (nCurIdx == 2) {
+        [self goToMessaging:self];
+        return;
+    }
+
     [self offsetScrol:2];
-    [btn1 setTitle:@"" forState:UIControlStateNormal];
-    [btn1 setImage:[UIImage imageNamed:@"falling_heart"] forState:UIControlStateNormal];
-    [btn2 setImage:nil forState:UIControlStateNormal];
-    [btn2 setImage:nil forState:UIControlStateDisabled];
-    btn2.titleLabel.font = [UIFont systemFontOfSize:22];
-    [btn2 setTitleColor:[UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0] forState:UIControlStateNormal];
-    [btn2 setTitle:@"Neil" forState:UIControlStateNormal];
+ /*   [self removeGradientLayer:btn1];
+    [btn1 setImage:[UIImage imageNamed:@"Icon_HeartWithShadow_Inactive"] forState:UIControlStateNormal];
+    [btn1 setBackgroundColor:[self othBlueColor]];
+    btn1.layer.cornerRadius = 22.5;
+    btn1.layer.masksToBounds = NO;
+    btn1.layer.shadowOffset = CGSizeMake(0, 0.0f);
+    btn1.layer.shadowOpacity = 0.0f;
+    btn1.layer.shadowRadius = 0.0f; */
+ //   [btn2 setImage:nil forState:UIControlStateNormal];
+ //   [btn2 setImage:nil forState:UIControlStateDisabled];
+    [btn1 setImage:[UIImage imageNamed:@"Icon_HeartWithShadow_Inactive"] forState:UIControlStateNormal];
+    btn1.layer.cornerRadius = 22.5;
+
+    [btn2 setImage:[UIImage imageNamed:@"Icon_Chat"] forState:UIControlStateNormal];
+    [btn2 setBackgroundColor:[self pinkColor]];
+    btn2.layer.cornerRadius = 37.5;
+/*    btn2.layer.shadowColor = [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] CGColor];
+    btn2.layer.shadowOffset = CGSizeMake(0, 2.5f);
+    btn2.layer.shadowOpacity = 1.0f;
+    btn2.layer.shadowRadius = 0.0f; */
+    btn2.layer.masksToBounds = NO;
 
     MatchViewController *threeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MatchVC"];
     threeVC.pageIndex = 2;
@@ -191,40 +292,41 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void) offsetScrol : (NSUInteger) i {
+-(void) offsetScrol : (int) i {
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat duration = 0.3;
     
+    nCurIdx = i;
+    
     if( i == 0 ) {
         [UIView animateWithDuration:duration animations:^{
-            btn0.frame = CGRectMake(width/2-15,27,30,30);
-            btn1.frame = CGRectMake(width-50, 27, 46, 30);
-            btn2.frame = CGRectMake(width*2, 27, 30, 30);
+            btn0.frame = CGRectMake(width/2 - 37.5,-10,75,75);
+            btn1.frame = CGRectMake(width - 55,15,45,45);
+            btn2.frame = CGRectMake(width*2, 15, 45, 45);
             
-            btn0.enabled = false;
+            btn0.enabled = true;
             btn1.enabled = true;
         }];
         
     } else if( i == 1 ) {
         [UIView animateWithDuration:duration animations:^{
-            btn0.frame = CGRectMake(10,27,30,30);
-            btn1.frame = CGRectMake(width/2.75,27,92,30);
-            btn2.frame = CGRectMake(width-40,27,30,30);
+            btn0.frame = CGRectMake(10,15,45,45);
+            btn1.frame = CGRectMake(width/2 - 37.5,-10,75,75);
+            btn2.frame = CGRectMake(width - 55,15,45,45);
             
             
-            btn1.enabled = NO;
+            btn1.enabled = YES;
             btn0.enabled = btn2.enabled = YES;
         }];
     } else {
         [UIView animateWithDuration:duration animations:^{
-            btn0.frame = CGRectMake(-width,27,30,30);
-            btn1.frame = CGRectMake(2,27,46,30);
-           // btn2.frame = CGRectMake(width/2-15, 27, 46, 30);
-            btn2.frame = CGRectMake(width/5.25,27,200,30);
+            btn0.frame = CGRectMake(-width*2, 15, 45, 45);
+            btn1.frame = CGRectMake(10,15,45,45);
+            btn2.frame = CGRectMake(width/2 - 37.5,-10,75,75);
 
             btn1.enabled = YES;
-            btn2.enabled = NO;
+            btn2.enabled = YES;
         }];
     }
 }
@@ -356,13 +458,11 @@
     
     NSInteger index = ((MenuViewController*)[pageViewController.viewControllers lastObject]).pageIndex;
     if (index != 1) {
-        [btn1 setImage:[UIImage imageNamed:@"falling_heart"] forState:UIControlStateNormal];
-        [btn1 setTitle:@"" forState:UIControlStateNormal];
+     //   [btn1 setImage:[UIImage imageNamed:@"falling_heart"] forState:UIControlStateNormal];
+      //  [btn1 setTitle:@"" forState:UIControlStateNormal];
     }else{
     //    [btn1 setImage:[UIImage imageNamed:@"pairme_logo"] forState:UIControlStateNormal];
-        [btn1 setTitle:@"PairMe" forState:UIControlStateNormal];
-        btn1.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:22];
-
+   
     }
     [self offsetScrol:index];
 }
@@ -400,6 +500,40 @@
 
 -(UIColor*)blueColor{
     return [UIColor colorWithRed:0.18 green:0.49 blue:0.83 alpha:1.0];
+}
+
+-(UIColor*)pinkColor{
+    return [UIColor colorWithRed:0.80 green:0.28 blue:0.42 alpha:1.0];
+}
+
+-(UIColor*)othBlueColor{
+    return [UIColor colorWithRed:0.18 green:0.49 blue:0.83 alpha:1.0];//  [UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0];
+}
+
+-(UIColor*)purpleColor{
+    return [UIColor colorWithRed:0.43 green:0.40 blue:0.77 alpha:1.0];
+}
+
+
+
+-(void)addGradientLayer:(UIButton*)button{
+    if (!gradient) {
+        gradient = [CAGradientLayer layer];
+        [button.layer insertSublayer:gradient atIndex:0];
+    }
+    gradient.frame = button.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.25,0.0);
+    gradient.endPoint = CGPointMake(0.25,1.0);
+    [button bringSubviewToFront:button.imageView];
+    button.layer.masksToBounds = YES;
+}
+
+-(void)removeGradientLayer:(UIButton*)button{
+    if (gradient != nil) {
+        [gradient removeFromSuperlayer];
+        gradient = nil;
+    }
 }
 
 @end

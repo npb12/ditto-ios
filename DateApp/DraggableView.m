@@ -45,12 +45,14 @@
         [self setupView];
         
 
+        
+        /*
         CAGradientLayer *gradient = [CAGradientLayer layer];
         gradient.frame = self.bounds;
         gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0].CGColor),nil];
         gradient.startPoint = CGPointMake(0.25,0.0);
         gradient.endPoint = CGPointMake(0.25,1.0);
-        [self.layer insertSublayer:gradient atIndex:0];
+        [self.layer insertSublayer:gradient atIndex:0]; */
 
        // self.backgroundColor = [UIColor clearColor];
 
@@ -116,8 +118,9 @@
     self.pageControl.transform = CGAffineTransformMakeRotation(M_PI_2);
     
     
-    self.scrollView.frame = CGRectMake(3, 3, self.frame.size.width - 6, self.frame.size.height - 6);
-    
+   // self.scrollView.frame = CGRectMake(3, 3, self.frame.size.width - 6, self.frame.size.height - 6);
+    self.scrollView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+
     self.tempView = [[UIView alloc] init];
     //  [self.tempView setFrame:fullScreenRect];
     self.tempView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -140,9 +143,9 @@
     
     [self.scrollView setExclusiveTouch:NO];
     
-    self.height = (self.frame.size.height * 3) - (6 * 3); //- contentHeightModifier;
+    self.height = (self.frame.size.height * 3); //- (6 * 3); //- contentHeightModifier;
     //self.bounds.size.height * 3;
-    self.width = self.frame.size.width - 6;
+    self.width = self.frame.size.width;// - 6;
     
     
     //   self.scrollView.userInteractionEnabled = NO;
@@ -420,7 +423,21 @@
 }
 
 
-
+-(void)rightClickAction
+{
+    CGPoint finishPoint = CGPointMake(600, self.center.y);
+    [UIView animateWithDuration:0.3
+                     animations:^{
+                         self.center = finishPoint;
+                         self.transform = CGAffineTransformMakeRotation(1);
+                     }completion:^(BOOL complete){
+                         [self removeFromSuperview];
+                     }];
+    
+    [delegate cardSwipedRight:self];
+    
+    NSLog(@"YES");
+}
 
 //UI Colors
 

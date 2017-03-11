@@ -26,7 +26,7 @@ static const int MAX_BUFFER_SIZE = 2;
     self = [super initWithFrame:frame];
     if (self) {
         [super layoutSubviews];
-        [self setupView];
+      //  [self setupView];
         exampleCardLabels = [[NSArray alloc]initWithObjects:@"first",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
         loadedCards = [[NSMutableArray alloc] init];
         allCards = [[NSMutableArray alloc] init];
@@ -47,57 +47,6 @@ static const int MAX_BUFFER_SIZE = 2;
 }
 
 
--(void)setupView
-{
-
-/*
-    CGFloat Button_HEIGHT = 0; //%%% height of the draggable card
-    CGFloat Button_WIDTH = 0;
-    
-    CGFloat pad = 0, w_pad = 0, w_pad2 = 0;
-    if([[DeviceManager sharedInstance] getIsIPhone5Screen])
-    {
-        pad = 432;
-        w_pad = 60;
-        w_pad2 = 200;
-        Button_HEIGHT = 59; //%%% height of the draggable card
-        Button_WIDTH = 59;
-        
-    }
-    else if ([[DeviceManager sharedInstance] getIsIPhone6Screen])
-    {
-        pad = 515;
-        w_pad = 80;
-        w_pad2 = 210;
-        Button_HEIGHT = 66; //%%% height of the draggable card
-        Button_WIDTH = 66;
-        
-    }
-    else if ([[DeviceManager sharedInstance] getIsIPhone6PlusScreen])
-    {
-        pad = 565;
-        w_pad = 85;
-        w_pad2 = 225;
-        Button_HEIGHT = 80; //%%% height of the draggable card
-        Button_WIDTH = 80;
-    }
-    else if ([[DeviceManager sharedInstance] getIsIPhone4Screen] || [[DeviceManager sharedInstance] getIsIPad]) {
-        pad = 358;
-        w_pad = 80;
-        w_pad2 = 180;
-        Button_HEIGHT = 55; //%%% height of the draggable card
-        Button_WIDTH = 55;
-    }
-
-    xButton = [[UIButton alloc]initWithFrame:CGRectMake(w_pad, pad, Button_HEIGHT, Button_WIDTH)];
-    [xButton setImage:[UIImage imageNamed:@"xButton"] forState:UIControlStateNormal];
-    [xButton addTarget:self action:@selector(swipeLeft) forControlEvents:UIControlEventTouchUpInside];
-    checkButton = [[UIButton alloc]initWithFrame:CGRectMake(w_pad2, pad, Button_HEIGHT, Button_WIDTH)];
-    [checkButton setImage:[UIImage imageNamed:@"checkButton"] forState:UIControlStateNormal];
-    [checkButton addTarget:self action:@selector(swipeRight) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:xButton];
-    [self addSubview:checkButton]; */
-}
 
 
 
@@ -112,9 +61,9 @@ static const int MAX_BUFFER_SIZE = 2;
     CGFloat pad = 0, x_pad;
 
     
-        pad = 30;
+        pad = 60;
         x_pad = 5;
-        CARD_HEIGHT = self.frame.size.height - 110;
+        CARD_HEIGHT = self.frame.size.height - 145;
         CARD_WIDTH = self.frame.size.width - 10;
 
     
@@ -250,6 +199,11 @@ static const int MAX_BUFFER_SIZE = 2;
     return [UIColor colorWithRed:0.91 green:0.91 blue:0.91 alpha:1.0];
     
     
+}
+
+-(void)likedCurrent{
+    DraggableView *dragView = [loadedCards firstObject];
+    [dragView rightClickAction];
 }
 
 
