@@ -19,5 +19,6 @@
 - (IBAction)profileCurrent:(id)sender;
 
 - (IBAction)profileNew:(id)sender;
+@property (strong, nonatomic) IBOutlet UIButton *matchButton;
 
 @end

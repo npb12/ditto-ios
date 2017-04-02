@@ -79,6 +79,9 @@
 
 #import "NewMatchViewController.h"
 
+#import "DraggableViewBackground.h"
+#import "DraggableView.h"
+#import "OverlayView.h"
 
 #import "MessageViewController.h"
 
@@ -86,7 +89,11 @@
 
 #import "LocationManager.h"
 
-#import "SwipeViewController.h"
+#import "User.h"
+#import "DAServer.h"
+#import "LoginViewController.h"
+#import "MatchUser.h"
+#import "DAParser.h"
 
 
 #endif

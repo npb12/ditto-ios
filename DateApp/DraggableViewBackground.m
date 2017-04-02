@@ -6,6 +6,10 @@
 
 #import "DraggableViewBackground.h"
 
+@interface DraggableViewBackground()<HasMatchDelegate, ProfileProtocol>
+
+@end
+
 @implementation DraggableViewBackground{
     NSInteger cardsLoadedIndex;
     NSMutableArray *loadedCards;
@@ -18,27 +22,13 @@
 
 static const int MAX_BUFFER_SIZE = 2;
 
-@synthesize exampleCardLabels;
+@synthesize userCards;
 @synthesize allCards;
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [super layoutSubviews];
-      //  [self setupView];
-        exampleCardLabels = [[NSArray alloc]initWithObjects:@"first",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
-        loadedCards = [[NSMutableArray alloc] init];
-        allCards = [[NSMutableArray alloc] init];
-        cardsLoadedIndex = 0;
-        [self loadCards];
-        self.userInteractionEnabled = YES;
-    }
-    return self;
-}
 
--(void)createView{
-    exampleCardLabels = [[NSArray alloc]initWithObjects:@"first",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
+-(void)createViewWithUsers:(NSMutableArray*)users{
+    userCards = users;
+  //  userCards = [[NSArray alloc]initWithObjects:@"first",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
     loadedCards = [[NSMutableArray alloc] init];
     allCards = [[NSMutableArray alloc] init];
     cardsLoadedIndex = 0;
@@ -61,29 +51,32 @@ static const int MAX_BUFFER_SIZE = 2;
     CGFloat pad = 0, x_pad;
 
     
+    NSLog(@"%ld", (long)index);
         pad = 60;
         x_pad = 5;
         CARD_HEIGHT = self.frame.size.height - 145;
         CARD_WIDTH = self.frame.size.width - 10;
 
     
-    
-    DraggableView *draggableView = [[DraggableView alloc] initWithFrame:CGRectMake(x_pad, pad, CARD_WIDTH, CARD_HEIGHT)];
+    User *user = [userCards objectAtIndex:index];
 
-    
+    DraggableView *draggableView = [[DraggableView alloc] initWithUser:user viewFrame:CGRectMake(x_pad, pad, CARD_WIDTH, CARD_HEIGHT)];
+
+    draggableView.noswipe_delegate = self;
     draggableView.delegate = self;
+    draggableView.profile_delegate = self;
     return draggableView;
 }
 
 //%%% loads all the cards and puts the first x in the "loaded cards" array
 -(void)loadCards
 {
-    if([exampleCardLabels count] > 0) {
-        NSInteger numLoadedCardsCap =(([exampleCardLabels count] > MAX_BUFFER_SIZE)?MAX_BUFFER_SIZE:[exampleCardLabels count]);
+    if([userCards count] > 0) {
+        NSInteger numLoadedCardsCap =(([userCards count] > MAX_BUFFER_SIZE)?MAX_BUFFER_SIZE:[userCards count]);
         //%%% if the buffer size is greater than the data size, there will be an array error, so this makes sure that doesn't happen
 
-        //%%% loops through the exampleCardsLabels array to create a card for each label.  This should be customized by removing "exampleCardLabels" with your own array of data
-        for (int i = 0; i<[exampleCardLabels count]; i++) {
+        //%%% loops through the exampleCardsLabels array to create a card for each label.  This should be customized by removing "userCards" with your own array of data
+        for (int i = 0; i<[userCards count]; i++) {
             DraggableView* newCard = [self createDraggableViewWithDataAtIndex:i];
             [allCards addObject:newCard];
             
@@ -138,6 +131,11 @@ static const int MAX_BUFFER_SIZE = 2;
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
+    
+
+    
+    id<MatchSegueProtocol> strongDelegate = self.matched_delegate;
+    [strongDelegate goToMatchedSegue:self obj:nil];
 
 }
 
@@ -204,6 +202,16 @@ static const int MAX_BUFFER_SIZE = 2;
 -(void)likedCurrent{
     DraggableView *dragView = [loadedCards firstObject];
     [dragView rightClickAction];
+}
+
+-(void)noSwipingAlert{
+    id<NoSwipeProtocol> strongDelegate = self.noswipe_delegate;
+    [strongDelegate noSwipingAlert];
+}
+
+-(void)profileSelected:(User *)user{
+    id<SelectedProfileProtocol> strongDelegate = self.profile_delegate;
+    [strongDelegate selectedProfile:user];
 }
 
 

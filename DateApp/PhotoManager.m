@@ -111,17 +111,13 @@
                     
                     //get the smallest photo for the icon
                     if (height < smallest) {
-                        NSString *data = [dict valueForKey:@"source"];
-             //           NSLog(@"%@", albumObject.photo);
-                        albumObject.photo = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:data]]];
+                        albumObject.photo = [dict valueForKey:@"source"];
                         smallest = height;
                         
                     }
                     //get the largest photo for the full screen photos
                     if (height > largest) {
-                        NSString *data = [dict valueForKey:@"source"];
-                        //           NSLog(@"%@", albumObject.photo);
-                        albumObject.fullSizePhoto = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:data]]];
+                        albumObject.fullSizePhoto = [dict valueForKey:@"source"];
                         largest = height;
                     }
                     

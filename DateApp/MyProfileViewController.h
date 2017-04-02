@@ -17,4 +17,13 @@
 @property (strong, nonatomic) IBOutlet UIView *colorView;
 
 - (IBAction)go_back:(id)sender;
+
+
+@property (strong, nonatomic) IBOutlet UIView *pc1;
+@property (strong, nonatomic) IBOutlet UIView *pc2;
+@property (strong, nonatomic) IBOutlet UIView *pc3;
+@property (strong, nonatomic) IBOutlet UIView *pc4;
+@property (strong, nonatomic) IBOutlet UIView *pc5;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerConstraint;
 @end

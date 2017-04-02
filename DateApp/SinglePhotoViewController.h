@@ -11,7 +11,7 @@
 @interface SinglePhotoViewController : UIViewController
 
 
-@property (nonatomic, strong) UIImage *photo;
+@property (nonatomic, strong) NSString *photo;
 
 
 + (id)singletonInstance;

@@ -1,15 +1,23 @@
 PODS:
+  - CocoaAsyncSocket (7.6.0)
   - JSQMessagesViewController (7.3.4):
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
+  - SDWebImage (4.0.0):
+    - SDWebImage/Core (= 4.0.0)
+  - SDWebImage/Core (4.0.0)
 
 DEPENDENCIES:
+  - CocoaAsyncSocket
   - JSQMessagesViewController
+  - SDWebImage
 
 SPEC CHECKSUMS:
+  CocoaAsyncSocket: b9d5589f07baf9de8f34cc25abd4fcba28f13805
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
+  SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
 
-PODFILE CHECKSUM: d54e281fc1defe4bc959c45f0ccb0042c2679857
+PODFILE CHECKSUM: b2e59ac56da3797bffc0483ac0f6680f1132be94
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

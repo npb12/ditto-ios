@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1BD71C87301B0BDF0DF5A26A /* Pods_DateAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BB18179F0DC75FE0B218068 /* Pods_DateAppUITests.framework */; };
+		083892BE1B2C7C0B4B8FE6CA /* Pods_DateAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F740A630C1BC8004C25F7133 /* Pods_DateAppUITests.framework */; };
+		2D2A5289B615F0BF70D252A9 /* Pods_DateApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D1924AD85E3C3F86B7D1873 /* Pods_DateApp.framework */; };
+		8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */; };
+		8C1146831E7D838C003AB594 /* NewMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1146821E7D838C003AB594 /* NewMessageViewController.m */; };
 		8C2BE3031DE018820042BE6B /* CERangeSliderTrackLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE2FD1DE018820042BE6B /* CERangeSliderTrackLayer.m */; };
 		8C2BE3041DE018820042BE6B /* CERangeSliderKnobLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE2FF1DE018820042BE6B /* CERangeSliderKnobLayer.m */; };
 		8C2BE3051DE018820042BE6B /* CERangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE3011DE018820042BE6B /* CERangeSlider.m */; };
@@ -40,6 +43,9 @@
 		8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */; };
 		8C4117FA1DD03E1000DBC38F /* TFHeartAnimationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */; };
 		8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5657A91DD9639E0081D082 /* AlbumViewController.m */; };
+		8C5F0E141E8D70B300C799B4 /* DAServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E131E8D70B300C799B4 /* DAServer.m */; };
+		8C5F0E191E8F2F8200C799B4 /* MatchUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E181E8F2F8200C799B4 /* MatchUser.m */; };
+		8C5F0E1C1E8F30EE00C799B4 /* DAParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E1B1E8F30EE00C799B4 /* DAParser.m */; };
 		8C92D2671E32E1E40071A737 /* MyProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C92D2661E32E1E40071A737 /* MyProfileTableViewCell.m */; };
 		8C9C19D71DD800DE0074A7D0 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C19D61DD800DE0074A7D0 /* SettingsViewController.m */; };
 		8C9C19DA1DD829680074A7D0 /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C19D91DD829680074A7D0 /* MyProfileViewController.m */; };
@@ -52,6 +58,7 @@
 		8CC00FF21D9F2B1500BE487A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CC00FF01D9F2B1500BE487A /* LaunchScreen.storyboard */; };
 		8CC00FFD1D9F2B1500BE487A /* DateAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC00FFC1D9F2B1500BE487A /* DateAppTests.m */; };
 		8CC010081D9F2B1500BE487A /* DateAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC010071D9F2B1500BE487A /* DateAppUITests.m */; };
+		8CCBF4CD1E7470D400C202CB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCBF4CC1E7470D400C202CB /* User.m */; };
 		8CCF3D9A1E42706500CC4750 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCF3D991E42706500CC4750 /* CoreLocation.framework */; };
 		8CCF3D9D1E42735300CC4750 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCF3D9C1E42735300CC4750 /* LocationManager.m */; };
 		8CCF3DA01E430AAA00CC4750 /* Playball-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CCF3D9F1E430A7000CC4750 /* Playball-Regular.ttf */; };
@@ -71,8 +78,7 @@
 		8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF62C7A1E1A069700BBAF0D /* NewMatchConflictViewController.m */; };
 		8CF62C7E1E1E204000BBAF0D /* NewMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF62C7D1E1E204000BBAF0D /* NewMatchViewController.m */; };
 		8CF62C8A1E22BE9400BBAF0D /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF62C891E22BE9400BBAF0D /* MessageViewController.m */; };
-		996803FD6E0E4C967CD07BD0 /* Pods_DateApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7111B8720E63FD0C1C21D9E2 /* Pods_DateApp.framework */; };
-		A478A901CF3B4C1877266B93 /* Pods_DateAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31575836760285F12219EFCF /* Pods_DateAppTests.framework */; };
+		CC29648E7A96B38ACF9690EA /* Pods_DateAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63ED224D000AA38152CC6CF6 /* Pods_DateAppTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -96,11 +102,14 @@
 		0C400B4A7A4928C67125AFD3 /* Pods-DateAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DateAppUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DateAppUITests/Pods-DateAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		0FC74B8171A9722D22AA37A2 /* Pods-DateAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DateAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DateAppTests/Pods-DateAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		26801776E41C9C039E02478D /* Pods-DateApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DateApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DateApp/Pods-DateApp.debug.xcconfig"; sourceTree = "<group>"; };
-		31575836760285F12219EFCF /* Pods_DateAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DateAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D1924AD85E3C3F86B7D1873 /* Pods_DateApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DateApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49D3692E1F2124EE979A39D8 /* Pods-DateApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DateApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DateApp/Pods-DateApp.release.xcconfig"; sourceTree = "<group>"; };
-		4BB18179F0DC75FE0B218068 /* Pods_DateAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DateAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7111B8720E63FD0C1C21D9E2 /* Pods_DateApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DateApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		63ED224D000AA38152CC6CF6 /* Pods_DateAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DateAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		830DA662B3856B06FBEB2070 /* Pods-DateAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DateAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DateAppUITests/Pods-DateAppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		8C11467E1E7CC069003AB594 /* PartingMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartingMessageViewController.h; sourceTree = "<group>"; };
+		8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartingMessageViewController.m; sourceTree = "<group>"; };
+		8C1146811E7D838C003AB594 /* NewMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageViewController.h; sourceTree = "<group>"; };
+		8C1146821E7D838C003AB594 /* NewMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageViewController.m; sourceTree = "<group>"; };
 		8C2BE2FD1DE018820042BE6B /* CERangeSliderTrackLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CERangeSliderTrackLayer.m; sourceTree = "<group>"; };
 		8C2BE2FE1DE018820042BE6B /* CERangeSliderTrackLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CERangeSliderTrackLayer.h; sourceTree = "<group>"; };
 		8C2BE2FF1DE018820042BE6B /* CERangeSliderKnobLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CERangeSliderKnobLayer.m; sourceTree = "<group>"; };
@@ -160,6 +169,13 @@
 		8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TFHeartAnimationView.xib; sourceTree = "<group>"; };
 		8C5657A81DD9639E0081D082 /* AlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
 		8C5657A91DD9639E0081D082 /* AlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
+		8C5F0E081E88749200C799B4 /* DateApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DateApp.entitlements; sourceTree = "<group>"; };
+		8C5F0E121E8D70B300C799B4 /* DAServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAServer.h; sourceTree = "<group>"; };
+		8C5F0E131E8D70B300C799B4 /* DAServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAServer.m; sourceTree = "<group>"; };
+		8C5F0E171E8F2F8200C799B4 /* MatchUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchUser.h; sourceTree = "<group>"; };
+		8C5F0E181E8F2F8200C799B4 /* MatchUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchUser.m; sourceTree = "<group>"; };
+		8C5F0E1A1E8F30EE00C799B4 /* DAParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAParser.h; sourceTree = "<group>"; };
+		8C5F0E1B1E8F30EE00C799B4 /* DAParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAParser.m; sourceTree = "<group>"; };
 		8C92D2651E32E1E40071A737 /* MyProfileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyProfileTableViewCell.h; sourceTree = "<group>"; };
 		8C92D2661E32E1E40071A737 /* MyProfileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyProfileTableViewCell.m; sourceTree = "<group>"; };
 		8C9C19D51DD800DE0074A7D0 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -186,6 +202,8 @@
 		8CC010031D9F2B1500BE487A /* DateAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DateAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC010071D9F2B1500BE487A /* DateAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DateAppUITests.m; sourceTree = "<group>"; };
 		8CC010091D9F2B1500BE487A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8CCBF4CB1E7470D400C202CB /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		8CCBF4CC1E7470D400C202CB /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		8CCF3D991E42706500CC4750 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8CCF3D9B1E42735300CC4750 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		8CCF3D9C1E42735300CC4750 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
@@ -220,6 +238,7 @@
 		8CF62C881E22BE9400BBAF0D /* MessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageViewController.h; sourceTree = "<group>"; };
 		8CF62C891E22BE9400BBAF0D /* MessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageViewController.m; sourceTree = "<group>"; };
 		CC1F71CE17ADB8C0A2C32B38 /* Pods-DateAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DateAppTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DateAppTests/Pods-DateAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		F740A630C1BC8004C25F7133 /* Pods_DateAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DateAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -230,8 +249,8 @@
 				8CCF3D9A1E42706500CC4750 /* CoreLocation.framework in Frameworks */,
 				8C2BE3221DE930F00042BE6B /* FBSDKLoginKit.framework in Frameworks */,
 				8C2BE3241DE9342B0042BE6B /* FBSDKCoreKit.framework in Frameworks */,
-				996803FD6E0E4C967CD07BD0 /* Pods_DateApp.framework in Frameworks */,
 				8C2BE3261DE938E10042BE6B /* Bolts.framework in Frameworks */,
+				2D2A5289B615F0BF70D252A9 /* Pods_DateApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +258,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A478A901CF3B4C1877266B93 /* Pods_DateAppTests.framework in Frameworks */,
+				CC29648E7A96B38ACF9690EA /* Pods_DateAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,7 +266,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1BD71C87301B0BDF0DF5A26A /* Pods_DateAppUITests.framework in Frameworks */,
+				083892BE1B2C7C0B4B8FE6CA /* Pods_DateAppUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +314,7 @@
 		8CC00FE11D9F2B1500BE487A /* DateApp */ = {
 			isa = PBXGroup;
 			children = (
+				8C5F0E081E88749200C799B4 /* DateApp.entitlements */,
 				8CEB63981E5902A400F062A9 /* DraggableView.xib */,
 				8CEB638C1E58F9ED00F062A9 /* DraggableView.h */,
 				8CEB638D1E58F9ED00F062A9 /* DraggableView.m */,
@@ -391,6 +411,18 @@
 				8CD2BD8A1E3EE65D00A293CE /* SettingsTableViewCell.m */,
 				8CCF3D9B1E42735300CC4750 /* LocationManager.h */,
 				8CCF3D9C1E42735300CC4750 /* LocationManager.m */,
+				8CCBF4CB1E7470D400C202CB /* User.h */,
+				8CCBF4CC1E7470D400C202CB /* User.m */,
+				8C11467E1E7CC069003AB594 /* PartingMessageViewController.h */,
+				8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */,
+				8C1146811E7D838C003AB594 /* NewMessageViewController.h */,
+				8C1146821E7D838C003AB594 /* NewMessageViewController.m */,
+				8C5F0E121E8D70B300C799B4 /* DAServer.h */,
+				8C5F0E131E8D70B300C799B4 /* DAServer.m */,
+				8C5F0E171E8F2F8200C799B4 /* MatchUser.h */,
+				8C5F0E181E8F2F8200C799B4 /* MatchUser.m */,
+				8C5F0E1A1E8F30EE00C799B4 /* DAParser.h */,
+				8C5F0E1B1E8F30EE00C799B4 /* DAParser.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -452,9 +484,9 @@
 				8C2BE3251DE938E10042BE6B /* Bolts.framework */,
 				8C2BE3231DE9342B0042BE6B /* FBSDKCoreKit.framework */,
 				8C2BE3211DE930F00042BE6B /* FBSDKLoginKit.framework */,
-				7111B8720E63FD0C1C21D9E2 /* Pods_DateApp.framework */,
-				31575836760285F12219EFCF /* Pods_DateAppTests.framework */,
-				4BB18179F0DC75FE0B218068 /* Pods_DateAppUITests.framework */,
+				3D1924AD85E3C3F86B7D1873 /* Pods_DateApp.framework */,
+				63ED224D000AA38152CC6CF6 /* Pods_DateAppTests.framework */,
+				F740A630C1BC8004C25F7133 /* Pods_DateAppUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -537,6 +569,11 @@
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = KYUNTCYL2V;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					8CC00FF71D9F2B1500BE487A = {
 						CreatedOnToolsVersion = 8.0;
@@ -756,16 +793,20 @@
 				8C2CE0CD1DA1825300592566 /* AppDelegate.m in Sources */,
 				8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */,
 				8CEB63941E58F9ED00F062A9 /* DraggableView.m in Sources */,
+				8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */,
 				8CC00FE41D9F2B1500BE487A /* main.m in Sources */,
 				8C9C19D71DD800DE0074A7D0 /* SettingsViewController.m in Sources */,
 				8C2BE3201DE9297E0042BE6B /* LoginViewController.m in Sources */,
 				8C2CE0E81DA186D500592566 /* TFDailyCollectionViewLayout.m in Sources */,
+				8C5F0E1C1E8F30EE00C799B4 /* DAParser.m in Sources */,
 				8C2CE0E91DA186D500592566 /* TFDailyItem.m in Sources */,
 				8C2BE3171DE55B030042BE6B /* DataAccess.m in Sources */,
 				8C2CE0E71DA186D500592566 /* TFDailyCollectionCell.m in Sources */,
 				8CF62C8A1E22BE9400BBAF0D /* MessageViewController.m in Sources */,
 				8C2BE30B1DE20C0E0042BE6B /* EditPhotosViewController.m in Sources */,
 				8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */,
+				8C5F0E191E8F2F8200C799B4 /* MatchUser.m in Sources */,
+				8C1146831E7D838C003AB594 /* NewMessageViewController.m in Sources */,
 				8CEB63951E58F9ED00F062A9 /* DraggableViewBackground.m in Sources */,
 				8C92D2671E32E1E40071A737 /* MyProfileTableViewCell.m in Sources */,
 				8C9C19DA1DD829680074A7D0 /* MyProfileViewController.m in Sources */,
@@ -781,7 +822,9 @@
 				8C2CE0E51DA186D500592566 /* TFCellData.m in Sources */,
 				8C2CE0EF1DA18D5000592566 /* TFDailyTableCell.m in Sources */,
 				8C2BE3051DE018820042BE6B /* CERangeSlider.m in Sources */,
+				8C5F0E141E8D70B300C799B4 /* DAServer.m in Sources */,
 				8C2BE31A1DE693830042BE6B /* FBPhotosViewController.m in Sources */,
+				8CCBF4CD1E7470D400C202CB /* User.m in Sources */,
 				8C2CE0EC1DA186D500592566 /* TFStyle.m in Sources */,
 				8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */,
 				8C2BE3141DE5549A0042BE6B /* OccupationViewController.m in Sources */,
@@ -933,12 +976,15 @@
 			baseConfigurationReference = 26801776E41C9C039E02478D /* Pods-DateApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DateApp/DateApp.entitlements;
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = DateApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -950,12 +996,15 @@
 			baseConfigurationReference = 49D3692E1F2124EE979A39D8 /* Pods-DateApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DateApp/DateApp.entitlements;
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
+				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = DateApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -30,10 +30,20 @@
  
  */
 
-#import <UIKit/UIKit.h>
+#import "Includes.h"
 #import "OverlayView.h"
-#import "DataAccess.h"
 
+@protocol HasMatchDelegate <NSObject>
+
+-(void)noSwipingAlert;
+
+@end
+
+@protocol ProfileProtocol <NSObject>
+
+-(void)profileSelected:(User*)user;
+
+@end
 
 @protocol DraggableViewDelegate <NSObject>
 
@@ -46,8 +56,10 @@
 @interface DraggableView : UIView<UIScrollViewDelegate>
 
 @property (weak) id <DraggableViewDelegate> delegate;
+@property (nonatomic, weak) id<HasMatchDelegate> noswipe_delegate;
+@property (nonatomic, weak) id<ProfileProtocol> profile_delegate;
 
-
+- (id)initWithUser:(User*)user viewFrame:(CGRect)frame;
 
 @property (nonatomic, strong)UIPanGestureRecognizer *panGestureRecognizer;
 @property (nonatomic)CGPoint originalPoint;
@@ -69,6 +81,9 @@
 @property (nonatomic) CGFloat width;
 @property (nonatomic) CGFloat height;
 
+@property (strong, nonatomic) User *user;
+
+
 
 
 @property (nonatomic, strong) UIImage *image;
@@ -88,13 +103,23 @@
 -(void)leftClickAction;
 -(void)rightClickAction;
 
-@property (strong, nonatomic) IBOutlet UIPageControl *pageControl;
 
 @property (strong, nonatomic) IBOutlet UILabel *edu_label;
+@property (strong, nonatomic) IBOutlet UILabel *job_label;
 @property (strong, nonatomic) IBOutlet UILabel *name_age;
-@property (strong, nonatomic) IBOutlet UILabel *edu_job;
+@property (strong, nonatomic) IBOutlet UILabel *edu;
+@property (strong, nonatomic) IBOutlet UILabel *job;
 
 @property (nonatomic, assign) BOOL isExpanded;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *jobLabelHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *eduLabelHeight;
+
+@property (strong, nonatomic) IBOutlet UIView *pc1;
+@property (strong, nonatomic) IBOutlet UIView *pc2;
+@property (strong, nonatomic) IBOutlet UIView *pc3;
+@property (strong, nonatomic) IBOutlet UIView *pc4;
+@property (strong, nonatomic) IBOutlet UIView *pc5;
 
 
 

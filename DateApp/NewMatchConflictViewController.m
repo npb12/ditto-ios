@@ -56,10 +56,26 @@
     self.stay_btn.layer.shadowOpacity = 1.0;
     self.stay_btn.layer.shadowRadius = 1.0;
     
+    CAGradientLayer *stay_gradient = [CAGradientLayer layer];
+    [self.stay_btn.layer insertSublayer:stay_gradient atIndex:0];
+    stay_gradient.frame = self.stay_btn.bounds;
+    stay_gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.43 green:0.40 blue:0.77 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),nil];
+    stay_gradient.startPoint = CGPointMake(0.25,0.0);
+    stay_gradient.endPoint = CGPointMake(0.25,1.0);
+    self.stay_btn.layer.masksToBounds = YES;
+    
     self.match_btn.layer.shadowColor = [self greyblueColor].CGColor;
     self.match_btn.layer.shadowOffset = CGSizeZero;
     self.match_btn.layer.shadowOpacity = 1.0;
     self.match_btn.layer.shadowRadius = 1.0;
+
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    [self.match_btn.layer insertSublayer:gradient atIndex:0];
+    gradient.frame = self.match_btn.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.25,0.0);
+    gradient.endPoint = CGPointMake(0.25,1.0);
+    self.match_btn.layer.masksToBounds = YES;
 
 }
 
@@ -106,8 +122,8 @@
     if ([[segue identifier] isEqualToString:@"gotoProfile"]) {
         
         ProfileViewController *profileVC = (ProfileViewController *)segue.destinationViewController;
-        profileVC.user_data = self.matched_user;
-        profileVC.mode = @"matched";
+     //   profileVC.user_data = self.matched_user;
+     //   profileVC.mode = @"matched";
         
         
     }

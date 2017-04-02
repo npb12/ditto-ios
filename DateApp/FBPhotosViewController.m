@@ -7,6 +7,8 @@
 //
 
 #import "FBPhotosViewController.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 @interface FBPhotosViewController ()
 
@@ -21,38 +23,19 @@
     [super viewDidLoad];
     
     
-    
-    /*
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl2"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl3"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl2"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl2"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl3"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl2"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl2"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl3"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl2"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl2"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl3"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl2"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]]; */
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
+
         
         PhotoManager *albums = [PhotoManager singletonInstance];
         [albums getFacebookProfileInfos:2 completion:^{
             
+                dispatch_async(dispatch_get_main_queue(), ^{
+            
             self.didLoad = true;
             [self.collectionView reloadData];
+                    
+                        });
         }];
-    });
+
     
     
     self.collectionViewWidth.constant = self.view.frame.size.width / 1.1;
@@ -89,7 +72,10 @@
         
         PhotoManager *album = (PhotoManager*)[[[PhotoManager singletonInstance] photos] objectAtIndex:indexPath.row];
         
-        cell.photo.image = album.photo;
+        
+        [cell.photo sd_setImageWithURL:[NSURL URLWithString:album.photo]
+                    placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                             options:SDWebImageRefreshCached];
         
         
         [cell setBackgroundColor:[UIColor lightGrayColor]];
@@ -142,7 +128,11 @@
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
     
-    return 3;
+    if ([[[PhotoManager singletonInstance] photos] count] > 0) {
+        return 3;
+    }
+    
+    return 0;
 }
 
 
@@ -167,6 +157,9 @@
 
      
 
+- (IBAction)backAction:(id)sender {
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
 
 
 

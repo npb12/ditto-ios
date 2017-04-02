@@ -7,25 +7,31 @@
 //
 
 #import "Includes.h"
+#import "User.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
-@interface ProfileViewController : UIViewController
+@protocol LikedProfileProtocol <NSObject>
+-(void)likeCurrent;
+@end
 
-- (IBAction)dragGesture:(UIPanGestureRecognizer*)sender;
+@interface ProfileViewController : UIViewController<UIScrollViewDelegate>
 
-@property (strong, nonatomic) IBOutlet UILabel *bio_label;
+@property (nonnull, strong, nonatomic) User *user;
 
-@property (strong, nonatomic)  TFDailyItem *user_data;
+@property (nonatomic, weak) id<LikedProfileProtocol> delegate;
 
-- (IBAction)heart_button:(id)sender;
 
-@property (strong, nonatomic) IBOutlet UILabel *name_age;
-@property (strong, nonatomic) IBOutlet UILabel *occupation_label;
+@property (nonnull,strong, nonatomic) IBOutlet NSLayoutConstraint *jobLabelHeight;
+@property (nonnull,strong, nonatomic) IBOutlet NSLayoutConstraint *eduLabelHeight;
+@property (nonnull,strong, nonatomic) IBOutlet NSLayoutConstraint *jobLabelTop;
+@property (nonnull,strong, nonatomic) IBOutlet NSLayoutConstraint *eduLabelTop;
 
-@property (strong, nonatomic) IBOutlet UIImageView *top_heart;
+@property (strong, nonatomic) IBOutlet UIView *pc1;
+@property (strong, nonatomic) IBOutlet UIView *pc2;
+@property (strong, nonatomic) IBOutlet UIView *pc3;
+@property (strong, nonatomic) IBOutlet UIView *pc4;
+@property (strong, nonatomic) IBOutlet UIView *pc5;
 
-@property (strong, nonatomic) IBOutlet UIButton *top_button;
-
-@property (strong, nonatomic)  NSString *mode;
-
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerConstraint;
 
 @end

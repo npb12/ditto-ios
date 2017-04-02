@@ -8,17 +8,39 @@
 
 #import "MessageViewController.h"
 
-@interface MessageViewController ()
+@interface MessageViewController ()<GCDAsyncSocketDelegate>
+{
+    GCDAsyncSocket *asyncSocket;
+}
+
+@property(nonatomic, strong)NSMutableArray *dataWriteQueue;
 
 @end
 
+
+#define USE_SECURE_CONNECTION 0
+#define ENABLE_BACKGROUNDING  0
+
+#if USE_SECURE_CONNECTION
+#define HOST @"173.230.135.159"
+#define PORT 9900
+#else
+#define HOST @"173.230.135.159"
+#define PORT 9900
+#endif
+
+
 @implementation MessageViewController
+
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     self.title = @"Neil";
+
+
+    messages = [[NSMutableArray alloc] init];
 
     
     self.inputToolbar.contentView.textView.pasteDelegate = self;
@@ -48,6 +70,7 @@
     
     self.showLoadEarlierMessagesHeader = NO;
     
+    
     /*
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage jsq_defaultTypingIndicatorImage]
                                                                               style:UIBarButtonItemStylePlain
@@ -65,6 +88,8 @@
      */
     [JSQMessagesCollectionViewCell registerMenuAction:@selector(delete:)];
     
+  //  [self initNetworkCommunication];
+    
     /**
      *  Customize your toolbar buttons
      *
@@ -77,11 +102,202 @@
      *
      *  self.inputToolbar.maximumHeight = 150;
      */
+
+    
+    dispatch_queue_t mainQueue = dispatch_get_main_queue();
+    
+    asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:mainQueue];
+    
+#if USE_SECURE_CONNECTION
+    {
+        NSString *host = HOST;
+        uint16_t port = PORT;
+        
+        NSLog(@"Connecting to \"%@\" on port %hu...", host, port);
+        //self.viewController.label.text = @"Connecting...";
+        
+        NSError *error = nil;
+        if (![asyncSocket connectToHost:host onPort:port error:&error])
+        {
+            NSLog(@"Error connecting: %@", error);
+           // self.viewController.label.text = @"Oops";
+        }
+    }
+#else
+    {
+        NSString *host = HOST;
+        uint16_t port = PORT;
+        
+        NSLog(@"Connecting to \"%@\" on port %hu...", host, port);
+      //  self.viewController.label.text = @"Connecting...";
+        
+        NSError *error = nil;
+        if (![asyncSocket connectToHost:host onPort:port error:&error])
+        {
+            NSLog(@"Error connecting: %@", error);
+         //   self.viewController.label.text = @"Oops";
+        }
+        
+        // You can also specify an optional connect timeout.
+        
+        //	NSError *error = nil;
+        //	if (![asyncSocket connectToHost:host onPort:80 withTimeout:5.0 error:&error])
+        //	{
+        //		DDLogError(@"Error connecting: %@", error);
+        //	}
+        
+    }
+#endif
+    
+    
+    /*
+    socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+
+    NSError *err = nil;
+    if (![socket connectToHost:@"173.230.135.159" onPort:9900 error:&err]) // Asynchronous!
+    {
+        // If there was an error, it's likely something like "already connected" or "no delegate set"
+        NSLog(@"I goofed: %@", err);
+    } */
+    
+    
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#pragma mark Socket Delegate
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+- (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port
+{
+    NSLog(@"socket:%p didConnectToHost:%@ port:%hu", sock, host, port);
+  //  self.viewController.label.text = @"Connected";
+    
+    //	DDLogInfo(@"localHost :%@ port:%hu", [sock localHost], [sock localPort]);
+    
+#if USE_SECURE_CONNECTION
+    {
+        // Connected to secure server (HTTPS)
+        
+#if ENABLE_BACKGROUNDING && !TARGET_IPHONE_SIMULATOR
+        {
+            // Backgrounding doesn't seem to be supported on the simulator yet
+            
+            [sock performBlock:^{
+                if ([sock enableBackgroundingOnSocket])
+                    NSLog(@"Enabled backgrounding on socket");
+                else
+                    NSLog(@"Enabling backgrounding failed!");
+            }];
+        }
+#endif
+        
+        // Configure SSL/TLS settings
+        NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithCapacity:3];
+        
+        // If you simply want to ensure that the remote host's certificate is valid,
+        // then you can use an empty dictionary.
+        
+        // If you know the name of the remote host, then you should specify the name here.
+        //
+        // NOTE:
+        // You should understand the security implications if you do not specify the peer name.
+        // Please see the documentation for the startTLS method in GCDAsyncSocket.h for a full discussion.
+        
+        [settings setObject:host
+                     forKey:(NSString *)kCFStreamSSLPeerName];
+        
+        // To connect to a test server, with a self-signed certificate, use settings similar to this:
+        
+        //	// Allow expired certificates
+        //	[settings setObject:[NSNumber numberWithBool:YES]
+        //				 forKey:(NSString *)kCFStreamSSLAllowsExpiredCertificates];
+        //
+        //	// Allow self-signed certificates
+        //	[settings setObject:[NSNumber numberWithBool:YES]
+        //				 forKey:(NSString *)kCFStreamSSLAllowsAnyRoot];
+        //
+        //	// In fact, don't even validate the certificate chain
+        //	[settings setObject:[NSNumber numberWithBool:NO]
+        //				 forKey:(NSString *)kCFStreamSSLValidatesCertificateChain];
+        
+        NSLog(@"Starting TLS with settings:\n%@", settings);
+        
+        [sock startTLS:settings];
+        
+        // You can also pass nil to the startTLS method, which is the same as passing an empty dictionary.
+        // Again, you should understand the security implications of doing so.
+        // Please see the documentation for the startTLS method in GCDAsyncSocket.h for a full discussion.
+        
+    }
+#else
+    {
+        // Connected to normal server (HTTP)
+        
+#if ENABLE_BACKGROUNDING && !TARGET_IPHONE_SIMULATOR
+        {
+            // Backgrounding doesn't seem to be supported on the simulator yet
+            
+            [sock performBlock:^{
+                if ([sock enableBackgroundingOnSocket])
+                    DDLogInfo(@"Enabled backgrounding on socket");
+                else
+                    DDLogWarn(@"Enabling backgrounding failed!");
+            }];
+        }
+#endif
+    }
+#endif
+}
+
+- (void)socketDidSecure:(GCDAsyncSocket *)sock
+{
+    NSLog(@"socketDidSecure:%p", sock);
+   // self.viewController.label.text = @"Connected + Secure";
+    
+    NSString *requestStr = [NSString stringWithFormat:@"GET / HTTP/1.1\r\nHost: %@\r\n\r\n", HOST];
+    NSData *requestData = [requestStr dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [sock writeData:requestData withTimeout:-1 tag:0];
+    [sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag
+{
+    NSLog(@"socket:%p didWriteDataWithTag:%ld", sock, tag);
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
+{
+    NSLog(@"socket:%p didReadData:withTag:%ld", sock, tag);
+    
+    NSString *httpResponse = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"HTTP Response:\n%@", httpResponse);
+    
+}
+
+- (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err
+{
+    NSLog(@"socketDidDisconnect:%p withError: %@", sock, err);
+   // self.viewController.label.text = @"Disconnected";
+}
+
+/*
+- (void)socket:(GCDAsyncSocket *)sender didConnectToHost:(NSString *)host port:(UInt16)port
+{
+    NSLog(@"Cool, I'm connected! That was easy.");
+    
+   // [socket startTLS:nil];
+
+} */
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+  //  [self reconnect];
+    
+  //  [self reconnect:nil];
     
     if (self.delegateModal) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
@@ -95,6 +311,8 @@
 {
     [super viewDidAppear:animated];
     
+    
+    
     /**
      *  Enable/disable springy bubbles, default is NO.
      *  You must set this from `viewDidAppear:`
@@ -103,7 +321,131 @@
     self.collectionView.collectionViewLayout.springinessEnabled = YES;
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
 
+}
+
+
+- (IBAction)reconnect:(id)sender
+{
+
+}
+
+
+
+
+///--------------------------------------
+#pragma mark - Actions
+///--------------------------------------
+
+
+
+- (void)initNetworkCommunication {
+    
+    uint portNo = 9900;
+    CFReadStreamRef readStream;
+    CFWriteStreamRef writeStream;
+    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"173.230.135.159", portNo, &readStream, &writeStream);
+    inputStream = (__bridge NSInputStream *)readStream;
+    outputStream = (__bridge NSOutputStream *)writeStream;
+    
+    [inputStream setDelegate:self];
+    [outputStream setDelegate:self];
+    
+    [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [inputStream open];
+    [outputStream open];
+    
+    [self joinChat];
+}
+
+
+
+- (void)joinChat {
+    
+    NSString *response  = [NSString stringWithFormat:@"Neil"];
+    NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
+    [outputStream write:[data bytes] maxLength:[data length]];
+    
+}
+
+- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent {
+    typedef enum {
+        NSStreamEventNone = 0,
+        NSStreamEventOpenCompleted = 1 << 0,
+        NSStreamEventHasBytesAvailable = 1 << 1,
+        NSStreamEventHasSpaceAvailable = 1 << 2,
+        NSStreamEventErrorOccurred = 1 << 3,
+        NSStreamEventEndEncountered = 1 << 4
+    };
+    uint8_t buffer[1024];
+    int len;
+    
+    switch (streamEvent) {
+            
+        case NSStreamEventOpenCompleted:
+            NSLog(@"Stream opened now");
+            break;
+        case NSStreamEventHasBytesAvailable:
+            NSLog(@"has bytes");
+            if (theStream == inputStream) {
+                while ([inputStream hasBytesAvailable]) {
+                    len = [inputStream read:buffer maxLength:sizeof(buffer)];
+                    if (len > 0) {
+                        
+                        NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
+                        
+                        if (nil != output) {
+                            NSLog(@"server said: %@", output);
+                        }
+                    }
+                }
+            } else {
+                NSLog(@"it is NOT theStream == inputStream");
+            }
+            break;
+        case NSStreamEventHasSpaceAvailable:
+            NSLog(@"Stream has space available now");
+          //  [self _sendData];
+
+       /*     if (theStream == outputStream) {
+                NSData* data = [@"helllooo" dataUsingEncoding:NSUTF8StringEncoding];//str is my string to send
+                int byteIndex = 0;
+                uint8_t *readBytes = (uint8_t *)[data bytes];
+                readBytes += byteIndex; // instance variable to move pointer
+                int data_len = [data length];
+                // NSLog(@"%i",[data length]);
+                unsigned int len = ((data_len - byteIndex >= 1024) ?
+                                    1024 : (data_len-byteIndex));
+                uint8_t buf[len];
+                (void)memcpy(buf, readBytes, len);
+                len = [outputStream write:(const uint8_t *)buf maxLength:len];
+                byteIndex += len;
+                
+            } */
+            break;
+            
+            
+        case NSStreamEventErrorOccurred:
+            NSLog(@"Can not connect to the host!");
+            break;
+            
+            
+        case NSStreamEventEndEncountered:
+            
+            [theStream close];
+            [theStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+            
+            break;
+            
+        default:
+            NSLog(@"Unknown event %i", streamEvent);
+    }
+    
+}
 
 #pragma mark - Custom menu actions for cells
 
@@ -329,6 +671,10 @@
     
     [self.demoData.messages addObject:message];
     
+    [self sendMessage:text];
+    NSData *dd = [[NSData alloc] initWithData:[@"hellooooo" dataUsingEncoding:NSASCIIStringEncoding]];
+   // [self sendData:dd];
+    
     [self finishSendingMessageAnimated:YES];
 }
 
@@ -394,9 +740,7 @@
         return self.demoData.outgoingBubbleImageData;
     }
     
-
-    
-    return     [[[JSQMessagesBubbleImageFactory alloc] init] incomingMessagesBubbleImageWithColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"incoming_bubble"]]];
+    return [[[JSQMessagesBubbleImageFactory alloc] init] incomingMessagesBubbleImageWithColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"incoming_bubble"]]];
     
 
 }
@@ -490,7 +834,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self.demoData.messages count];
+    return [messages count];
 }
 
 - (UICollectionViewCell *)collectionView:(JSQMessagesCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -674,6 +1018,45 @@
         return NO;
     }
     return YES;
+}
+
+
+/*
+- (void)socketDidSecure:(GCDAsyncSocket *)sock
+{
+    NSLog(@"socketDidSecure:%p", sock);
+    
+    NSString *requestStr = [NSString stringWithFormat:@"GET / HTTP/1.1\r\nHost: %@\r\n\r\n", @"173.230.135.159"];
+    NSData *requestData = [requestStr dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [sock writeData:requestData withTimeout:-1 tag:0];
+    [sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag
+{
+    NSLog(@"socket:%p didWriteDataWithTag:%ld", sock, tag);
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
+{
+    NSLog(@"socket:%p didReadData:withTag:%ld", sock, tag);
+    
+    NSString *httpResponse = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"HTTP Response:\n%@", httpResponse);
+    
+}
+*/
+
+-(void)sendMessage:(NSString*)message
+{
+    
+    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [asyncSocket writeData:data withTimeout:-1 tag:1];
+
+
 }
 
 @end

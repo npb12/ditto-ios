@@ -8,7 +8,9 @@
 
 #import "SwipeViewController.h"
 
-@interface SwipeViewController ()
+@interface SwipeViewController ()<NoSwipeProtocol, SelectedProfileProtocol>{
+    BOOL didLoadCards;
+}
 
 @property (nonatomic, strong) UIImageView *settingsIcon;
 
@@ -20,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
    // [self addMainView];
-    [self.backgroundView createView];
+
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
     [self.backgroundView.layer insertSublayer:gradient atIndex:0];
@@ -29,6 +31,10 @@
     gradient.startPoint = CGPointMake(0.25,0.0);
     gradient.endPoint = CGPointMake(0.25,1.0);
     self.backgroundView.layer.masksToBounds = YES;
+    
+    self.backgroundView.matched_delegate = self;
+    self.backgroundView.noswipe_delegate = self;
+    self.backgroundView.profile_delegate = self;
 
 }
 
@@ -37,12 +43,15 @@
 
 
 -(void)viewDidAppear:(BOOL)animated {
-    
     [super viewDidAppear:YES];
     
- //   [self.navigationItem setHidesBackButton:YES];
- //   self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
- //   [self styleNavBar];
+    
+    [[DataAccess singletonInstance] setUserMatchStatus:NO];
+    
+
+    
+  //  [self testfunc];
+    
     
     if ([[DataAccess singletonInstance] IsInitialUser]) {
         [self pushIntro];
@@ -52,57 +61,11 @@
     
 }
 
--(void)addMainView{
-    
-    DraggableViewBackground *draggableBackground = [[DraggableViewBackground alloc]init];
-    CGFloat width = CGRectGetWidth([[UIScreen mainScreen] bounds]);
-    draggableBackground.translatesAutoresizingMaskIntoConstraints = NO;
-    [draggableBackground invalidateIntrinsicContentSize];
-    
-    
- //   draggableBackground.layer.masksToBounds = NO;
- //   self.tableBack.layer.shadowOffset = CGSizeMake(-.1, .2);
- //   self.tableBack.layer.shadowRadius = .5;
- ///   self.tableBack.layer.shadowOpacity = 0.5;
-    
-    //
-    
-    //
-    
-    //
-    
-    //
-    
-    
-    CGFloat pad = 0, sub;
 
-        pad = 0;
-        sub = 0;
-    
-    
-    CGFloat height = CGRectGetHeight([[UIScreen mainScreen] bounds]) - sub;
-
-    
-    [self.view addSubview:draggableBackground];
-    
-    
-    
-    NSDictionary *viewsDictionary = @{@"back":draggableBackground};
-    NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.view attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:draggableBackground attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[back]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:pad]} views:viewsDictionary];
-    [self.view addConstraint:constraint1];
-    [self.view addConstraints:constraint2];
-    
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:draggableBackground attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:height];
-    [self.view addConstraint:constraint3];
-    
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:draggableBackground attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:width];
-    [self.view addConstraint:constraint4];
-    
+-(void)loadCards:(NSMutableArray*)users
+{
+    [self.backgroundView createViewWithUsers:users];
 }
-
-
-
 
 
 
@@ -160,6 +123,20 @@
 }
 
 
+-(void)goToMatchedSegue:(id)sender obj:(User*)object{
+    
+    /*
+     if (user currently has match) {
+     [self performSegueWithIdentifier:@"goToMatchedConflict" sender:object];
+     }else{
+     [self performSegueWithIdentifier:@"goToMatched" sender:object];
+     } */
+    
+    [self performSegueWithIdentifier:@"goToMatchedConflict" sender:object];
+    
+}
+
+
 
 
 
@@ -173,14 +150,113 @@
     [self.backgroundView likedCurrent];
 }
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    
+    if ([[segue identifier] isEqualToString:@"goToMatchedConflict"]) {
+        
+        
+        //   self.definesPresentationContext = YES;
+        
+        
+        NewMatchConflictViewController *matchVC = (NewMatchConflictViewController *)segue.destinationViewController;
+        matchVC.matched_user = sender;
+        matchVC.view.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2];
+        matchVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    }else if ([[segue identifier] isEqualToString:@"goToMatched"]) {
+        
+        
+        //   self.definesPresentationContext = YES;
+        
+        
+        NewMatchViewController *matchVC = (NewMatchViewController *)segue.destinationViewController;
+        matchVC.matched_user = sender;
+        matchVC.view.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2];
+        matchVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    }
 }
-*/
+
+
+-(void)noSwipingAlert{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Swiper no swiping!"
+                                                                   message:@"You can't swipe while matched with someone."
+                                                            preferredStyle:UIAlertControllerStyleAlert]; // 1
+    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"OKAY"
+                                                          style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                                                              
+                                                          }]; // 2
+    
+    
+    [alert addAction:firstAction]; // 4
+    
+    [self presentViewController:alert animated:YES completion:nil]; // 6
+}
+
+
+-(void)selectedProfile:(User *)user{
+    id<GoToProfileProtocol> strongDelegate = self.profile_delegate;
+    [strongDelegate selectedProfile:user];
+}
+
+
+-(void)testfunc
+{
+
+    
+}
+
+
+/*
+ //update user profile with bio/occupation and string description
+ [DAServer updateProfile:@"" description:@"" completion:^(NSError *error) {
+ // here, update the UI to say "Not busy anymore"
+ if (!error) {
+ 
+ } else {
+ // update UI to indicate error or take remedial action
+ }
+ }];
+ 
+ 
+ 
+ //get user profile
+ [DAServer getProfile:@"" completion:^(User *user, NSError *error) {
+ // here, update the UI to say "Not busy anymore"
+ if (!error) {
+ 
+ } else {
+ // update UI to indicate error or take remedial action
+ }
+ }];
+ 
+ 
+ 
+ //drop current match -- needs update
+ [DAServer dropMatch:@"24"  completion:^(NSError *error) {
+ // here, update the UI to say "Not busy anymore"
+ if (!error) {
+ 
+ } else {
+ // update UI to indicate error or take remedial action
+ }
+ }];
+ 
+ 
+ //settingsGender, settingsAge, settingsDistance, invisible and enable_notification. settingsAge format is min - max like 18-100, simply send it as a string
+ [DAServer updateSettings:@"settingsDistance" setting:@"20" completion:^(NSError *error) {
+ // here, update the UI to say "Not busy anymore"
+ if (!error) {
+ 
+ } else {
+ // update UI to indicate error or take remedial action
+ }
+ }];
+ 
+ */
 
 @end

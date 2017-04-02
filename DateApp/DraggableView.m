@@ -6,7 +6,7 @@
 //  Copyright © 2015 Neil_appworld. All rights reserved.
 //
 
-#define ACTION_MARGIN 120 //%%% distance from center where the action applies. Higher = swipe further in order for the action to be called
+ //%%% distance from center where the action applies. Higher = swipe further in order for the action to be called
 #define SCALE_STRENGTH 4 //%%% how quickly the card shrinks. Higher = slower shrinking
 #define SCALE_MAX .93 //%%% upper bar for how much the card shrinks. Higher = shrinks less
 #define ROTATION_MAX 1 //%%% the maximum rotation allowed in radians.  Higher = card can keep rotating longer
@@ -15,11 +15,15 @@
 
 
 #import "DraggableView.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
 
 @implementation DraggableView {
     CGRect _frame;
     CGFloat xFromCenter;
     CGFloat yFromCenter;
+    CGFloat ACTION_MARGIN;
+    NSInteger pic_count;
 }
 
 //delegate is instance of ViewController
@@ -33,56 +37,57 @@
 - (void) awakeFromNib
 {
     [super awakeFromNib];
+    if ([[DataAccess singletonInstance] UserHasMatch]) {
+        ACTION_MARGIN = 1000;
+    }else{
+        ACTION_MARGIN = 120;
+    }
+    
 }
 
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
+- (id)initWithUser:(User*)user viewFrame:(CGRect)frame{
+    
+    if ((self = [super initWithFrame:frame])) {
         self = [self initializeSubviews];
+        self.user = user;
         self.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
         [self setupView];
         
-
         
-        /*
-        CAGradientLayer *gradient = [CAGradientLayer layer];
-        gradient.frame = self.bounds;
-        gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0].CGColor),nil];
-        gradient.startPoint = CGPointMake(0.25,0.0);
-        gradient.endPoint = CGPointMake(0.25,1.0);
-        [self.layer insertSublayer:gradient atIndex:0]; */
-
-       // self.backgroundColor = [UIColor clearColor];
-
+    
+        
+        // self.backgroundColor = [UIColor clearColor];
+        
         
         panGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(beingDragged:)];
         
         [self addGestureRecognizer:panGestureRecognizer];
         
-
-        
-
-        
-
         UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(processSingleTap:)];
-        [self.scrollView addGestureRecognizer:tapGesture2];
+        [self addGestureRecognizer:tapGesture2];
         
         self.scrollView.delegate = self;
         
         [self initScrollView];
         self.scrollView.backgroundColor = [UIColor clearColor];
         self.scrollView.layer.cornerRadius = 15;
-      //  self.layer.borderColor = [UIColor whiteColor].CGColor;
-      //  self.layer.borderWidth = 3;
+        //  self.layer.borderColor = [UIColor whiteColor].CGColor;
+        //  self.layer.borderWidth = 3;
         
         overlayView = [[OverlayView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-100, 0, 100, 100)];
         overlayView.alpha = 0;
         [self addSubview:overlayView];
+        
+        self.bottomScrollView.layer.borderColor = [UIColor darkGrayColor].CGColor;
+        self.bottomScrollView.layer.borderWidth = 0.25;
+        
+    
     }
+    
     return self;
+
 }
+
 
 -(instancetype)initializeSubviews {
     id view =   [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:self options:nil] firstObject];
@@ -97,9 +102,9 @@
     self.layer.shadowOffset = CGSizeMake(1, 1);
     self.layer.masksToBounds = YES;
 
-    
-    self.pageControl.frame = CGRectMake(self.frame.size.width - 40, 15, 39, 37);
-    
+
+
+
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(expandView:)];
 
@@ -107,6 +112,25 @@
     [self.bottomView  addGestureRecognizer:tapGesture];
     [self.bottomScrollView setExclusiveTouch:NO];
     self.bottomScrollView.userInteractionEnabled = NO;
+    
+    NSString *name = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];
+    self.name_age.text = name;
+    [self.name_age.layer setShouldRasterize:YES];
+    
+    if (![self.user.edu isEqualToString:@""] && self.user.edu != nil) {
+        self.edu.text = self.user.edu;
+        [self.edu.layer setShouldRasterize:YES];
+    }else{
+        self.eduLabelHeight.constant = 0;
+    }
+    
+    if (![self.user.job isEqualToString:@""] && self.user.job != nil) {
+        self.job.text = self.user.job;
+        [self.job.layer setShouldRasterize:YES];
+
+    }else{
+        self.jobLabelHeight.constant = 0;
+    }
 }
 
 
@@ -115,8 +139,14 @@
     
     // self.scroll_content_height = self.view.frame.size.height - self.view_height.constant;
     
-    self.pageControl.transform = CGAffineTransformMakeRotation(M_PI_2);
+    pic_count = [self.user.pics count];
     
+    self.pc1.frame  = CGRectMake(self.frame.size.width - 20, 20, 8, 8);
+    self.pc2.frame  = CGRectMake(self.frame.size.width - 20, 33, 8, 8);
+    self.pc3.frame  = CGRectMake(self.frame.size.width - 20, 46, 8, 8);
+    self.pc4.frame  = CGRectMake(self.frame.size.width - 20, 59, 8, 8);
+    self.pc5.frame  = CGRectMake(self.frame.size.width - 20, 72, 8, 8);
+
     
    // self.scrollView.frame = CGRectMake(3, 3, self.frame.size.width - 6, self.frame.size.height - 6);
     self.scrollView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
@@ -143,16 +173,8 @@
     
     [self.scrollView setExclusiveTouch:NO];
     
-    self.height = (self.frame.size.height * 3); //- (6 * 3); //- contentHeightModifier;
-    //self.bounds.size.height * 3;
-    self.width = self.frame.size.width;// - 6;
-    
-    
-    //   self.scrollView.userInteractionEnabled = NO;
-    //   [self addGestureRecognizer:self.scrollView.panGestureRecognizer];
-    
-    //    self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(overlayButtonPressed)];
-    //    [self.scrollView addGestureRecognizer:self.tapGesture];
+    self.height = (self.frame.size.height * pic_count);
+    self.width = self.frame.size.width;
     
     
     
@@ -162,11 +184,52 @@
     
     self.scrollView.contentInset = UIEdgeInsetsMake(0.0,0.0,0.0,0.0);
     
-    [self addPhoto];
-    [self addPhoto2];
-    [self addPhoto3];
+    [self initPageController];
     
-   // [self setAttrHeader];
+    
+    if (pic_count > 0)
+    {
+        [self addPhoto];
+    }
+    
+    if (pic_count > 1)
+    {
+        [self addPhoto2];
+    }
+    
+    if (pic_count > 2)
+    {
+        [self addPhoto3];
+    }
+    
+    if (pic_count > 3)
+    {
+        [self addPhoto4];
+
+    }
+    
+    if (pic_count > 4)
+    {
+        [self addPhoto5];
+    }
+    
+    
+    
+ //   [self.pageControl setNumberOfPages:pic_count];
+
+    
+    UIColor *black = [UIColor blackColor];
+    UIColor *white = [UIColor blackColor];
+
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.bottomView.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([white colorWithAlphaComponent:0.0].CGColor),(id)([black colorWithAlphaComponent:0.4].CGColor),(id)([white colorWithAlphaComponent:0.7].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.25,0.0);
+    gradient.endPoint = CGPointMake(0.25,1.0);
+    [self.bottomView.layer insertSublayer:gradient atIndex:0];
+    
+  //  [self setAttrHeader];
     
    // self.pageControl.transform = CGAffineTransformMakeRotation(M_PI_2);
     
@@ -179,7 +242,7 @@
         
         CGFloat pageHeight = self.frame.size.height;
         int page = floor((self.scrollView.contentOffset.y - pageHeight / 2) / pageHeight) + 1;
-        [self.pageControl setCurrentPage:page];
+        [self setCurrentPage:page];
         
     }
     
@@ -191,8 +254,11 @@
     UIFont *boldFont = [UIFont fontWithName:@"AvenirNext-Medium" size:self.name_age.font.pointSize];
     UIFont *regularFont = [UIFont fontWithName:@"AvenirNext-Regular" size:self.name_age.font.pointSize];
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"Neil, " attributes:@{NSFontAttributeName: boldFont}]];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"25" attributes:@{NSFontAttributeName: regularFont}]];
+    
+    NSString *name = [NSString stringWithFormat:@"%@, ", self.user.name];
+    
+    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:name attributes:@{NSFontAttributeName: boldFont}]];
+    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:self.user.age attributes:@{NSFontAttributeName: regularFont}]];
     self.name_age.attributedText = attrString;
 }
 
@@ -201,13 +267,15 @@
     
     self.pic = [[UIImageView alloc]init];
     
-    self.pic.backgroundColor = [UIColor blueColor];
+    self.pic.backgroundColor = [UIColor whiteColor];
     self.pic.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic invalidateIntrinsicContentSize];
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
-    self.pic.image = [UIImage imageNamed:@"girl1"];
     self.pic.clipsToBounds = YES;
     
+    [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
     
     
     [self.tempView addSubview:self.pic];
@@ -220,7 +288,7 @@
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.height / 3];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.height / pic_count];
     [self.tempView addConstraint:constraint3];
     
     NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.width];
@@ -235,11 +303,12 @@
     
     self.pic2.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic2 invalidateIntrinsicContentSize];
-    
-    self.pic2.image = [UIImage imageNamed:@"photo3"];
     self.pic2.contentMode = UIViewContentModeScaleAspectFill;
     self.pic2.alpha = 2.0;
     self.pic2.clipsToBounds = YES;
+    [self.pic2 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:1]]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
     
     
     
@@ -254,7 +323,7 @@
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.height / 3 ];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.height / pic_count ];
     [self.tempView addConstraint:constraint3];
     
     NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.width];
@@ -268,11 +337,11 @@
     
     self.pic3.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic3 invalidateIntrinsicContentSize];
-    
-    self.pic3.image = [UIImage imageNamed:@"photo3"];
     self.pic3.clipsToBounds = YES;
     self.pic3.contentMode = UIViewContentModeScaleAspectFill;
-
+    [self.pic3 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:2]]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
     
     
     
@@ -286,7 +355,7 @@
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.height / 3 ];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.height /pic_count ];
     [self.tempView addConstraint:constraint3];
     
     NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.width];
@@ -295,8 +364,70 @@
 }
 
 
+-(void)addPhoto4{
+    
+    self.pic4 = [[UIImageView alloc]init];
+    
+    self.pic4.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.pic4 invalidateIntrinsicContentSize];
+    self.pic4.clipsToBounds = YES;
+    self.pic4.contentMode = UIViewContentModeScaleAspectFill;
+    [self.pic4 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:3]]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
+    
+    
+    
+    [self.tempView addSubview:self.pic4];
+    
+    
+    
+    NSDictionary *viewsDictionary = @{@"image":self.pic4, @"pic3":self.pic3};
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[pic3]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    [self.tempView addConstraints:constraint1];
+    [self.tempView addConstraints:constraint2];
+    
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.height / pic_count ];
+    [self.tempView addConstraint:constraint3];
+    
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.width];
+    [self.tempView addConstraint:constraint4];
+    
+}
 
 
+-(void)addPhoto5{
+    
+    self.pic5 = [[UIImageView alloc]init];
+    
+    self.pic5.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.pic5 invalidateIntrinsicContentSize];
+    self.pic5.clipsToBounds = YES;
+    self.pic5.contentMode = UIViewContentModeScaleAspectFill;
+    [self.pic5 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:4]]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
+    
+    
+    
+    [self.tempView addSubview:self.pic5];
+    
+    
+    
+    NSDictionary *viewsDictionary = @{@"image":self.pic5, @"pic4":self.pic4};
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[pic4]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    [self.tempView addConstraints:constraint1];
+    [self.tempView addConstraints:constraint2];
+    
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic5 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.height / pic_count ];
+    [self.tempView addConstraint:constraint3];
+    
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic5 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.width];
+    [self.tempView addConstraint:constraint4];
+    
+}
 
 
 /*
@@ -326,6 +457,7 @@
             //%%% in the middle of a swipe
         case UIGestureRecognizerStateChanged:{
             //%%% dictates rotation (see ROTATION_MAX and ROTATION_STRENGTH for details)
+                        
             CGFloat rotationStrength = MIN(xFromCenter / ROTATION_STRENGTH, ROTATION_MAX);
             
             //%%% degree change in radians
@@ -376,6 +508,12 @@
 //%%% called when the card is let go
 - (void)afterSwipeAction
 {
+    if ([[DataAccess singletonInstance] UserHasMatch]) {
+        id<HasMatchDelegate> strongDelegate = self.noswipe_delegate;
+        [strongDelegate noSwipingAlert];
+        return;
+    }
+    
     if (xFromCenter > ACTION_MARGIN) {
         [self rightAction];
     } else if (xFromCenter < -ACTION_MARGIN) {
@@ -393,17 +531,20 @@
 //%%% called when a swipe exceeds the ACTION_MARGIN to the right
 -(void)rightAction
 {
+    
     CGPoint finishPoint = CGPointMake(500, 2*yFromCenter +self.originalPoint.y);
     [UIView animateWithDuration:0.3
                      animations:^{
                          self.center = finishPoint;
                      }completion:^(BOOL complete){
+                         [self cardResult:1];
                          [self removeFromSuperview];
                      }];
     
+    
+    
     [delegate cardSwipedRight:self];
     
-    NSLog(@"YES");
 }
 
 //%%% called when a swip exceeds the ACTION_MARGIN to the left
@@ -414,12 +555,27 @@
                      animations:^{
                          self.center = finishPoint;
                      }completion:^(BOOL complete){
+                         [self cardResult:0];
                          [self removeFromSuperview];
                      }];
     
     [delegate cardSwipedLeft:self];
     
-    NSLog(@"NO");
+}
+
+
+-(void)cardResult:(int)result
+{
+    
+    NSString *uid = [NSString stringWithFormat:@"%ld", (long)self.user.user_id];
+    [DAServer swipe:uid liked:result completion:^(NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            
+        } else {
+            // update UI to indicate error or take remedial action
+        }
+    }];
 }
 
 
@@ -482,13 +638,8 @@
 - (void) processSingleTap:(UITapGestureRecognizer *)sender
 {
 
-            
-            if (self.isExpanded) {
-                [self retractView];
-            }else{
-               // id<ProfileSegueProtocol> strongDelegate = self.delegate;
-               // [strongDelegate goToProfileSegue:self obj:cell.dailyItem];
-            }
+    id<ProfileProtocol> strongDelegate = self.profile_delegate;
+    [strongDelegate profileSelected:self.user];
     
 }
 
@@ -500,7 +651,7 @@
         float height = self.bottomView.frame.size.height * 2.5;
         self.bottomViewHeight.constant = height;
         self.fadeBottom_height.constant = height;
-        [self.edu_job setHidden:NO];
+       // [self.edu_job setHidden:NO];
         [self.edu_label setHidden:NO];
         self.isExpanded = YES;
     }else{
@@ -524,6 +675,111 @@
     self.isExpanded = NO;
 }
 
+-(void)initPageController
+{
+    CGFloat radius = self.pc1.frame.size.width / 2;
+    
+    [self setCurrentPage:0];
+    
+    self.pc1.layer.cornerRadius = radius;
+    self.pc2.layer.cornerRadius = radius;
+    self.pc3.layer.cornerRadius = radius;
+    self.pc4.layer.cornerRadius = radius;
+    self.pc5.layer.cornerRadius = radius;
+    
+    self.pc1.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.pc1.layer.borderWidth = 1;
+    self.pc2.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.pc2.layer.borderWidth = 1;
+    self.pc3.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.pc3.layer.borderWidth = 1;
+    self.pc4.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.pc4.layer.borderWidth = 1;
+    self.pc5.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.pc5.layer.borderWidth = 1;
+    if (pic_count == 1)
+    {
+        [self hideAllPCs];
+    }
+    else if (pic_count == 2)
+    {
+        [self.pc3 setHidden:YES];
+        [self.pc4 setHidden:YES];
+        [self.pc5 setHidden:YES];
+
+    }
+    else if (pic_count == 3)
+    {
+        [self.pc4 setHidden:YES];
+        [self.pc5 setHidden:YES];
+    }
+    else if (pic_count == 4)
+    {
+        [self.pc5 setHidden:YES];
+    }
+
+    
+
+}
+
+-(void)hideAllPCs
+{
+    [self.pc1 setHidden:YES];
+    [self.pc2 setHidden:YES];
+    [self.pc3 setHidden:YES];
+    [self.pc4 setHidden:YES];
+    [self.pc5 setHidden:YES];
+
+}
+
+-(void)setCurrentPage:(int)index
+{
+    
+    
+    if (index == 0)
+    {
+        self.pc1.backgroundColor = [UIColor whiteColor];
+        self.pc2.backgroundColor = [UIColor clearColor];
+        self.pc3.backgroundColor = [UIColor clearColor];
+        self.pc4.backgroundColor = [UIColor clearColor];
+        self.pc5.backgroundColor = [UIColor clearColor];
+
+    }
+    else if (index == 1)
+    {
+        self.pc1.backgroundColor = [UIColor clearColor];
+        self.pc2.backgroundColor = [UIColor whiteColor];
+        self.pc3.backgroundColor = [UIColor clearColor];
+        self.pc4.backgroundColor = [UIColor clearColor];
+        self.pc5.backgroundColor = [UIColor clearColor];
+    }
+    else if (index == 2)
+    {
+        self.pc1.backgroundColor = [UIColor clearColor];
+        self.pc2.backgroundColor = [UIColor clearColor];
+        self.pc3.backgroundColor = [UIColor whiteColor];
+        self.pc4.backgroundColor = [UIColor clearColor];
+        self.pc5.backgroundColor = [UIColor clearColor];
+    }
+    else if (index == 3)
+    {
+        self.pc1.backgroundColor = [UIColor clearColor];
+        self.pc2.backgroundColor = [UIColor clearColor];
+        self.pc3.backgroundColor = [UIColor clearColor];
+        self.pc4.backgroundColor = [UIColor whiteColor];
+        self.pc5.backgroundColor = [UIColor clearColor];
+    }
+    else if (index == 4)
+    {
+        self.pc1.backgroundColor = [UIColor clearColor];
+        self.pc2.backgroundColor = [UIColor clearColor];
+        self.pc3.backgroundColor = [UIColor clearColor];
+        self.pc4.backgroundColor = [UIColor clearColor];
+        self.pc5.backgroundColor = [UIColor whiteColor];
+    }
+    
+    
+}
 
 
 

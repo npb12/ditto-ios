@@ -18,8 +18,9 @@
 @property (nonatomic, strong) NSString *photo_id;
 @property (nonatomic, strong) NSMutableArray *albums;
 @property (nonatomic, strong) NSMutableArray *photos;
-@property (nonatomic, strong) UIImage *photo;
-@property (nonatomic, strong) UIImage *fullSizePhoto;
+//@property (nonatomic, strong) UIImage *photo;
+@property (nonatomic, strong) NSString *fullSizePhoto;
+@property (nonatomic, strong) NSString *photo;
 
 @property (nonatomic) NSInteger boxID;
 

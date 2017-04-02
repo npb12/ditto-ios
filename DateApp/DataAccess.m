@@ -176,50 +176,6 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
 }
 
 
-- (void)setProfileImageStatus:(BOOL)status {
-    DataAccess *Data = [DataAccess singletonInstance];
-    Data.isProfileImageSet = status;
-    [Data persistToUserDefaults];
-}
-
-- (BOOL)ProfileImageIsSet {
-    DataAccess *Data = [DataAccess singletonInstance];
-    return Data.isProfileImageSet;
-}
-
-- (void)setProfileImageStatus2:(BOOL)status {
-    DataAccess *Data = [DataAccess singletonInstance];
-    Data.isProfileImageSet = status;
-    [Data persistToUserDefaults];
-}
-
-- (BOOL)ProfileImageIsSet2 {
-    DataAccess *Data = [DataAccess singletonInstance];
-    return Data.isProfileImageSet;
-}
-
-- (void)setProfileImageStatus3:(BOOL)status {
-    DataAccess *Data = [DataAccess singletonInstance];
-    Data.isProfileImageSet = status;
-    [Data persistToUserDefaults];
-}
-
-- (BOOL)ProfileImageIsSet3 {
-    DataAccess *Data = [DataAccess singletonInstance];
-    return Data.isProfileImageSet;
-}
-
-- (void)setProfileImageStatus4:(BOOL)status {
-    DataAccess *Data = [DataAccess singletonInstance];
-    Data.isProfileImageSet = status;
-    [Data persistToUserDefaults];
-}
-
-- (BOOL)ProfileImageIsSet4 {
-    DataAccess *Data = [DataAccess singletonInstance];
-    return Data.isProfileImageSet;
-}
-
 
 - (void)setisLoggedInWithFB:(BOOL)status {
     [[NSUserDefaults standardUserDefaults] setBool:status forKey:@"LoggedInWithFB"];
@@ -238,47 +194,79 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
 
 
 
--(UIImage*)getProfileImage{
+-(NSString*)getProfileImage{
     
-    NSData* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage"];
-    UIImage* image = [UIImage imageWithData:imageData];
-    return image;
-    
-}
-
-
--(UIImage*)getProfileImage2{
-    
-    NSData* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage2"];
-    UIImage* image = [UIImage imageWithData:imageData];
-    return image;
+    NSString* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage"];
+    return imageData;
     
 }
 
 
-
--(UIImage*)getProfileImage3{
+-(NSString*)getProfileImage2{
     
-    NSData* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage3"];
-    UIImage* image = [UIImage imageWithData:imageData];
-    return image;
+    NSString* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage2"];
+    return imageData;
     
 }
 
 
--(UIImage*)getProfileImage4{
+
+-(NSString*)getProfileImage3{
     
-    NSData* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage4"];
-    UIImage* image = [UIImage imageWithData:imageData];
-    return image;
+    NSString* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage3"];
+    return imageData;
     
 }
 
--(UIImage*)getProfileImage5{
+
+-(NSString*)getProfileImage4{
     
-    NSData* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage5"];
-    UIImage* image = [UIImage imageWithData:imageData];
-    return image;
+    NSString* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage4"];
+    return imageData;
+    
+}
+
+-(NSString*)getProfileImage5{
+    
+    NSString* imageData = [[NSUserDefaults standardUserDefaults] objectForKey:@"ProfileImage5"];
+    return imageData;
+    
+}
+
+
+-(void)setProfileImage:(NSString*)image{
+    
+    
+    [[NSUserDefaults standardUserDefaults] setObject:image forKey:@"ProfileImage"];
+    
+}
+
+-(void)setProfileImage2:(NSString*)image{
+    
+    
+    [[NSUserDefaults standardUserDefaults] setObject:image forKey:@"ProfileImage2"];
+    
+}
+
+
+-(void)setProfileImage3:(NSString*)image{
+    
+    
+    [[NSUserDefaults standardUserDefaults] setObject:image forKey:@"ProfileImage3"];
+    
+}
+
+-(void)setProfileImage4:(NSString*)image{
+    
+    
+    [[NSUserDefaults standardUserDefaults] setObject:image forKey:@"ProfileImage4"];
+    
+}
+
+-(void)setProfileImage5:(NSString*)image{
+    
+    
+    [[NSUserDefaults standardUserDefaults] setObject:image forKey:@"ProfileImage5"];
     
 }
 
@@ -375,6 +363,17 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
     return age;
 }
 
+- (BOOL)UserGrantedLocationPermission {
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"location_permission"]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)setUserGrantedLocationPermission:(BOOL)status {
+    [[NSUserDefaults standardUserDefaults] setBool:status forKey:@"location_permission"];
+}
+
 #pragma - social networks
 
 -(void)setFacebook:(NSString*)network{
@@ -406,8 +405,24 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
     [[NSUserDefaults standardUserDefaults] setBool:status forKey:@"isTaken"];
 }
 
+-(void)setUserID:(id)uid{
+    
+    
+    [[NSUserDefaults standardUserDefaults] setObject:uid forKey:@"user_id"];
+    
+}
+
+-(NSString*)getUserID{
+    
+    NSString *uid = [[NSUserDefaults standardUserDefaults]
+                     stringForKey:@"user_id"];
+    
+    return uid;
+}
 
 
+
+#pragma mark - NSCoding serialization
 
 #pragma mark - NSCoding serialization
 
@@ -415,13 +430,24 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
     
     DataAccess *singletonInstance = [DataAccess singletonInstance];
     
- //   OAuthToken *token = [aDecoder decodeObjectForKey:@"oauthToken"];
- //   [singletonInstance setOAuthAccessToken:token];
+    BOOL loggedInStatus = [aDecoder decodeBoolForKey:@"LoggedInStatus"];
+    [singletonInstance setUserLoginStatus:loggedInStatus];
     
- //   NSString *url = [aDecoder decodeObjectForKey:@"apiURLCurrent"];
-//    [singletonInstance setCurrentURLforAPI:url];
     
-    [singletonInstance persistToUserDefaults];
+    
+    NSString *token = [aDecoder decodeObjectForKey:@"access_token"];
+    [singletonInstance setToken:token];
+    
+    
+    NSString *userID = [aDecoder decodeObjectForKey:@"user_id"];
+    [singletonInstance setUserID:userID];
+    
+    NSString *first_name = [aDecoder decodeObjectForKey:@"first_name"];
+    [singletonInstance setName:first_name];
+
+
+    
+    
     
     return self;
 }
@@ -430,10 +456,10 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
     
     DataAccess *singletonInstance = [DataAccess singletonInstance];
     
+    [aCoder encodeBool:[singletonInstance UserIsLoggedIn] forKey:@"LoggedInStatus"];
     
-  //  [aCoder encodeObject:[singletonInstance accessToken] forKey:@"oauthToken"];
     
-   // [aCoder encodeObject:[singletonInstance currentURLforAPI] forKey:@"apiURLCurrent"];
+    
 }
 
 

@@ -7,9 +7,10 @@
 //
 
 #import "SinglePhotoViewController.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface SinglePhotoViewController ()
-@property (strong, nonatomic) UIImage *image;
+@property (strong, nonatomic) NSString *image;
 @property (strong, nonatomic) IBOutlet UIImageView *photoView;
 - (IBAction)select:(id)sender;
 
@@ -23,8 +24,9 @@
     // Do any additional setup after loading the view.
     SinglePhotoViewController *singletonInstance = [SinglePhotoViewController singletonInstance];
 
-    self.image = singletonInstance.photo;
-    self.photoView.image = self.image;
+    [self.photoView sd_setImageWithURL:[NSURL URLWithString:singletonInstance.photo]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
 }
 
 - (void)didReceiveMemoryWarning {

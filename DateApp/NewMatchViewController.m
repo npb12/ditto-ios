@@ -86,8 +86,8 @@
     if ([[segue identifier] isEqualToString:@"goProfile"]) {
         
         ProfileViewController *profileVC = (ProfileViewController *)segue.destinationViewController;
-        profileVC.user_data = self.matched_user;
-        profileVC.mode = @"matched";
+     //   profileVC.user_data = self.matched_user;
+      //  profileVC.mode = @"matched";
         
         
     }

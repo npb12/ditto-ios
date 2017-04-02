@@ -7,14 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "JSQMessagesViewController/JSQMessagesViewController.h"
+//#import "JSQMessagesViewController/JSQMessagesViewController.h"
 
 
 #import "MessageModelData.h"
 #import "NSUserDefaults+DemoSettings.h"
 
+@import JSQMessagesViewController;
+
+@import CocoaAsyncSocket;
+
 
 @class MessageViewController;
+
 
 @protocol MessageViewControllerDelegate <NSObject>
 
@@ -23,7 +28,7 @@
 @end
 
 
-@interface MessageViewController : JSQMessagesViewController <UIActionSheetDelegate, JSQMessagesComposerTextViewPasteDelegate>
+@interface MessageViewController : JSQMessagesViewController <UIActionSheetDelegate, JSQMessagesComposerTextViewPasteDelegate, NSStreamDelegate>
 
 @property (weak, nonatomic) id<MessageViewControllerDelegate> delegateModal;
 
@@ -34,3 +39,6 @@
 - (void)closePressed:(UIBarButtonItem *)sender;
 
 @end
+NSInputStream *inputStream;
+NSOutputStream *outputStream;
+NSMutableArray * messages;

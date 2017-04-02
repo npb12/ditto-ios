@@ -30,14 +30,26 @@
  
  */
 
-#import <UIKit/UIKit.h>
 #import "DraggableView.h"
+@protocol MatchSegueProtocol;
+
+@protocol NoSwipeProtocol <NSObject>
+
+-(void)noSwipingAlert;
+
+@end
+
+@protocol SelectedProfileProtocol <NSObject>
+
+-(void)selectedProfile:(User*)user;
+
+@end
 
 
 @interface DraggableViewBackground : UIView <DraggableViewDelegate, UITextFieldDelegate>
 
 
--(void)createView;
+-(void)createViewWithUsers:(NSMutableArray*)users;
 
 //methods called in DraggableView
 -(void)cardSwipedLeft:(UIView *)card;
@@ -45,8 +57,18 @@
 
 -(void)likedCurrent;
 
-@property (retain,nonatomic)NSArray* exampleCardLabels; //%%% the labels the cards
+@property (retain,nonatomic)NSMutableArray* userCards; //%%% the labels the cards
 @property (retain,nonatomic)NSMutableArray* allCards; //%%% the labels the cards
 
+@property (nonatomic, weak) id<MatchSegueProtocol> matched_delegate;
+@property (nonatomic, weak) id<NoSwipeProtocol> noswipe_delegate;
+@property (nonatomic, weak) id<SelectedProfileProtocol> profile_delegate;
+
+
+@end
+
+@protocol MatchSegueProtocol <NSObject>
+
+-(void)goToMatchedSegue:(id)sender obj:(User*)object;
 
 @end
