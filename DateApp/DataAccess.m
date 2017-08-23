@@ -95,6 +95,19 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
 }
 
 
+- (BOOL)askedForNotifications
+{
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"askedNotifications"]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)setaskedForNotifications:(BOOL)status
+{
+    [[NSUserDefaults standardUserDefaults] setBool:status forKey:@"askedNotifications"];
+}
+
 //match data
 - (BOOL)UserHasMatch {
     if([[NSUserDefaults standardUserDefaults] boolForKey:@"hasMatch"]) {
@@ -103,7 +116,7 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
     return NO;
 }
 
-- (void)setUserMatchStatus:(BOOL)status {
+- (void)setUserHasMatch:(BOOL)status {
     [[NSUserDefaults standardUserDefaults] setBool:status forKey:@"hasMatch"];
 }
 
@@ -317,6 +330,34 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
     return token;
 }
 
+-(void)setSessionToken:(NSString*)token{
+    
+    
+    [[NSUserDefaults standardUserDefaults] setObject:token forKey:@"session_token"];
+    
+}
+
+-(NSString*)getSessionToken{
+    
+    NSString *token = [[NSUserDefaults standardUserDefaults]
+                       stringForKey:@"session_token"];
+    
+    return token;
+}
+
+-(void)setLastMessage:(long)timestamp
+{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLong: timestamp] forKey:@"timestamp"];
+}
+-(long)getLastMessage
+{
+    NSNumber *timestamp = [[NSUserDefaults standardUserDefaults]
+                            objectForKey:@"timestamp"];
+    self.lastMessageTime = [timestamp longValue];
+    
+    return self.lastMessageTime;
+}
+
 -(void)setGender:(NSString*)gender{
     
     
@@ -403,6 +444,26 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
 
 - (void)setUserTakenStatus:(BOOL)status {
     [[NSUserDefaults standardUserDefaults] setBool:status forKey:@"isTaken"];
+}
+
+-(void)setUserLocation:(CLLocationCoordinate2D)location{
+    
+    NSNumber *lat = [NSNumber numberWithDouble:location.latitude];
+    NSNumber *lon = [NSNumber numberWithDouble:location.longitude];
+    NSDictionary *userLocation=@{@"lat":lat,@"long":lon};
+    [[NSUserDefaults standardUserDefaults] setObject:userLocation forKey:@"last_location"];
+    
+}
+
+-(CLLocationCoordinate2D)getUserLocation{
+    
+    
+    NSDictionary *userLoc=[[NSUserDefaults standardUserDefaults] objectForKey:@"last_location"];
+    CLLocationCoordinate2D location;
+    location.latitude =  [[userLoc objectForKey:@"lat"] doubleValue];
+    location.longitude = [[userLoc objectForKey:@"long"] doubleValue];
+    
+    return location;
 }
 
 -(void)setUserID:(id)uid{

@@ -10,4 +10,14 @@
 
 @interface Messages : NSObject
 
+typedef NS_ENUM(NSUInteger, message_type) {
+    RECEIVED_MESSAGE                = 0,
+    SENT_MESSAGE                 = 1,
+};
+
+@property (nonatomic, assign) NSInteger type;
+@property (nullable, nonatomic, retain) NSString *message;
+@property (nonatomic, assign) long timestamp;
+
+
 @end

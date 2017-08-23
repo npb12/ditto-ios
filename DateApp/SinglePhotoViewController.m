@@ -23,6 +23,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     SinglePhotoViewController *singletonInstance = [SinglePhotoViewController singletonInstance];
+    
+    self.photo = singletonInstance.photo;
+    
+    
 
     [self.photoView sd_setImageWithURL:[NSURL URLWithString:singletonInstance.photo]
                 placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
@@ -58,7 +62,35 @@
 }
 
 - (IBAction)select:(id)sender {
-    PhotoManager *box = [PhotoManager singletonInstance];
+    
+    if(self.selectedIndex <= self.photos.count - 1)
+    {
+        [self.photos setObject:self.photo atIndexedSubscript:self.selectedIndex];
+    }
+    else
+    {
+        [self.photos addObject:self.photo];
+    }
+    
+   
+    
+    [DAServer updateAlbum:self.photos completion:^(NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self dismissViewControllerAnimated:NO completion:nil];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [self dismissViewControllerAnimated:NO completion:nil];
+            });
+            NSLog(@"An error occured with the server!");
+        }
+    }];
+    
+    /*PhotoManager *box = [PhotoManager singletonInstance];
 
     
     if (box.boxID == 1) {
@@ -71,7 +103,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:UIImagePNGRepresentation(self.image) forKey:@"ProfileImage4"];
     }else if(box.boxID == 5){
         [[NSUserDefaults standardUserDefaults] setObject:UIImagePNGRepresentation(self.image) forKey:@"ProfileImage5"];
-    }
+    } */
     
 
 }

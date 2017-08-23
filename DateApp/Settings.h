@@ -10,4 +10,16 @@
 
 @interface Settings : NSObject
 
++ (void) saveAsCurrentSettings:(Settings*)currentSettings;
++ (Settings*) currentSettings;
+- (NSDictionary*) toDictionary;
++ (Settings*) fromDictionary:(NSDictionary*)dictionary;
+
+@property (nullable, nonatomic, retain) NSString *ageRange;
+@property (nullable, nonatomic, retain) NSString *settingsGender;
+@property (nonatomic, assign) NSInteger settingsInvisible;
+@property (nonatomic, assign) NSInteger settingsNotifications;
+@property (nonatomic, assign) NSInteger settingsDistance;
+
+
 @end

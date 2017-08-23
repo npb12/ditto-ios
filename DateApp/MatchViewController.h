@@ -9,6 +9,25 @@
 #import "Includes.h"
 #import <JSQMessagesViewController/JSQMessages.h>
 #import "MatchTableViewCell.h"
+#import "DADateFormatter.h"
+#import "MessageModelData.h"
+#import "User.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+
+
+@protocol GoToProfileProtocol <NSObject>
+
+-(void)selectedProfile:(User*)user matched:(BOOL)match;
+
+@end
+
+@protocol GoDiscoverProtocol <NSObject>
+
+-(void)discoverSelected;
+
+@end
+
+
 
 @protocol DraggableViewDelegate <NSObject>
 
@@ -20,10 +39,11 @@
 
 @protocol SegueProtocol <NSObject>
 -(void)gotoMessage;
+-(void)unmatchUser;
 @end
 
 
-@interface MatchViewController : UIViewController<UIScrollViewDelegate>
+@interface MatchViewController : UIViewController
 
 
 - (IBAction)imageTap:(id)sender;
@@ -35,22 +55,20 @@
 
 @property (nonatomic, weak) id<SegueProtocol> delegate;
 
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *jobLabelHeight;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *eduLabelHeight;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *jobLabelTop;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *eduLabelTop;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bioLabelHeight;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bioLabelTop;
+@property (nonatomic, weak) id<GoDiscoverProtocol> discoverDelegate;
 
 
 
-@property (strong, nonatomic) IBOutlet UIView *pc1;
-@property (strong, nonatomic) IBOutlet UIView *pc2;
-@property (strong, nonatomic) IBOutlet UIView *pc3;
-@property (strong, nonatomic) IBOutlet UIView *pc4;
-@property (strong, nonatomic) IBOutlet UIView *pc5;
+@property (strong, nonatomic) IBOutlet UIImageView *profilePic;
 
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerConstraint;
+
+@property (strong, nonatomic) MessageModelData *demoData;
+
+
+@property (nonatomic, weak) id<GoToProfileProtocol> profile_delegate;
+
+-(void)updateUnmatch;
+-(void)updateMatch;
 
 @end
 

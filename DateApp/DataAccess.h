@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface DataAccess : NSObject <NSCoding>
 
@@ -27,6 +28,13 @@
 @property (nonatomic, strong) UIImage *matchProfileImage;
 
 @property (nonatomic, unsafe_unretained) BOOL isTaken;
+
+@property (nonatomic, unsafe_unretained) BOOL hasMatch;
+
+@property (nonatomic, unsafe_unretained) BOOL askedNotifications;
+@property (nonatomic, assign) long lastMessageTime;
+
+
 /*
 @property (nonatomic, strong) OAuthToken *accessToken;
 @property (nonatomic, strong) NSString *currentURLforAPI;
@@ -51,14 +59,18 @@
 -(void)setUserID:uid;
 -(NSString*)getUserID;
 
+-(void)setUserLocation:(CLLocationCoordinate2D)location;
+-(CLLocationCoordinate2D)getUserLocation;
+
 - (BOOL)UserIsLoggedIn;
 - (void)setUserLoginStatus:(BOOL)status;
+- (BOOL)askedForNotifications;
+- (void)setaskedForNotifications:(BOOL)status;
 + (id)singletonInstance;
 - (void)persistToUserDefaults;
 - (void)initUserDefaults;
 -(void)setProfileImage:(NSString*)image;
 -(NSString*)getProfileImage;
-
 
 
 -(void)setProfileImage2:(NSString*)image;
@@ -96,7 +108,7 @@
 
 //Matches data
 - (BOOL)UserHasMatch;
-- (void)setUserMatchStatus:(BOOL)status;
+- (void)setUserHasMatch:(BOOL)status;
 
 -(void)setMatchName:(NSString*)name;
 -(NSString*)getMatchName;
@@ -124,6 +136,10 @@
 -(NSString*)getToken;
 
 
+-(void)setSessionToken:(NSString*)token;
+
+-(NSString*)getSessionToken;
+
 - (BOOL)UserGrantedLocationPermission;
 
 - (void)setUserGrantedLocationPermission:(BOOL)status;
@@ -131,5 +147,7 @@
 - (BOOL)IsInitialUser;
 - (void)setInitialUserStatus:(BOOL)status;
 
+-(void)setLastMessage:(long)timestamp;
+-(long)getLastMessage;
 
 @end

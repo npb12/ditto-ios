@@ -10,9 +10,12 @@
 
 @interface NewMatchViewController : UIViewController
 
-@property (strong, nonatomic) TFDailyItem *matched_user;
 
 - (IBAction)keepSearching:(id)sender;
 - (IBAction)goMessage:(id)sender;
+
+@property (strong, nonatomic) User *match_user;
+
+@property (strong, nonatomic) NSMutableArray *altMatches;
 
 @end

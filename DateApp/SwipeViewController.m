@@ -23,13 +23,13 @@
     [super viewDidLoad];
    // [self addMainView];
 
-    
+    /*
     CAGradientLayer *gradient = [CAGradientLayer layer];
     [self.backgroundView.layer insertSublayer:gradient atIndex:0];
     gradient.frame = self.backgroundView.bounds;
     gradient.colors = [NSArray arrayWithObjects:(id)([UIColor whiteColor].CGColor),(id)([UIColor colorWithRed:0.95 green:0.95 blue:0.98 alpha:1.0].CGColor),nil];
     gradient.startPoint = CGPointMake(0.25,0.0);
-    gradient.endPoint = CGPointMake(0.25,1.0);
+    gradient.endPoint = CGPointMake(0.25,1.0); */
     self.backgroundView.layer.masksToBounds = YES;
     
     self.backgroundView.matched_delegate = self;
@@ -46,11 +46,8 @@
     [super viewDidAppear:YES];
     
     
-    [[DataAccess singletonInstance] setUserMatchStatus:NO];
-    
+ //   [self performSegueWithIdentifier:@"goToMatchedConflict" sender:self];
 
-    
-  //  [self testfunc];
     
     
     if ([[DataAccess singletonInstance] IsInitialUser]) {
@@ -65,8 +62,18 @@
 -(void)loadCards:(NSMutableArray*)users
 {
     [self.backgroundView createViewWithUsers:users];
+    
+    if ([users count] < 1)
+    {
+        [self.backgroundView.emptyLabel setAlpha:0];
+    }
 }
 
+-(void)showEmptyLabel
+{
+    self.backgroundView.emptyLabel.text = @"No one new currently around.\nCheck back again soon!";
+    [self.backgroundView.emptyLabel setAlpha:1.0];
+}
 
 
 - (void)didReceiveMemoryWarning {
@@ -146,8 +153,8 @@
 }
 
 
--(void)likeCurrentCard{
-    [self.backgroundView likedCurrent];
+-(void)likeCurrentCard:(BOOL)option{
+    [self.backgroundView likedCurrent:option];
 }
 
 
@@ -158,6 +165,7 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     
+    /*
     if ([[segue identifier] isEqualToString:@"goToMatchedConflict"]) {
         
         
@@ -178,7 +186,7 @@
         matchVC.matched_user = sender;
         matchVC.view.backgroundColor = [[UIColor blueColor] colorWithAlphaComponent:0.2];
         matchVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    }
+    } */
 }
 
 
@@ -200,27 +208,14 @@
 
 -(void)selectedProfile:(User *)user{
     id<GoToProfileProtocol> strongDelegate = self.profile_delegate;
-    [strongDelegate selectedProfile:user];
+    [strongDelegate selectedProfile:user matched:NO];
 }
 
 
--(void)testfunc
-{
-
-    
-}
 
 
 /*
- //update user profile with bio/occupation and string description
- [DAServer updateProfile:@"" description:@"" completion:^(NSError *error) {
- // here, update the UI to say "Not busy anymore"
- if (!error) {
- 
- } else {
- // update UI to indicate error or take remedial action
- }
- }];
+
  
  
  
@@ -246,17 +241,18 @@
  }
  }];
  
- 
- //settingsGender, settingsAge, settingsDistance, invisible and enable_notification. settingsAge format is min - max like 18-100, simply send it as a string
- [DAServer updateSettings:@"settingsDistance" setting:@"20" completion:^(NSError *error) {
- // here, update the UI to say "Not busy anymore"
- if (!error) {
- 
- } else {
- // update UI to indicate error or take remedial action
- }
- }];
+
  
  */
+
+-(void)updateMatch
+{
+    [self.backgroundView updateMatch];
+}
+
+-(void)updateUnmatch
+{
+    [self.backgroundView updateUnmatch];
+}
 
 @end

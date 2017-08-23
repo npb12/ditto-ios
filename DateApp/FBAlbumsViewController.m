@@ -45,6 +45,8 @@
         }];
     });
     
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -70,6 +72,8 @@
 
         PhotoManager *album = (PhotoManager*)[[[PhotoManager singletonInstance] albums] objectAtIndex:indexPath.row];
         cell.album_label.text = album.album_name;
+    [cell.album_label layoutIfNeeded];
+        cell.album_label.textColor = [DAGradientColor gradientFromColor:cell.album_label.frame.size.width];
         UIFont *font;
 
         
@@ -110,6 +114,21 @@
     
     
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    
+    if ([segue.identifier isEqualToString:@"photosSegue"])
+    {
+        FBPhotosViewController *vc = segue.destinationViewController;
+        vc.selectedIndex = self.selectedIndex;
+        vc.photos = self.photos;
+    }
+}
+
+
 - (IBAction)backAction:(id)sender {
     [self dismissViewControllerAnimated:NO completion:nil];
 }

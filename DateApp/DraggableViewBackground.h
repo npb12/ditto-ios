@@ -55,7 +55,7 @@
 -(void)cardSwipedLeft:(UIView *)card;
 -(void)cardSwipedRight:(UIView *)card;
 
--(void)likedCurrent;
+-(void)likedCurrent:(BOOL)option;
 
 @property (retain,nonatomic)NSMutableArray* userCards; //%%% the labels the cards
 @property (retain,nonatomic)NSMutableArray* allCards; //%%% the labels the cards
@@ -64,6 +64,11 @@
 @property (nonatomic, weak) id<NoSwipeProtocol> noswipe_delegate;
 @property (nonatomic, weak) id<SelectedProfileProtocol> profile_delegate;
 
+@property (strong, nonatomic) IBOutlet UILabel *emptyLabel;
+
+-(void)updateUnmatch;
+
+-(void)updateMatch;
 
 @end
 

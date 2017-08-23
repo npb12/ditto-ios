@@ -8,8 +8,7 @@
 
 #import "Includes.h"
 
-@interface ProfileViewController (){
-    UIColor *grayColor;
+@interface ProfileViewController ()<MessageViewControllerDelegate>{
     UIColor *blackColor;
     UIFont *headerFont;
     UIFont *contentFont;
@@ -35,7 +34,6 @@
 
 
 @property (strong, nonatomic) IBOutlet UILabel *edu_job;
-@property (strong, nonatomic) IBOutlet UILabel *age_label;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *photoHeight;
 
@@ -49,7 +47,10 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *likeBtn;
 @property (strong, nonatomic) IBOutlet UIView *grayView;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *likeBottomSpace;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatBottom;
+
+@property (strong, nonatomic) IBOutlet UIButton *chatBtn;
 
 
 @end
@@ -62,49 +63,77 @@
     // Do any additional setup after loading the view.
     
     
+    if (self.match)
+    {
+        NSLog(@"View match profile");
+        [self.chatBtn setHidden:NO];
+    }
+    else if(self.isMine)
+    {
+        [self.chatBtn setHidden:YES];
+    }
+    else
+    {
+        NSLog(@"Non match profile");
+        [self.chatBtn setHidden:YES];
+        /*
+        [self addGradientLayer:self.likeBtn];
+        [self.likeBtn setImage:[UIImage imageNamed:@"Icon_HeartWithShadow_Active"] forState:UIControlStateNormal];
+        self.likeBtn.layer.cornerRadius = 37.5;
+        self.likeBtn.layer.shadowColor = [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] CGColor];
+        self.likeBtn.layer.shadowOffset = CGSizeMake(0, 2.5f);
+        self.likeBtn.layer.shadowOpacity = 1.0f;
+        self.likeBtn.layer.shadowRadius = 0.0f;
+        self.likeBtn.layer.borderWidth = 2;
+        self.likeBtn.layer.borderColor = [UIColor whiteColor].CGColor; */
+    }
     
     
-    self.photoHeight.constant = self.view.frame.size.height / 1.75;
+    self.photoHeight.constant = self.view.frame.size.height / 1.85;
     
+    self.name_label.text = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];    
     
-    // self.message_btn.layer.cornerRadius = 15;
-    // self.photos_btn.layer.cornerRadius = 15;
-    
-    
-    [self setFonts];
-    [self setAgeLabel];
-    
-    if (![self.user.job isEqualToString:@""] && self.user.job != nil) {
-        [self setTitleLabel];
-    }else{
+    if (![self.user.job isEqualToString:@""] && self.user.job != nil)
+    {
+        self.edu_job.text = self.user.job;
+    }
+    else
+    {
         self.jobLabelHeight.constant = 0;
         self.jobLabelTop.constant = 0;
     }
     
-    if (![self.user.edu isEqualToString:@""] && self.user.edu != nil) {
-        [self setEduLabel];
+    if (![self.user.edu isEqualToString:@""] && self.user.edu != nil)
+    {
+        self.eduLabel.text = self.user.edu;
     }else{
         self.eduLabelHeight.constant = 0;
         self.eduLabelTop.constant = 0;
     }
-
-    [self addGradientLayer:self.likeBtn];
-    [self.likeBtn setImage:[UIImage imageNamed:@"Icon_HeartWithShadow_Active"] forState:UIControlStateNormal];
-    self.likeBtn.layer.cornerRadius = 37.5;
-    self.likeBtn.layer.shadowColor = [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] CGColor];
-    self.likeBtn.layer.shadowOffset = CGSizeMake(0, 2.5f);
-    self.likeBtn.layer.shadowOpacity = 1.0f;
-    self.likeBtn.layer.shadowRadius = 0.0f;
-    self.likeBtn.layer.borderWidth = 2;
-    self.likeBtn.layer.borderColor = [UIColor whiteColor].CGColor;
     
+    if (![self.user.bio isEqualToString:@""] && self.user.bio != nil)
+    {
+        self.bio_label.text = self.user.bio;
+    }
+
+
+    
+    
+    if (self.user.distance == 1)
+    {
+        self.distanceLabel.text = [NSString stringWithFormat:@"%ld mile away", (long)self.user.distance];
+    }
+    else
+    {
+        self.distanceLabel.text = [NSString stringWithFormat:@"%ld miles away", (long)self.user.distance];
+    }
 
     [self initScrollView];
     //   self.tableViewHeight.constant = self.view.bounds.size.height / 3;
     
     //   [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
     
-    self.name_label.text = self.user.name;
+
     
 }
 
@@ -113,7 +142,7 @@
   //  NSInteger offset = (self.view.frame.size.height / 2.85);
     [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
      {
-         self.likeBottomSpace.constant = 5;
+         self.chatBottom.constant = 5;
          [self.view layoutIfNeeded];
      }
                      completion:^(BOOL finished)
@@ -131,7 +160,7 @@
     
     self.scrollView.showsHorizontalScrollIndicator = NO;
     
-    
+    /*
     CAGradientLayer *gradient = [CAGradientLayer layer];
     [self.view.layer insertSublayer:gradient atIndex:0];
     gradient.frame = self.view.bounds;
@@ -139,6 +168,14 @@
     gradient.startPoint = CGPointMake(0.25,0.0);
     gradient.endPoint = CGPointMake(0.25,1.0);
     self.view.layer.masksToBounds = YES;
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    [self.view.layer insertSublayer:gradient atIndex:0];
+    gradient.frame = self.view.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([[UIColor whiteColor] colorWithAlphaComponent:1.0].CGColor),(id)([[self bgGray] colorWithAlphaComponent:1].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.5,0.0);
+    gradient.endPoint = CGPointMake(0.5,1.0);
+    self.view.layer.masksToBounds = YES;  */
     
     self.automaticallyAdjustsScrollViewInsets = NO;
     
@@ -160,7 +197,7 @@
     
     [self.scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tempView]|" options:0 metrics: 0 views:viewsDictionary]];
     [self.scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tempView]|" options:0 metrics: 0 views:viewsDictionary]];
-    [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fullScreenRect.size.width * 3]];
+    [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fullScreenRect.size.width * pic_count]];
     
     
     [self.scrollView setExclusiveTouch:NO];
@@ -209,41 +246,6 @@
 
 
 
-- (void)setFonts{
-    grayColor = self.grayView.backgroundColor;
-    blackColor = self.bio_label.textColor;
-    headerFont = [UIFont systemFontOfSize:11.0];
-    contentFont = [UIFont systemFontOfSize:17.0];
-    
-}
-
-- (void)setAgeLabel{
-    
-    
-    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"AGE: " attributes:@{NSForegroundColorAttributeName : grayColor, NSFontAttributeName: headerFont}]];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:self.user.age attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
-    self.age_label.attributedText = attrString;
-}
-
-//
-
-- (void)setTitleLabel{
-    
-    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"TITLE: " attributes:@{NSForegroundColorAttributeName : grayColor, NSFontAttributeName: headerFont}]];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:self.user.job attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
-    self.edu_job.attributedText = attrString;
-}
-
-- (void)setEduLabel{
-    
-    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"EDU: " attributes:@{NSForegroundColorAttributeName : grayColor, NSFontAttributeName: headerFont}]];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:self.user.edu attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
-    self.eduLabel.attributedText = attrString;
-}
-
 
 
 
@@ -261,7 +263,6 @@
     //  CGFloat width = CGRectGetWidth([[UIScreen mainScreen] bounds]);
     self.pic.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic invalidateIntrinsicContentSize];
-    self.pic.layer.cornerRadius = 10;
     [self.pic setClipsToBounds:YES];
     
     [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
@@ -274,7 +275,7 @@
     
     
     NSDictionary *viewsDictionary = @{@"image":self.pic};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
@@ -282,7 +283,7 @@
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant];
     [self.tempView addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width - 30];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
     [self.tempView addConstraint:constraint4];
     
 }
@@ -292,10 +293,8 @@
     
     self.pic2 = [[UIImageView alloc]init];
     
-    CGFloat width = self.view.frame.size.width;
     self.pic2.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic2 invalidateIntrinsicContentSize];
-    self.pic2.layer.cornerRadius = 10;
     [self.pic2 setClipsToBounds:YES];
     [self.pic2 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:1]]
                  placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
@@ -311,7 +310,7 @@
     
     
     NSDictionary *viewsDictionary = @{@"image":self.pic2, @"pic1":self.pic};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic1]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:30]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic1]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
@@ -319,7 +318,7 @@
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant];
     [self.tempView addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width - 30];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
     [self.tempView addConstraint:constraint4];
     
 }
@@ -328,10 +327,8 @@
     
     self.pic3 = [[UIImageView alloc]init];
     
-    CGFloat width = self.view.frame.size.width;
     self.pic3.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic3 invalidateIntrinsicContentSize];
-    self.pic3.layer.cornerRadius = 10;
     [self.pic3 setClipsToBounds:YES];
     
     [self.pic3 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:2]]
@@ -346,7 +343,7 @@
     
     
     NSDictionary *viewsDictionary = @{@"image":self.pic3, @"pic2":self.pic2};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic2]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:30]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic2]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
@@ -354,7 +351,7 @@
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant];
     [self.tempView addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width - 30];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
     [self.tempView addConstraint:constraint4];
     
 }
@@ -386,7 +383,7 @@
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant ];
     [self.tempView addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width - 30];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
     [self.tempView addConstraint:constraint4];
     
 }
@@ -419,7 +416,7 @@
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic5 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant ];
     [self.tempView addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic5 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width - 30];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic5 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
     [self.tempView addConstraint:constraint4];
     
 }
@@ -427,7 +424,7 @@
 
 - (IBAction)liked:(id)sender {
     id<LikedProfileProtocol> strongDelegate = self.delegate;
-    [strongDelegate likeCurrent];
+    [strongDelegate likeCurrent:YES];
     
 }
 
@@ -481,30 +478,12 @@
 
 -(void)initPageController
 {
-    CGFloat radius = self.pc1.frame.size.width / 2;
     
     blueColor = self.name_label.textColor;
     
     [self setCurrentPage:0];
     
-    self.pc1.layer.cornerRadius = radius;
-    self.pc2.layer.cornerRadius = radius;
-    self.pc3.layer.cornerRadius = radius;
-    self.pc4.layer.cornerRadius = radius;
-    self.pc5.layer.cornerRadius = radius;
-    
-    
-    
-    self.pc1.layer.borderColor = blueColor.CGColor;
-    self.pc1.layer.borderWidth = 1;
-    self.pc2.layer.borderColor = blueColor.CGColor;
-    self.pc2.layer.borderWidth = 1;
-    self.pc3.layer.borderColor = blueColor.CGColor;
-    self.pc3.layer.borderWidth = 1;
-    self.pc4.layer.borderColor = blueColor.CGColor;
-    self.pc4.layer.borderWidth = 1;
-    self.pc5.layer.borderColor = blueColor.CGColor;
-    self.pc5.layer.borderWidth = 1;
+
     if (pic_count == 1)
     {
         [self hideAllPCs];
@@ -514,18 +493,18 @@
         [self.pc3 setHidden:YES];
         [self.pc4 setHidden:YES];
         [self.pc5 setHidden:YES];
-        self.centerConstraint.constant = 18;
+        self.centerConstraint.constant = 28;
     }
     else if (pic_count == 3)
     {
-        [self.pc4 setHidden:YES];
-        [self.pc5 setHidden:YES];
-        self.centerConstraint.constant = 12;
+     [self.pc4 setHidden:YES];
+     [self.pc5 setHidden:YES];
+     self.centerConstraint.constant = 21;
     }
     else if (pic_count == 4)
     {
         [self.pc5 setHidden:YES];
-        self.centerConstraint.constant = 6;
+        self.centerConstraint.constant = 14;
         
     }
     
@@ -549,46 +528,92 @@
     
     if (index == 0)
     {
-        self.pc1.backgroundColor = blueColor;
-        self.pc2.backgroundColor = [UIColor clearColor];
-        self.pc3.backgroundColor = [UIColor clearColor];
-        self.pc4.backgroundColor = [UIColor clearColor];
-        self.pc5.backgroundColor = [UIColor clearColor];
+        
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             [self.pc1 setImage:[UIImage imageNamed:@"indicator_active"]];
+                             [self.pc2 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc3 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc4 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc5 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             
+                         }];
+        
         
     }
     else if (index == 1)
     {
-        self.pc1.backgroundColor = [UIColor clearColor];
-        self.pc2.backgroundColor = blueColor;
-        self.pc3.backgroundColor = [UIColor clearColor];
-        self.pc4.backgroundColor = [UIColor clearColor];
-        self.pc5.backgroundColor = [UIColor clearColor];
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             [self.pc1 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc2 setImage:[UIImage imageNamed:@"indicator_active"]];
+                             [self.pc3 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc4 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc5 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             
+                         }];
     }
     else if (index == 2)
     {
-        self.pc1.backgroundColor = [UIColor clearColor];
-        self.pc2.backgroundColor = [UIColor clearColor];
-        self.pc3.backgroundColor = blueColor;
-        self.pc4.backgroundColor = [UIColor clearColor];
-        self.pc5.backgroundColor = [UIColor clearColor];
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             [self.pc1 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc2 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc3 setImage:[UIImage imageNamed:@"indicator_active"]];
+                             [self.pc4 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc5 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             
+                         }];
     }
     else if (index == 3)
     {
-        self.pc1.backgroundColor = [UIColor clearColor];
-        self.pc2.backgroundColor = [UIColor clearColor];
-        self.pc3.backgroundColor = [UIColor clearColor];
-        self.pc4.backgroundColor = blueColor;
-        self.pc5.backgroundColor = [UIColor clearColor];
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             [self.pc1 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc2 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc3 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc4 setImage:[UIImage imageNamed:@"indicator_active"]];
+                             [self.pc5 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             
+                         }];
     }
     else if (index == 4)
     {
-        self.pc1.backgroundColor = [UIColor clearColor];
-        self.pc2.backgroundColor = [UIColor clearColor];
-        self.pc3.backgroundColor = [UIColor clearColor];
-        self.pc4.backgroundColor = [UIColor clearColor];
-        self.pc5.backgroundColor = blueColor;
+        
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                             [self.pc1 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc2 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc3 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc4 setImage:[UIImage imageNamed:@"indicator_inactive"]];
+                             [self.pc5 setImage:[UIImage imageNamed:@"indicator_active"]];
+                             
+                         }];
     }
     
     
 }
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"messageSegue"])
+    {
+        UINavigationController *nc = segue.destinationViewController;
+        MessageViewController *vc = (MessageViewController *)nc.topViewController;
+        vc.delegateModal = self;
+    }
+}
+
+- (void)didDismissMessageViewController:(MessageViewController *)vc
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+-(UIColor*)bgGray
+{
+    return [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
+}
+
 @end

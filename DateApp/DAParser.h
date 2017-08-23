@@ -11,8 +11,10 @@
 @interface DAParser : NSObject
 
 +(NSMutableArray*)nearbyUsers:(NSDictionary*)dict;
-+(void)currentMatch:(NSDictionary*)dict;
++(void)currentMatch:(NSDictionary*)dict notif:(BOOL)notification;
 +(void)alternateMatches:(NSDictionary*)dict;
-
-
++(User*)myprofile:(NSDictionary*)dict;
++(User*)mysettings:(NSDictionary*)dict;
++(NSArray*)messages:(NSDictionary*)recieved_dict sent:(NSDictionary*)sent_dict;
++(bool)messageNew:(NSDictionary*)recieved_dict sent:(NSDictionary*)sent_dict;
 @end

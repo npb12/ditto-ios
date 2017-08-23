@@ -8,11 +8,15 @@
 
 #import "FBPhotosViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+@import TOCropViewController;
 
 
-@interface FBPhotosViewController ()
+@interface FBPhotosViewController ()<TOCropViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL didLoad;
+
+@property (nonatomic, assign) TOCropViewCroppingStyle croppingStyle; //The cropping style
+
 
 
 @end
@@ -37,8 +41,10 @@
         }];
 
     
+    CGFloat dimen = [[UIScreen mainScreen] bounds].size.width;
+
     
-    self.collectionViewWidth.constant = self.view.frame.size.width / 1.1;
+    self.collectionViewWidth.constant = dimen;
 
     
     
@@ -114,8 +120,8 @@
 {
     
     
-    CGFloat width = self.view.bounds.size.width / 3.4;
-    CGFloat height = self.view.bounds.size.width / 3.4;
+    CGFloat width = self.view.bounds.size.width / 3;
+    CGFloat height = self.view.bounds.size.width / 3;
     
     
     return CGSizeMake(width, height);
@@ -123,13 +129,13 @@
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
     
-    return 1;
+    return 0;
 }
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
     
     if ([[[PhotoManager singletonInstance] photos] count] > 0) {
-        return 3;
+        return 0;
     }
     
     return 0;
@@ -152,6 +158,17 @@
     singleInstance.photo = album.fullSizePhoto;
     
     [self performSegueWithIdentifier:@"singlePhotoSegue" sender:self];
+    
+    /*
+    
+    self.croppingStyle = TOCropViewCroppingStyleDefault;
+    
+    UIImage *image = [UIImage imageNamed:@"girl1"];
+    
+    TOCropViewController *cropController = [[TOCropViewController alloc] initWithCroppingStyle:self.croppingStyle image:image];
+    cropController.delegate = self;
+    
+    [self presentViewController:cropController animated:YES completion:nil]; */
 
 }
 
@@ -162,6 +179,18 @@
 }
 
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    
+    if ([segue.identifier isEqualToString:@"singlePhotoSegue"])
+    {
+        SinglePhotoViewController *vc = segue.destinationViewController;
+        vc.selectedIndex = self.selectedIndex;
+        vc.photos = self.photos;
+    }
+}
 
 /*
 #pragma mark - Navigation

@@ -17,8 +17,25 @@
 @property (nullable, nonatomic, retain) NSString *age;
 @property (nonatomic, assign) NSInteger user_id;
 @property (nullable, nonatomic, retain) NSString *imageRemoteUrl;
+@property (nullable, nonatomic, retain) NSString *profilePic;
 @property (nullable, nonatomic, retain) NSMutableArray *pics;
+@property (nonatomic, assign) NSInteger distance;
+
+
 -(NSMutableArray*)genData;
 
++ (void) saveAsCurrentUser:(User*)currentUser;
++ (User*) currentUser;
+- (NSDictionary*) toDictionary;
++ (User*) fromDictionary:(NSDictionary*)dictionary;
++ (void) removeCurrentUser;
+
+
+#pragma USER SETTINGS
+@property (nullable, nonatomic, retain) NSString *ageRange;
+@property (nullable, nonatomic, retain) NSString *settingsGender;
+@property (nonatomic, assign) NSInteger settingsInvisible;
+@property (nonatomic, assign) NSInteger settingsNotifications;
+@property (nonatomic, assign) NSInteger settingsDistance;
 
 @end

@@ -11,5 +11,6 @@
 @interface PhotosCollectionViewCell : UICollectionViewCell
 @property (strong, nonatomic) IBOutlet UIImageView *photo;
 @property (strong, nonatomic) IBOutlet UIView *borderView;
+@property (strong, nonatomic) IBOutlet UIImageView *actionIcon;
 
 @end

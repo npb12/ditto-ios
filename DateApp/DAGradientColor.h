@@ -7,7 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface DAGradientColor : NSObject
+@interface DAGradientColor : UIColor
+
++ (UIColor*) gradientFromColor:(int)width;
 
 @end

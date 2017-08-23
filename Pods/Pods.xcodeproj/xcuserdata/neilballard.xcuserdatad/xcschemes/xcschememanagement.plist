@@ -4,11 +4,6 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>CocoaAsyncSocket.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>JSQMessagesViewController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -39,25 +34,55 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Socket.IO-Client-Swift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>TOCropViewController-TOCropViewControllerBundle.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>TOCropViewController.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>002E877043426BC9FFDAEC7FC34D36B5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>408F0AADA3BBECAB11B82FA012D1CCA1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>5DA497B6F3DACFF9ADD12B054719729C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A9E4ED0C678B5474756437C21366689C</key>
+		<key>8F2250109DAFD206B3ABED63BEADCF45</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>AC0D2D2B4EE7C873431AB3502859CA60</key>
+		<key>A6C78357E8CFF55393CEC9F88F832DC5</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>BA7133D60EBAD7AAE0AED9203A30E8B7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BDEC61B155514EF629CEC1EF750B9CF8</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -68,11 +93,6 @@
 			<true/>
 		</dict>
 		<key>D0581AF7BF4A6DA140D280B19ECC7BFF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>DAF8ED6503A5578C4F88FC50DDA69B19</key>
 		<dict>
 			<key>primary</key>
 			<true/>

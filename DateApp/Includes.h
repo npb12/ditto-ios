@@ -21,12 +21,8 @@
 
 
 
-#import "TFCellManager.h"
 
-//Data Models
-#import "TFCellData.h"
 
-#import "TFHorizontalCollectionLayout.h"
 
 
 #import "TFStyle.h"
@@ -36,9 +32,7 @@
 
 
 //Daily
-#import "TFDailyVC.h"
-#import "TFDailyCollectionCell.h"
-#import "TFDailyCollectionViewLayout.h"
+
 
 #import "TFConstants.h"
 
@@ -63,9 +57,6 @@
 
 #import "PhotoManager.h"
 
-
-#import "TFDailyItem.h"
-#import "TFDailyTableCell.h"
 
 #import "AppDelegate.h"
 
@@ -94,6 +85,9 @@
 #import "LoginViewController.h"
 #import "MatchUser.h"
 #import "DAParser.h"
+
+#import "DASocket.h"
+#import "UILabelDeviceClass.h"
 
 
 #endif

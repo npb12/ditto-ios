@@ -29,7 +29,7 @@
     UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:effect];
     blurView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     [self.bg_view addSubview:blurView];
-    
+    /*
     self.match_image.image = [self.matched_user.photos objectAtIndex:1];
     
     NSString *current_match_name = self.matched_user.name;
@@ -37,7 +37,7 @@
     self.match_label.text = current_match_name;
     
     self.message_label.text = [NSString stringWithFormat:@"Looks like you have a decision to make! Stay with %@ and ignore this match or let %@ go and match with %@?", current_match_name, current_match_name, @"Sofia"];
-    
+    */
     
     self.search_btn.layer.shadowColor = [self greyblueColor].CGColor;
     self.search_btn.layer.shadowOffset = CGSizeZero;

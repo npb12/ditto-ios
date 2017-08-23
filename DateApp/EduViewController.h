@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface EduViewController : UIViewController
+@interface EduViewController : UIViewController<UIGestureRecognizerDelegate,UIPickerViewDataSource, UIPickerViewDelegate>
 
 @end

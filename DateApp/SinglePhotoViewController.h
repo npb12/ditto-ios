@@ -16,5 +16,9 @@
 
 + (id)singletonInstance;
 
+@property (strong, nonatomic) NSMutableArray *photos;
+@property (nonatomic, assign) NSInteger selectedIndex;
+
+
 
 @end

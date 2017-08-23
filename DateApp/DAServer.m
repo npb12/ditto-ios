@@ -10,6 +10,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
+
 @implementation DAServer
 
 #pragma POST requests
@@ -37,7 +38,7 @@
                      
                      NSString *access_token = [[FBSDKAccessToken currentAccessToken] tokenString];
                      
-                     //           NSLog(@" access token:: %@", access_token);
+                        NSLog(@" access token:: %@", access_token);
                      
                      
                      NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
@@ -96,7 +97,7 @@
                                                                          id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                                                          
                                                                          
-                                                                         NSLog(@"%@", json);
+                                                                         NSLog(@"%@", jsonString);
                                                                          
                                                                          NSDictionary *getdata=[[NSDictionary alloc]init];
                                                                          getdata=[json objectForKey:@"user"];
@@ -111,17 +112,18 @@
                                                                          
                                                                          NSString *age = [getdata objectForKey:@"setAge"];
                                                                          
-                                                                         NSString *picture = [getdata objectForKey:@"picture"];
-                                                                         
+                                                                         NSString *sessionToken = [getdata objectForKey:@"sessionToken"];
                                                                          
                                                                          
                                                                          [[DataAccess singletonInstance] setToken:long_token];
                                                                          [[DataAccess singletonInstance] setUserID:user_id];
                                                                          
+                                                                                                                                                  [[DataAccess singletonInstance] setSessionToken:sessionToken];
+                                                                         
                                                                          [[DataAccess singletonInstance] setName:first_name];
                                                                          
                                                                          
-                                                                         [[DataAccess singletonInstance] setProfileImage:picture];
+                                                                      //   [[DataAccess singletonInstance] setProfileImage:picture];
                                                                          
                                                                          [[DataAccess singletonInstance] setGender:gender];
                                                                          
@@ -145,6 +147,18 @@
     
 }
 
++ (void)facebookLogout
+{
+    FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
+    [loginManager logOut];
+    [User removeCurrentUser];
+    NSDictionary *defaultsDictionary = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    for (NSString *key in [defaultsDictionary allKeys]) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+    }
+    [[DataAccess singletonInstance] setUserLoginStatus:NO];
+}
+
 + (void)postDeviceToken:(NSString*)token
        completion:(void (^)(NSMutableArray *, NSError *))completion {
     
@@ -156,12 +170,15 @@
     
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
+
     
     
     
     NSDictionary *parameters = @{
                                  @"request": @{
                                          @"id": uid,
+                                         @"sessionToken": sessionToken,
                                          @"post": @"token",
                                          @"token": token
                                          }
@@ -189,7 +206,7 @@
                                                     } else {
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
-                                                        NSLog(@"json response: %@", jsonString);
+                                                    //    NSLog(@"json response: %@", jsonString);
                                                         
                                                         completion(temp_users, nil);
                                                         
@@ -212,23 +229,21 @@
     
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
+    double time_stamp = [[NSDate date] timeIntervalSince1970];
     
-    
-    double longitude = 7.361647;
-    double latitude = 48.741333;
-    
-    
-    
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
+
     
     NSDictionary *parameters = @{
                                  @"request": @{
-                                         @"id": @25,
+                                         @"id": uid,
+                                         @"sessionToken": sessionToken,
                                          @"post": @"location",
                                          @"locations": @[
                                                  @{
-                                                     @"timestamp": @"1",
-                                                     @"lon": @(7.258613),
-                                                     @"lat": @(48.767453)
+                                                     @"timestamp": @(time_stamp),
+                                                     @"lon": @([[LocationManager sharedInstance] location].longitude),
+                                                     @"lat": @([[LocationManager sharedInstance] location].latitude)
                                                      }
                                                  ]
                                          }
@@ -260,6 +275,7 @@
                                                         NSData *ns = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                         id json = [NSJSONSerialization JSONObjectWithData:ns options:0 error:nil];
                                                         
+                                                        
                                                         NSDictionary *temp_users=[[NSDictionary alloc]init];
                                                         temp_users=[json objectForKey:@"users"];
                                                         
@@ -269,10 +285,22 @@
                                                         NSDictionary *currentMatch=[[NSDictionary alloc]init];
                                                         currentMatch=[json objectForKey:@"currentMatch"];
                                                         
-                                                        [DAParser alternateMatches:matches];
-                                                       users = [DAParser nearbyUsers:temp_users];
                                                         
-                                                        [DAParser currentMatch:currentMatch];
+                                                        users = [DAParser nearbyUsers:temp_users];
+                                                        if ([currentMatch count] > 0)
+                                                        {
+                                                            [DAParser currentMatch:currentMatch notif:NO];
+                                                        }
+                                                        else
+                                                        {
+                                                            [MatchUser removeCurrentMatch];
+                                                            [[DataAccess singletonInstance] setUserHasMatch:NO];
+                                                        }
+
+                                                        
+                                                        [DAParser alternateMatches:matches];
+
+
                                                         
                                                         completion(users, nil);
                                                         
@@ -292,13 +320,14 @@
     
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
-    
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
     
     
     NSDictionary *parameters = @{
                                  @"request": @{
                                          @"post": @"like",
                                          @"id": uid,
+                                         @"sessionToken": sessionToken,
                                          @"like_id": likedID,
                                          @"like": @(like)
                                          }
@@ -326,7 +355,7 @@
                                                     } else {
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
-                                                        NSLog(@"json response: %@", jsonString);
+                                                    //    NSLog(@"json response: %@", jsonString);
                                                         
                                                         completion(nil);
                                                         
@@ -337,7 +366,7 @@
     
 }
 
-+ (void)dropMatch:(NSString*)matchID
++ (void)dropMatch:(NSString*)message
             completion:(void (^)(NSError *))completion {
     
     
@@ -346,14 +375,15 @@
     
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
-    
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
     
     
     NSDictionary *parameters = @{
                                  @"request": @{
-                                         @"post": @"drop",
+                                         @"post": @"dropCurrent",
                                          @"id": uid,
-                                         @"drop": matchID
+                                         @"sessionToken": sessionToken,
+                                         @"message": message
                                          }
                                  };
     
@@ -379,7 +409,7 @@
                                                     } else {
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
-                                                        NSLog(@"json response: %@", jsonString);
+                                                    //    NSLog(@"json response: %@", jsonString);
                                                         
                                                         completion(nil);
                                                         
@@ -400,13 +430,15 @@
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
     
-    
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
     
     NSDictionary *parameters = @{
                                  @"request": @{
-                                         @"uid": uid,
+                                         @"id": uid,
+                                         @"sessionToken": sessionToken,
                                          @"post": @"confirm",
-                                         @"confirm": likedID
+                                         @"confirm": likedID,
+                                         @"message": @""
                                          }
                                  };
     
@@ -432,7 +464,61 @@
                                                     } else {
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
-                                                        NSLog(@"json response: %@", jsonString);
+                                                    //    NSLog(@"json response: %@", jsonString);
+                                                        
+                                                        completion(nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+    
+    
+}
+
++ (void)dismissAlternateMatch:(NSString*)likedID
+           completion:(void (^)(NSError *))completion {
+    
+    
+    NSDictionary *headers = @{ @"content-type": @"application/json",
+                               @"cache-control": @"no-cache" };
+    
+    NSString *uid = [[DataAccess singletonInstance] getUserID];
+    
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
+    
+    
+    NSDictionary *parameters = @{
+                                 @"request": @{
+                                         @"id": uid,
+                                         @"sessionToken": sessionToken,
+                                         @"post": @"dropMatch",
+                                         @"drop": likedID
+                                         }
+                                 };
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:postData];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+                                                    NSInteger statusCode = [HTTPResponse statusCode];
+                                                    
+                                                    NSLog(@"response is %ld", (long)statusCode);
+                                                    if (error) {
+                                                        completion(error);
+                                                        NSLog(@"%@", error);
+                                                    } else {
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                        
+                                                        //    NSLog(@"json response: %@", jsonString);
                                                         
                                                         completion(nil);
                                                         
@@ -453,10 +539,12 @@
     
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
     
     NSDictionary *parameters = @{
                                  @"request": @{
                                          @"id": uid,
+                                         @"sessionToken": sessionToken,
                                          @"post": @"profile",
                                          type: text
                                          }
@@ -482,7 +570,9 @@
                                                         completion(error);
                                                         NSLog(@"%@", error);
                                                     } else {
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
+                                                        NSLog(@"json response: %@", jsonString);
                                                         completion(nil);
                                                         
                                                     }
@@ -502,10 +592,13 @@
     
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
+
     
     NSDictionary *parameters = @{
                                  @"request": @{
                                          @"id": uid,
+                                         @"sessionToken": sessionToken,
                                          @"post": @"settings",
                                          @"settings": type,
                                          @"value": edit
@@ -542,6 +635,192 @@
     
 }
 
+
++ (void)updateAlbum:(NSMutableArray*)array completion:(void (^)(NSError *))completion {
+    
+    
+    NSDictionary *headers = @{ @"content-type": @"application/json",
+                               @"cache-control": @"no-cache" };
+    
+    NSString *uid = [[DataAccess singletonInstance] getUserID];
+    
+    NSString *photo1 = @"";
+    NSString *photo2 = @"";
+    NSString *photo3 = @"";
+    NSString *photo4 = @"";
+    NSString *photo5 = @"";
+    
+    NSUInteger array_count = [array count];
+    
+    
+
+    if (array_count > 0)
+    {
+        photo1 = array[0];
+        
+        if (array_count > 1)
+        {
+            photo2 = array[1];
+            
+            if (array_count > 2)
+            {
+                photo3 = array[2];
+                
+                if (array_count > 3)
+                {
+                    photo4 = array[3];
+                    
+                    if (array_count > 4)
+                    {
+                        photo5 = array[4];
+                    }
+                }
+            }
+            
+        }
+        
+
+        
+
+        
+
+    }
+    
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
+
+    
+    NSDictionary *parameters = @{
+                                 @"request": @{
+                                         @"id": uid,
+                                         @"sessionToken": sessionToken,
+                                         @"post": @"photos",
+                                         @"photo1": photo1,
+                                         @"photo2": photo2,
+                                         @"photo3": photo3,
+                                         @"photo4": photo4,
+                                         @"photo5": photo5
+                                         }
+                                 };
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:postData];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+                                                    NSInteger statusCode = [HTTPResponse statusCode];
+                                                    
+                                                    NSLog(@"response is %ld", (long)statusCode);
+                                                    if (error) {
+                                                        completion(error);
+                                                        NSLog(@"%@", error);
+                                                    } else {
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                        
+                                                        NSLog(@"json response: %@", jsonString);
+                                                        completion(nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+    
+    
+}
+
++ (void)addLocalPhoto:(UIImage*)image completion:(void (^)(NSError *))completion {
+    
+    NSString* boundary = [[NSProcessInfo processInfo] globallyUniqueString];
+    NSData* imageData = [DAServer createFormDataForImage:image args:nil boundary:boundary objectName:@"pic"];
+    
+    NSString* content_type = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+    
+    NSDictionary *headers = @{ @"content-type": content_type,
+                               @"cache-control": @"no-cache" };
+    
+    NSString *uid = [[DataAccess singletonInstance] getUserID];
+    
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
+
+    
+    NSDictionary *parameters = @{
+                                 @"request": @{
+                                         @"id": uid,
+                                         @"sessionToken": sessionToken,
+                                         @"post": @"addPic",
+                                         }
+                                 };
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    
+    NSMutableData *httpBody = [NSMutableData data];
+    
+    [httpBody appendData:imageData];
+    [httpBody appendData:postData];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:httpBody];
+
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+                                                    NSInteger statusCode = [HTTPResponse statusCode];
+                                                    
+                                                    NSLog(@"response is %ld", (long)statusCode);
+                                                    if (error) {
+                                                        completion(error);
+                                                        NSLog(@"%@", error);
+                                                    } else {
+                                                        
+                                                        completion(nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+    
+    
+}
+
++ (NSData*) createFormDataForImage:(UIImage*)image args:(NSDictionary*)args boundary:(NSString*)boundary objectName:(NSString*)objectName
+{
+    NSData* imageData = UIImageJPEGRepresentation(image, 1.0);
+    
+    NSMutableData* d = [NSMutableData data];
+    
+    for (NSString* k in [args allKeys]) {
+        NSString* val = [args objectForKey:k];
+        [d appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [d appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=%@\r\n\r\n", k] dataUsingEncoding:NSUTF8StringEncoding]];
+        [d appendData:[[NSString stringWithFormat:@"%@\r\n", val] dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
+    if (imageData) {
+        [d appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [d appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=cat-pic.jpg\r\n", objectName] dataUsingEncoding:NSUTF8StringEncoding]];
+        [d appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+        [d appendData:imageData];
+        [d appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+    
+    [d appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    
+    return d;
+}
+
+
 #pragma GET Requests
 
 
@@ -552,7 +831,46 @@
                                @"cache-control": @"no-cache" };
     
     
-    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=profile", [[DataAccess singletonInstance] getUserID]];
+    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=profile&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"GET"];
+    [request setAllHTTPHeaderFields:headers];
+    
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    if (error) {
+                                                        completion(nil, error);
+                                                    } else {
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                        
+                                                        NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+                                                        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+
+                                                        NSDictionary *dict = [json objectForKey:@"infos"];
+                                                        
+                                                        User *user = [DAParser myprofile:dict];
+                                                        
+                                                        completion(user, nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+}
+
+
++ (void)getSettings:(NSString *)param
+        completion:(void (^)(User *, NSError *))completion {
+    
+    NSDictionary *headers = @{ @"content-type": @"application/json",
+                               @"cache-control": @"no-cache" };
+    
+    
+    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=profile&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -572,14 +890,168 @@
                                                         NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                         id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                                         
-                                                        NSLog(@"%@", json);
+                                                        NSDictionary *dict = [json objectForKey:@"infos"];
                                                         
+                                                        User *settings = [DAParser mysettings:dict];
                                                         
-                                                       // completion(user, nil);
+                                                        completion(settings, nil);
                                                         
                                                     }
                                                 }];
     [dataTask resume];
 }
+
++ (void)getMessages:(NSString *)param
+         completion:(void (^)(NSArray *, NSError *))completion {
+    
+    NSDictionary *headers = @{ @"content-type": @"application/json",
+                               @"cache-control": @"no-cache" };
+    
+    
+    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=message&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"GET"];
+    [request setAllHTTPHeaderFields:headers];
+    
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    if (error) {
+                                                        completion(nil, error);
+                                                    } else {
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                        
+                                                        NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+                                                        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                                        
+                                                        
+                                                        NSDictionary *recieved = [json objectForKey:@"recieved"];
+
+                                                        NSDictionary *sent = [json objectForKey:@"sent"];
+
+                                                        
+                                                       NSArray *messages =  [DAParser messages:recieved sent:sent];
+                                                        
+                                                        
+                                                        completion(messages, nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+}
+
++ (void)LastMessageNew:(NSString *)param
+         completion:(void (^)(bool, NSError *))completion {
+    
+    NSDictionary *headers = @{ @"content-type": @"application/json",
+                               @"cache-control": @"no-cache" };
+    
+    
+    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=message&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"GET"];
+    [request setAllHTTPHeaderFields:headers];
+    
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    if (error) {
+                                                        completion(nil, error);
+                                                    } else {
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                        
+                                                        NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+                                                        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                                        
+                                                        
+                                                        NSDictionary *recieved = [json objectForKey:@"recieved"];
+                                                        
+                                                        NSDictionary *sent = [json objectForKey:@"sent"];
+                                                        
+                                                        bool messageNew =  [DAParser messageNew:recieved sent:sent];
+                                                        
+                                                        completion(messageNew, nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+}
+
++ (void)getMatchesData:(BOOL)alt
+         completion:(void (^)(NSError *))completion {
+    
+    NSDictionary *headers = @{ @"content-type": @"application/json",
+                               @"cache-control": @"no-cache" };
+    
+    
+    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=location&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"GET"];
+    [request setAllHTTPHeaderFields:headers];
+    
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    if (error) {
+//                                                        completion(nil, error);
+                                                    } else {
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                        
+                                                        NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+                                                        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                                        
+                                                        NSLog(@"%@", jsonString);
+                                                        
+                                                        
+                                                        NSDictionary *matches=[[NSDictionary alloc]init];
+                                                        matches=[json objectForKey:@"alternateMatchs"];
+                                                        
+                                                        NSDictionary *currentMatch=[[NSDictionary alloc]init];
+                                                        currentMatch=[json objectForKey:@"currentMatch"];
+                                                        
+                                                        
+                                                        if (!alt)
+                                                        {
+                                                            if ([currentMatch count] > 0)
+                                                            {
+                                                                [DAParser currentMatch:currentMatch notif:YES];
+                                                            }
+                                                            else
+                                                            {
+                                                                [MatchUser removeCurrentMatch];
+                                                                [[DataAccess singletonInstance] setUserHasMatch:NO];
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            [DAParser alternateMatches:matches];
+                                                        }
+                                                        
+                                                        
+                                                        
+                                                      //  NSDictionary *dict = [json objectForKey:@"infos"];
+                                                        
+                                                        //User *settings = [DAParser mysettings:dict];
+                                                        
+                                                 //       completion(nil, nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+}
+
+
 
 @end

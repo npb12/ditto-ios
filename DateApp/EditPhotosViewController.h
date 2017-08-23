@@ -7,9 +7,11 @@
 //
 
 #import "Includes.h"
+#import "FBAlbumsViewController.h"
 
 @interface EditPhotosViewController : UIViewController
-                <UICollectionViewDelegate,UICollectionViewDataSource, UIGestureRecognizerDelegate>
+                <UICollectionViewDelegate,UICollectionViewDataSource, UIGestureRecognizerDelegate,
+                UITextViewDelegate>
 
 
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -22,8 +24,16 @@
 
 @property (strong, nonatomic) IBOutlet UITextView *occu_textview;
 
+@property (nullable, strong, nonatomic)  NSMutableArray *pics;
+
+
 - (IBAction)go_back:(id)sender;
 - (IBAction)delete_photos:(id)sender;
 - (IBAction)goto_albums:(id)sender;
+
+@property (strong, nonatomic) IBOutlet UIView *gradientView;
+@property (strong, nonatomic) IBOutlet UILabel *headerLabel;
+
+@property (strong, nonatomic) User *user;
 
 @end

@@ -34,6 +34,11 @@ static const int MAX_BUFFER_SIZE = 2;
     cardsLoadedIndex = 0;
     [self loadCards];
     self.userInteractionEnabled = YES;
+    
+    if ([[DataAccess singletonInstance] UserHasMatch])
+    {
+        self.userInteractionEnabled = NO;
+    }
 }
 
 
@@ -52,10 +57,10 @@ static const int MAX_BUFFER_SIZE = 2;
 
     
     NSLog(@"%ld", (long)index);
-        pad = 60;
-        x_pad = 5;
-        CARD_HEIGHT = self.frame.size.height - 145;
-        CARD_WIDTH = self.frame.size.width - 10;
+        pad = 10;
+        x_pad = 10;
+    CARD_HEIGHT = self.frame.size.height / 1.4;
+        CARD_WIDTH = self.frame.size.width - 20;
 
     
     User *user = [userCards objectAtIndex:index];
@@ -134,8 +139,8 @@ static const int MAX_BUFFER_SIZE = 2;
     
 
     
-    id<MatchSegueProtocol> strongDelegate = self.matched_delegate;
-    [strongDelegate goToMatchedSegue:self obj:nil];
+  //  id<MatchSegueProtocol> strongDelegate = self.matched_delegate;
+  //  [strongDelegate goToMatchedSegue:self obj:nil];
 
 }
 
@@ -199,9 +204,16 @@ static const int MAX_BUFFER_SIZE = 2;
     
 }
 
--(void)likedCurrent{
+-(void)likedCurrent:(BOOL)option{
     DraggableView *dragView = [loadedCards firstObject];
-    [dragView rightClickAction];
+    if (option)
+    {
+        [dragView rightClickAction];
+    }
+    else
+    {
+        [dragView leftClickAction];
+    }
 }
 
 -(void)noSwipingAlert{
@@ -214,6 +226,27 @@ static const int MAX_BUFFER_SIZE = 2;
     [strongDelegate selectedProfile:user];
 }
 
+
+-(void)updateUnmatch
+{
+    [self setUserInteractionEnabled:YES];
+    
+    for (int i = 0; i<[loadedCards count]; i++)
+    {
+        [[loadedCards objectAtIndex:i] updateUnmatch];
+    }
+}
+
+-(void)updateMatch
+{
+    [self setUserInteractionEnabled:NO];
+    
+    for (int i = 0; i<[loadedCards count]; i++)
+    {
+        [[loadedCards objectAtIndex:i] updateMatch];
+    }
+
+}
 
 
 @end

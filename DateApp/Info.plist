@@ -61,8 +61,17 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This application requires location services to calculate your encounters</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access your photos to add to your album</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Ditto uses your camera to take pictures for your album</string>
 	<key>Fonts provided by application</key>
 	<array>
+		<string>RooneySansLF-Regular.otf</string>
+		<string>RooneySansLF-Medium.otf</string>
+		<string>RooneyLF-Regular.otf</string>
+		<string>RooneyLF-MediumItalic.otf</string>
+		<string>RooneyLF-Medium.otf</string>
 		<string>Roboto-Bold.ttf</string>
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-Light.ttf</string>

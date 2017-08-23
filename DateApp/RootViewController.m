@@ -7,14 +7,13 @@
 //
 
 #import "Includes.h"
+#import "DAGradientColor.h"
 
-@interface RootViewController ()<GoToProfileProtocol>{
-    int nCurIdx;
-    UIButton* btn0;
-    UIButton* btn1;
-    UIButton* btn2;
+@interface RootViewController ()<GoToProfileProtocol,MessageViewControllerDelegate,LikedProfileProtocol>{
+    int nCurIdx, nPrevIdx;
     UIColor* purpleColor;
-    CAGradientLayer *gradient;
+    BOOL isMatch;
+    BOOL notif;
 }
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
@@ -25,11 +24,27 @@
 @property (strong, nonatomic) NSArray *pageTitles;
 @property (strong, nonatomic) NSArray *pageImages;
 
+@property (strong, nonatomic) NSMutableArray *altMatches;
+
+@property (strong, nonatomic) IBOutlet UIButton *profileBtn;
+@property (strong, nonatomic) IBOutlet UIButton *likeBtn;
+@property (strong, nonatomic) IBOutlet UIButton *unmatchBtn;
+
+@property (strong, nonatomic) IBOutlet UIView *topView;
+
 @property (strong, nonatomic) UINavigationBar *navBar;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *nav_height;
 
-@property (strong, nonatomic) IBOutlet UIView *topview;
+@property (strong, nonatomic) IBOutlet UIView *bottomView;
+
+@property (strong, nonatomic) IBOutlet UIButton *noButton;
+
+
+@property (strong, nonatomic) IBOutlet UILabel *discoverLabel;
+@property (strong, nonatomic) IBOutlet UILabel *mymatchLabel;
+
+
 @end
 
 @implementation RootViewController
@@ -37,9 +52,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    purpleColor = self.topview.backgroundColor;
     
     [self initViewController];
+
     
 }
 
@@ -54,28 +69,29 @@
     else
     {
         [LocationManager sharedInstance];
+        [[LocationManager sharedInstance] addObserver:self forKeyPath:@"location" options:NSKeyValueObservingOptionNew context:nil];
+        
+  //      if (![[DataAccess singletonInstance] askedForNotifications])
+   //     {
         [(AppDelegate*)[UIApplication sharedApplication].delegate registerForRemoteNotifications];
-
-        User *user = [User new];
+            
+    //    }
         
         
-        [DAServer postLocation:user completion:^(NSMutableArray *result, NSError *error) {
-            // here, update the UI to say "Not busy anymore"
-            if (!error) {
-                if ([result count] > 0) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (self.swipeVC)
-                        {
-                          [self.swipeVC loadCards:result];
-                        }
-                        
-                    });
-                }
-            } else {
-                // update UI to indicate error or take remedial action
-            }
-        }];
-    
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self selector:@selector(altMatchesNotification:) name:@"altMatchesNotification" object:nil];
+        
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self selector:@selector(currentMatchNotification:) name:@"currentMatchNotification" object:nil];
+        
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self selector:@selector(noMatchNotification:) name:@"noMatchNotification" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self
+                                                 selector: @selector(goToMessaging)
+                                                     name: @"callSegue"
+                                                   object: nil];
+        
     }
  
 }
@@ -83,149 +99,89 @@
 
 -(void)initViewController{
     
-    self.pageTitles = @[@"VC1", @"VC2", @"VC3"];
-    //  _pageImages = @[@"page1.png", @"page2.png", @"page3.png", @"page4.png"];
-    // Do any additional setup after loading the view.
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.view.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([[UIColor whiteColor] colorWithAlphaComponent:1.0].CGColor),(id)([[self bgGray] colorWithAlphaComponent:1].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.5,0.0);
+    gradient.endPoint = CGPointMake(0.5,1.0);
+    [self.view.layer insertSublayer:gradient atIndex:0];
+    
+    self.pageTitles = @[@"VC1", @"VC2"];
     self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
     self.pageViewController.delegate = self;
     
+    
   //  SwipeViewController *startingViewController = [self dailyControllerAtIndex:1];
     SwipeViewController *startingViewController = [self dailyControllerAtIndex:1];
-    startingViewController.profile_delegate = self;
-
     NSArray *viewControllers = @[startingViewController];
     [self.pageViewController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-    nCurIdx = 1;
+    nCurIdx = 0;
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat height = [UIScreen mainScreen].bounds.size.height * 0.15;
+
     
     // Change the size of page view controller
-    self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    self.pageViewController.view.frame = CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height);
     
-    btn0 = [[UIButton alloc] initWithFrame:CGRectMake(10,15,45,45)];
-    [btn0 setBackgroundColor:[UIColor whiteColor]];
-    btn0.layer.cornerRadius = 22.5;
-    btn0.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    btn0.layer.shadowOpacity = 0.75;
-    btn0.layer.shadowRadius = 3;
-    btn0.layer.shadowOffset = CGSizeZero;
-  //  [btn0 setAlpha:0.3];
-//    btn0.layer.borderWidth = 2;
-  //  btn0.layer.borderColor = [UIColor whiteColor].CGColor;
-    [btn0 setImage:[UIImage imageNamed:@"Settings_Big"] forState:UIControlStateNormal];
-    btn0.layer.masksToBounds = NO;
-    [btn0 addTarget:self action:@selector(onLeftClick) forControlEvents:UIControlEventTouchUpInside];
-    [_topview addSubview:btn0];
+    
+    self.nav_height.constant = height;
+    
+    CGFloat sideSize = width / 9.5;
+    CGFloat bigSize = width / 4.5;
+
+
+    self.profileBtn.frame = CGRectMake(20,sideSize * 1.1,sideSize,sideSize);
+    self.unmatchBtn.frame = CGRectMake(width / 1.2,sideSize * 1.1,sideSize,sideSize);
     
 
-    
-    btn1 = [[UIButton alloc] initWithFrame:CGRectMake(width/2 - 37.5,-10,75,75)];
-  //  [btn1 setTitle:@"PairMe" forState:UIControlStateNormal];
-    [btn1 setImage:[UIImage imageNamed:@"heart_icon"] forState:UIControlStateNormal];
-  //  [self addGradientLayer:btn1];
-    [btn1 setBackgroundColor:[UIColor whiteColor]];
-    btn1.layer.cornerRadius = 37.5;
-    btn1.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    btn1.layer.shadowOpacity = 0.75;
-    btn1.layer.shadowRadius = 3;
-    btn1.layer.shadowOffset = CGSizeZero;
-    [btn1 addTarget:self action:@selector(onMiddleClick) forControlEvents:UIControlEventTouchUpInside];
-    btn1.enabled = YES;
-  //  btn1.layer.borderWidth = 2;
-  //  btn1.layer.borderColor = [UIColor whiteColor].CGColor;
-    [_topview addSubview:btn1];
-    
-    btn2 = [[UIButton alloc] initWithFrame:CGRectMake(width-55,15,45,45)];
-    btn2.layer.cornerRadius = 22.5;
 
-    if (/* DISABLES CODE */ (1))
-    {
-        btn2.layer.borderWidth = 2;
-        btn2.layer.borderColor = [UIColor whiteColor].CGColor;
-        [btn2 setImage:[UIImage imageNamed:@"girl1"] forState:UIControlStateNormal];
-        btn2.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-        btn2.layer.shadowOpacity = 0.75;
-        btn2.layer.shadowRadius = 3;
-        btn2.layer.shadowOffset = CGSizeZero;
-        btn2.layer.masksToBounds = NO;
-        btn2.imageView.layer.cornerRadius = 22.5;
-    }
-    else
-    {
-        [btn2 setBackgroundColor:[UIColor whiteColor]];
-        btn2.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-        btn2.layer.shadowOpacity = 0.75;
-        btn2.layer.shadowRadius = 3;
-        btn2.layer.shadowOffset = CGSizeZero;
-        [btn2 setImage:[UIImage imageNamed:@"heart2_Icon"] forState:UIControlStateNormal];
-        btn2.layer.masksToBounds = NO;
-    }
-    
+    [self.profileBtn setBackgroundColor:[UIColor clearColor]];
+    [self.profileBtn setAlpha:0.9];
+    self.profileBtn.layer.masksToBounds = NO;
 
-    [btn2 addTarget:self action:@selector(onRightClick) forControlEvents:UIControlEventTouchUpInside];
-    [_topview addSubview:btn2];
-    
-    
+    self.likeBtn.frame = CGRectMake(self.view.frame.size.width / 1.9,bigSize * 0.05,bigSize,bigSize);
+
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
-    [self.view bringSubviewToFront:self.topview];
+    [self.view bringSubviewToFront:self.bottomView];
+    
+    self.indicatorView.frame = CGRectMake(10, 60, width/2 - 10, 2);
+    [self addGradientLayer];
+    
+    self.noButton.frame = CGRectMake(self.view.frame.size.width / 4.1,bigSize * 0.05,bigSize,bigSize);
+
+    self.chatBtn.frame = CGRectMake(self.view.frame.size.width / 2 - 42,bigSize * 0.05,bigSize,bigSize);
+
+    self.discoverLabel.textColor = [DAGradientColor gradientFromColor:self.discoverLabel.frame.size.width];
+    
+    
+    if (![[DataAccess singletonInstance] UserHasMatch])
+    {
+        [self.unmatchBtn setHidden:YES];
+        [self.chatBtn setHidden:YES];
+    
+    }
+    else
+    {
+        [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
+        [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
+        [self.unmatchBtn setHidden:NO];
+    }
+
+    [self.chatBtn setAlpha:1.0];
+    [self.chatBtn setHidden:YES];
 }
 
 
--(void) onLeftClick {
-  //  self.topview.backgroundColor = purpleColor;
-    [self offsetScrol:0];
-    
-    [btn0 setHidden:YES];
- //   [btn0 setImage:[UIImage imageNamed:@"gear_1"] forState:UIControlStateNormal];
- //   btn0.layer.cornerRadius = 37.5;
-  //  btn0.layer.backgroundColor = [self purpleColor].CGColor;
-   // btn0.layer.borderWidth = 2;
-   // btn0.layer.borderColor = [UIColor whiteColor].CGColor;
- /*   btn0.layer.shadowColor = [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] CGColor];
-    btn0.layer.shadowOffset = CGSizeMake(0, 2.5f);
-    btn0.layer.shadowOpacity = 0.0f;
-    btn0.layer.shadowRadius = 0.0f;
-    btn0.layer.masksToBounds = NO;
-    btn0.backgroundColor = [self purpleColor];
-    
-    /*
-    [self removeGradientLayer:btn1];
-   // [btn1 setBackgroundColor:[self othBlueColor]];
-    btn1.layer.cornerRadius = 22.5;
-    btn1.layer.masksToBounds = NO;
-    btn1.layer.shadowOffset = CGSizeMake(0, 0.0f);
-    btn1.layer.shadowOpacity = 0.0f;
-    btn1.layer.shadowRadius = 0.0f; */
-    [btn1 setImage:[UIImage imageNamed:@"heart_icon"] forState:UIControlStateNormal];
-    btn1.layer.cornerRadius = 22.5;
-    [btn1 setAlpha:0.5];
-
-
- //   [self performSegueWithIdentifier:@"messageNotificationSegue" sender:self];
-    
-    
-    
-    if (!self.menuVC) {
-        self.menuVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MenuVC"];
-    }
-    self.menuVC.pageIndex = 0;
-    if( self.menuVC ) {
-        NSArray *viewControllers = @[self.menuVC];
-        [self.pageViewController setViewControllers:viewControllers
-                                          direction:UIPageViewControllerNavigationDirectionReverse
-                                           animated:YES
-                                         completion:nil];
-    }
-}
-
-
+/*
 -(void) onMiddleClick {
     
     
-    btn2.userInteractionEnabled = YES;
-    if (nCurIdx == 1) {
+    
+    
+    if (nCurIdx == 0) {
         
         NSArray * controllerArray = self.pageViewController.childViewControllers;
         
@@ -240,78 +196,30 @@
             }
         }
         
-      //  SwipeViewController *swipeVC = [ firstObject];
-        if (swipeVC) {
-            [self showHeartAnimation];
-            [swipeVC likeCurrentCard];
+        if (swipeVC)
+        {
+            if (![[DataAccess singletonInstance] UserHasMatch])
+            {
+                [self showHeartAnimation];
+                [swipeVC likeCurrentCard];
+            }
+
         }
         return;
     }
     
-//   self.topview.backgroundColor = purpleColor;
+    
     NSInteger orient;
-    [btn0 setHidden:NO];
-    [btn0 setImage:[UIImage imageNamed:@"Settings_Big"] forState:UIControlStateNormal];
-    [btn0 setBackgroundColor:[UIColor whiteColor]];
-    btn0.layer.cornerRadius = 22.5;
-    btn0.layer.masksToBounds = NO;
-    btn0.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    btn0.layer.shadowOpacity = 0.75;
-    btn0.layer.shadowRadius = 3;
-    btn0.layer.shadowOffset = CGSizeZero;
-    btn0.layer.borderWidth = 0;
-    
-    [btn1 setImage:[UIImage imageNamed:@"heart_icon"] forState:UIControlStateNormal];
-    btn1.layer.cornerRadius = 37.5;
-    [btn1 setAlpha:1];
-    
-    
-    btn2.layer.cornerRadius = 22.5;
-    if (/* DISABLES CODE */ (1))
-    {
-        btn2.layer.borderWidth = 2;
-        btn2.layer.borderColor = [UIColor whiteColor].CGColor;
-        [btn2 setImage:[UIImage imageNamed:@"girl1"] forState:UIControlStateNormal];
-        btn2.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-        btn2.layer.shadowOpacity = 0.75;
-        btn2.layer.shadowRadius = 3;
-        btn2.layer.shadowOffset = CGSizeZero;
-        btn2.layer.masksToBounds = NO;
-        btn2.imageView.layer.cornerRadius = 22.5;
-    }
-    else
-    {
-        [btn2 setBackgroundColor:[UIColor whiteColor]];
-        btn2.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-        btn2.layer.shadowOpacity = 0.75;
-        btn2.layer.shadowRadius = 3;
-        btn2.layer.shadowOffset = CGSizeZero;
-        [btn2 setImage:[UIImage imageNamed:@"heart2_Icon"] forState:UIControlStateNormal];
-        btn2.layer.masksToBounds = NO;
-    }
-    
-    
 
-    /*
-    [btn2 setBackgroundColor:[UIColor whiteColor]];
-    btn2.layer.cornerRadius = 22.5;
-    [btn2 setImage:[UIImage imageNamed:@"heart2_Icon"] forState:UIControlStateNormal];
-    btn2.layer.masksToBounds = NO;
-    btn2.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    btn2.layer.shadowOpacity = 0.75;
-    btn2.layer.shadowRadius = 3;
-    btn2.layer.shadowOffset = CGSizeZero;
-    btn2.layer.borderWidth = 0;
-    btn2.imageView.layer.cornerRadius = 0; */
-    
-  //  btn1.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:30];
-    if( btn0.frame.origin.x < 0 )
-        orient = UIPageViewControllerNavigationDirectionReverse;
-    else
+    if( nPrevIdx == 0 )
         orient = UIPageViewControllerNavigationDirectionForward;
-    
+    else
+        orient = UIPageViewControllerNavigationDirectionReverse;
+ 
     [self offsetScrol:1];
     
+
+
     if (!self.swipeVC) {
         self.swipeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SwipeVC"];
     }
@@ -322,50 +230,37 @@
                                            animated:YES
                                          completion:nil];
     }
+} */
+
+-(void) onRightClick
+{
+    if([[DataAccess singletonInstance] UserHasMatch])
+    {
+        [self unmatchUser];
+    }
 }
 
--(void) onRightClick {
- //   self.topview.backgroundColor = [UIColor clearColor];
+
+-(void)noSwipingAlert{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Swiper no swiping!"
+                                                                   message:@"You can't swipe while matched with someone."
+                                                            preferredStyle:UIAlertControllerStyleAlert]; // 1
+    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"OKAY"
+                                                          style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                                                              
+                                                          }]; // 2
     
-    if (nCurIdx == 2) {
-        
-        [self unmatchAction];
-        return;
-    }
-
-    [self offsetScrol:2];
-    [btn1 setImage:[UIImage imageNamed:@"heart_icon"] forState:UIControlStateNormal];
-    btn1.layer.cornerRadius = 22.5;
-    [btn1 setAlpha:0.7];
-
-    [btn2 setImage:[UIImage imageNamed:@"falling_heart"] forState:UIControlStateNormal];
-    [btn2 setBackgroundColor:[self pinkColor]];
-    btn2.layer.cornerRadius = 37.5;
-    [btn2 setAlpha:1];
-  //  btn2.layer.masksToBounds = NO;
-  //  btn2.layer.shadowOffset = CGSizeMake(0, 0.0f);
-  //  btn2.layer.shadowOpacity = 0.0f;
-  //  btn2.layer.shadowRadius = 0.0f;
-   btn2.layer.borderWidth = 2;
-   btn2.layer.borderColor = [UIColor whiteColor].CGColor;
-   btn2.imageView.layer.cornerRadius = 0;
-
-
-    if (!self.matchVC) {
-        self.matchVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MatchVC"];
-    }
-    self.matchVC.delegate = self;
-    self.matchVC.pageIndex = 2;
-    if( self.matchVC ) {
-        [self.pageViewController setViewControllers:@[self.matchVC]
-                                          direction:UIPageViewControllerNavigationDirectionForward
-                                           animated:YES
-                                         completion:nil];
-    }
+    
+    [alert addAction:firstAction]; // 4
+    
+    [self presentViewController:alert animated:YES completion:nil]; // 6
 }
 
 -(void) viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
+    
+   // [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
+
     
 }
 
@@ -377,40 +272,55 @@
 -(void) offsetScrol : (int) i {
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    CGFloat duration = 0.3;
+    CGFloat duration = 0.1;
     
     nCurIdx = i;
     
+    
     if( i == 0 ) {
         [UIView animateWithDuration:duration animations:^{
-            btn0.frame = CGRectMake(width/2 - 37.5,-10,75,75);
-            btn1.frame = CGRectMake(width - 55,15,45,45);
-            btn2.frame = CGRectMake(width*2, 15, 45, 45);
+
+            self.indicatorView.alpha = 1;
+            self.indicatorView.frame = CGRectMake(10, 60, width/2 - 10, 2);
+            [self.noButton setHidden:NO];
+            [self.likeBtn setHidden:NO];
+            [self.chatBtn setAlpha:0];
+            [self.chatBtn setHidden:YES];
+            [self.profileBtn setHidden:NO];
+            [self.mymatchLabel setTextColor:[self grayColor]];
+            self.discoverLabel.textColor = [DAGradientColor gradientFromColor:self.discoverLabel.frame.size.width];
             
-            btn0.enabled = true;
-            btn1.enabled = true;
         }];
         
     } else if( i == 1 ) {
         [UIView animateWithDuration:duration animations:^{
-            btn0.frame = CGRectMake(10,15,45,45);
-            btn1.frame = CGRectMake(width/2 - 37.5,-10,75,75);
-            btn2.frame = CGRectMake(width - 55,15,45,45);
-            
-            
-            btn1.enabled = YES;
-            btn0.enabled = btn2.enabled = YES;
-        }];
-    } else {
-        [UIView animateWithDuration:duration animations:^{
-            btn0.frame = CGRectMake(-width*2, 15, 45, 45);
-            btn1.frame = CGRectMake(10,15,45,45);
-            btn2.frame = CGRectMake(width/2 - 37.5,-10,75,75);
+   
+            self.indicatorView.frame = CGRectMake(width/2, 60, width/2 - 10, 2);
+            [self.noButton setHidden:YES];
+            [self.likeBtn setHidden:YES];
+            [self.discoverLabel setTextColor:[self grayColor]];
+            self.mymatchLabel.textColor = [DAGradientColor gradientFromColor:self.mymatchLabel.frame.size.width];
 
-            btn1.enabled = YES;
-            btn2.enabled = YES;
+            
+            if (![[DataAccess singletonInstance] UserHasMatch])
+            {
+           //     [self.profileBtn setHidden:YES];
+                [self.chatBtn setAlpha:0.0];
+                [self.chatBtn setHidden:YES];
+
+            }
+            else
+            {
+           //     [self.profileBtn setHidden:NO];
+                [self.chatBtn setAlpha:1.0];
+                [self.chatBtn setHidden:NO];
+
+            }
+            
+            
         }];
     }
+
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
@@ -495,9 +405,11 @@
     // Create a new view controller and pass suitable data.
     if (!self.swipeVC) {
         self.swipeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SwipeVC"];
+        self.swipeVC.profile_delegate = self;
     }
   //  SwipeViewController *dailyVC =
     self.swipeVC.pageIndex = index;
+
     
     return self.swipeVC;
 }
@@ -550,10 +462,10 @@
     
     NSInteger index = ((MenuViewController*)[pageViewController.viewControllers lastObject]).pageIndex;
     if (index != 1) {
-     //   [btn1 setImage:[UIImage imageNamed:@"falling_heart"] forState:UIControlStateNormal];
-      //  [btn1 setTitle:@"" forState:UIControlStateNormal];
+     //   [likeBtn setImage:[UIImage imageNamed:@"falling_heart"] forState:UIControlStateNormal];
+      //  [likeBtn setTitle:@"" forState:UIControlStateNormal];
     }else{
-    //    [btn1 setImage:[UIImage imageNamed:@"pairme_logo"] forState:UIControlStateNormal];
+    //    [likeBtn setImage:[UIImage imageNamed:@"pairme_logo"] forState:UIControlStateNormal];
    
     }
     [self offsetScrol:index];
@@ -568,8 +480,14 @@
 
 -(void) goToMessaging
 {
+    [self.chatBtn setImage:[UIImage imageNamed:@"chat_full"] forState:UIControlStateNormal];
     [self performSegueWithIdentifier:@"segueMessageVC" sender:self];
-    
+
+}
+
+-(void)unmatchUser
+{
+    [self unmatchAction];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -614,21 +532,62 @@
             [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
         }
         
-     //   UINavigationController *nc = segue.destinationViewController;
-    //    ProfileViewController *vc = (ProfileViewController *)nc.topViewController;
         ProfileViewController *profileVC = segue.destinationViewController;
         profileVC.user = self.user;
+        profileVC.match = isMatch;
         profileVC.delegate = self;
-       // messageAlertVC.delegate = self;
-        
         
     }
+    else if ([segue.destinationViewController isKindOfClass:[NewMatchConflictViewController class]])
+    {
+        if (self.presentedViewController)
+        {
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        NewMatchConflictViewController *matchVC = (NewMatchConflictViewController *)segue.destinationViewController;
+        if ([[DataAccess singletonInstance] UserHasMatch] && !notif)
+        {
+            matchVC.isConflict = YES;
+        }
+
+        matchVC.altMatches = self.altMatches;
+        matchVC.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+        matchVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    }
+}
+
+-(void)showMatchIcon
+{
+ //   if (nCurIdx == 1)
+ //   {
+        
+        self.unmatchBtn.layer.borderWidth = 2;
+        self.unmatchBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+        [self.unmatchBtn setImage:nil forState:UIControlStateNormal];
+        [self.unmatchBtn setBackgroundColor:[UIColor clearColor]];
+      //  [unmatchBtn setImage:[UIImage imageNamed:@"girl3"] forState:UIControlStateNormal];
+        
+        [self.unmatchBtn sd_setImageWithURL:[NSURL URLWithString:[[MatchUser currentUser].pics objectAtIndex:0]]
+                   forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                             options:SDWebImageRefreshCached];
+        
+        self.unmatchBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+        self.unmatchBtn.layer.shadowOpacity = 0.75;
+        self.unmatchBtn.layer.shadowRadius = 3;
+        self.unmatchBtn.layer.shadowOffset = CGSizeZero;
+        self.unmatchBtn.layer.masksToBounds = NO;
+        self.unmatchBtn.imageView.layer.cornerRadius = 20;
+        
+   // }
 }
 
 - (void)unmatchAction {
     
+    MatchUser *match_user = [MatchUser currentUser];
+    NSString *message = [NSString stringWithFormat:@"Are you sure you want to unmatch %@?", match_user.name];
+    
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Unmatch"
-                                                                   message:@"Are you sure you want to unmatch Neil?"
+                                                                   message:message
                                                             preferredStyle:UIAlertControllerStyleActionSheet]; // 1
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"YES"
                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
@@ -659,6 +618,19 @@
     
 }
 
+-(void)resetMatchButton
+{
+    /*
+    [self.unmatchBtn setBackgroundColor:[UIColor whiteColor]];
+    self.unmatchBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    self.unmatchBtn.layer.shadowOpacity = 0.75;
+    self.unmatchBtn.layer.shadowRadius = 3;
+    self.unmatchBtn.layer.shadowOffset = CGSizeZero;
+    [self.unmatchBtn setImage:[UIImage imageNamed:@"heart2_Icon"] forState:UIControlStateNormal];
+    self.unmatchBtn.layer.masksToBounds = NO;
+    [self.unmatchBtn setAlpha:1.0]; */
+}
+
 - (void)didDismissMessageViewController:(MessageViewController *)vc
 {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -684,47 +656,59 @@
     return [UIColor colorWithRed:0.43 green:0.40 blue:0.77 alpha:1.0];
 }
 
-
-
--(void)addGradientLayer:(UIButton*)button{
-    if (!gradient) {
-        gradient = [CAGradientLayer layer];
-        [button.layer insertSublayer:gradient atIndex:0];
-    }
-    gradient.frame = button.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.25,0.0);
-    gradient.endPoint = CGPointMake(0.25,1.0);
-    [button bringSubviewToFront:button.imageView];
-    button.layer.masksToBounds = YES;
+-(UIColor*)grayColor
+{
+    return [UIColor colorWithRed:0.78 green:0.78 blue:0.80 alpha:1.0];
 }
 
--(void)removeGradientLayer:(UIButton*)button{
-    if (gradient != nil) {
-        [gradient removeFromSuperlayer];
-        gradient = nil;
-    }
+-(UIColor*)bgGray
+{
+    return [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
 }
 
-- (void)sendMessageBack:(NSString *)message{
+
+-(void)addGradientLayer
+{
+    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
+    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
+    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
     
-      [self.matchVC UnmatchSelected:btn2];
-      btn2.userInteractionEnabled = NO;
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.indicatorView.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.0,0.5);
+    gradient.endPoint = CGPointMake(1.0,0.5);
+    [self.indicatorView.layer insertSublayer:gradient atIndex:0];
 }
 
-- (void)gotoMessage{
-    [self goToMessaging];
+
+
+- (void)sendMessageBack:(NSString *)message
+{
+      [self.matchVC UnmatchSelected:self.unmatchBtn];
+      self.unmatchBtn.userInteractionEnabled = NO;
 }
 
--(void)selectedProfile:(User *)user{
+-(void)selectedProfile:(User *)user matched:(BOOL)match{
     self.user = user;
+    isMatch = match;
     [self performSegueWithIdentifier:@"goToProfile" sender:self];
 }
 
--(void)likeCurrent{
+-(void)likeCurrent:(BOOL)option{
     [self dismissViewControllerAnimated:NO completion:^(void){
-        [self showHeartAnimation];
-        [self.swipeVC likeCurrentCard];
+        
+        if (option)
+        {
+            [self showHeartAnimation];
+            [self.swipeVC likeCurrentCard:YES];
+        }
+        else
+        {
+            [self.swipeVC likeCurrentCard:NO];
+        }
+        
+
     }];
 }
 
@@ -733,5 +717,316 @@
      {
      }];
 }
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object  change:(NSDictionary *)change context:(void *)context
+{
+    if([keyPath isEqualToString:@"location"]) {
+        
+        
+        self.curr_location = [LocationManager sharedInstance].location;
+        
+        [[DataAccess singletonInstance] setUserLocation:self.curr_location];
+        
+        User *user = [User new];
+        
+        
+        [DAServer postLocation:user completion:^(NSMutableArray *result, NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+                if ([result count] > 0) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (self.swipeVC)
+                        {
+                            [self.swipeVC loadCards:result];
+                        }
+                        else
+                        {
+                            //figure this stuff out for loading cards before user tranistions
+                            //to index 2
+                        }
+                    });
+                }
+                else
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (self.swipeVC)
+                        {
+                            [self.swipeVC showEmptyLabel];
+                        }
+                    });
+                }
+                
+                if ([[DataAccess singletonInstance] UserHasMatch])
+                {
+                    [self checkForNewMessage];
+                }
+                
+            } else {
+                // update UI to indicate error or take remedial action
+            }
+        }];
+        
+        @try {
+            [object removeObserver:self forKeyPath:@"location"];
+        }
+        @catch (NSException * __unused exception) {}
+        
+        
+    }
+}
+
+-(void)checkForNewMessage
+{
+    [DAServer LastMessageNew:@"" completion:^(bool message, NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error && message) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.chatBtn setImage:[UIImage imageNamed:@"chat_full_message"] forState:UIControlStateNormal];
+            });
+        } else {
+            // update UI to indicate error or take remedial action
+        }
+    }];
+}
+
+-(void) altMatchesNotification:(NSNotification*)notification
+{
+    //if conflict
+    if (notification.object)
+    {
+        self.altMatches = notification.object;
+    }
+    else if(notification.userInfo)
+    {
+      //regular match
+        [self updateMatch];
+        [self.altMatches setObject:notification.userInfo atIndexedSubscript:0];
+        notif = YES;
+    }
+    
+    [[TFHeartAnimationView sharedInstance] showWithAnchorPoint:[self.view convertPoint:self.view.center toView:nil] completion:^(void)
+     {
+     }];
+    
+    [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
+
+    
+    /*
+    if ([[DataAccess singletonInstance] UserHasMatch])
+    {
+        [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"MatchedViewController" sender:self];
+    }
+     */
+    
+}
+
+-(void) currentMatchNotification:(NSNotification*)notification
+{
+    [self.unmatchBtn setImage:[UIImage imageNamed:@"umatch"] forState:UIControlStateNormal];
+}
+
+-(void) noMatchNotification:(NSNotification*)notification
+{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [self updateUnmatch];
+        
+    });
+    
+}
+
+
+- (IBAction)myMatchAction:(id)sender
+{
+    
+    if (nCurIdx == 1) {
+        return;
+    }
+    
+    if (!self.matchVC) {
+        self.matchVC = [self.storyboard instantiateViewControllerWithIdentifier:@"MatchVC"];
+    }
+    [self offsetScrol:1];
+    self.matchVC.delegate = self;
+    self.matchVC.profile_delegate = self;
+    self.matchVC.discoverDelegate = self;
+    self.matchVC.pageIndex = 1;
+    if( self.matchVC ) {
+        [self.pageViewController setViewControllers:@[self.matchVC]
+                                          direction:UIPageViewControllerNavigationDirectionForward
+                                           animated:YES
+                                         completion:nil];
+    }
+}
+
+
+- (IBAction)discoverAction:(id)sender
+{
+    
+    if (nCurIdx == 0)
+    {
+        return;
+    }
+    
+    
+    [self offsetScrol:0];
+    
+    
+    
+    if (!self.swipeVC) {
+        self.swipeVC = [self.storyboard instantiateViewControllerWithIdentifier:@"SwipeVC"];
+    }
+    self.swipeVC.pageIndex = 1;
+    if( self.swipeVC ) {
+        [self.pageViewController setViewControllers:@[self.swipeVC]
+                                          direction:UIPageViewControllerNavigationDirectionReverse
+                                           animated:YES
+                                         completion:nil];
+    }
+}
+
+-(void)discoverSelected
+{
+    [self discoverAction:self];
+}
+
+-(void)updateUnmatch
+{
+    [self.noButton setUserInteractionEnabled:YES];
+    [self.likeBtn setUserInteractionEnabled:YES];
+    [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
+    [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
+    
+    
+    [self.unmatchBtn setHidden:YES];
+    
+    if (nCurIdx == 1)
+    {
+        [self.chatBtn setHidden:YES];
+    }
+    
+    if (self.swipeVC)
+    {
+        [self.swipeVC updateUnmatch];
+    }
+    
+    if (self.matchVC)
+    {
+        [self.matchVC updateUnmatch];
+    }
+
+    
+}
+
+
+-(void)updateMatch
+{
+    
+    [self.unmatchBtn setHidden:NO];
+    [self.unmatchBtn setUserInteractionEnabled:YES];
+    [self.noButton setUserInteractionEnabled:NO];
+    [self.likeBtn setUserInteractionEnabled:NO];
+    [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
+    [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
+    
+    if (nCurIdx == 1)
+    {
+        [self.chatBtn setHidden:NO];
+    }
+    
+    if (self.swipeVC != nil)
+    {
+        [self.swipeVC updateMatch];
+    }
+    
+    if (self.matchVC)
+    {
+        [self.matchVC updateMatch];
+    }
+    
+}
+
+
+- (IBAction)profileAction:(id)sender
+{
+    [self performSegueWithIdentifier:@"proSegue" sender:self];
+
+}
+
+- (IBAction)gotoMessaging:(id)sender
+{
+    if ([[DataAccess singletonInstance] UserHasMatch])
+    {
+        [self goToMessaging];
+    }
+}
+- (IBAction)likeAction:(id)sender
+{
+    NSArray * controllerArray = self.pageViewController.childViewControllers;
+    
+    SwipeViewController *swipeVC;
+    
+    for (UIViewController *controller in controllerArray){
+        if([controller isKindOfClass:[SwipeViewController class]])
+        {
+            swipeVC = (SwipeViewController*) controller;
+        }
+    }
+    
+    if (swipeVC)
+    {
+        if (![[DataAccess singletonInstance] UserHasMatch])
+        {
+            [self showHeartAnimation];
+            [swipeVC likeCurrentCard:YES];
+        }
+        
+    }
+    return;
+}
+
+- (IBAction)dislikeAction:(id)sender
+{
+    NSArray * controllerArray = self.pageViewController.childViewControllers;
+    
+    SwipeViewController *swipeVC;
+    
+    for (UIViewController *controller in controllerArray){
+        if([controller isKindOfClass:[SwipeViewController class]])
+        {
+            swipeVC = (SwipeViewController*) controller;
+        }
+    }
+    
+    if (swipeVC)
+    {
+        if (![[DataAccess singletonInstance] UserHasMatch])
+        {
+            [swipeVC likeCurrentCard:NO];
+        }
+        
+    }
+    return;
+}
+
+- (IBAction)unmatchSelected:(id)sender
+{
+    if([[DataAccess singletonInstance] UserHasMatch])
+    {
+        [self performSegueWithIdentifier:@"partingSegue" sender:self];
+        
+    }
+}
+
+
+-(IBAction)logoutUnwind:(UIStoryboardSegue *)segue {
+    NSLog(@"unwinding");
+}
+
 
 @end

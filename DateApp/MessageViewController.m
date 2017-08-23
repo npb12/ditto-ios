@@ -7,27 +7,15 @@
 //
 
 #import "MessageViewController.h"
+#import "DAGradientColor.h"
 
-@interface MessageViewController ()<GCDAsyncSocketDelegate>
-{
-    GCDAsyncSocket *asyncSocket;
-}
+@interface MessageViewController ()
 
 @property(nonatomic, strong)NSMutableArray *dataWriteQueue;
+@property(nonatomic, strong)DASocket *socket;
 
 @end
 
-
-#define USE_SECURE_CONNECTION 0
-#define ENABLE_BACKGROUNDING  0
-
-#if USE_SECURE_CONNECTION
-#define HOST @"173.230.135.159"
-#define PORT 9900
-#else
-#define HOST @"173.230.135.159"
-#define PORT 9900
-#endif
 
 
 @implementation MessageViewController
@@ -37,7 +25,12 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Neil";
+    MatchUser *matchuser = [MatchUser currentUser];
+    
+    self.title = matchuser.name;
+
+//    [self.navigationController.navigationItem.leftBarButtonItem setImage:[UIImage imageNamed:@"close_icon"]];
+    
 
 
     messages = [[NSMutableArray alloc] init];
@@ -46,10 +39,22 @@
     self.inputToolbar.contentView.textView.pasteDelegate = self;
     self.inputToolbar.contentView.leftBarButtonItem = nil;
     
-    /**
-     *  Load up our fake data for the demo
-     */
-    self.demoData = [[MessageModelData alloc] init];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(newMessageReceived:) name:@"newMessageReceived" object:nil];
+
+    
+    [DAServer getMessages:@"" completion:^(NSArray *messages, NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.demoData = [[MessageModelData alloc] initWithMessages:messages type:FULL_CONVERSATION];
+                [self.collectionView reloadData];
+                [self scrollToBottomAnimated:YES];
+            });
+        } else {
+            // update UI to indicate error or take remedial action
+        }
+    }];
     
     
     /**
@@ -80,371 +85,86 @@
     /**
      *  Register custom menu actions for cells.
      */
-    [JSQMessagesCollectionViewCell registerMenuAction:@selector(customAction:)];
-    
-    
-    /**
-     *  OPT-IN: allow cells to be deleted
-     */
-    [JSQMessagesCollectionViewCell registerMenuAction:@selector(delete:)];
-    
-  //  [self initNetworkCommunication];
-    
-    /**
-     *  Customize your toolbar buttons
-     *
-     *  self.inputToolbar.contentView.leftBarButtonItem = custom button or nil to remove
-     *  self.inputToolbar.contentView.rightBarButtonItem = custom button or nil to remove
-     */
-    
-    /**
-     *  Set a maximum height for the input toolbar
-     *
-     *  self.inputToolbar.maximumHeight = 150;
-     */
+//    [JSQMessagesCollectionViewCell registerMenuAction:@selector(customAction:)];
 
     
-    dispatch_queue_t mainQueue = dispatch_get_main_queue();
-    
-    asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:mainQueue];
-    
-#if USE_SECURE_CONNECTION
-    {
-        NSString *host = HOST;
-        uint16_t port = PORT;
-        
-        NSLog(@"Connecting to \"%@\" on port %hu...", host, port);
-        //self.viewController.label.text = @"Connecting...";
-        
-        NSError *error = nil;
-        if (![asyncSocket connectToHost:host onPort:port error:&error])
-        {
-            NSLog(@"Error connecting: %@", error);
-           // self.viewController.label.text = @"Oops";
-        }
-    }
-#else
-    {
-        NSString *host = HOST;
-        uint16_t port = PORT;
-        
-        NSLog(@"Connecting to \"%@\" on port %hu...", host, port);
-      //  self.viewController.label.text = @"Connecting...";
-        
-        NSError *error = nil;
-        if (![asyncSocket connectToHost:host onPort:port error:&error])
-        {
-            NSLog(@"Error connecting: %@", error);
-         //   self.viewController.label.text = @"Oops";
-        }
-        
-        // You can also specify an optional connect timeout.
-        
-        //	NSError *error = nil;
-        //	if (![asyncSocket connectToHost:host onPort:80 withTimeout:5.0 error:&error])
-        //	{
-        //		DDLogError(@"Error connecting: %@", error);
-        //	}
-        
-    }
-#endif
-    
-    
-    /*
-    socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
 
-    NSError *err = nil;
-    if (![socket connectToHost:@"173.230.135.159" onPort:9900 error:&err]) // Asynchronous!
-    {
-        // If there was an error, it's likely something like "already connected" or "no delegate set"
-        NSLog(@"I goofed: %@", err);
-    } */
+
+
     
+    self.socket = [DASocket sharedInstance];
     
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-#pragma mark Socket Delegate
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-- (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port
-{
-    NSLog(@"socket:%p didConnectToHost:%@ port:%hu", sock, host, port);
-  //  self.viewController.label.text = @"Connected";
-    
-    //	DDLogInfo(@"localHost :%@ port:%hu", [sock localHost], [sock localPort]);
-    
-#if USE_SECURE_CONNECTION
-    {
-        // Connected to secure server (HTTPS)
-        
-#if ENABLE_BACKGROUNDING && !TARGET_IPHONE_SIMULATOR
-        {
-            // Backgrounding doesn't seem to be supported on the simulator yet
-            
-            [sock performBlock:^{
-                if ([sock enableBackgroundingOnSocket])
-                    NSLog(@"Enabled backgrounding on socket");
-                else
-                    NSLog(@"Enabling backgrounding failed!");
-            }];
-        }
-#endif
-        
-        // Configure SSL/TLS settings
-        NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithCapacity:3];
-        
-        // If you simply want to ensure that the remote host's certificate is valid,
-        // then you can use an empty dictionary.
-        
-        // If you know the name of the remote host, then you should specify the name here.
-        //
-        // NOTE:
-        // You should understand the security implications if you do not specify the peer name.
-        // Please see the documentation for the startTLS method in GCDAsyncSocket.h for a full discussion.
-        
-        [settings setObject:host
-                     forKey:(NSString *)kCFStreamSSLPeerName];
-        
-        // To connect to a test server, with a self-signed certificate, use settings similar to this:
-        
-        //	// Allow expired certificates
-        //	[settings setObject:[NSNumber numberWithBool:YES]
-        //				 forKey:(NSString *)kCFStreamSSLAllowsExpiredCertificates];
-        //
-        //	// Allow self-signed certificates
-        //	[settings setObject:[NSNumber numberWithBool:YES]
-        //				 forKey:(NSString *)kCFStreamSSLAllowsAnyRoot];
-        //
-        //	// In fact, don't even validate the certificate chain
-        //	[settings setObject:[NSNumber numberWithBool:NO]
-        //				 forKey:(NSString *)kCFStreamSSLValidatesCertificateChain];
-        
-        NSLog(@"Starting TLS with settings:\n%@", settings);
-        
-        [sock startTLS:settings];
-        
-        // You can also pass nil to the startTLS method, which is the same as passing an empty dictionary.
-        // Again, you should understand the security implications of doing so.
-        // Please see the documentation for the startTLS method in GCDAsyncSocket.h for a full discussion.
-        
-    }
-#else
-    {
-        // Connected to normal server (HTTP)
-        
-#if ENABLE_BACKGROUNDING && !TARGET_IPHONE_SIMULATOR
-        {
-            // Backgrounding doesn't seem to be supported on the simulator yet
-            
-            [sock performBlock:^{
-                if ([sock enableBackgroundingOnSocket])
-                    DDLogInfo(@"Enabled backgrounding on socket");
-                else
-                    DDLogWarn(@"Enabling backgrounding failed!");
-            }];
-        }
-#endif
-    }
-#endif
-}
-
-- (void)socketDidSecure:(GCDAsyncSocket *)sock
-{
-    NSLog(@"socketDidSecure:%p", sock);
-   // self.viewController.label.text = @"Connected + Secure";
-    
-    NSString *requestStr = [NSString stringWithFormat:@"GET / HTTP/1.1\r\nHost: %@\r\n\r\n", HOST];
-    NSData *requestData = [requestStr dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [sock writeData:requestData withTimeout:-1 tag:0];
-    [sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
-}
-
-- (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag
-{
-    NSLog(@"socket:%p didWriteDataWithTag:%ld", sock, tag);
-}
-
-- (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
-{
-    NSLog(@"socket:%p didReadData:withTag:%ld", sock, tag);
-    
-    NSString *httpResponse = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    
-    NSLog(@"HTTP Response:\n%@", httpResponse);
-    
-}
-
-- (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err
-{
-    NSLog(@"socketDidDisconnect:%p withError: %@", sock, err);
-   // self.viewController.label.text = @"Disconnected";
-}
-
-/*
-- (void)socket:(GCDAsyncSocket *)sender didConnectToHost:(NSString *)host port:(UInt16)port
-{
-    NSLog(@"Cool, I'm connected! That was easy.");
-    
-   // [socket startTLS:nil];
-
-} */
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-  //  [self reconnect];
     
-  //  [self reconnect:nil];
     
     if (self.delegateModal) {
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
-                                                                                              target:self
-                                                                                              action:@selector(closePressed:)];
+        
+        /*
+         
+         UIBarButtonItem *_btn=[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"XXXXXXX.png"]
+         style:UIBarButtonItemStylePlain
+         target:self
+         action:@selector(yourMethod)];
+         
+         self.navigationItem.rightBarButtonItem=_btn;
+
+         */
+        
+        UIImage *image =
+        [[UIImage imageNamed:@"close_icon"]
+         imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:image
+                                                                                style:UIBarButtonItemStylePlain
+                                                                               target:self
+                                                                               action:@selector(closePressed:)];
+        
     }
-    
+}
+
+-(void)scrollToBottom
+{//Scrolls to bottom of scroller
+    CGPoint bottomOffset = CGPointMake(0, self.collectionView.contentSize.height - self.collectionView.bounds.size.height);
+    [self.collectionView setContentOffset:bottomOffset animated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    
-    
+
     /**
      *  Enable/disable springy bubbles, default is NO.
      *  You must set this from `viewDidAppear:`
      *  Note: this feature is mostly stable, but still experimental
      */
     self.collectionView.collectionViewLayout.springinessEnabled = YES;
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    
 
+}
+
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:NO];
+    [self.socket disconnectSocket];
 }
 
 
 - (IBAction)reconnect:(id)sender
 {
 
-}
-
-
-
-
-///--------------------------------------
-#pragma mark - Actions
-///--------------------------------------
-
-
-
-- (void)initNetworkCommunication {
-    
-    uint portNo = 9900;
-    CFReadStreamRef readStream;
-    CFWriteStreamRef writeStream;
-    CFStreamCreatePairWithSocketToHost(NULL, (CFStringRef)@"173.230.135.159", portNo, &readStream, &writeStream);
-    inputStream = (__bridge NSInputStream *)readStream;
-    outputStream = (__bridge NSOutputStream *)writeStream;
-    
-    [inputStream setDelegate:self];
-    [outputStream setDelegate:self];
-    
-    [inputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [outputStream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-    [inputStream open];
-    [outputStream open];
-    
-    [self joinChat];
-}
-
-
-
-- (void)joinChat {
-    
-    NSString *response  = [NSString stringWithFormat:@"Neil"];
-    NSData *data = [[NSData alloc] initWithData:[response dataUsingEncoding:NSASCIIStringEncoding]];
-    [outputStream write:[data bytes] maxLength:[data length]];
-    
-}
-
-- (void)stream:(NSStream *)theStream handleEvent:(NSStreamEvent)streamEvent {
-    typedef enum {
-        NSStreamEventNone = 0,
-        NSStreamEventOpenCompleted = 1 << 0,
-        NSStreamEventHasBytesAvailable = 1 << 1,
-        NSStreamEventHasSpaceAvailable = 1 << 2,
-        NSStreamEventErrorOccurred = 1 << 3,
-        NSStreamEventEndEncountered = 1 << 4
-    };
-    uint8_t buffer[1024];
-    int len;
-    
-    switch (streamEvent) {
-            
-        case NSStreamEventOpenCompleted:
-            NSLog(@"Stream opened now");
-            break;
-        case NSStreamEventHasBytesAvailable:
-            NSLog(@"has bytes");
-            if (theStream == inputStream) {
-                while ([inputStream hasBytesAvailable]) {
-                    len = [inputStream read:buffer maxLength:sizeof(buffer)];
-                    if (len > 0) {
-                        
-                        NSString *output = [[NSString alloc] initWithBytes:buffer length:len encoding:NSASCIIStringEncoding];
-                        
-                        if (nil != output) {
-                            NSLog(@"server said: %@", output);
-                        }
-                    }
-                }
-            } else {
-                NSLog(@"it is NOT theStream == inputStream");
-            }
-            break;
-        case NSStreamEventHasSpaceAvailable:
-            NSLog(@"Stream has space available now");
-          //  [self _sendData];
-
-       /*     if (theStream == outputStream) {
-                NSData* data = [@"helllooo" dataUsingEncoding:NSUTF8StringEncoding];//str is my string to send
-                int byteIndex = 0;
-                uint8_t *readBytes = (uint8_t *)[data bytes];
-                readBytes += byteIndex; // instance variable to move pointer
-                int data_len = [data length];
-                // NSLog(@"%i",[data length]);
-                unsigned int len = ((data_len - byteIndex >= 1024) ?
-                                    1024 : (data_len-byteIndex));
-                uint8_t buf[len];
-                (void)memcpy(buf, readBytes, len);
-                len = [outputStream write:(const uint8_t *)buf maxLength:len];
-                byteIndex += len;
-                
-            } */
-            break;
-            
-            
-        case NSStreamEventErrorOccurred:
-            NSLog(@"Can not connect to the host!");
-            break;
-            
-            
-        case NSStreamEventEndEncountered:
-            
-            [theStream close];
-            [theStream removeFromRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-            
-            break;
-            
-        default:
-            NSLog(@"Unknown event %i", streamEvent);
-    }
-    
 }
 
 #pragma mark - Custom menu actions for cells
@@ -501,87 +221,20 @@
      *  Allow typing indicator to show
      */
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
-        NSMutableArray *userIds = [[self.demoData.users allKeys] mutableCopy];
-        [userIds removeObject:self.senderId];
-        NSString *randomUserId = userIds[arc4random_uniform((int)[userIds count])];
+
         
         JSQMessage *newMessage = nil;
-        id<JSQMessageMediaData> newMediaData = nil;
-        id newMediaAttachmentCopy = nil;
-        
-        if (copyMessage.isMediaMessage) {
-            /**
-             *  Last message was a media message
-             */
-            id<JSQMessageMediaData> copyMediaData = copyMessage.media;
-            
-            if ([copyMediaData isKindOfClass:[JSQPhotoMediaItem class]]) {
-                JSQPhotoMediaItem *photoItemCopy = [((JSQPhotoMediaItem *)copyMediaData) copy];
-                photoItemCopy.appliesMediaViewMaskAsOutgoing = NO;
-                newMediaAttachmentCopy = [UIImage imageWithCGImage:photoItemCopy.image.CGImage];
-                
-                /**
-                 *  Set image to nil to simulate "downloading" the image
-                 *  and show the placeholder view
-                 */
-                photoItemCopy.image = nil;
-                
-                newMediaData = photoItemCopy;
-            }
-            else if ([copyMediaData isKindOfClass:[JSQLocationMediaItem class]]) {
-                JSQLocationMediaItem *locationItemCopy = [((JSQLocationMediaItem *)copyMediaData) copy];
-                locationItemCopy.appliesMediaViewMaskAsOutgoing = NO;
-                newMediaAttachmentCopy = [locationItemCopy.location copy];
-                
-                /**
-                 *  Set location to nil to simulate "downloading" the location data
-                 */
-                locationItemCopy.location = nil;
-                
-                newMediaData = locationItemCopy;
-            }
-            else if ([copyMediaData isKindOfClass:[JSQVideoMediaItem class]]) {
-                JSQVideoMediaItem *videoItemCopy = [((JSQVideoMediaItem *)copyMediaData) copy];
-                videoItemCopy.appliesMediaViewMaskAsOutgoing = NO;
-                newMediaAttachmentCopy = [videoItemCopy.fileURL copy];
-                
-                /**
-                 *  Reset video item to simulate "downloading" the video
-                 */
-                videoItemCopy.fileURL = nil;
-                videoItemCopy.isReadyToPlay = NO;
-                
-                newMediaData = videoItemCopy;
-            }
-            else if ([copyMediaData isKindOfClass:[JSQAudioMediaItem class]]) {
-                JSQAudioMediaItem *audioItemCopy = [((JSQAudioMediaItem *)copyMediaData) copy];
-                audioItemCopy.appliesMediaViewMaskAsOutgoing = NO;
-                newMediaAttachmentCopy = [audioItemCopy.audioData copy];
-                
-                /**
-                 *  Reset audio item to simulate "downloading" the audio
-                 */
-                audioItemCopy.audioData = nil;
-                
-                newMediaData = audioItemCopy;
-            }
-            else {
-                NSLog(@"%s error: unrecognized media item", __PRETTY_FUNCTION__);
-            }
-            
-            newMessage = [JSQMessage messageWithSenderId:randomUserId
-                                             displayName:self.demoData.users[randomUserId]
-                                                   media:newMediaData];
-        }
-        else {
+
+        MatchUser *matchuser = [MatchUser currentUser];
+
+        NSString *uid = [NSString stringWithFormat:@"%ld",(long)matchuser.user_id];
             /**
              *  Last message was a text message
              */
-            newMessage = [JSQMessage messageWithSenderId:randomUserId
-                                             displayName:self.demoData.users[randomUserId]
+            newMessage = [JSQMessage messageWithSenderId:uid
+                                             displayName:matchuser.name
                                                     text:copyMessage.text];
-        }
+
         
         /**
          *  Upon receiving a message, you should:
@@ -597,43 +250,7 @@
         [self finishReceivingMessageAnimated:YES];
         
         
-        if (newMessage.isMediaMessage) {
-            /**
-             *  Simulate "downloading" media
-             */
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                /**
-                 *  Media is "finished downloading", re-display visible cells
-                 *
-                 *  If media cell is not visible, the next time it is dequeued the view controller will display its new attachment data
-                 *
-                 *  Reload the specific item, or simply call `reloadData`
-                 */
-                
-                if ([newMediaData isKindOfClass:[JSQPhotoMediaItem class]]) {
-                    ((JSQPhotoMediaItem *)newMediaData).image = newMediaAttachmentCopy;
-                    [self.collectionView reloadData];
-                }
-                else if ([newMediaData isKindOfClass:[JSQLocationMediaItem class]]) {
-                    [((JSQLocationMediaItem *)newMediaData)setLocation:newMediaAttachmentCopy withCompletionHandler:^{
-                        [self.collectionView reloadData];
-                    }];
-                }
-                else if ([newMediaData isKindOfClass:[JSQVideoMediaItem class]]) {
-                    ((JSQVideoMediaItem *)newMediaData).fileURL = newMediaAttachmentCopy;
-                    ((JSQVideoMediaItem *)newMediaData).isReadyToPlay = YES;
-                    [self.collectionView reloadData];
-                }
-                else if ([newMediaData isKindOfClass:[JSQAudioMediaItem class]]) {
-                    ((JSQAudioMediaItem *)newMediaData).audioData = newMediaAttachmentCopy;
-                    [self.collectionView reloadData];
-                }
-                else {
-                    NSLog(@"%s error: unrecognized media item", __PRETTY_FUNCTION__);
-                }
-                
-            });
-        }
+
         
     });
 }
@@ -672,10 +289,13 @@
     [self.demoData.messages addObject:message];
     
     [self sendMessage:text];
-    NSData *dd = [[NSData alloc] initWithData:[@"hellooooo" dataUsingEncoding:NSASCIIStringEncoding]];
-   // [self sendData:dd];
     
     [self finishSendingMessageAnimated:YES];
+}
+
+-(void)sendMessage:(NSString*)message
+{
+    [self.socket sendMessage:message];
 }
 
 - (void)didPressAccessoryButton:(UIButton *)sender
@@ -708,11 +328,11 @@
 #pragma mark - JSQMessages CollectionView DataSource
 
 - (NSString *)senderId {
-    return kJSQDemoAvatarIdSquires;
+    return [[DataAccess singletonInstance] getUserID];
 }
 
 - (NSString *)senderDisplayName {
-    return kJSQDemoAvatarDisplayNameSquires;
+    return [[DataAccess singletonInstance] getName];
 }
 
 - (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView *)collectionView messageDataForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -737,10 +357,11 @@
     JSQMessage *message = [self.demoData.messages objectAtIndex:indexPath.item];
     
     if ([message.senderId isEqualToString:self.senderId]) {
-        return self.demoData.outgoingBubbleImageData;
+       // return self.demoData.outgoingBubbleImageData;
+        return [[[JSQMessagesBubbleImageFactory alloc] init] outgoingMessagesBubbleImageWithColor:[self blueBG]];
     }
     
-    return [[[JSQMessagesBubbleImageFactory alloc] init] incomingMessagesBubbleImageWithColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"incoming_bubble"]]];
+    return [[[JSQMessagesBubbleImageFactory alloc] init] incomingMessagesBubbleImageWithColor:[self grayBG]];
     
 
 }
@@ -771,18 +392,15 @@
     JSQMessage *message = [self.demoData.messages objectAtIndex:indexPath.item];
     
     if ([message.senderId isEqualToString:self.senderId]) {
-        if (![NSUserDefaults outgoingAvatarSetting]) {
+
             return nil;
-        }
     }
-    else {
-        if (![NSUserDefaults incomingAvatarSetting]) {
-            return nil;
-        }
+    else
+    {
+        return [self.demoData.avatars objectForKey:kJSQDemoAvatarIdWoz];
     }
     
     
-    return [self.demoData.avatars objectForKey:message.senderId];
 }
 
 - (NSAttributedString *)collectionView:(JSQMessagesCollectionView *)collectionView attributedTextForCellTopLabelAtIndexPath:(NSIndexPath *)indexPath
@@ -793,12 +411,12 @@
      *
      *  Show a timestamp for every 3rd message
      */
-    if (indexPath.item % 3 == 0) {
+  //  if (indexPath.item % 3 == 0) {
         JSQMessage *message = [self.demoData.messages objectAtIndex:indexPath.item];
         return [[JSQMessagesTimestampFormatter sharedFormatter] attributedTimestampForDate:message.date];
-    }
+  //  }
     
-    return nil;
+   // return nil;
 }
 
 - (NSAttributedString *)collectionView:(JSQMessagesCollectionView *)collectionView attributedTextForMessageBubbleTopLabelAtIndexPath:(NSIndexPath *)indexPath
@@ -834,7 +452,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [messages count];
+    return [self.demoData.messages count];
 }
 
 - (UICollectionViewCell *)collectionView:(JSQMessagesCollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -863,10 +481,10 @@
     if (!msg.isMediaMessage) {
         
         if ([msg.senderId isEqualToString:self.senderId]) {
-            cell.textView.textColor = [self darkTextColor];
+            cell.textView.textColor = [UIColor lightTextColor];
         }
         else {
-            cell.textView.textColor = [UIColor whiteColor];
+            cell.textView.textColor = [UIColor darkGrayColor];
         }
         
         cell.textView.linkTextAttributes = @{ NSForegroundColorAttributeName : cell.textView.textColor,
@@ -938,9 +556,9 @@
      *
      *  Show a timestamp for every 3rd message
      */
-    if (indexPath.item % 3 == 0) {
+ //   if (indexPath.item % 3 == 0) {
         return kJSQMessagesCollectionViewCellLabelHeightDefault;
-    }
+  //  }
     
     return 0.0f;
 }
@@ -1021,42 +639,83 @@
 }
 
 
-/*
-- (void)socketDidSecure:(GCDAsyncSocket *)sock
+-(UIColor*)grayBG
 {
-    NSLog(@"socketDidSecure:%p", sock);
-    
-    NSString *requestStr = [NSString stringWithFormat:@"GET / HTTP/1.1\r\nHost: %@\r\n\r\n", @"173.230.135.159"];
-    NSData *requestData = [requestStr dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [sock writeData:requestData withTimeout:-1 tag:0];
-    [sock readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1 tag:0];
+    return [UIColor colorWithRed:0.96 green:0.96 blue:0.96 alpha:1.0];
 }
 
-- (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag
+-(UIColor*)blueBG
 {
-    NSLog(@"socket:%p didWriteDataWithTag:%ld", sock, tag);
+    return [UIColor colorWithRed:0.57 green:0.67 blue:0.90 alpha:1.0];
 }
 
-- (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
-{
-    NSLog(@"socket:%p didReadData:withTag:%ld", sock, tag);
-    
-    NSString *httpResponse = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    
-    NSLog(@"HTTP Response:\n%@", httpResponse);
-    
-}
-*/
 
--(void)sendMessage:(NSString*)message
+-(void)newMessageReceived:(NSNotification*)notification
 {
     
-    NSData *data = [message dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary* userInfo = notification.userInfo;
+    Messages *message = (Messages*)userInfo[@"new_message"];
+    /**
+     *  Scroll to actually view the indicator
+     */
+    [self scrollToBottomAnimated:YES];
     
-    [asyncSocket writeData:data withTimeout:-1 tag:1];
+    /**
+     *  Copy last sent message, this will be the new "received" message
+     */
+    /*
+    JSQMessage *copyMessage = [MessageModelData MessageReceived:message];
+    
+    if (!copyMessage) {
+        copyMessage = [JSQMessage messageWithSenderId:kJSQDemoAvatarIdJobs
+                                          displayName:kJSQDemoAvatarDisplayNameJobs
+                                                 text:@"First received!"];
+    } */
+    
+    /**
+     *  Allow typing indicator to show
+     */
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        /*
+        JSQMessage *newMessage = nil;
+        
+        MatchUser *matchuser = [MatchUser currentUser];
+        
+        NSString *uid = [NSString stringWithFormat:@"%ld",(long)matchuser.user_id];
 
-
+        newMessage = [JSQMessage messageWithSenderId:uid
+                                         displayName:matchuser.name
+                                                text:message.message]; */
+        
+        MatchUser *matchuser = [MatchUser currentUser];
+        
+        NSString *uid = [NSString stringWithFormat:@"%ld",(long)matchuser.user_id];
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.timestamp ];
+        
+        JSQMessage *newMessage = [[JSQMessage alloc] initWithSenderId:uid
+                                             senderDisplayName:matchuser.name
+                                                          date:date
+                                                          text:NSLocalizedString(message.message, nil)];
+        
+        
+        /**
+         *  Upon receiving a message, you should:
+         *
+         *  1. Play sound (optional)
+         *  2. Add new id<JSQMessageData> object to your data source
+         *  3. Call `finishReceivingMessage`
+         */
+        
+        // [JSQSystemSoundPlayer jsq_playMessageReceivedSound];
+        
+        [self.demoData.messages addObject:newMessage];
+        [self finishReceivingMessageAnimated:YES];
+        
+        
+    });
 }
+
 
 @end

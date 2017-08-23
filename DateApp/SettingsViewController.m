@@ -7,6 +7,7 @@
 //
 
 #import "Includes.h"
+#import "DAGradientColor.h"
 
 
 
@@ -19,18 +20,75 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) IBOutlet UIView *navbar;
+
+@property (strong, nonatomic)  User *settings;
+
+@property (strong, nonatomic) NSString *ageRange;
+@property (strong, nonatomic) NSString *distance;
+
+@property (strong, nonatomic) UILabel *ageRangeLabel;
+@property (strong, nonatomic) UILabel *distanceLabel;
+@property (strong, nonatomic) IBOutlet UILabel *headerLabel;
+@property (strong, nonatomic) IBOutlet UIView *gradientView;
+
+
 @end
 
-@implementation SettingsViewController
+@implementation SettingsViewController{
+    BOOL ageRangeChanged;
+    BOOL distanceChanged;
+
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.headerLabel.textColor = [DAGradientColor gradientFromColor:self.headerLabel.frame.size.width];
     
+    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
+    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
+    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+    
+    [self.gradientView layoutIfNeeded];
+    
+    CAGradientLayer *grad = [CAGradientLayer layer];
+    grad.frame = self.gradientView.bounds;
+    grad.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
+    grad.startPoint = CGPointMake(0.0,0.5);
+    grad.endPoint = CGPointMake(1.0,0.5);
+    [self.gradientView.layer insertSublayer:grad atIndex:0];
+    
+    self.navbar.layer.masksToBounds = NO;
+    self.navbar.layer.shadowOffset = CGSizeMake(-2, 2);
+    self.navbar.layer.shadowRadius = 0.05;
+    self.navbar.layer.shadowOpacity = 0.05;
+    self.navbar.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    
+    [DAServer getSettings:@"" completion:^(User *settings, NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.settings = settings;
+                
+                self.ageRange = self.settings.ageRange;
+                [self splitAgeRange];
+                self.distance = [NSString stringWithFormat:@"%ld miles", (long)self.settings.settingsDistance];
+                [self setdistanceValue];
+                [self updateGenderSelection];
+                [self updateInvisibleSwitch];
+                [self updateNotificationsSwitch];
+                [self.tableView reloadData];
+            });
+        } else {
+            // update UI to indicate error or take remedial action
+        }
+    }];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView sizeToFit];
+    
+    
     
 }
 
@@ -46,6 +104,66 @@
 }
 
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:NO];
+    
+    //ceil(self.ageRangeSlider.lowerValue), ceil(self.ageRangeSlider.upperValue)
+    if (ageRangeChanged)
+    {
+        NSIndexPath *indexPath =[NSIndexPath indexPathForRow:1 inSection:0];
+        
+        SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        NSString *minValue = [NSString stringWithFormat:@"%d", (int) ceil(cell.doubleSlider.minimumSliderValue)];
+        
+        NSString *maxValue = [NSString stringWithFormat:@"%d", (int) ceil(cell.doubleSlider.maximumSliderValue)];
+        
+        NSString *value = [NSString stringWithFormat:@"%@-%@", minValue, maxValue];
+        [self updateServer:@"settingsAge" selection:value];
+    }
+    
+    
+    if (distanceChanged)
+    {
+        NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:0];
+        
+        SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+        
+        NSString *value = [NSString stringWithFormat:@"%d", (int)cell.distance_slider.value];
+        [self updateServer:@"settingsDistance" selection:value];
+    }
+}
+
+
+-(void)splitAgeRange
+{
+    NSArray *items = [self.ageRange componentsSeparatedByString:@"-"];   //take the one array for split the string
+    
+    NSString *lowerValue=[items objectAtIndex:0];
+    NSString *upperValue=[items objectAtIndex:1];
+    
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:1 inSection:0];
+    
+    SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    if (cell != nil)
+    {
+     //   [cell.doubleSlider setMinimumValue:[lowerValue floatValue]];
+    //    [cell.doubleSlider setMaximumValue:[upperValue floatValue]];
+        
+        cell.doubleSlider.minimumSliderValue = [lowerValue floatValue];
+        cell.doubleSlider.maximumSliderValue = [upperValue floatValue];
+
+
+     //   [cell.sliderDataLabel setText:[NSString stringWithFormat:@"%.0f mi. Away", ceil(cell.distance_slider.value)]];
+        
+        cell.sliderDataLabel.text = [NSString stringWithFormat:@"%@ - %@", lowerValue, upperValue];
+    }
+    
+   // self.ageRangeSlider.lowerValue = [lowerValue integerValue];
+   // self.ageRangeSlider.upperValue = [upperValue integerValue];
+}
 
 /*
 #pragma mark - Navigation
@@ -58,35 +176,106 @@
 */
 
 
+/*
+ [self.age_label setText:[NSString stringWithFormat:@"%.0f - %.0f", ceil(self.ageRangeSlider.lowerValue), ceil(self.ageRangeSlider.upperValue)]]; */
+
 - (void)slideValueChanged:(id)control
 {
+    [self.ageRangeLabel setText:[NSString stringWithFormat:@"%.0f - %.0f", ceil(self.ageRangeSlider.lowerValue), ceil(self.ageRangeSlider.upperValue)]];
+    ageRangeChanged = YES;
 
-    /*
-        [self.age_label setText:[NSString stringWithFormat:@"%.0f - %.0f", ceil(self.ageRangeSlider.lowerValue), ceil(self.ageRangeSlider.upperValue)]]; */
+}
+
+- (void)updateState
+{
+   // self.ageRangeSlider.trackHighlightColour = [UIColor redColor];
+   // self.ageRangeSlider.curvatiousness = 0.0;
+    
 }
 
 
-- (IBAction)ageValueChanged:(id)sender {
-
-    [self.distance_label setText:[NSString stringWithFormat:@"%.0f miles", ceil(self.distance_slider.value)]];
+- (void)distanceValueChanged:(id)control {
+    
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:0];
+    
+    SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    NSLog(@"value of:: %f", ceil(cell.distance_slider.value));
+    
+    [cell.sliderDataLabel setText:[NSString stringWithFormat:@"%.0f mi. Away", ceil(cell.distance_slider.value)]];
+    
+    distanceChanged = YES;
 }
 
 
+-(void)setdistanceValue
+{
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:0];
+
+    SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    if (cell != nil)
+    {
+        [cell.distance_slider setValue:[self.distance integerValue]];
+        [cell.sliderDataLabel setText:[NSString stringWithFormat:@"%.0f mi. Away", ceil(cell.distance_slider.value)]];
+    }
+}
+
+- (void) minSliderValuesChanged:(UUDoubleSliderView*)slider value:(float)value
+{
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:1 inSection:0];
+    
+    SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    if (cell != nil)
+    {
+        cell.sliderDataLabel.text = [NSString stringWithFormat:@"%d - %d", (int)(value + 0.5), (int) cell.doubleSlider.maximumSliderValue];
+    }
+    ageRangeChanged = YES;
+}
+
+- (void) maxSliderValuesChanged:(UUDoubleSliderView*)slider value:(float)value
+{
+    
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:1 inSection:0];
+    
+    SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    if (cell != nil)
+    {
+        cell.sliderDataLabel.text = [NSString stringWithFormat:@"%d - %d", (int) cell.doubleSlider.minimumSliderValue, (int)(value + 0.5)];
+    }
+    
+
+    
+    ageRangeChanged = YES;
+}
 
 
 #pragma mark - TableView
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 6;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Number of rows is the number of time zones in the region for the specified section.
-    if (section == 5) {
-        return 2;
+    if (section == 1 || section == 2)
+    {
+        return 3;
     }
-    return 1;
+    return 2;
     
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+            return 102.0;
+        default:
+            return 58.0;
+    }
 }
 
 
@@ -100,29 +289,122 @@
 
 
         
-        if (indexPath.section == 0) {
+        if (indexPath.section == 0)
+        {
+            
+            cell = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"DistanceReuseIdentifier"];
+            
+            if (indexPath.row == 0)
+            {
+                cell.distance_slider.minimumValue = 1.0;
+                cell.distance_slider.maximumValue = 90.0;
+                
+                [cell.distance_slider addTarget:self
+                                         action:@selector(distanceValueChanged:)
+                               forControlEvents:UIControlEventValueChanged];
+                cell.distance_slider.minimumTrackTintColor = [DAGradientColor gradientFromColor:cell.distance_slider.frame.size.width];
+                cell.sliderLabel.text = @"Maximum Distance";
+               // cell.sliderDataLabel.text = @"30 mi. Away";
+                [cell.doubleSlider setHidden:YES];
+                
+                /*
+                UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
+                UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
+                UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+                
+                CAGradientLayer *gradient = [CAGradientLayer layer];
+                gradient.frame = cell.distance_slider.bounds;
+                gradient.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
+                gradient.startPoint = CGPointMake(0.0,0.5);
+                gradient.endPoint = CGPointMake(1.0,0.5);
+                [cell.distance_slider.layer insertSublayer:gradient atIndex:0];
+                gradient.masksToBounds = YES; */
+  
+            }
+            else if(indexPath.row == 1)
+            {
+              //  cell = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"AgeReuseIdentifier"];
+                [cell.distance_slider setHidden:YES];
+                
+                cell.doubleSlider.delegate = self;
+                cell.doubleSlider.leftSliderImage = [UIImage imageNamed:@"knob_image"];
+                cell.doubleSlider.rightSliderImage = [UIImage imageNamed:@"knob_image"];
+                cell.doubleSlider.sliderHeight = 2;
+                cell.doubleSlider.minimumValue = 18;
+                cell.doubleSlider.maximumValue = 65;
+             //   cell.doubleSlider.minimumSliderValue = 18;
+             //   cell.doubleSlider.maximumSliderValue = 65;
+                cell.doubleSlider.sliderColor = [DAGradientColor gradientFromColor:cell.doubleSlider.frame.size.width];
+
+                /*
+                self.ageRangeSlider = [[CERangeSlider alloc] initWithFrame:CGRectMake(20, 62, self.view.frame.size.width - 45, 32)];
+                self.ageRangeSlider.backgroundColor = [UIColor clearColor];
+                
+                [cell.ageRangeSlider addTarget:self
+                                        action:@selector(slideValueChanged:)
+                              forControlEvents:UIControlEventValueChanged]; */
+                
+                //   [self performSelector:@selector(updateState) withObject:nil afterDelay:1.0f];
+                cell.sliderLabel.text = @"Age Range";
+              //  cell.sliderDataLabel.text = @"18 - 34";
+                
+              //  [cell addSubview:self.ageRangeSlider];
+            }
+            
+
+            /*
+            cell = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"GenderReuseIdentifier"];
+            
+            if (indexPath.row == 0)
+            {
+                cell.gender_label.text = @"Male";
+            }
+            else if(indexPath.row == 1)
+            {
+                cell.gender_label.text = @"Female";
+            } */
+            
+            
+        }
+        else if (indexPath.section == 1)
+        {
             
             cell = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"GenderReuseIdentifier"];
             
-            cell.setting_label.text = @"Notifications";
-            cell.gender_male_switch.transform = CGAffineTransformMakeScale(0.75, 0.75);
-            cell.gender_female_switch.transform = CGAffineTransformMakeScale(0.75, 0.75);
+            if (indexPath.row == 0)
+            {
+                cell.gender_label.text = @"Male";
+            }
+            else if (indexPath.row == 1)
+            {
+                cell.gender_label.text = @"Female";
+            }
+            else if (indexPath.row == 2)
+            {
+                cell.gender_label.text = @"Male & Female";
+                [cell.genderCheck setHidden:YES];
+            }
             
-            
-        }else if (indexPath.section == 1) {
+            /*
             cell = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"DistanceReuseIdentifier"];
             
-        }else if (indexPath.section == 2) {
-            cell = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"AgeReuseIdentifier"];
-            self.ageRangeSlider = [[CERangeSlider alloc] initWithFrame:CGRectMake(20, cell.frame.size.height /4, self.view.frame.size.width - 45, 32)];
-            self.ageRangeSlider.backgroundColor = [UIColor clearColor];
+            cell.distance_slider.minimumValue = 1.0;
+            cell.distance_slider.maximumValue = 90.0;
             
-            [self.ageRangeSlider addTarget:self
-                                    action:@selector(slideValueChanged:)
-                          forControlEvents:UIControlEventValueChanged];
+            [cell.distance_slider addTarget:self
+                                    action:@selector(distanceValueChanged:)
+                          forControlEvents:UIControlEventValueChanged]; */
             
-            [cell addSubview:self.ageRangeSlider];
+        }/*else if (indexPath.section == 2) {
+
+            cell = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"DistanceReuseIdentifier"];
             
+            cell.distance_slider.minimumValue = 1.0;
+            cell.distance_slider.maximumValue = 90.0;
+            
+            [cell.distance_slider addTarget:self
+                                     action:@selector(distanceValueChanged:)
+                           forControlEvents:UIControlEventValueChanged];
         }else if (indexPath.section == 3 || indexPath.section == 4){
             
         cell  = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"SettingReuseIdentifier"];;
@@ -131,23 +413,37 @@
                 
                 cell.setting_label.text = @"Invisible";
                 cell.setting_switch.transform = CGAffineTransformMakeScale(0.75, 0.75);
+                
+                [cell.setting_switch addTarget:self action:@selector(invisibleValueChanged) forControlEvents:UIControlEventValueChanged];
 
-                
-            }else if (indexPath.section == 4) {
-                
-                cell.setting_label.text = @"Notifications";
-                cell.setting_switch.transform = CGAffineTransformMakeScale(0.75, 0.75);
+
                 
             }
             
-        }else{
+        }*/else{
             
-            cell  = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"AccountReuseIdentifier"];;
 
-            if (indexPath.row == 0) {
+
+            if (indexPath.row == 0)
+            {
+                cell  = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"SettingReuseIdentifier"];
+                cell.setting_label.text = @"Push Notifications";
+             //   cell.setting_switch.transform = CGAffineTransformMakeScale(0.75, 0.75);
+                
+                [cell.setting_switch addTarget:self action:@selector(notificationValueChanged) forControlEvents:UIControlEventValueChanged];
+                
+                cell.setting_switch.onTintColor = [DAGradientColor gradientFromColor:cell.setting_switch.frame.size.width];
+            }
+            else if(indexPath.row == 1)
+            {
+                cell  = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"AccountReuseIdentifier"];
                 [cell.account_label setText:@"Logout"];
-            }else{
-                [cell.account_label setText:@"Remove Account"];
+
+            }
+            else
+            {
+                cell  = (SettingsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"AccountReuseIdentifier"];
+                [cell.account_label setText:@"Delete Account"];
             }
             
         }
@@ -156,97 +452,51 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         return cell;
-        
-    
 
-        
-
-    
-    
-    
 }
-/*
- - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
- //  CGFloat height = self.tableBack.frame.size.height;
- 
- CGFloat height = 0;
- if([[DeviceManager sharedInstance] getIsIPhone5Screen])
- {
- height =  90;
- }
- else if ([[DeviceManager sharedInstance] getIsIPhone6Screen])
- {
- height = 100;
- }
- else if ([[DeviceManager sharedInstance] getIsIPhone6PlusScreen])
- {
- height = 110;
- }
- else if ([[DeviceManager sharedInstance] getIsIPhone4Screen] || [[DeviceManager sharedInstance] getIsIPad]) {
- height = 85;
- }
- return height; //(height / 5);//[self getCellHeight];
- } */
-
-
-/*
- -(CGFloat)getCellHeight {
- CGFloat cellHeight = 0.0;
- if([[DeviceManager sharedInstance] getIsIPhone5Screen])
- {
- cellHeight =  ceilf(163/2);
- }
- else if ([[DeviceManager sharedInstance] getIsIPhone6Screen])
- {
- cellHeight = ceilf(180/2);
- }
- else if ([[DeviceManager sharedInstance] getIsIPhone6PlusScreen])
- {
- cellHeight = ceil(300/3);
- }
- else if ([[DeviceManager sharedInstance] getIsIPhone4Screen] || [[DeviceManager sharedInstance] getIsIPad]) {
- cellHeight = ceilf(140/2);
- }
- 
- return cellHeight;
- }
- 
- -(CGFloat)getAccessoryViewWidth {
- CGFloat modifier = 0.0;
- if([[DeviceManager sharedInstance] getIsIPhone5Screen])
- {
- modifier =  42;
- }
- else if ([[DeviceManager sharedInstance] getIsIPhone6Screen])
- {
- modifier = 42;
- }
- else if ([[DeviceManager sharedInstance] getIsIPhone6PlusScreen])
- {
- modifier = 48;
- }
- else if ([[DeviceManager sharedInstance] getIsIPhone4Screen] || [[DeviceManager sharedInstance] getIsIPad]) {
- modifier = 42;
- }
- 
- return modifier;
- }
- 
- -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
- if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
- [cell setSeparatorInset:UIEdgeInsetsZero];
- }
- if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
- [cell setLayoutMargins:UIEdgeInsetsZero];
- }
- }*/
-
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     
- //   SettingTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    SettingsTableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     
+    if (indexPath.section == 1)
+    {
+        [self updateGenderSelection:indexPath];
+    }
+    else if (indexPath.section == 2)
+    {
+        if (indexPath.row == 1)
+        {
+            
+            
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Logout?"
+                                                                           message:@"Are you sure you want to logout of Ditto?"
+                                                                    preferredStyle:UIAlertControllerStyleAlert]; // 1
+            UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"Yes"
+                                                                  style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                      [DAServer facebookLogout];
+                                                                      [self performSegueWithIdentifier:@"unwindSegue" sender:self];
+                                                                  }];
+            
+            UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"No"
+                                                                  style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                                                                      
+                                                                  }];
+            
+            [alert addAction:secondAction];
+            [alert addAction:firstAction];
+             // 4
+
+            
+            [self presentViewController:alert animated:YES completion:nil]; // 6
+            
+            
+
+        }
+    }
+    
+    NSLog(@"section %ld row %ld", indexPath.section, indexPath.row);
     
     
 }
@@ -255,7 +505,7 @@
     
     switch (section) {
         case 0:
-            return 75.0;
+            return 40.0;
         case 1:
         case 2:
        // case 3:
@@ -268,7 +518,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 55)];
-    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(25,0,100,40)];
+    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(20,0,100,40)];
     
     
     switch (section) {
@@ -276,47 +526,66 @@
         case 1:
         case 2:
             if (section == 0) {
-                UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(25,40,100,40)];
-                lbl.text = @"Show Me:";
+                UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(20,5,200,40)];
+                lbl.text = @"DISCOVERY SETTINGS";
                 footer.backgroundColor=[UIColor clearColor];
                 lbl.backgroundColor = [UIColor clearColor];
                 lbl.textAlignment = NSTextAlignmentLeft;
                 [lbl setNumberOfLines:1];//set line if you need
-                [lbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
-                [lbl setTextColor:[UIColor blackColor]];
+                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:12.0]];//font size and style
+                [lbl setTextColor:[self headerColor]];
                 [footer addSubview:lbl];
                 break;
                 
             }else if(section == 1){
-                lbl.text = @"Distance:";
-                UILabel *lbl2 = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 100,0,100,40)];
-                lbl2.text = @"25 miles";
-                lbl2.backgroundColor = [UIColor clearColor];
-                lbl2.textAlignment = NSTextAlignmentLeft;
-                [lbl2 setNumberOfLines:1];
-                [lbl2 setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
-                [lbl2 setTextColor:[self othBlueColor]];
-                [footer addSubview:lbl2];
+                UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(20,0,200,40)];
+                lbl.text = @"SHOW ME";
+                footer.backgroundColor=[UIColor clearColor];
+                lbl.backgroundColor = [UIColor clearColor];
+                lbl.textAlignment = NSTextAlignmentLeft;
+                [lbl setNumberOfLines:1];//set line if you need
+                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:12.0]];//font size and style
+                [lbl setTextColor:[self headerColor]];
+                [footer addSubview:lbl];
+                /*
+                self.distanceLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 80,0,100,40)];
+                self.distanceLabel.text = self.distance;
+                self.distanceLabel.backgroundColor = [UIColor clearColor];
+                self.distanceLabel.textAlignment = NSTextAlignmentLeft;
+                [self.distanceLabel setNumberOfLines:1];
+                [self.distanceLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
+                [self.distanceLabel setTextColor:[self othBlueColor]];
+                [footer addSubview:self.distanceLabel]; */
 
             }else{
-                lbl.text = @"Age Range:";
-                UILabel *lbl2 = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 100,0,100,40)];
-                lbl2.text = @"18 - 27";
-                lbl2.backgroundColor = [UIColor clearColor];
-                lbl2.textAlignment = NSTextAlignmentLeft;
-                [lbl2 setNumberOfLines:1];
-                [lbl2 setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
-                [lbl2 setTextColor:[self othBlueColor]];
-                [footer addSubview:lbl2];
+                UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(20,0,200,40)];
+                lbl.text = @"SETTINGS";
+                footer.backgroundColor=[UIColor clearColor];
+                lbl.backgroundColor = [UIColor clearColor];
+                lbl.textAlignment = NSTextAlignmentLeft;
+                [lbl setNumberOfLines:1];//set line if you need
+                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:12.0]];//font size and style
+                [lbl setTextColor:[self headerColor]];
+                [footer addSubview:lbl];
+               // lbl.text = @"Age Range:";
+                /*self.ageRangeLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 80,0,100,40)];
+                self.ageRangeLabel.text = self.ageRange;
+                self.ageRangeLabel.backgroundColor = [UIColor clearColor];
+                self.ageRangeLabel.textAlignment = NSTextAlignmentLeft;
+                [self.ageRangeLabel setNumberOfLines:1];
+                [self.ageRangeLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
+                [self.ageRangeLabel setTextColor:[self othBlueColor]];
+                [footer addSubview:self.ageRangeLabel]; */
 
             }
+            /*
             footer.backgroundColor=[UIColor clearColor];
             lbl.backgroundColor = [UIColor clearColor];
             lbl.textAlignment = NSTextAlignmentLeft;
             [lbl setNumberOfLines:1];//set line if you need
             [lbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
             [lbl setTextColor:[UIColor blackColor]];
-            [footer addSubview:lbl];
+            [footer addSubview:lbl]; */
             break;
         default:
             break;
@@ -330,11 +599,7 @@
 
 -(CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section {
     switch (section) {
-        case 0:
-        case 1:
-     //   case 2:
-        case 3:
-        case 4:
+        case 2:
             return 55.0;
         default:
             return 0.0;
@@ -345,45 +610,147 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     UIView *footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 55)];
-    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(25,0,self.view.frame.size.width - 40,40)];
+    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(20,0,self.view.frame.size.width - 40,40)];
     
     
-    switch (section) {
-        case 0:
-        case 1:
-        case 3:
-        case 4:
-       // case 2:
-            if (section == 0) {
-                lbl.text = @"The gender of cards you want to see.";
-                
-            }else if(section == 1){
-                lbl.text = @"How far are you willing to travel to meet your match?";
-                
-            }
-            else if(section == 3){
-                lbl.text = @"Be hidden from everyone other than your current match.";
-                
-            }
-            else if(section == 4){
-                lbl.text = @"Recieve push notifications for match updates and messages.";
-            }
-            footer.backgroundColor=[UIColor clearColor];
-            lbl.backgroundColor = [UIColor clearColor];
-            lbl.textAlignment = NSTextAlignmentLeft;
-            [lbl setNumberOfLines:10];//set line if you need
-            [lbl setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:12.0]];//font size and style
-            [lbl setTextColor:[UIColor blackColor]];
-            [footer addSubview:lbl];
-            break;
-        default:
-            break;
+    if(section == 2)
+    {
+        lbl.text = @"Ditto Version 1.0.0";
     }
-    
-    
+    footer.backgroundColor=[UIColor clearColor];
+    lbl.backgroundColor = [UIColor clearColor];
+    lbl.textAlignment = NSTextAlignmentLeft;
+    [lbl setNumberOfLines:1];//set line if you need
+    [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:10.0]];//font size and style
+    [lbl setTextColor:[self headerColor]];
+    [footer addSubview:lbl];
+
     
     return footer;
 }
+
+-(void)updateGenderSelection
+{
+    NSIndexPath *indexPath1 =[NSIndexPath indexPathForRow:0 inSection:1];
+    
+    SettingsTableViewCell *cell1 = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath1];
+    
+    NSIndexPath *indexPath2 =[NSIndexPath indexPathForRow:1 inSection:1];
+    
+    SettingsTableViewCell *cell2 = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath2];
+    
+    if ([self.settings.settingsGender isEqualToString:@"male"])
+    {
+        [cell1.genderCheck setHidden:NO];
+        [cell2.genderCheck setHidden:YES];
+
+    }
+    else
+    {
+        [cell1.genderCheck setHidden:YES];
+        [cell2.genderCheck setHidden:NO];
+    }
+
+    
+}
+
+-(void)updateGenderSelection:(NSIndexPath*)path
+{
+    NSIndexPath *indexPath1 =[NSIndexPath indexPathForRow:0 inSection:1];
+    
+    SettingsTableViewCell *cell1 = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath1];
+    
+    NSIndexPath *indexPath2 =[NSIndexPath indexPathForRow:1 inSection:1];
+    
+    SettingsTableViewCell *cell2 = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath2];
+    
+    if (path.row == 0)
+    {
+        [cell1.genderCheck setHidden:NO];
+        [cell2.genderCheck setHidden:YES];
+        self.settings.settingsGender = @"male";
+    }
+    else if(path.row == 1)
+    {
+        [cell1.genderCheck setHidden:YES];
+        [cell2.genderCheck setHidden:NO];
+        self.settings.settingsGender = @"female";
+    }
+    else
+    {
+        
+    }
+    
+    [self updateServer:@"settingsGender" selection:self.settings.settingsGender];
+
+}
+
+-(void)updateInvisibleSwitch
+{
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:3];
+    
+    SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    if (self.settings.settingsInvisible == 0)
+    {
+        [cell.setting_switch setOn:NO];
+    }
+    else
+    {
+        [cell.setting_switch setOn:YES];
+    }
+}
+
+-(void)invisibleValueChanged
+{
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:3];
+    
+    SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    NSString *value = @"0";
+    
+    if (cell.setting_switch.isOn)
+    {
+        value = @"1";
+    }
+    
+    [self updateServer:@"invisible" selection:value];
+}
+
+
+-(void)updateNotificationsSwitch
+{
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:4];
+    
+    SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    if (self.settings.settingsNotifications == 0)
+    {
+        [cell.setting_switch setOn:NO];
+    }
+    else
+    {
+        [cell.setting_switch setOn:YES];
+    }
+}
+
+-(void)notificationValueChanged
+{
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:4];
+    
+    SettingsTableViewCell *cell = (SettingsTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    
+    NSString *value = @"0";
+    
+    if (cell.setting_switch.isOn)
+    {
+        value = @"1";
+    }
+    
+    [self updateServer:@"enable_notification" selection:value];
+    
+}
+
 
 -(UIColor*)blueColor{
     return [UIColor colorWithRed:0.18 green:0.49 blue:0.83 alpha:1.0];
@@ -394,8 +761,37 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (IBAction)close_action:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 -(UIColor*)othBlueColor{
     return [UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0];
+}
+
+-(void)updateServer:(NSString*)type selection:(NSString*)setting
+{
+    
+    
+    //settingsGender, settingsAge, settingsDistance, invisible and enable_notification. settingsAge format is min - max like 18-100, simply send it as a string
+    [DAServer updateSettings:type setting:setting completion:^(NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            
+        } else {
+            // update UI to indicate error or take remedial action
+        }
+    }];
+    
+}
+
+
+
+-(UIColor*)headerColor
+{
+    return [UIColor colorWithRed:0.56 green:0.56 blue:0.58 alpha:1.0];
 }
 
 @end

@@ -17,6 +17,8 @@
 @property (strong, nonatomic) NSString *longitude;
 @property (strong, nonatomic) NSString *latitude;
 @property (strong, nonatomic) CLLocation *currentLocation;
+@property (nonatomic) CLLocationCoordinate2D location;
+
 - (void)getUsersInLocation;
 
 + (instancetype)sharedInstance;

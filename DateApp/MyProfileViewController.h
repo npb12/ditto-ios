@@ -7,6 +7,7 @@
 //
 
 #import "MyProfileTableViewCell.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @interface MyProfileViewController : UIViewController<UIScrollViewDelegate>
 
@@ -26,4 +27,11 @@
 @property (strong, nonatomic) IBOutlet UIView *pc5;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerConstraint;
+
+@property (strong, nonatomic) IBOutlet UIButton *photoEditBtn;
+@property (strong, nonatomic) IBOutlet UIImageView *workEditIcon;
+@property (strong, nonatomic) IBOutlet UIImageView *bioEditIcon;
+@property (strong, nonatomic) IBOutlet UIImageView *eduEditIcon;
+
+
 @end

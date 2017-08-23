@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DataAccess.h"
 
 @interface MatchUser : NSObject
 
@@ -16,12 +17,14 @@
 + (void) saveAsCurrentMatch:(MatchUser*)currentMatch;
 + (void) removeCurrentMatch;
 
-
 @property (nullable, nonatomic, retain) NSString *name;
 @property (nullable, nonatomic, retain) NSString *education;
 @property (nullable, nonatomic, retain) NSString *work;
 @property (nullable, nonatomic, retain) NSString *bio;
 @property (nullable, nonatomic, retain) NSString *age;
 @property (nonatomic, assign) NSInteger user_id;
+@property (nonatomic, assign) NSInteger distance;
+@property (nonatomic, assign) double match_time;
+@property (nullable, nonatomic, retain) NSMutableArray *pics;
 
 @end

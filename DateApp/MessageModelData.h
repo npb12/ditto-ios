@@ -11,6 +11,8 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import "JSQMessagesViewController/JSQMessages.h"
+#import "Messages.h"
+#import "MatchUser.h"
 
 /**
  *  This is for demo/testing purposes only.
@@ -32,6 +34,14 @@ static NSString * const kJSQDemoAvatarIdWoz = @"309-41802-93823";
 
 @interface MessageModelData : NSObject
 
+typedef NS_ENUM(NSUInteger, load_type) {
+    LAST_MESSAGE                = 0,
+    FULL_CONVERSATION           = 1,
+};
+
+@property (nonatomic, assign) NSInteger type;
+
+
 @property (strong, nonatomic) NSMutableArray *messages;
 
 @property (strong, nonatomic) NSDictionary *avatars;
@@ -42,5 +52,11 @@ static NSString * const kJSQDemoAvatarIdWoz = @"309-41802-93823";
 
 @property (strong, nonatomic) NSDictionary *users;
 
+@property (strong, nonatomic) Messages *message;
 
+- (id)initWithMessages:(NSArray*)messages type:(NSInteger)type;
+
+- (id)initWithMessage:(Messages*)message;
+
++(JSQMessage*)MessageReceived:(Messages*)message;
 @end

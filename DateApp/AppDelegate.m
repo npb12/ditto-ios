@@ -13,7 +13,6 @@
 
 @interface AppDelegate ()
 
-@property (nonatomic, strong) TFDailyVC *homeVC;
 @property (nonatomic, strong) RootViewController *rootVC;
 
 
@@ -38,8 +37,6 @@
     }
     
 
-    
-    
     return YES;
 }
 
@@ -47,6 +44,7 @@
 - (void)registerForRemoteNotifications {
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     center.delegate = self;
+    [[DataAccess singletonInstance] setaskedForNotifications:YES];
     [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
         if(!error){
             [[UIApplication sharedApplication] registerForRemoteNotifications];
@@ -56,31 +54,82 @@
 }
 
 //Called when a notification is delivered to a foreground app.
--(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
-    NSLog(@"User Info : %@",notification.request.content.userInfo);
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)
+
+notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
+    NSLog(@"User Info foreground: %@",notification.request.content.userInfo);
     completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+    
+    NSDictionary *notif = [notification.request.content.userInfo objectForKey:@"aps"];
+    
+    NSString *type = [notif objectForKey:@"type"];
+    
+    NSLog(@"The type of notification is::: %@", type);
+    
+    if ([type isEqualToString:@"match"])
+    {
+        [DAServer getMatchesData:NO completion:^(NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    ///  [self.chatBtn setImage:[UIImage imageNamed:@"chat_full_message"] forState:UIControlStateNormal];
+                });
+            } else {
+                // update UI to indicate error or take remedial action
+            }
+        }];
+    }
+    else if([type isEqualToString:@"altmatch"])
+    {
+        [DAServer getMatchesData:YES completion:^(NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    ///  [self.chatBtn setImage:[UIImage imageNamed:@"chat_full_message"] forState:UIControlStateNormal];
+                });
+            } else {
+                // update UI to indicate error or take remedial action
+            }
+        }];
+    }
+    else if([type isEqualToString:@"message"])
+    {
+        if (self.rootVC)
+        {
+            [self.rootVC.chatBtn setImage:[UIImage imageNamed:@"chat_full_message"] forState:UIControlStateNormal];
+        }
+    }
+    else if([type isEqualToString:@"drop"])
+    {
+        [MatchUser removeCurrentMatch];
+        if (self.rootVC)
+        {
+            [self.rootVC updateUnmatch];
+        }
+
+    }
+    
+    
+
 }
 
 //Called to let your app know which action was selected by the user for a given notification.
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)())completionHandler{
-    NSLog(@"User Info : %@",response.notification.request.content.userInfo);
+    NSLog(@"User Info background: %@",response.notification.request.content.userInfo);
     completionHandler();
 }
 
 - (void)application:(UIApplication *)app didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     NSString *deviceTokenString = deviceToken.description;
     deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@"[< >]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, deviceTokenString.length)];
-    NSLog(@" device token %@", deviceTokenString.description);
+    NSLog(@" device token eeees %@", deviceTokenString.description);
     
 
     [DAServer postDeviceToken:deviceTokenString.description completion:^(NSMutableArray *result, NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             if ([result count] > 0) {
-                dispatch_async(dispatch_get_main_queue(), ^{
 
-                    
-                });
             }
         } else {
             // update UI to indicate error or take remedial action
@@ -123,11 +172,6 @@
                                                 sourceApplication:sourceApplication
                                                        annotation:annotation
             ];
-}
-
-- (CGSize) safeScreenSize
-{
-    return [self.homeVC safeScreenSize];
 }
 
 

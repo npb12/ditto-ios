@@ -10,4 +10,8 @@
 
 @interface DADateFormatter : NSObject
 
++ (NSString *)timeAgoStringFromDate:(double)match_time;
+
++ (NSString *)timeAgoFromDate:(NSDate*)date;
+
 @end

@@ -53,7 +53,7 @@
 
 @end
 
-@interface DraggableView : UIView<UIScrollViewDelegate>
+@interface DraggableView : UIView
 
 @property (weak) id <DraggableViewDelegate> delegate;
 @property (nonatomic, weak) id<HasMatchDelegate> noswipe_delegate;
@@ -67,16 +67,14 @@
 
 
 @property (strong, nonatomic) IBOutlet UIImageView *pic;
-@property (strong, nonatomic) IBOutlet UIImageView *pic2;
-@property (strong, nonatomic) IBOutlet UIImageView *pic3;
-@property (strong, nonatomic) IBOutlet UIImageView *pic4;
-@property (strong, nonatomic) IBOutlet UIImageView *pic5;
-@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
-
 
 @property (strong, nonatomic) IBOutlet UIView *pickbackground;
 
-@property (strong, nonatomic) UIView *tempView;
+@property (strong, nonatomic) IBOutlet UIImageView *lock;
+@property (strong, nonatomic) IBOutlet UILabel *matchedLabel;
+@property (strong, nonatomic) IBOutlet UILabel *matchedSubLabel;
+
+
 
 @property (nonatomic) CGFloat width;
 @property (nonatomic) CGFloat height;
@@ -84,6 +82,7 @@
 @property (strong, nonatomic) User *user;
 
 
+@property (strong, nonatomic) IBOutlet UIVisualEffectView *blurView;
 
 
 @property (nonatomic, strong) UIImage *image;
@@ -115,13 +114,10 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *jobLabelHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *eduLabelHeight;
 
-@property (strong, nonatomic) IBOutlet UIView *pc1;
-@property (strong, nonatomic) IBOutlet UIView *pc2;
-@property (strong, nonatomic) IBOutlet UIView *pc3;
-@property (strong, nonatomic) IBOutlet UIView *pc4;
-@property (strong, nonatomic) IBOutlet UIView *pc5;
 
 
+-(void)updateMatch;
+-(void)updateUnmatch;
 
 
 @end

@@ -13,6 +13,8 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+   // self.doubleSlider.delegate = self;
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

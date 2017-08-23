@@ -12,4 +12,8 @@
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *collectionViewWidth;
+
+@property (strong, nonatomic) NSMutableArray *photos;
+@property (nonatomic, assign) NSInteger selectedIndex;
+
 @end

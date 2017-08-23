@@ -7,10 +7,12 @@
 //
 
 #import "PartingMessageViewController.h"
+#import "DAServer.h"
 
 @interface PartingMessageViewController (){
     NSString *message;
 }
+@property (strong, nonatomic) IBOutlet UILabel *headingLabel;
 
 @property (strong, nonatomic) IBOutlet UIView *bgView;
 @end
@@ -20,6 +22,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.headingLabel.text = [NSString stringWithFormat:@"Are you sure you want to\n unmatch with %@?", [MatchUser currentUser].name];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -31,9 +35,7 @@
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:NO];
     
-        [self.bgView setBackgroundColor:[UIColor clearColor]];
-     id<PartingMessageDelegate> strongDelegate = self.delegate;
-     [strongDelegate sendMessageBack:@""];
+    [self.bgView setBackgroundColor:[UIColor clearColor]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,34 +45,57 @@
 
 
 - (IBAction)noAction:(id)sender {
-    message = @"";
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)inappropriateAction:(id)sender {
+    message = @"inappropriate";
     [self dismissAndSend];
 }
 
 - (IBAction)responseAction:(id)sender {
-    message = @"response";
+    message = @"Try to respond sooner next time!";
     [self dismissAndSend];
 }
 
-- (IBAction)chemistryAction:(id)sender {
+- (IBAction)chemistryAction:(id)sender
+{
     message = @"chemistry";
     [self dismissAndSend];
 
 }
 
-
-- (IBAction)interestAction:(id)sender {
+- (IBAction)interestAction:(id)sender
+{
     message = @"interest";
     [self dismissAndSend];
 
 }
 
-
-- (IBAction)reportAction:(id)sender {
+- (IBAction)noReasonAction:(id)sender
+{
+    message = @"";
     [self dismissAndSend];
+    
 }
 
--(void)dismissAndSend{
+
+
+
+
+-(void)dismissAndSend
+{
+    id<PartingMessageDelegate> strongDelegate = self.delegate;
+    [strongDelegate sendMessageBack:@""];
+    [DAServer dropMatch:message  completion:^(NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            [MatchUser removeCurrentMatch];
+        } else {
+            // update UI to indicate error or take remedial action
+        }
+    }];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

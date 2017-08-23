@@ -8,7 +8,9 @@
 
 #import "NewMatchConflictViewController.h"
 
-@interface NewMatchConflictViewController ()
+@interface NewMatchConflictViewController ()<MessageViewControllerDelegate>{
+    MatchUser *match;
+}
 
 @property (strong, nonatomic) IBOutlet UIImageView *match_new;
 
@@ -18,8 +20,8 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *match_new_label;
 @property (strong, nonatomic) IBOutlet UILabel *match_current_label;
-@property (strong, nonatomic) IBOutlet UIButton *stay_btn;
-@property (strong, nonatomic) IBOutlet UIButton *match_btn;
+@property (strong, nonatomic) IBOutlet UIButton *option1_btn;
+@property (strong, nonatomic) IBOutlet UIButton *option2_btn;
 
 @property (strong, nonatomic) IBOutlet UIView *bg_view;
 
@@ -31,52 +33,158 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
 
     
-    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    CGFloat width = [UIScreen mainScreen].bounds.size.width * 0.42;
+    CGFloat height = [UIScreen mainScreen].bounds.size.height;
+    
+    self.firstTopConstraint.constant = height * 0.075;
+    self.currentTopConstraint.constant = height * 0.075;
+    self.nTopConstraint.constant = height * 0.075;
+    self.labelTopConstraint.constant = height * 0.075;
+
+
+    self.currentViewWidth.constant = width;
+    self.currentViewHeight.constant = width;
+    self.nViewWidth.constant = width;
+    self.nViewHeight.constant = width;
+    
+    self.currentView.layer.cornerRadius = width / 2;
+    self.nView.layer.cornerRadius = width / 2;
+    
+    self.currentImageWidth.constant = width - 10;
+    self.currentImageHeight.constant = width - 10;
+    self.nImageWidth.constant = width - 10;
+    self.nImageHeight.constant = width - 10;
+
+    
+    self.match_new.layer.cornerRadius = (width / 2) - 5;
+    self.match_current.layer.cornerRadius = (width / 2) - 5;
+
+    /*
+    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     UIVisualEffectView *blurView = [[UIVisualEffectView alloc] initWithEffect:effect];
     blurView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-    [self.bg_view addSubview:blurView];
+    [self.bg_view addSubview:blurView];*/
     
-    self.match_new.image = [self.matched_user.photos objectAtIndex:1];
-    self.match_current.image = [UIImage imageNamed:@"girl3"];
+ //   self.match_new.image = [self.matched_user.photos objectAtIndex:1];
     
-    NSString *current_match_name = self.matched_user.name;
     
-    self.match_new_label.text = current_match_name;
     
-    self.mesage_label.text = [NSString stringWithFormat:@"Looks like you have a decision to make! Stay with %@ and ignore this match or let %@ go and match with %@?", current_match_name, current_match_name, @"Sofia"];
+    if (self.isConflict)
+    {
+        [self loadUserDataConflict];
+    }
+    else
+    {
+        [self loadUserData];
+    }
     
-    self.stay_btn.titleLabel.text = [NSString stringWithFormat:@"Stay With %@", current_match_name];
-    self.match_btn.titleLabel.text = [NSString stringWithFormat:@"Match With %@", @"Sofia"];
-    
-    self.stay_btn.layer.shadowColor = [self greyblueColor].CGColor;
-    self.stay_btn.layer.shadowOffset = CGSizeZero;
-    self.stay_btn.layer.shadowOpacity = 1.0;
-    self.stay_btn.layer.shadowRadius = 1.0;
-    
-    CAGradientLayer *stay_gradient = [CAGradientLayer layer];
-    [self.stay_btn.layer insertSublayer:stay_gradient atIndex:0];
-    stay_gradient.frame = self.stay_btn.bounds;
-    stay_gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.43 green:0.40 blue:0.77 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),nil];
-    stay_gradient.startPoint = CGPointMake(0.25,0.0);
-    stay_gradient.endPoint = CGPointMake(0.25,1.0);
-    self.stay_btn.layer.masksToBounds = YES;
-    
-    self.match_btn.layer.shadowColor = [self greyblueColor].CGColor;
-    self.match_btn.layer.shadowOffset = CGSizeZero;
-    self.match_btn.layer.shadowOpacity = 1.0;
-    self.match_btn.layer.shadowRadius = 1.0;
 
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    [self.match_btn.layer insertSublayer:gradient atIndex:0];
-    gradient.frame = self.match_btn.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.25,0.0);
-    gradient.endPoint = CGPointMake(0.25,1.0);
-    self.match_btn.layer.masksToBounds = YES;
+    CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 80;
+    CGFloat ht = (dimen - 15) / 5;
+    
+    self.stayBtnWidth.constant = dimen;
+    self.stayBtnHeight.constant = ht;
+    
+    [self.option1_btn layoutIfNeeded];
+    
+    CAGradientLayer *gradient2 = [CAGradientLayer layer];
+    gradient2.frame = self.option1_btn.bounds;
+    gradient2.backgroundColor = [UIColor whiteColor].CGColor;
+    gradient2.startPoint = CGPointMake(0.0,0.5);
+    gradient2.endPoint = CGPointMake(1.0,0.5);
+    [self.option1_btn.layer insertSublayer:gradient2 atIndex:0];
+    gradient2.cornerRadius = ht / 2;
+    gradient2.masksToBounds = YES;
+    self.option1_btn.layer.masksToBounds = NO;
+    self.option1_btn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    self.option1_btn.layer.shadowOpacity = 0.75;
+    self.option1_btn.layer.shadowRadius = 1;
+    self.option1_btn.layer.shadowOffset = CGSizeZero;
+    
 
+}
+
+
+-(void)loadUserDataConflict
+{
+    self.match_user = [self.altMatches objectAtIndex:0];
+    
+    match = [MatchUser currentUser];
+    
+    NSString *match_name = match.name;
+    
+  //  self.match_current.image = [match.pics objectAtIndex:0];
+    
+    [self.match_current sd_setImageWithURL:[NSURL URLWithString:[match.pics objectAtIndex:0]]
+                 placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                          options:SDWebImageRefreshCached];
+    
+    [self.match_new sd_setImageWithURL:[NSURL URLWithString:[self.match_user.pics objectAtIndex:0]]
+                          placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                                   options:SDWebImageRefreshCached];
+    
+    
+    self.match_new_label.text = self.match_user.name;
+    self.match_current_label.text = match.name;
+    
+    self.mesage_label.text = [NSString stringWithFormat:@"Looks like you have a\ndecision. Stay with %@ or\nmatch with %@?", match_name, self.match_user.name];
+    
+  //  self.option1_btn.titleLabel.text = [NSString stringWithFormat:@"Match With %@", self.match_user.name];
+//    self.option2_btn.titleLabel.text = @"Ignore";
+    
+    [self.option1_btn setTitle:[NSString stringWithFormat:@"Match With %@", self.match_user.name] forState:UIControlStateNormal];
+    
+    [self.option2_btn setTitle:@"Ignore" forState:UIControlStateNormal];
+}
+
+-(void)loadUserData
+{
+    self.match_user = [self.altMatches objectAtIndex:0];
+    
+    match = [MatchUser currentUser];
+    
+    NSString *match_name = match.name;
+    
+  //  User *user = [User currentUser];
+
+    
+    //  self.match_current.image = [match.pics objectAtIndex:0];
+    
+    [self.match_new sd_setImageWithURL:[NSURL URLWithString:[match.pics objectAtIndex:0]]
+                          placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                                   options:SDWebImageRefreshCached];
+    
+    
+    [DAServer getProfile:@"" completion:^(User *user, NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+            [self.match_current sd_setImageWithURL:[NSURL URLWithString:[user.pics objectAtIndex:0]]
+                                      placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                                               options:SDWebImageRefreshCached];
+            });
+        } else {
+            // update UI to indicate error or take remedial action
+        }
+    }];
+    
+    
+
+    
+    
+    self.match_new_label.text = self.match_user.name;
+    self.match_current_label.text = match.name;
+    
+    self.mesage_label.text = [NSString stringWithFormat:@"You matched with\n%@!", match_name];
+    
+    //  self.option1_btn.titleLabel.text = [NSString stringWithFormat:@"Match With %@", self.match_user.name];
+    //    self.option2_btn.titleLabel.text = @"Ignore";
+    
+    [self.option1_btn setTitle:@"Send Message" forState:UIControlStateNormal];
+    
+    [self.option2_btn setTitle:@"Close" forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -100,10 +208,108 @@
 */
 
 - (IBAction)stayOption:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    
+    
+    
+    if (self.isConflict)
+    {
+        NSString *uid = [NSString stringWithFormat:@"%ld", (long)self.match_user.user_id];
+        
+        [DAServer dismissAlternateMatch:uid completion:^(NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+                
+            } else {
+                // update UI to indicate error or take remedial action
+            }
+        }];
+        
+        [self.altMatches removeObjectAtIndex:0];
+        
+        
+        if ([self.altMatches count] < 1)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            //reload data for new user
+            [self loadUserData];
+        }
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    
+
 }
 
-- (IBAction)matchOption:(id)sender {
+- (IBAction)matchOption:(id)sender
+{
+    if (self.isConflict)
+    {
+        NSString *uid = [NSString stringWithFormat:@"%ld", (long)self.match_user.user_id];
+        
+        [DAServer dropSwapMatch:uid completion:^(NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+                
+            } else {
+                // update UI to indicate error or take remedial action
+            }
+        }];
+        
+        //convert user to MatchUser
+        //save result as match to nsuserdefaults
+        
+        [self saveUser:self.match_user];
+        
+        [self.altMatches removeObjectAtIndex:0];
+        
+        
+        if ([self.altMatches count] < 1)
+        {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        else
+        {
+            
+            [self dismissViewControllerAnimated:YES completion:^{
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"altMatchesNotification" object:self.altMatches userInfo:nil];
+            }];
+        }
+        
+    }
+    else
+    {
+        //go to messaging
+        [self dismissViewControllerAnimated:NO completion:^(void)
+         {
+             [[NSNotificationCenter defaultCenter] postNotificationName:@"callSegue" object:self];
+         }];
+    }
+}
+
+
+
+-(void)saveUser:(User*)user
+{
+    MatchUser *match_user = [self convertToMatchUser:user];
+    [MatchUser saveAsCurrentMatch:match_user];
+}
+
+-(MatchUser*)convertToMatchUser:(User*)user
+{
+    MatchUser *match_user = [MatchUser new];
+    match_user.user_id = user.user_id;
+    match_user.name = user.name;
+    match_user.bio = user.bio;
+    match_user.age = user.age;
+    match_user.education = user.edu;
+    match_user.work = user.job;
+    
+    return match_user;
 }
 
 - (IBAction)profileCurrent:(id)sender {
@@ -119,14 +325,45 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"gotoProfile"]) {
+    if ([[segue identifier] isEqualToString:@"gotoProfile"])
+    {
         
         ProfileViewController *profileVC = (ProfileViewController *)segue.destinationViewController;
+        if ([sender tag] == 0)
+        {
+            profileVC.user = [self convertToUser:match];
+        }
+        else
+        {
+            profileVC.user = [self.altMatches objectAtIndex:0];
+        }
      //   profileVC.user_data = self.matched_user;
      //   profileVC.mode = @"matched";
         
         
     }
+    else if ([segue.identifier isEqualToString:@"startMessageSegue"])
+    {
+        UINavigationController *nc = segue.destinationViewController;
+        MessageViewController *vc = (MessageViewController *)nc.topViewController;
+        vc.delegateModal = self;
+    }
+    
+}
+
+-(User*)convertToUser:(MatchUser*)matchUser
+{
+    User *user = [User new];
+    user.user_id = matchUser.user_id;
+    user.name = matchUser.name;
+    user.bio = matchUser.bio;
+    user.age = matchUser.age;
+    user.edu = matchUser.education;
+    user.job = matchUser.work;
+    user.pics = matchUser.pics;
+    user.distance = matchUser.distance;
+    
+    return user;
 }
 
 @end

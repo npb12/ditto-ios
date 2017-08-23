@@ -112,20 +112,11 @@
     }
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
-    
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
     CLLocation *location;
-    location =  [manager location];
-    CLLocationCoordinate2D coordinate = [location coordinate];
-    _currentLocation = [[CLLocation alloc] init];
-    _currentLocation = newLocation;
-    _longitude = [NSString stringWithFormat:@"%f",coordinate.longitude];
-    _latitude = [NSString stringWithFormat:@"%f",coordinate.latitude];
-        //  NSLog(@"longitude:: %@ && latitude %@", _longitude, _latitude);
+    location =  [locations lastObject];
+    self.location = [location coordinate];
     [locationManager stopUpdatingLocation];
-    [self getUsersInLocation];
-
-
 }
 
 - (void)getUsersInLocation{

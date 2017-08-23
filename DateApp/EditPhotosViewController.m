@@ -7,39 +7,26 @@
 //
 
 #import "EditPhotosViewController.h"
+#import "DAGradientColor.h"
 
-@interface EditPhotosViewController (){
+@interface EditPhotosViewController ()<UIImagePickerControllerDelegate>{
     CGPoint p;
-    UIImageView *x_image;
+  //  UIImageView *x_image;
     BOOL adding;
     CGFloat cellWidth, cellHeight;
+    NSInteger selectedIndex;
+    BOOL tvDidChange;
 }
 
 @property (strong,nonatomic) NSMutableArray *photo_arary;
 @property (nonatomic) BOOL didChangeOrder;
 
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bgWidth;
 
-@property (strong, nonatomic) IBOutlet UIView *view1;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view1Height;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view1Width;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *collectionViewHeight;
+@property (strong, nonatomic) IBOutlet UILabel *workLabel;
+@property (strong, nonatomic) IBOutlet UILabel *eduLabel;
+@property (strong, nonatomic) IBOutlet UITextView *bioTV;
 
-
-@property (strong, nonatomic) IBOutlet UIView *view2;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view2Width;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view2Height;
-
-@property (strong, nonatomic) IBOutlet UIView *view3;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view3Height;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view3Width;
-
-@property (strong, nonatomic) IBOutlet UIView *view4;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view4Width;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view4Height;
-
-@property (strong, nonatomic) IBOutlet UIView *view5;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view5Width;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *view5Height;
 
 @end
 
@@ -48,19 +35,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    CAGradientLayer *gradient = [CAGradientLayer layer];
+/*    CAGradientLayer *gradient = [CAGradientLayer layer];
     [self.view.layer insertSublayer:gradient atIndex:0];
     gradient.frame = self.view.bounds;
     gradient.colors = [NSArray arrayWithObjects:(id)([UIColor whiteColor].CGColor),(id)([UIColor colorWithRed:0.95 green:0.95 blue:0.98 alpha:1.0].CGColor),nil];
     gradient.startPoint = CGPointMake(0.25,0.0);
     gradient.endPoint = CGPointMake(0.25,1.0);
-    self.view.layer.masksToBounds = YES;
+    self.view.layer.masksToBounds = YES; */
     
     self.didChangeOrder = NO;
     
     self.photo_arary = [[NSMutableArray alloc] init];
 
-    [self getPhotos];
+    self.photo_arary = self.user.pics;
     
     adding = NO;
 
@@ -68,48 +55,37 @@
     
     self.collectionViewWidth.constant = commonWidth;
     
-    self.bgWidth.constant = commonWidth;
+        
+    cellWidth = self.view.bounds.size.width / 3.6;
+    cellHeight = self.view.bounds.size.width / 3.6;
     
-    cellWidth = self.view.bounds.size.width / 3.4;
-    cellHeight = self.view.bounds.size.width / 3.4;
+    self.collectionViewHeight.constant = cellHeight * 2.1;
     
-    self.view1.layer.borderWidth = 2;
-    self.view1.layer.borderColor = [self blueColor].CGColor;
-    self.view1Height.constant = cellHeight;
-    self.view1Width.constant = cellWidth;
-    self.view1.layer.cornerRadius = 5;
+    if (self.user.bio)
+    {
+        self.bioTV.text = self.user.bio;
+    }
     
-    self.view2.layer.borderWidth = 2;
-    self.view2.layer.borderColor = [UIColor grayColor].CGColor;
-    self.view2Height.constant = cellHeight;
-    self.view2Width.constant = cellWidth;
-    self.view2.layer.cornerRadius = 5;
+    if (self.user.edu)
+    {
+        self.eduLabel.text = self.user.edu;
+    }
     
-    self.view3.layer.borderWidth = 2;
-    self.view3.layer.borderColor = [UIColor grayColor].CGColor;
-    self.view3Height.constant = cellHeight;
-    self.view3Width.constant = cellWidth;
-    self.view3.layer.cornerRadius = 5;
-    
-    self.view4.layer.borderWidth = 2;
-    self.view4.layer.borderColor = [UIColor grayColor].CGColor;
-    self.view4Height.constant = cellHeight;
-    self.view4Width.constant = cellWidth;
-    self.view4.layer.cornerRadius = 5;
-    
-    self.view5.layer.borderWidth = 2;
-    self.view5.layer.borderColor = [UIColor grayColor].CGColor;
-    self.view5Height.constant = cellHeight;
-    self.view5Width.constant = cellWidth;
-    self.view5.layer.cornerRadius = 5;
-    
+    if (self.user.job)
+    {
+        self.workLabel.text = self.user.job;
+    }
 
+    [self getProfile];
+
+    
+/*
     UILongPressGestureRecognizer *lpgr
     = [[UILongPressGestureRecognizer alloc]
        initWithTarget:self action:@selector(handleLongPress:)];
     lpgr.minimumPressDuration = .1; // To detect after how many seconds you want shake the cells
     lpgr.delegate = self;
-    [self.collectionView addGestureRecognizer:lpgr];
+    [self.collectionView addGestureRecognizer:lpgr]; */
     [self.collectionView setClipsToBounds:NO];
     
  //   lpgr.delaysTouchesBegan = YES;
@@ -121,15 +97,28 @@
     tap.delegate = self;
     [self.view addGestureRecognizer:tap];
     
+    self.headerLabel.textColor = [DAGradientColor gradientFromColor:self.headerLabel.frame.size.width];
     
+    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
+    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
+    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+    
+    [self.gradientView layoutIfNeeded];
+
+    
+    CAGradientLayer *grad = [CAGradientLayer layer];
+    grad.frame = self.gradientView.bounds;
+    grad.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
+    grad.startPoint = CGPointMake(0.0,0.5);
+    grad.endPoint = CGPointMake(1.0,0.5);
+    [self.gradientView.layer insertSublayer:grad atIndex:0];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:NO];
     if (adding) {
         [self.photo_arary removeAllObjects];
-        [self getPhotos];
-        [self.collectionView reloadData];
+        [self getProfile];
     }
 }
 
@@ -146,44 +135,35 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)getPhotos{
+-(void)getProfile{
 
-    /*
-    UIImage* image = [[DataAccess singletonInstance] getProfileImage];
-    UIImage* image2 = [[DataAccess singletonInstance] getProfileImage2];
-    UIImage* image3 = [[DataAccess singletonInstance] getProfileImage3];
-    UIImage* image4 = [[DataAccess singletonInstance] getProfileImage4];
-    UIImage* image5 = [[DataAccess singletonInstance] getProfileImage5]; */
-    
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
-    [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
- //   [self.photo_arary addObject:[UIImage imageNamed:@"girl1"]];
+    [DAServer getProfile:@"" completion:^(User *user, NSError *error) {
+    // here, update the UI to say "Not busy anymore"
+    if (!error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.photo_arary = user.pics;
+            if (user.bio)
+            {
+                self.bioTV.text = user.bio;
+            }
+            
+            if (user.edu)
+            {
+                self.eduLabel.text = user.edu;
+            }
+            
+            if (user.job)
+            {
+                self.workLabel.text = user.job;
+            }
+            [self.collectionView reloadData];
+        });
+    } else {
+        // update UI to indicate error or take remedial action
+    }
+}];
 
-    
-    /*
-    if (image != nil) {
-        [self.photo_arary addObject:image];
-    }
-    
-    if (image2 != nil) {
-        [self.photo_arary addObject:image2];
-    }
-    
-    if (image3 != nil) {
-        [self.photo_arary addObject:image3];
-    }
-    
-    if (image4 != nil) {
-        [self.photo_arary addObject:image4];
-    }
-    
-    if (image5 != nil) {
-        [self.photo_arary addObject:image5];
-    } */
-    
-    
+
 
 }
 
@@ -203,66 +183,150 @@
 
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (PhotosCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    PhotosCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
     
-    cell.photo.image = [self.photo_arary objectAtIndex:indexPath.row];
-
+    PhotosCollectionViewCell* cell;
     
-    
-    [cell setBackgroundColor:[UIColor lightGrayColor]];
-
-    
-
-    
-    if([[[NSUserDefaults standardUserDefaults]valueForKey:@"longPressed"] isEqualToString:@"yes"])
+    if (cell == nil)
     {
-        CABasicAnimation* anim = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
-        [anim setToValue:[NSNumber numberWithFloat:0.0f]];
-        [anim setFromValue:[NSNumber numberWithDouble:M_PI/64]];
-        [anim setDuration:0.1];
-        [anim setRepeatCount:NSUIntegerMax];
-        [anim setAutoreverses:YES];
-        cell.layer.shouldRasterize = YES;
-        [cell.layer addAnimation:anim forKey:@"SpringboardShake"];
-        CGFloat delButtonSize = 50;
-        CGFloat xImageSize = 20;
+        cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
+        
+        NSInteger count = [self.photo_arary count];
+        
+        [cell setBackgroundColor:[UIColor whiteColor]];
+        
+       // CGFloat xImageSize = 24;
+        
+        cell.photo.image = nil;
+        cell.actionIcon.image = nil;
+   //     x_image = nil;
+        
+        
+        
+
+        /*
+        if (indexPath.row > 0 && (count - 1) >= indexPath.row) {
+            [cell.actionIcon setImage:[UIImage imageNamed:@"remove_image"]];
+        } */
 
         
-        x_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, xImageSize, xImageSize)];
-        x_image.layer.cornerRadius = 10;
-        x_image.layer.masksToBounds = NO;
-        x_image.center = CGPointMake(5, 5);
-        [cell bringSubviewToFront:x_image];
-        [cell.photo setClipsToBounds:NO];
-        [cell setClipsToBounds:NO];
-      //  [x_image setBackgroundColor:[UIColor grayColor]];
-        [x_image setImage:[UIImage imageNamed:@"xButton"]];
-        
-    //    [_deleteButton setImage: [UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
-        [cell addSubview:x_image];
-        
-    }
-    
-    else if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"singleTap"] isEqualToString:@"yes"])
-    {
-        
-        for(UIView *subview in [cell subviews]) {
-            if([subview isKindOfClass:[UIImageView class]]) {
-                [subview removeFromSuperview];
-            } else{
-                // Do nothing - not a UIButton or subclass instance
-
+        if (indexPath.row > 0)
+        {
+            
+            /*
+            x_image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, xImageSize, xImageSize)];
+            //  x_image.layer.cornerRadius = 10;
+            x_image.layer.masksToBounds = NO;
+            x_image.center = CGPointMake(cellWidth - 5, cellHeight - 5);
+            [cell bringSubviewToFront:x_image];
+            [cell.photo setClipsToBounds:NO];
+            [cell setClipsToBounds:NO];
+            //  [x_image setBackgroundColor:[UIColor grayColor]];
+            [x_image setImage:[UIImage imageNamed:@"add_image"]];
+            
+            [cell addSubview:x_image]; */
+            
+            if (indexPath.row <= (count - 1) && count > 0)
+            {
+            //    [x_image setImage:[UIImage imageNamed:@"remove_image"]];
+           //     [x_image setTag:indexPath.row];
+                
+                UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
+                                                      initWithTarget:self action:@selector(handleBtnPress:)];
+                [cell.actionIcon setUserInteractionEnabled:YES];
+                tapGesture.delegate = self;
+                [cell.actionIcon addGestureRecognizer:tapGesture];
+                
             }
         }
-        [cell.layer removeAllAnimations];
-        //            _deleteButton.hidden = YES;
-        //            [_deleteButton removeFromSuperview];
         
         
-       //     [cell setBackgroundColor:[UIColor lightGrayColor]];
-
+        if (indexPath.row == 0)
+        {
+            [cell.actionIcon setHidden:YES];
+        }
+        else
+        {
+            [cell.actionIcon setImage:[UIImage imageNamed:@"add_image"]];
+            [cell.actionIcon setHidden:NO];
+            
+            if (!cell.photo.image)
+            {
+    //            [cell.photo setHidden:YES];
+            }
+            else
+            {
+  //              [cell.photo setHidden:NO];
+                [cell.actionIcon setImage:[UIImage imageNamed:@"add_image"]];
+            }
+        }
         
+        
+        
+        
+        if (indexPath.row <= count - 1 && count > 0)
+        {
+            
+            [cell.photo sd_setImageWithURL:[NSURL URLWithString:[self.photo_arary objectAtIndex:indexPath.row]]
+                          placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                                   options:SDWebImageRefreshCached];
+          //  [x_image setHidden:YES];
+        }
+        
+        
+        if([[[NSUserDefaults standardUserDefaults]valueForKey:@"longPressed"] isEqualToString:@"yes"])
+        {
+            CABasicAnimation* anim = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
+            [anim setToValue:[NSNumber numberWithFloat:0.0f]];
+            [anim setFromValue:[NSNumber numberWithDouble:M_PI/64]];
+            [anim setDuration:0.1];
+            [anim setRepeatCount:NSUIntegerMax];
+            [anim setAutoreverses:YES];
+            cell.layer.shouldRasterize = YES;
+            [cell.layer addAnimation:anim forKey:@"SpringboardShake"];
+            CGFloat xImageSize = 20;
+            
+            /*
+            x_image = [[UIImageView alloc] initWithFrame:CGRectMake(cellWidth, cellHeight, xImageSize, xImageSize)];
+            x_image.layer.cornerRadius = 10;
+            x_image.layer.masksToBounds = NO;
+            x_image.center = CGPointMake(5, 5); */
+          //  [cell bringSubviewToFront:x_image];
+            
+            [cell setClipsToBounds:NO];
+            //  [x_image setBackgroundColor:[UIColor grayColor]];
+         //   [x_image setImage:[UIImage imageNamed:@"xButton"]];
+            
+            //    [_deleteButton setImage: [UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
+          //  [cell addSubview:x_image];
+            
+        }
+        
+        else if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"singleTap"] isEqualToString:@"yes"])
+        {
+            
+            
+            
+            /*
+             for(UIView *subview in [cell subviews]) {
+             if([subview isKindOfClass:[UIImageView class]] && [subview isKindOfClass:x_image.]) {
+             [subview removeFromSuperview];
+             } else{
+             // Do nothing - not a UIButton or subclass instance
+             
+             }
+             } */
+            
+            //  [cell.layer removeAllAnimations];
+            //               _deleteButton.hidden = YES;
+            //              [_deleteButton removeFromSuperview];
+            
+            
+            //     [cell setBackgroundColor:[UIColor lightGrayColor]];
+            
+            
+        }
     }
+    
     
 
     return cell;
@@ -272,7 +336,11 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     
-    return [self.photo_arary count];
+    return 5;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
+    return 1;
 }
 
 
@@ -294,7 +362,7 @@
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
     
-    return 3;
+    return 10;
 }
 
 
@@ -305,8 +373,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    
+
     if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"longPressed"] isEqualToString:@"yes"])
     {
     
@@ -332,29 +399,38 @@
     }
         
     }
+    
 
 }
 
 
 -(void)handleTap:(UITapGestureRecognizer *)gestureRecognizer
 {
-    NSLog(@"singleTap");
+    /*
     if (gestureRecognizer.state != UIGestureRecognizerStateEnded) {
         return;
-    }
+    } */
     p = [gestureRecognizer locationInView:self.collectionView];
     
     NSIndexPath *indexPath = [self.collectionView indexPathForItemAtPoint:p];
-    if (indexPath == nil){
+    if (indexPath){
+        
+        selectedIndex = indexPath.row;
+        
+        [self performSegueWithIdentifier:@"fbAlbumsSegue" sender:self];
+        /*
         NSLog(@"couldn't find index path");
         [[NSUserDefaults standardUserDefaults]setValue:@"no" forKey:@"longPressed"];
         [[NSUserDefaults standardUserDefaults]setValue:@"yes" forKey:@"singleTap"];
         //_deleteButton = [[UIButton alloc] initWithFrame:CGRectZero];
         //[cell addSubview:_deleteButton];
         //[_deleteButton removeFromSuperview];
-        [self.collectionView reloadData];
-        
-    } else {
+        [self.collectionView reloadData]; */
+    }
+    
+    
+    /*
+    else {
         if([[[NSUserDefaults standardUserDefaults]valueForKey:@"longPressed"] isEqualToString:@"yes"])
         {
             if (self.photo_arary.count > 1) {
@@ -365,6 +441,7 @@
             
         }
     }
+     */
     
 }
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
@@ -428,11 +505,22 @@
     } */
 }
 
--(void)removePhoto:(NSIndexPath *)indexPath
+-(void)handleBtnPress:(id)sender
 {
     
+    long tag = ((UITapGestureRecognizer *)sender).view.tag;
     
-    
+    if (tag > 0)
+    {
+        [self.photo_arary removeObjectAtIndex:tag];
+        [self.collectionView reloadData];
+    }
+
+}
+
+-(void)removePhoto:(NSIndexPath *)indexPath
+{
+
     [self.collectionView performBatchUpdates:^{
         [self.photo_arary removeObjectAtIndex:indexPath.row];
       //  NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:0];
@@ -482,12 +570,13 @@
     [self.collectionView reloadData];
 }
 
-- (IBAction)goto_albums:(id)sender {
+- (void)goto_albums
+{
     adding = YES;
     PhotoManager *box = [PhotoManager singletonInstance];
     
     box.boxID = [self.photo_arary count] + 1;
-    [self performSegueWithIdentifier:@"albumsSegue" sender:self];
+    [self performSegueWithIdentifier:@"fbAlbumsSegue" sender:self];
 }
 
 -(void)syncOrder{
@@ -534,6 +623,117 @@
         }
     }
     
+    [DAServer updateAlbum:self.photo_arary completion:^(NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                              // [self dismissViewControllerAnimated:NO completion:nil];
+                           });
+        } else {
+
+        }
+    }];
+    
+}
+
+- (IBAction) onSelectPhoto:(id)sender
+{
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Choose"
+                                                                   message:@"Add a photo by:"
+                                                            preferredStyle:UIAlertControllerStyleActionSheet]; // 1
+    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"Photo Roll"
+                                                          style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                              [self onGalleryPressed:self];
+                                                          }];
+
+    UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"Camera"
+                                                          style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                              [self onCameraPressed:self];
+                                                          }];
+    
+    UIAlertAction *thirdAction = [UIAlertAction actionWithTitle:@"Facebook Photos"
+                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                               [self goto_albums];
+                                                           }];
+    
+    
+    [alert addAction:firstAction];
+    [alert addAction:secondAction];
+    [alert addAction:thirdAction];
+
+    
+    [self presentViewController:alert animated:YES completion:nil]; // 6
+}
+
+#pragma mark - Photo Selector
+
+- (IBAction) onCameraPressed:(id)sender
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+        imagePickerController.allowsEditing = YES;
+        imagePickerController.delegate = self;
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePickerController.cameraDevice = UIImagePickerControllerCameraDeviceFront;
+        [self presentViewController:imagePickerController animated:YES completion:nil];
+    }
+}
+
+- (IBAction) onGalleryPressed:(id)sender
+{
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
+        imagePickerController.allowsEditing = YES;
+        imagePickerController.delegate = self;
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        
+        [self presentViewController:imagePickerController animated:YES completion:nil];
+    }
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    UIImage* image = info[UIImagePickerControllerEditedImage];
+    if (!image)
+        image = info[UIImagePickerControllerOriginalImage];
+    
+   // image = [image uuScaleAndCropToSize:CGSizeMake(200,200)];
+    
+ //   self.userImage = image;
+    
+    
+    [DAServer addLocalPhoto:image  completion:^(NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^
+            {
+                [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            });
+            NSLog(@"An error occured with the server!");
+        }
+    }];
+
+    
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+    
+    if ([segue.identifier isEqualToString:@"fbAlbumsSegue"])
+    {
+        FBAlbumsViewController *vc = segue.destinationViewController;
+        vc.selectedIndex = selectedIndex;
+        vc.photos = self.photo_arary;
+    }
 }
 
 -(UIColor*)blueColor{
@@ -543,4 +743,47 @@
 
 -(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
 }
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text containsString:@"\n"])
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    tvDidChange = YES;
+    
+    return YES;
+}
+
+- (IBAction)closeAction:(id)sender
+{
+    
+    if (!tvDidChange)
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    
+    NSString *bioText = self.bioTV.text;
+    //update user profile with bio/occupation and string description
+    [DAServer updateProfile:@"bio" description:bioText completion:^(NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [self dismissViewControllerAnimated:YES completion:nil];
+                           });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [self dismissViewControllerAnimated:YES completion:nil];
+                           });
+            NSLog(@"An error occured with the server!");
+        }
+    }];
+}
+
+
 @end

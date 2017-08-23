@@ -8,15 +8,15 @@
 
 #import <UIKit/UIKit.h>
 //#import "JSQMessagesViewController/JSQMessagesViewController.h"
-
+#import "DASocket.h"
+#import "DAServer.h"
 
 #import "MessageModelData.h"
 #import "NSUserDefaults+DemoSettings.h"
 
 @import JSQMessagesViewController;
 
-@import CocoaAsyncSocket;
-
+//@import CocoaAsyncSocket;
 
 @class MessageViewController;
 
@@ -33,6 +33,8 @@
 @property (weak, nonatomic) id<MessageViewControllerDelegate> delegateModal;
 
 @property (strong, nonatomic) MessageModelData *demoData;
+
+//ocketIOClient*
 
 - (void)receiveMessagePressed:(UIBarButtonItem *)sender;
 

@@ -12,21 +12,32 @@
 
 + (void) removeCurrentMatch
 {
-    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"::DATINGAPP_SAVED_USER_DATA::"];
+    [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"::DATINGAPP_SAVED_MATCH_DATA::"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [[DataAccess singletonInstance] setUserHasMatch:NO];
+    [[DataAccess singletonInstance] setLastMessage:0];
+
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"noMatchNotification" object:nil userInfo:nil];
+    });
 }
 
 + (void) saveAsCurrentMatch:(MatchUser*)currentMatch
 {
     NSDictionary* userDictionary = [currentMatch toDictionary];
     
-    [[NSUserDefaults standardUserDefaults] setObject:userDictionary forKey:@"::DATINGAPP_SAVED_USER_DATA::"];
+    [[NSUserDefaults standardUserDefaults] setObject:userDictionary forKey:@"::DATINGAPP_SAVED_MATCH_DATA::"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"currentMatchNotification" object:nil userInfo:nil];
+    });
 }
 
 + (MatchUser*) currentUser
 {
-    NSDictionary* userDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"::DATINGAPP_SAVED_USER_DATA::"];
+    NSDictionary* userDictionary = [[NSUserDefaults standardUserDefaults] objectForKey:@"::DATINGAPP_SAVED_MATCH_DATA::"];
     if (userDictionary)
     {
         MatchUser* user = [MatchUser fromDictionary:userDictionary];
@@ -57,7 +68,12 @@
         [dictionary setObject:self.work forKey:@"work"];
     if (self.bio)
         [dictionary setObject:self.bio forKey:@"bio"];
-    
+    if (self.match_time)
+        [dictionary setObject:[NSNumber numberWithDouble: self.match_time] forKey:@"timestamp"];
+    if ([self.pics count])
+        [dictionary setObject:self.pics forKey:@"pics"];
+    if (self.distance)
+        [dictionary setObject:[NSNumber numberWithDouble: self.distance] forKey:@"distance"];
     
     return @{ @"match" : dictionary };
 }
@@ -82,9 +98,15 @@
     user.education = [userDictionary objectForKey:@"education"];
     user.work = [userDictionary objectForKey:@"work"];
     user.bio = [userDictionary objectForKey:@"bio"];
-
-
+    NSNumber *timestamp = [userDictionary objectForKey:@"timestamp"];
+    user.match_time = [timestamp doubleValue];
+    user.pics = [userDictionary objectForKey:@"pics"];
+    NSNumber *distance = [userDictionary objectForKey:@"distance"];
+    user.distance = [distance integerValue];
+    
     return user;
 }
+
+
 
 @end

@@ -13,5 +13,16 @@
 @end
 
 @interface PartingMessageViewController : UIViewController
+
+
+typedef NS_ENUM(NSUInteger, parting_type) {
+    DROP_CURRENT                = 0,
+    DROP_SWAP                 = 1
+};
+
 @property (nonatomic, weak) id<PartingMessageDelegate> delegate;
+
+@property (nonatomic, assign) NSInteger alternate_id;
+
+
 @end

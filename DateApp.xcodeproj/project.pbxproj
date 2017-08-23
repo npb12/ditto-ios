@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		083892BE1B2C7C0B4B8FE6CA /* Pods_DateAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F740A630C1BC8004C25F7133 /* Pods_DateAppUITests.framework */; };
 		2D2A5289B615F0BF70D252A9 /* Pods_DateApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D1924AD85E3C3F86B7D1873 /* Pods_DateApp.framework */; };
+		8C0669931F1487E900132E14 /* UUDoubleSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0669921F1487E800132E14 /* UUDoubleSliderView.m */; };
+		8C0669961F1AFC5800132E14 /* UILabelDeviceClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0669951F1AFC5800132E14 /* UILabelDeviceClass.m */; };
+		8C071DD41F0B1EEF00900A42 /* UserLandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C071DD31F0B1EEF00900A42 /* UserLandingViewController.m */; };
+		8C08FA151EA7115500A41FF5 /* DADateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C08FA141EA7115500A41FF5 /* DADateFormatter.m */; };
 		8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */; };
 		8C1146831E7D838C003AB594 /* NewMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1146821E7D838C003AB594 /* NewMessageViewController.m */; };
 		8C2BE3031DE018820042BE6B /* CERangeSliderTrackLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE2FD1DE018820042BE6B /* CERangeSliderTrackLayer.m */; };
@@ -30,15 +34,7 @@
 		8C2BE32C1DEA3EE40042BE6B /* FBAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE32B1DEA3EE40042BE6B /* FBAlbumsViewController.m */; };
 		8C2BE32F1DEA3FE30042BE6B /* AlbumTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE32E1DEA3FE30042BE6B /* AlbumTableViewCell.m */; };
 		8C2CE0CD1DA1825300592566 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0CC1DA1825300592566 /* AppDelegate.m */; };
-		8C2CE0D01DA1833000592566 /* TFDailyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0CF1DA1833000592566 /* TFDailyVC.m */; };
-		8C2CE0E51DA186D500592566 /* TFCellData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0D51DA186D500592566 /* TFCellData.m */; };
-		8C2CE0E61DA186D500592566 /* TFCellManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0D71DA186D500592566 /* TFCellManager.m */; };
-		8C2CE0E71DA186D500592566 /* TFDailyCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0DA1DA186D500592566 /* TFDailyCollectionCell.m */; };
-		8C2CE0E81DA186D500592566 /* TFDailyCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0DC1DA186D500592566 /* TFDailyCollectionViewLayout.m */; };
-		8C2CE0E91DA186D500592566 /* TFDailyItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0DE1DA186D500592566 /* TFDailyItem.m */; };
-		8C2CE0EB1DA186D500592566 /* TFHorizontalCollectionLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0E21DA186D500592566 /* TFHorizontalCollectionLayout.m */; };
 		8C2CE0EC1DA186D500592566 /* TFStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0E41DA186D500592566 /* TFStyle.m */; };
-		8C2CE0EF1DA18D5000592566 /* TFDailyTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0EE1DA18D5000592566 /* TFDailyTableCell.m */; };
 		8C2CE0F11DA2DC8B00592566 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C2CE0F01DA2DC8A00592566 /* Main.storyboard */; };
 		8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */; };
 		8C4117FA1DD03E1000DBC38F /* TFHeartAnimationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */; };
@@ -65,7 +61,14 @@
 		8CCF3DA41E43CDBF00CC4750 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CCF3DA31E43CDB200CC4750 /* Roboto-Light.ttf */; };
 		8CCF3DA51E43CDBF00CC4750 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CCF3DA21E43CDA800CC4750 /* Roboto-Regular.ttf */; };
 		8CCF3DA61E43CDBF00CC4750 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CCF3DA11E43CD9500CC4750 /* Roboto-Bold.ttf */; };
+		8CCF830F1E91CB7F00C8CF9C /* DASocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCF830E1E91CB7F00C8CF9C /* DASocket.m */; };
 		8CD2BD8B1E3EE65D00A293CE /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2BD8A1E3EE65D00A293CE /* SettingsTableViewCell.m */; };
+		8CE1D9221F0214680002A510 /* DAGradientColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE1D9211F0214680002A510 /* DAGradientColor.m */; };
+		8CE1D9281F0355B00002A510 /* RooneyLF-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8CE1D9231F0355B00002A510 /* RooneyLF-Medium.otf */; };
+		8CE1D9291F0355B00002A510 /* RooneyLF-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8CE1D9241F0355B00002A510 /* RooneyLF-MediumItalic.otf */; };
+		8CE1D92A1F0355B00002A510 /* RooneyLF-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8CE1D9251F0355B00002A510 /* RooneyLF-Regular.otf */; };
+		8CE1D92B1F0355B00002A510 /* RooneySansLF-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8CE1D9261F0355B00002A510 /* RooneySansLF-Medium.otf */; };
+		8CE1D92C1F0355B00002A510 /* RooneySansLF-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8CE1D9271F0355B00002A510 /* RooneySansLF-Regular.otf */; };
 		8CEB63941E58F9ED00F062A9 /* DraggableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEB638D1E58F9ED00F062A9 /* DraggableView.m */; };
 		8CEB63951E58F9ED00F062A9 /* DraggableViewBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEB638F1E58F9ED00F062A9 /* DraggableViewBackground.m */; };
 		8CEB63961E58F9ED00F062A9 /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEB63911E58F9ED00F062A9 /* OverlayView.m */; };
@@ -75,6 +78,8 @@
 		8CEF36A31E2D9B710060CAF8 /* MessageModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF36A21E2D9B710060CAF8 /* MessageModelData.m */; };
 		8CEF3F1A1E3071DB00CC4485 /* MatchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF3F191E3071DB00CC4485 /* MatchTableViewCell.m */; };
 		8CEF96991DCC3B1B004D76A7 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF96981DCC3B1B004D76A7 /* ProfileViewController.m */; };
+		8CF2860E1E989CEB005B94E9 /* CropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF2860D1E989CEB005B94E9 /* CropViewController.m */; };
+		8CF286111E9B3C0B005B94E9 /* Messages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF286101E9B3C0B005B94E9 /* Messages.m */; };
 		8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF62C7A1E1A069700BBAF0D /* NewMatchConflictViewController.m */; };
 		8CF62C7E1E1E204000BBAF0D /* NewMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF62C7D1E1E204000BBAF0D /* NewMatchViewController.m */; };
 		8CF62C8A1E22BE9400BBAF0D /* MessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF62C891E22BE9400BBAF0D /* MessageViewController.m */; };
@@ -106,6 +111,14 @@
 		49D3692E1F2124EE979A39D8 /* Pods-DateApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DateApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-DateApp/Pods-DateApp.release.xcconfig"; sourceTree = "<group>"; };
 		63ED224D000AA38152CC6CF6 /* Pods_DateAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DateAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		830DA662B3856B06FBEB2070 /* Pods-DateAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DateAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DateAppUITests/Pods-DateAppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		8C0669911F1487E800132E14 /* UUDoubleSliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UUDoubleSliderView.h; sourceTree = "<group>"; };
+		8C0669921F1487E800132E14 /* UUDoubleSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UUDoubleSliderView.m; sourceTree = "<group>"; };
+		8C0669941F1AFC5800132E14 /* UILabelDeviceClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UILabelDeviceClass.h; sourceTree = "<group>"; };
+		8C0669951F1AFC5800132E14 /* UILabelDeviceClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UILabelDeviceClass.m; sourceTree = "<group>"; };
+		8C071DD21F0B1EEF00900A42 /* UserLandingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLandingViewController.h; sourceTree = "<group>"; };
+		8C071DD31F0B1EEF00900A42 /* UserLandingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLandingViewController.m; sourceTree = "<group>"; };
+		8C08FA131EA7115500A41FF5 /* DADateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DADateFormatter.h; path = ../DADateFormatter.h; sourceTree = "<group>"; };
+		8C08FA141EA7115500A41FF5 /* DADateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DADateFormatter.m; path = ../DADateFormatter.m; sourceTree = "<group>"; };
 		8C11467E1E7CC069003AB594 /* PartingMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartingMessageViewController.h; sourceTree = "<group>"; };
 		8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartingMessageViewController.m; sourceTree = "<group>"; };
 		8C1146811E7D838C003AB594 /* NewMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageViewController.h; sourceTree = "<group>"; };
@@ -144,25 +157,9 @@
 		8C2BE32D1DEA3FE30042BE6B /* AlbumTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumTableViewCell.h; sourceTree = "<group>"; };
 		8C2BE32E1DEA3FE30042BE6B /* AlbumTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumTableViewCell.m; sourceTree = "<group>"; };
 		8C2CE0CC1DA1825300592566 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		8C2CE0CE1DA1833000592566 /* TFDailyVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFDailyVC.h; sourceTree = "<group>"; };
-		8C2CE0CF1DA1833000592566 /* TFDailyVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFDailyVC.m; sourceTree = "<group>"; };
-		8C2CE0D41DA186D500592566 /* TFCellData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCellData.h; sourceTree = "<group>"; };
-		8C2CE0D51DA186D500592566 /* TFCellData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCellData.m; sourceTree = "<group>"; };
-		8C2CE0D61DA186D500592566 /* TFCellManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFCellManager.h; sourceTree = "<group>"; };
-		8C2CE0D71DA186D500592566 /* TFCellManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFCellManager.m; sourceTree = "<group>"; };
 		8C2CE0D81DA186D500592566 /* TFConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFConstants.h; sourceTree = "<group>"; };
-		8C2CE0D91DA186D500592566 /* TFDailyCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFDailyCollectionCell.h; sourceTree = "<group>"; };
-		8C2CE0DA1DA186D500592566 /* TFDailyCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFDailyCollectionCell.m; sourceTree = "<group>"; };
-		8C2CE0DB1DA186D500592566 /* TFDailyCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFDailyCollectionViewLayout.h; sourceTree = "<group>"; };
-		8C2CE0DC1DA186D500592566 /* TFDailyCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFDailyCollectionViewLayout.m; sourceTree = "<group>"; };
-		8C2CE0DD1DA186D500592566 /* TFDailyItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFDailyItem.h; sourceTree = "<group>"; };
-		8C2CE0DE1DA186D500592566 /* TFDailyItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFDailyItem.m; sourceTree = "<group>"; };
-		8C2CE0E11DA186D500592566 /* TFHorizontalCollectionLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHorizontalCollectionLayout.h; sourceTree = "<group>"; };
-		8C2CE0E21DA186D500592566 /* TFHorizontalCollectionLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHorizontalCollectionLayout.m; sourceTree = "<group>"; };
 		8C2CE0E31DA186D500592566 /* TFStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFStyle.h; sourceTree = "<group>"; };
 		8C2CE0E41DA186D500592566 /* TFStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFStyle.m; sourceTree = "<group>"; };
-		8C2CE0ED1DA18D5000592566 /* TFDailyTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFDailyTableCell.h; sourceTree = "<group>"; };
-		8C2CE0EE1DA18D5000592566 /* TFDailyTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFDailyTableCell.m; sourceTree = "<group>"; };
 		8C2CE0F01DA2DC8A00592566 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8C4117F61DD03E1000DBC38F /* TFHeartAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHeartAnimationView.h; sourceTree = "<group>"; };
 		8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHeartAnimationView.m; sourceTree = "<group>"; };
@@ -211,8 +208,17 @@
 		8CCF3DA11E43CD9500CC4750 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
 		8CCF3DA21E43CDA800CC4750 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
 		8CCF3DA31E43CDB200CC4750 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		8CCF830D1E91CB7F00C8CF9C /* DASocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DASocket.h; sourceTree = "<group>"; };
+		8CCF830E1E91CB7F00C8CF9C /* DASocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DASocket.m; sourceTree = "<group>"; };
 		8CD2BD891E3EE65D00A293CE /* SettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewCell.h; sourceTree = "<group>"; };
 		8CD2BD8A1E3EE65D00A293CE /* SettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewCell.m; sourceTree = "<group>"; };
+		8CE1D9201F0214680002A510 /* DAGradientColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAGradientColor.h; sourceTree = "<group>"; };
+		8CE1D9211F0214680002A510 /* DAGradientColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAGradientColor.m; sourceTree = "<group>"; };
+		8CE1D9231F0355B00002A510 /* RooneyLF-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RooneyLF-Medium.otf"; sourceTree = "<group>"; };
+		8CE1D9241F0355B00002A510 /* RooneyLF-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RooneyLF-MediumItalic.otf"; sourceTree = "<group>"; };
+		8CE1D9251F0355B00002A510 /* RooneyLF-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RooneyLF-Regular.otf"; sourceTree = "<group>"; };
+		8CE1D9261F0355B00002A510 /* RooneySansLF-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RooneySansLF-Medium.otf"; sourceTree = "<group>"; };
+		8CE1D9271F0355B00002A510 /* RooneySansLF-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "RooneySansLF-Regular.otf"; sourceTree = "<group>"; };
 		8CEB638C1E58F9ED00F062A9 /* DraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableView.h; sourceTree = "<group>"; };
 		8CEB638D1E58F9ED00F062A9 /* DraggableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DraggableView.m; sourceTree = "<group>"; };
 		8CEB638E1E58F9ED00F062A9 /* DraggableViewBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableViewBackground.h; sourceTree = "<group>"; };
@@ -231,6 +237,10 @@
 		8CEF96971DCC3B1B004D76A7 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		8CEF96981DCC3B1B004D76A7 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		8CEF969D1DCC48DA004D76A7 /* Includes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Includes.h; sourceTree = "<group>"; };
+		8CF2860C1E989CEB005B94E9 /* CropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CropViewController.h; sourceTree = "<group>"; };
+		8CF2860D1E989CEB005B94E9 /* CropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CropViewController.m; sourceTree = "<group>"; };
+		8CF2860F1E9B3C0B005B94E9 /* Messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Messages.h; sourceTree = "<group>"; };
+		8CF286101E9B3C0B005B94E9 /* Messages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Messages.m; sourceTree = "<group>"; };
 		8CF62C791E1A069700BBAF0D /* NewMatchConflictViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMatchConflictViewController.h; sourceTree = "<group>"; };
 		8CF62C7A1E1A069700BBAF0D /* NewMatchConflictViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMatchConflictViewController.m; sourceTree = "<group>"; };
 		8CF62C7C1E1E204000BBAF0D /* NewMatchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMatchViewController.h; sourceTree = "<group>"; };
@@ -337,21 +347,7 @@
 				8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */,
 				8CEF969D1DCC48DA004D76A7 /* Includes.h */,
 				8C2CE0F01DA2DC8A00592566 /* Main.storyboard */,
-				8C2CE0ED1DA18D5000592566 /* TFDailyTableCell.h */,
-				8C2CE0EE1DA18D5000592566 /* TFDailyTableCell.m */,
-				8C2CE0D41DA186D500592566 /* TFCellData.h */,
-				8C2CE0D51DA186D500592566 /* TFCellData.m */,
-				8C2CE0D61DA186D500592566 /* TFCellManager.h */,
-				8C2CE0D71DA186D500592566 /* TFCellManager.m */,
 				8C2CE0D81DA186D500592566 /* TFConstants.h */,
-				8C2CE0D91DA186D500592566 /* TFDailyCollectionCell.h */,
-				8C2CE0DA1DA186D500592566 /* TFDailyCollectionCell.m */,
-				8C2CE0DB1DA186D500592566 /* TFDailyCollectionViewLayout.h */,
-				8C2CE0DC1DA186D500592566 /* TFDailyCollectionViewLayout.m */,
-				8C2CE0DD1DA186D500592566 /* TFDailyItem.h */,
-				8C2CE0DE1DA186D500592566 /* TFDailyItem.m */,
-				8C2CE0E11DA186D500592566 /* TFHorizontalCollectionLayout.h */,
-				8C2CE0E21DA186D500592566 /* TFHorizontalCollectionLayout.m */,
 				8C2CE0E31DA186D500592566 /* TFStyle.h */,
 				8C2CE0E41DA186D500592566 /* TFStyle.m */,
 				8C2CE0CC1DA1825300592566 /* AppDelegate.m */,
@@ -360,8 +356,6 @@
 				8CC00FF01D9F2B1500BE487A /* LaunchScreen.storyboard */,
 				8CC00FF31D9F2B1500BE487A /* Info.plist */,
 				8CC00FE21D9F2B1500BE487A /* Supporting Files */,
-				8C2CE0CE1DA1833000592566 /* TFDailyVC.h */,
-				8C2CE0CF1DA1833000592566 /* TFDailyVC.m */,
 				8CEF96971DCC3B1B004D76A7 /* ProfileViewController.h */,
 				8CEF96981DCC3B1B004D76A7 /* ProfileViewController.m */,
 				8CB05FF51DD175AB00EB7BB6 /* RootViewController.h */,
@@ -423,6 +417,22 @@
 				8C5F0E181E8F2F8200C799B4 /* MatchUser.m */,
 				8C5F0E1A1E8F30EE00C799B4 /* DAParser.h */,
 				8C5F0E1B1E8F30EE00C799B4 /* DAParser.m */,
+				8CCF830D1E91CB7F00C8CF9C /* DASocket.h */,
+				8CCF830E1E91CB7F00C8CF9C /* DASocket.m */,
+				8C08FA131EA7115500A41FF5 /* DADateFormatter.h */,
+				8C08FA141EA7115500A41FF5 /* DADateFormatter.m */,
+				8CF2860C1E989CEB005B94E9 /* CropViewController.h */,
+				8CF2860D1E989CEB005B94E9 /* CropViewController.m */,
+				8CF2860F1E9B3C0B005B94E9 /* Messages.h */,
+				8CF286101E9B3C0B005B94E9 /* Messages.m */,
+				8CE1D9201F0214680002A510 /* DAGradientColor.h */,
+				8CE1D9211F0214680002A510 /* DAGradientColor.m */,
+				8C071DD21F0B1EEF00900A42 /* UserLandingViewController.h */,
+				8C071DD31F0B1EEF00900A42 /* UserLandingViewController.m */,
+				8C0669911F1487E800132E14 /* UUDoubleSliderView.h */,
+				8C0669921F1487E800132E14 /* UUDoubleSliderView.m */,
+				8C0669941F1AFC5800132E14 /* UILabelDeviceClass.h */,
+				8C0669951F1AFC5800132E14 /* UILabelDeviceClass.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -456,6 +466,11 @@
 		8CCF3D9E1E430A4A00CC4750 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8CE1D9231F0355B00002A510 /* RooneyLF-Medium.otf */,
+				8CE1D9241F0355B00002A510 /* RooneyLF-MediumItalic.otf */,
+				8CE1D9251F0355B00002A510 /* RooneyLF-Regular.otf */,
+				8CE1D9261F0355B00002A510 /* RooneySansLF-Medium.otf */,
+				8CE1D9271F0355B00002A510 /* RooneySansLF-Regular.otf */,
 				8CCF3DA31E43CDB200CC4750 /* Roboto-Light.ttf */,
 				8CCF3DA21E43CDA800CC4750 /* Roboto-Regular.ttf */,
 				8CCF3DA11E43CD9500CC4750 /* Roboto-Bold.ttf */,
@@ -612,15 +627,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CE1D92A1F0355B00002A510 /* RooneyLF-Regular.otf in Resources */,
+				8CE1D9281F0355B00002A510 /* RooneyLF-Medium.otf in Resources */,
 				8CCF3DA41E43CDBF00CC4750 /* Roboto-Light.ttf in Resources */,
 				8CCF3DA51E43CDBF00CC4750 /* Roboto-Regular.ttf in Resources */,
 				8CCF3DA61E43CDBF00CC4750 /* Roboto-Bold.ttf in Resources */,
+				8CE1D92C1F0355B00002A510 /* RooneySansLF-Regular.otf in Resources */,
 				8CCF3DA01E430AAA00CC4750 /* Playball-Regular.ttf in Resources */,
+				8CE1D92B1F0355B00002A510 /* RooneySansLF-Medium.otf in Resources */,
 				8CC00FF21D9F2B1500BE487A /* LaunchScreen.storyboard in Resources */,
 				8CEB63991E5902A400F062A9 /* DraggableView.xib in Resources */,
 				8CC00FEF1D9F2B1500BE487A /* Assets.xcassets in Resources */,
 				8C4117FA1DD03E1000DBC38F /* TFHeartAnimationView.xib in Resources */,
 				8C2CE0F11DA2DC8B00592566 /* Main.storyboard in Resources */,
+				8CE1D9291F0355B00002A510 /* RooneyLF-MediumItalic.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -783,10 +803,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C0669931F1487E900132E14 /* UUDoubleSliderView.m in Sources */,
 				8C2BE3081DE01A640042BE6B /* DistanceRangeSlider.m in Sources */,
 				8C2BE3291DEA3EA10042BE6B /* PhotoManager.m in Sources */,
 				8C2BE31D1DE693EB0042BE6B /* SinglePhotoViewController.m in Sources */,
-				8C2CE0E61DA186D500592566 /* TFCellManager.m in Sources */,
 				8CEF36A01E2D97F10060CAF8 /* NSUserDefaults+DemoSettings.m in Sources */,
 				8C2BE32F1DEA3FE30042BE6B /* AlbumTableViewCell.m in Sources */,
 				8C2BE30E1DE5543E0042BE6B /* BioViewController.m in Sources */,
@@ -794,36 +814,36 @@
 				8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */,
 				8CEB63941E58F9ED00F062A9 /* DraggableView.m in Sources */,
 				8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */,
+				8C08FA151EA7115500A41FF5 /* DADateFormatter.m in Sources */,
 				8CC00FE41D9F2B1500BE487A /* main.m in Sources */,
 				8C9C19D71DD800DE0074A7D0 /* SettingsViewController.m in Sources */,
 				8C2BE3201DE9297E0042BE6B /* LoginViewController.m in Sources */,
-				8C2CE0E81DA186D500592566 /* TFDailyCollectionViewLayout.m in Sources */,
+				8CE1D9221F0214680002A510 /* DAGradientColor.m in Sources */,
 				8C5F0E1C1E8F30EE00C799B4 /* DAParser.m in Sources */,
-				8C2CE0E91DA186D500592566 /* TFDailyItem.m in Sources */,
 				8C2BE3171DE55B030042BE6B /* DataAccess.m in Sources */,
-				8C2CE0E71DA186D500592566 /* TFDailyCollectionCell.m in Sources */,
 				8CF62C8A1E22BE9400BBAF0D /* MessageViewController.m in Sources */,
 				8C2BE30B1DE20C0E0042BE6B /* EditPhotosViewController.m in Sources */,
 				8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */,
+				8CCF830F1E91CB7F00C8CF9C /* DASocket.m in Sources */,
 				8C5F0E191E8F2F8200C799B4 /* MatchUser.m in Sources */,
 				8C1146831E7D838C003AB594 /* NewMessageViewController.m in Sources */,
 				8CEB63951E58F9ED00F062A9 /* DraggableViewBackground.m in Sources */,
 				8C92D2671E32E1E40071A737 /* MyProfileTableViewCell.m in Sources */,
 				8C9C19DA1DD829680074A7D0 /* MyProfileViewController.m in Sources */,
-				8C2CE0D01DA1833000592566 /* TFDailyVC.m in Sources */,
 				8C2BE32C1DEA3EE40042BE6B /* FBAlbumsViewController.m in Sources */,
 				8CEF36A31E2D9B710060CAF8 /* MessageModelData.m in Sources */,
 				8CEF3F1A1E3071DB00CC4485 /* MatchTableViewCell.m in Sources */,
 				8CEB63961E58F9ED00F062A9 /* OverlayView.m in Sources */,
 				8C2BE3041DE018820042BE6B /* CERangeSliderKnobLayer.m in Sources */,
+				8CF2860E1E989CEB005B94E9 /* CropViewController.m in Sources */,
+				8C071DD41F0B1EEF00900A42 /* UserLandingViewController.m in Sources */,
 				8CB05FFA1DD187F300EB7BB6 /* MatchViewController.m in Sources */,
 				8CD2BD8B1E3EE65D00A293CE /* SettingsTableViewCell.m in Sources */,
 				8C2BE3031DE018820042BE6B /* CERangeSliderTrackLayer.m in Sources */,
-				8C2CE0E51DA186D500592566 /* TFCellData.m in Sources */,
-				8C2CE0EF1DA18D5000592566 /* TFDailyTableCell.m in Sources */,
 				8C2BE3051DE018820042BE6B /* CERangeSlider.m in Sources */,
 				8C5F0E141E8D70B300C799B4 /* DAServer.m in Sources */,
 				8C2BE31A1DE693830042BE6B /* FBPhotosViewController.m in Sources */,
+				8C0669961F1AFC5800132E14 /* UILabelDeviceClass.m in Sources */,
 				8CCBF4CD1E7470D400C202CB /* User.m in Sources */,
 				8C2CE0EC1DA186D500592566 /* TFStyle.m in Sources */,
 				8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */,
@@ -833,9 +853,9 @@
 				8CA3447C1DD76C0200BFB36F /* PhotosCollectionViewCell.m in Sources */,
 				8CB0F1791E2DCED500E62A1C /* RootViewController.m in Sources */,
 				8CEF96991DCC3B1B004D76A7 /* ProfileViewController.m in Sources */,
-				8C2CE0EB1DA186D500592566 /* TFHorizontalCollectionLayout.m in Sources */,
 				8C9C19DD1DD829890074A7D0 /* MenuViewController.m in Sources */,
 				8CF62C7E1E1E204000BBAF0D /* NewMatchViewController.m in Sources */,
+				8CF286111E9B3C0B005B94E9 /* Messages.m in Sources */,
 				8C2BE3111DE554500042BE6B /* EduViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -977,6 +997,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DateApp/DateApp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -988,6 +1009,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -997,6 +1020,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DateApp/DateApp.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1008,6 +1032,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

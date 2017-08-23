@@ -10,5 +10,13 @@
 
 @implementation PhotosCollectionViewCell
 
+/*
+- (void)prepareForReuse {
+    [super prepareForReuse];
+    [self setHighlighted:NO];
+    
+    self.photo.image = nil;
+    self.actionIcon.image = nil;
+} */
 
 @end

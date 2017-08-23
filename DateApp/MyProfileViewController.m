@@ -57,25 +57,25 @@
 
     /*
     CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.navbar.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor colorWithRed:0.29 green:0.34 blue:0.86 alpha:1.0].CGColor),(id)([UIColor colorWithRed:0.01 green:0.68 blue:0.80 alpha:1.0].CGColor),nil];
+    [self.view.layer insertSublayer:gradient atIndex:0];
+    gradient.frame = self.view.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor whiteColor].CGColor),(id)([UIColor colorWithRed:0.95 green:0.95 blue:0.98 alpha:1.0].CGColor),nil];
     gradient.startPoint = CGPointMake(0.25,0.0);
     gradient.endPoint = CGPointMake(0.25,1.0);
-    [self.navbar.layer insertSublayer:gradient atIndex:0]; */
+    self.view.layer.masksToBounds = YES; */
     
-    
-    
-    self.name_label.text = @"Neil";
-    [self.profileImage setImage:[UIImage imageNamed:@"girl1"]];
-    [self.bio_label setText:@"This is a string about me that is going to persuade you to give me a heart. From there we'll chat it up and make big plans, only for you...."];
-
-    
+    [self getData];
 
     
     [self setFonts];
 
     
+    
     [self initScrollView];
+
+    
+    [self hideAllPCs];
+    
     //  [self addBackground];
 }
 
@@ -84,14 +84,38 @@
     [DAServer getProfile:@"" completion:^(User *user, NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
-            self.user = user;
-            [self setAgeLabel];
-            [self setTitleLabel];
-            [self setEduLabel];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.user = user;
+                self.name_label.text = self.user.name;
+                [self setAgeLabel];
+                [self setTitleLabel];
+                [self setEduLabel];
+                if (self.user.bio.length)
+                {
+                    self.bio_label.text = self.user.bio;
+                }
+                else
+                {
+                    self.bio_label.text = @"(No Summary)";
+                }
+                
+                [self initScrollView];
+                [self loadPhotos];
+                [self showEditIcons];
+
+            });
         } else {
             // update UI to indicate error or take remedial action
         }
     }];
+}
+
+-(void)showEditIcons
+{
+    [self.eduEditIcon setHidden:NO];
+    [self.bioEditIcon setHidden:NO];
+    [self.workEditIcon setHidden:NO];
+    [self.photoEditBtn setHidden:NO];
 }
 
 - (void)setAgeLabel{
@@ -99,7 +123,7 @@
     
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
     [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"AGE: " attributes:@{NSForegroundColorAttributeName : grayColor, NSFontAttributeName: headerFont}]];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"25" attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
+    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:self.user.age attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
     self.age_label.attributedText = attrString;
 }
 
@@ -109,7 +133,15 @@
     
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
     [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"TITLE: " attributes:@{NSForegroundColorAttributeName : grayColor, NSFontAttributeName: headerFont}]];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"Software Engineer" attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
+    if (self.user.job.length)
+    {
+        [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:self.user.job attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
+    }
+    else
+    {
+        [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"(No Summary)" attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
+    }
+
     self.edu_job.attributedText = attrString;
 }
 
@@ -117,7 +149,16 @@
     
     NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
     [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"EDU: " attributes:@{NSForegroundColorAttributeName : grayColor, NSFontAttributeName: headerFont}]];
-    [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"Florida State University" attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
+    if (self.user.edu.length)
+    {
+        [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:self.user.edu attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
+    }
+    else
+    {
+        [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"(No Summary)" attributes:@{NSForegroundColorAttributeName : blackColor, NSFontAttributeName: contentFont}]];
+    }
+    
+
     self.eduLabel.attributedText = attrString;
 }
 
@@ -125,15 +166,9 @@
     
     CGRect fullScreenRect=[[UIScreen mainScreen] bounds];
     
-    pic_count = 5;
+    pic_count = [self.user.pics count];
     
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    [self.view.layer insertSublayer:gradient atIndex:0];
-    gradient.frame = self.view.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor whiteColor].CGColor),(id)([UIColor colorWithRed:0.95 green:0.95 blue:0.98 alpha:1.0].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.25,0.0);
-    gradient.endPoint = CGPointMake(0.25,1.0);
-    self.view.layer.masksToBounds = YES;
+
     
     self.scrollView.showsHorizontalScrollIndicator = NO;
     
@@ -171,13 +206,17 @@
     //   CGFloat contentHeightModifier = 0.0;
     CGFloat scroll_width = CGRectGetWidth([[UIScreen mainScreen] bounds]) * pic_count;
     
-    
-    
     [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:self.view_height.constant]];
     
     [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:scroll_width]];
     
     
+
+    
+}
+
+-(void)loadPhotos
+{
     [self initPageController];
     
     
@@ -206,7 +245,6 @@
     {
         [self addPhoto5];
     }
-    
 }
 
 -(void)addPhoto{
@@ -220,7 +258,9 @@
     self.pic.layer.cornerRadius = 10;
     [self.pic setClipsToBounds:YES];
     
-    self.pic.image = [UIImage imageNamed:@"girl1"];
+    [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
+                 placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                          options:SDWebImageRefreshCached];
     
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
     
@@ -252,8 +292,9 @@
     [self.pic2 invalidateIntrinsicContentSize];
     self.pic2.layer.cornerRadius = 10;
     [self.pic2 setClipsToBounds:YES];
-    self.pic2.image = [UIImage imageNamed:@"girl1"];
-    
+    [self.pic2 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:1]]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
     self.pic2.alpha = 2.0;
     
     self.pic2.contentMode = UIViewContentModeScaleAspectFill;
@@ -288,8 +329,9 @@
     self.pic3.layer.cornerRadius = 10;
     [self.pic3 setClipsToBounds:YES];
     
-    self.pic3.image = [UIImage imageNamed:@"girl1"];
-    
+    [self.pic3 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:2]]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
     
     self.pic3.contentMode = UIViewContentModeScaleAspectFill;
     
@@ -321,8 +363,9 @@
     self.pic4.layer.cornerRadius = 10;
     [self.pic4 setClipsToBounds:YES];
     
-    self.pic4.image = [UIImage imageNamed:@"girl1"];
-    
+    [self.pic4 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:3]]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
     
     self.pic4.contentMode = UIViewContentModeScaleAspectFill;
     
@@ -355,8 +398,9 @@
     self.pic5.layer.cornerRadius = 10;
     [self.pic5 setClipsToBounds:YES];
     
-    self.pic5.image = [UIImage imageNamed:@"girl1"];
-    
+    [self.pic5 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:4]]
+                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                         options:SDWebImageRefreshCached];
     
     self.pic5.contentMode = UIViewContentModeScaleAspectFill;
     
@@ -416,16 +460,30 @@
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     
-    if ([segue.identifier isEqualToString:@"pickerSegue"]) {
+    if ([segue.identifier isEqualToString:@"jobSegue"])
+    {
         OccupationViewController *vc = segue.destinationViewController;
         vc.view.backgroundColor = [UIColor clearColor];
         vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     }
+    else if ([segue.identifier isEqualToString:@"bioSegue"])
+    {
+        BioViewController *vc = segue.destinationViewController;
+        vc.user = self.user;
+    }
+    else if ([segue.identifier isEqualToString:@"eduSegue"])
+    {
+        EduViewController *vc = segue.destinationViewController;
+        vc.view.backgroundColor = [UIColor clearColor];
+        vc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    }
     
+    //
     /*
     self.networksVC = segue.destinationViewController;
     //  NewMatchViewController *matchVC = (NewMatchViewController *)segue.destinationViewController;
@@ -473,6 +531,8 @@
     self.pc4.layer.borderWidth = 1;
     self.pc5.layer.borderColor = blueColor.CGColor;
     self.pc5.layer.borderWidth = 1;
+    [self showAllPCs];
+    
     if (pic_count == 1)
     {
         [self hideAllPCs];
@@ -508,6 +568,16 @@
     [self.pc3 setHidden:YES];
     [self.pc4 setHidden:YES];
     [self.pc5 setHidden:YES];
+    
+}
+
+-(void)showAllPCs
+{
+    [self.pc1 setHidden:NO];
+    [self.pc2 setHidden:NO];
+    [self.pc3 setHidden:NO];
+    [self.pc4 setHidden:NO];
+    [self.pc5 setHidden:NO];
     
 }
 

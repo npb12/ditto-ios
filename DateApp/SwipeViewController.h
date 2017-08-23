@@ -12,14 +12,12 @@
 
 @protocol GoToProfileProtocol <NSObject>
 
--(void)selectedProfile:(User*)user;
+-(void)selectedProfile:(User*)user matched:(BOOL)match;
 
 @end
 
-@interface SwipeViewController : UIViewController<MatchSegueProtocol>
+@interface SwipeViewController : UIViewController
 
-
--(void)goToMatchedSegue:(id)sender obj:(TFDailyItem*)object;
 
 @property (nonatomic, strong) UINavigationBar *navBar;
 @property(nonatomic, strong) UINavigationController *navController;
@@ -27,8 +25,9 @@
 
 
 -(void) pushDetailView:(id)sender;
--(void)likeCurrentCard;
+-(void)likeCurrentCard:(BOOL)option;
 -(void)loadCards:(NSMutableArray*)users;
+-(void)showEmptyLabel;
 @property NSUInteger pageIndex;
 
 @property (nonatomic, weak) id<GoToProfileProtocol> profile_delegate;
@@ -37,6 +36,9 @@
 
 @property (strong, nonatomic) IBOutlet DraggableViewBackground *backgroundView;
 
+
+-(void)updateMatch;
+-(void)updateUnmatch;
 
 
 

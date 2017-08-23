@@ -9,51 +9,49 @@
 #import "MessageModelData.h"
 
 #import "NSUserDefaults+DemoSettings.h"
+#import <SDWebImage/UIImageView+WebCache.h>
 
 @implementation MessageModelData
 
-- (instancetype)init
+
+
+- (id)initWithMessages:(NSArray*)messages type:(NSInteger)type
 {
-    self = [super init];
-    if (self) {
+    
+    if ((self = [super init]))
+    {
         
-        if ([NSUserDefaults emptyMessagesSetting]) {
-            self.messages = [NSMutableArray new];
-        }
-        else {
-            [self loadFakeMessages];
-        }
+        UIImage *my_image = [UIImage imageNamed:@"my_image"];
+        UIImage *match_image;
         
+        MatchUser *matchuser = [MatchUser currentUser];
+
+        UIImageView *imgview = [UIImageView new];
         
-        /**
-         *  Create avatar images once.
-         *
-         *  Be sure to create your avatars one time and reuse them for good performance.
-         *
-         *  If you are not using avatars, ignore this.
-         */
-        UIImage *avatar_image = [UIImage imageNamed:@"demo_avatar_cook"];
-        UIImage *match_image = [UIImage imageNamed:@"demo_avatar_woz"];
+        [imgview sd_setImageWithURL:[NSURL URLWithString:[matchuser.pics objectAtIndex:0]]
+                    placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                             options:SDWebImageRefreshCached];
+        
+        match_image = imgview.image;
         
         
-        
-        JSQMessagesAvatarImage *cookImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:avatar_image
+        JSQMessagesAvatarImage *userImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:my_image
                                                                                        diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
         
         
         
-        JSQMessagesAvatarImage *wozImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:match_image
-                                                                                      diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
+        JSQMessagesAvatarImage *matchImage = [JSQMessagesAvatarImageFactory avatarImageWithImage:match_image
+                                                                                        diameter:kJSQMessagesCollectionViewAvatarSizeDefault];
         
         self.avatars = @{
-                          kJSQDemoAvatarIdCook : cookImage,
-                          kJSQDemoAvatarIdWoz : wozImage };
+                         kJSQDemoAvatarIdCook : userImage,
+                         kJSQDemoAvatarIdWoz : matchImage };
         
         
-        self.users = @{
-                        kJSQDemoAvatarIdCook : kJSQDemoAvatarDisplayNameCook,
-                        kJSQDemoAvatarIdWoz : kJSQDemoAvatarDisplayNameWoz};
-        
+        /*    self.users = @{
+         kJSQDemoAvatarIdCook : kJSQDemoAvatarDisplayNameCook,
+         kJSQDemoAvatarIdWoz : kJSQDemoAvatarDisplayNameWoz};
+         */
         
         /**
          *  Create message bubble images objects.
@@ -65,70 +63,101 @@
         
         self.outgoingBubbleImageData = [bubbleFactory outgoingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleLightGrayColor]];
         self.incomingBubbleImageData = [bubbleFactory incomingMessagesBubbleImageWithColor:[UIColor jsq_messageBubbleGreenColor]];
+        
+        self.messages = [NSMutableArray new];
+
+        if (type == FULL_CONVERSATION)
+        {
+            [self loadMessages:messages];
+        }
+        else
+        {
+            [self loadLastMessage:messages];
+
+        }
     }
-    
+ 
     return self;
 }
 
-- (void)loadFakeMessages
+-(void)loadMessages:(NSArray*)messagesArray
 {
-    /**
-     *  Load some fake messages for demo.
-     *
-     *  You should have a mutable array or orderedSet, or something.
-     */
-    self.messages = [[NSMutableArray alloc] initWithObjects:
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdSquires
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameSquires
-                                                     date:[NSDate distantPast]
-                                                     text:NSLocalizedString(@"Welcome to JSQMessages: A messaging UI framework for iOS.", nil)],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdWoz
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameWoz
-                                                     date:[NSDate distantPast]
-                                                     text:NSLocalizedString(@"It is simple, elegant, and easy to use. There are super sweet default settings, but you can customize like crazy.", nil)],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdSquires
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameSquires
-                                                     date:[NSDate distantPast]
-                                                     text:NSLocalizedString(@"It even has data detectors. You can call me tonight. My cell number is 123-456-7890. My website is www.hexedbits.com.", nil)],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdJobs
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameJobs
-                                                     date:[NSDate date]
-                                                     text:NSLocalizedString(@"JSQMessagesViewController is nearly an exact replica of the iOS Messages App. And perhaps, better.", nil)],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdCook
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameCook
-                                                     date:[NSDate date]
-                                                     text:NSLocalizedString(@"It is unit-tested, free, open-source, and documented.", nil)],
-                     
-                     [[JSQMessage alloc] initWithSenderId:kJSQDemoAvatarIdSquires
-                                        senderDisplayName:kJSQDemoAvatarDisplayNameSquires
-                                                     date:[NSDate date]
-                                                     text:NSLocalizedString(@"Now with media messages!", nil)],
-                     nil];
-    
-    
-    
-    /**
-     *  Setting to load REALLY long message for testing/demo
-     *  You should see "END" twice
-     */
-    if ([NSUserDefaults longMessageSetting]) {
-        JSQMessage *reallyLongMessage = [JSQMessage messageWithSenderId:kJSQDemoAvatarIdSquires
-                                                            displayName:kJSQDemoAvatarDisplayNameSquires
-                                                                   text:@"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? END Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur? END"];
+    for (Messages *message in messagesArray)
+    {
         
-        [self.messages addObject:reallyLongMessage];
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.timestamp ];
+        
+        NSString *name;
+        NSString *sender_id;
+        
+        if (message.type == SENT_MESSAGE)
+        {
+            sender_id = [[DataAccess singletonInstance] getUserID];
+            name = [[DataAccess singletonInstance] getName];
+        }
+        else
+        {
+            MatchUser *currentMatch = [MatchUser currentUser];
+            sender_id = [NSString stringWithFormat:@"%ld", (long)currentMatch.user_id];
+            name = currentMatch.name;
+        }
+        
+        JSQMessage *obj = [[JSQMessage alloc] initWithSenderId:sender_id
+                                             senderDisplayName:name
+                                                          date:date
+                                                          text:NSLocalizedString(message.message, nil)];
+        
+        [self.messages addObject:obj];
     }
 }
 
+-(void)loadLastMessage:(NSArray*)messagesArray
+{
+    Messages *message = [messagesArray lastObject];
+    
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.timestamp ];
+    
+    NSString *name;
+    NSString *sender_id;
+    
+    if (message.type == SENT_MESSAGE)
+    {
+        sender_id = [[DataAccess singletonInstance] getUserID];
+        name = [[DataAccess singletonInstance] getName];
+    }
+    else
+    {
+        MatchUser *currentMatch = [MatchUser currentUser];
+        sender_id = [NSString stringWithFormat:@"%ld", (long)currentMatch.user_id];
+        name = currentMatch.name;
+    }
+    
+    JSQMessage *obj = [[JSQMessage alloc] initWithSenderId:sender_id
+                                         senderDisplayName:name
+                                                      date:date
+                                                      text:NSLocalizedString(message.message, nil)];
+    
+    [self.messages addObject:obj];
+}
 
 
++(JSQMessage*)MessageReceived:(Messages*)message
+{
 
-
-
+    MatchUser *matchuser = [MatchUser currentUser];
+    
+    NSString *uid = [NSString stringWithFormat:@"%ld",(long)matchuser.user_id];
+    
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.timestamp ];
+    
+    JSQMessage *obj = [[JSQMessage alloc] initWithSenderId:uid
+                                         senderDisplayName:matchuser.name
+                                                      date:date
+                                                      text:NSLocalizedString(message.message, nil)];
+    
+    return obj;
+    
+}
 
 
 

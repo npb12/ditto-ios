@@ -8,10 +8,13 @@
 
 #import "Includes.h"
 
-@interface BioViewController : UIViewController<UITextViewDelegate>
+@interface BioViewController : UIViewController<UITextViewDelegate, UITextViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UILabel *bioLabel;
 @property (strong, nonatomic) IBOutlet UILabel *userBioLabel;
-@property (strong, nonatomic) IBOutlet UITextView *bioTextField;
+@property (strong, nonatomic) IBOutlet UITextView *bioTextView;
+
+@property (strong, nonatomic) User *user;
+
 
 @end

@@ -9,9 +9,10 @@
 
 #import "Includes.h"
 #import "CERangeSlider.h"
+#import "UUDoubleSliderView.h"
 
 
-@interface SettingsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface SettingsViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UUDoubleSliderViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIImageView *profile_image;
 
@@ -24,4 +25,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *distance_label;
 
 @property (strong, nonatomic) IBOutlet UILabel *age_label;
+
+
 @end
