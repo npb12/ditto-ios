@@ -15,6 +15,17 @@
 
 #pragma POST requests
 
++(NSString*)baseURL
+{
+    //production server
+  //  return @"http://54.174.235.42/api/dtloc.php";
+    
+    //dev server
+        return @"https://www.portaldevservices.com/api/facebook/API/dtloc.php";
+
+}
+
+
 + (void)facebookLogin:(UIViewController*)vc
            completion:(void (^)(NSMutableArray *, NSError *))completion {
 
@@ -70,7 +81,7 @@
                      [body appendFormat:@"\r\n--%@--\r\n", boundary];
                      NSData *postData = [body dataUsingEncoding:NSUTF8StringEncoding];
                      
-                     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+                     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                                             cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                                         timeoutInterval:10.0];
                      [request setHTTPMethod:@"POST"];
@@ -152,10 +163,13 @@
     FBSDKLoginManager *loginManager = [[FBSDKLoginManager alloc] init];
     [loginManager logOut];
     [User removeCurrentUser];
+  /*
     NSDictionary *defaultsDictionary = [[NSUserDefaults standardUserDefaults] dictionaryRepresentation];
+    
+    
     for (NSString *key in [defaultsDictionary allKeys]) {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
-    }
+    } */
     [[DataAccess singletonInstance] setUserLoginStatus:NO];
 }
 
@@ -186,7 +200,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -251,7 +265,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -335,7 +349,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -389,7 +403,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -444,7 +458,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -498,7 +512,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -552,7 +566,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -607,7 +621,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -704,7 +718,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -759,7 +773,7 @@
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php"]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     
@@ -830,10 +844,12 @@
     NSDictionary *headers = @{ @"content-type": @"application/json",
                                @"cache-control": @"no-cache" };
     
+    NSString *args = [NSString stringWithFormat:@"?uid=%@&get=profile&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
     
-    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=profile&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    NSString *URL = [[DAServer baseURL] stringByAppendingString:args];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"GET"];
@@ -870,9 +886,12 @@
                                @"cache-control": @"no-cache" };
     
     
-    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=profile&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    NSString *args = [NSString stringWithFormat:@"?uid=%@&get=profile&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
+    NSString *URL = [[DAServer baseURL] stringByAppendingString:args];
+    
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"GET"];
@@ -908,11 +927,15 @@
                                @"cache-control": @"no-cache" };
     
     
-    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=message&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    NSString *args = [NSString stringWithFormat:@"?uid=%@&get=message&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
+    NSString *URL = [[DAServer baseURL] stringByAppendingString:args];
+    
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
+
     [request setHTTPMethod:@"GET"];
     [request setAllHTTPHeaderFields:headers];
     
@@ -951,11 +974,15 @@
                                @"cache-control": @"no-cache" };
     
     
-    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=message&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    NSString *args = [NSString stringWithFormat:@"?uid=%@&get=message&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
+    NSString *URL = [[DAServer baseURL] stringByAppendingString:args];
+    
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
+    
     [request setHTTPMethod:@"GET"];
     [request setAllHTTPHeaderFields:headers];
     
@@ -991,12 +1018,15 @@
     NSDictionary *headers = @{ @"content-type": @"application/json",
                                @"cache-control": @"no-cache" };
     
+    NSString *args = [NSString stringWithFormat:@"?uid=%@&get=location&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
     
-    NSString *url_string = [NSString stringWithFormat:@"https://www.portaldevservices.com/api/facebook/API/dtloc.php?uid=%@&get=location&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    NSString *URL = [[DAServer baseURL] stringByAppendingString:args];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url_string]
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
+
     [request setHTTPMethod:@"GET"];
     [request setAllHTTPHeaderFields:headers];
     

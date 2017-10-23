@@ -49,7 +49,7 @@
 }
 
 - (IBAction)inappropriateAction:(id)sender {
-    message = @"inappropriate";
+    message = [NSString stringWithFormat:@"%@ felt your messages were innapropriate", [User currentUser].name];
     [self dismissAndSend];
 }
 
@@ -60,14 +60,14 @@
 
 - (IBAction)chemistryAction:(id)sender
 {
-    message = @"chemistry";
+    message = [NSString stringWithFormat:@"%@ felt there wasn't enough chemistry", [User currentUser].name];
     [self dismissAndSend];
 
 }
 
 - (IBAction)interestAction:(id)sender
 {
-    message = @"interest";
+    message = [NSString stringWithFormat:@"%@ felt you showed little interest", [User currentUser].name];
     [self dismissAndSend];
 
 }

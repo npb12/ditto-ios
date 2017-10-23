@@ -68,14 +68,15 @@
     }
     else
     {
-        [LocationManager sharedInstance];
-        [[LocationManager sharedInstance] addObserver:self forKeyPath:@"location" options:NSKeyValueObservingOptionNew context:nil];
-        
+
   //      if (![[DataAccess singletonInstance] askedForNotifications])
    //     {
         [(AppDelegate*)[UIApplication sharedApplication].delegate registerForRemoteNotifications];
             
     //    }
+        
+        [LocationManager sharedInstance];
+        [[LocationManager sharedInstance] addObserver:self forKeyPath:@"location" options:NSKeyValueObservingOptionNew context:nil];
         
         
         [[NSNotificationCenter defaultCenter]
@@ -91,6 +92,7 @@
                                                  selector: @selector(goToMessaging)
                                                      name: @"callSegue"
                                                    object: nil];
+
         
     }
  
@@ -738,6 +740,8 @@
                         if (self.swipeVC)
                         {
                             [self.swipeVC loadCards:result];
+                            [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
+                            [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
                         }
                         else
                         {
@@ -752,6 +756,8 @@
                         if (self.swipeVC)
                         {
                             [self.swipeVC showEmptyLabel];
+                            [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
+                            [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
                         }
                     });
                 }
@@ -827,6 +833,7 @@
 -(void) currentMatchNotification:(NSNotification*)notification
 {
     [self.unmatchBtn setImage:[UIImage imageNamed:@"umatch"] forState:UIControlStateNormal];
+    [self.unmatchBtn setHidden:NO];
 }
 
 -(void) noMatchNotification:(NSNotification*)notification
@@ -1024,8 +1031,12 @@
 }
 
 
--(IBAction)logoutUnwind:(UIStoryboardSegue *)segue {
-    NSLog(@"unwinding");
+- (IBAction)returnToStepOne:(UIStoryboardSegue *)segue {
+
+}
+
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 

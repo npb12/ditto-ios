@@ -65,6 +65,7 @@
 @property (nonatomic, weak) id<SelectedProfileProtocol> profile_delegate;
 
 @property (strong, nonatomic) IBOutlet UILabel *emptyLabel;
+@property (strong, nonatomic) IBOutlet UILabel *emptyLabel2;
 
 -(void)updateUnmatch;
 

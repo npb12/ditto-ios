@@ -13,6 +13,7 @@
 		8C0669961F1AFC5800132E14 /* UILabelDeviceClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0669951F1AFC5800132E14 /* UILabelDeviceClass.m */; };
 		8C071DD41F0B1EEF00900A42 /* UserLandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C071DD31F0B1EEF00900A42 /* UserLandingViewController.m */; };
 		8C08FA151EA7115500A41FF5 /* DADateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C08FA141EA7115500A41FF5 /* DADateFormatter.m */; };
+		8C0AF7491F5516D0005AA0FF /* LilyScriptOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C0AF7481F5516D0005AA0FF /* LilyScriptOne-Regular.ttf */; };
 		8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */; };
 		8C1146831E7D838C003AB594 /* NewMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1146821E7D838C003AB594 /* NewMessageViewController.m */; };
 		8C2BE3031DE018820042BE6B /* CERangeSliderTrackLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE2FD1DE018820042BE6B /* CERangeSliderTrackLayer.m */; };
@@ -57,10 +58,6 @@
 		8CCBF4CD1E7470D400C202CB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCBF4CC1E7470D400C202CB /* User.m */; };
 		8CCF3D9A1E42706500CC4750 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCF3D991E42706500CC4750 /* CoreLocation.framework */; };
 		8CCF3D9D1E42735300CC4750 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCF3D9C1E42735300CC4750 /* LocationManager.m */; };
-		8CCF3DA01E430AAA00CC4750 /* Playball-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CCF3D9F1E430A7000CC4750 /* Playball-Regular.ttf */; };
-		8CCF3DA41E43CDBF00CC4750 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CCF3DA31E43CDB200CC4750 /* Roboto-Light.ttf */; };
-		8CCF3DA51E43CDBF00CC4750 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CCF3DA21E43CDA800CC4750 /* Roboto-Regular.ttf */; };
-		8CCF3DA61E43CDBF00CC4750 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8CCF3DA11E43CD9500CC4750 /* Roboto-Bold.ttf */; };
 		8CCF830F1E91CB7F00C8CF9C /* DASocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCF830E1E91CB7F00C8CF9C /* DASocket.m */; };
 		8CD2BD8B1E3EE65D00A293CE /* SettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CD2BD8A1E3EE65D00A293CE /* SettingsTableViewCell.m */; };
 		8CE1D9221F0214680002A510 /* DAGradientColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CE1D9211F0214680002A510 /* DAGradientColor.m */; };
@@ -119,6 +116,7 @@
 		8C071DD31F0B1EEF00900A42 /* UserLandingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLandingViewController.m; sourceTree = "<group>"; };
 		8C08FA131EA7115500A41FF5 /* DADateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DADateFormatter.h; path = ../DADateFormatter.h; sourceTree = "<group>"; };
 		8C08FA141EA7115500A41FF5 /* DADateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DADateFormatter.m; path = ../DADateFormatter.m; sourceTree = "<group>"; };
+		8C0AF7481F5516D0005AA0FF /* LilyScriptOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LilyScriptOne-Regular.ttf"; sourceTree = "<group>"; };
 		8C11467E1E7CC069003AB594 /* PartingMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartingMessageViewController.h; sourceTree = "<group>"; };
 		8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartingMessageViewController.m; sourceTree = "<group>"; };
 		8C1146811E7D838C003AB594 /* NewMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageViewController.h; sourceTree = "<group>"; };
@@ -204,10 +202,6 @@
 		8CCF3D991E42706500CC4750 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		8CCF3D9B1E42735300CC4750 /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
 		8CCF3D9C1E42735300CC4750 /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
-		8CCF3D9F1E430A7000CC4750 /* Playball-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Playball-Regular.ttf"; sourceTree = "<group>"; };
-		8CCF3DA11E43CD9500CC4750 /* Roboto-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Bold.ttf"; sourceTree = "<group>"; };
-		8CCF3DA21E43CDA800CC4750 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
-		8CCF3DA31E43CDB200CC4750 /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
 		8CCF830D1E91CB7F00C8CF9C /* DASocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DASocket.h; sourceTree = "<group>"; };
 		8CCF830E1E91CB7F00C8CF9C /* DASocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DASocket.m; sourceTree = "<group>"; };
 		8CD2BD891E3EE65D00A293CE /* SettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewCell.h; sourceTree = "<group>"; };
@@ -466,15 +460,12 @@
 		8CCF3D9E1E430A4A00CC4750 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8C0AF7481F5516D0005AA0FF /* LilyScriptOne-Regular.ttf */,
 				8CE1D9231F0355B00002A510 /* RooneyLF-Medium.otf */,
 				8CE1D9241F0355B00002A510 /* RooneyLF-MediumItalic.otf */,
 				8CE1D9251F0355B00002A510 /* RooneyLF-Regular.otf */,
 				8CE1D9261F0355B00002A510 /* RooneySansLF-Medium.otf */,
 				8CE1D9271F0355B00002A510 /* RooneySansLF-Regular.otf */,
-				8CCF3DA31E43CDB200CC4750 /* Roboto-Light.ttf */,
-				8CCF3DA21E43CDA800CC4750 /* Roboto-Regular.ttf */,
-				8CCF3DA11E43CD9500CC4750 /* Roboto-Bold.ttf */,
-				8CCF3D9F1E430A7000CC4750 /* Playball-Regular.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -629,11 +620,8 @@
 			files = (
 				8CE1D92A1F0355B00002A510 /* RooneyLF-Regular.otf in Resources */,
 				8CE1D9281F0355B00002A510 /* RooneyLF-Medium.otf in Resources */,
-				8CCF3DA41E43CDBF00CC4750 /* Roboto-Light.ttf in Resources */,
-				8CCF3DA51E43CDBF00CC4750 /* Roboto-Regular.ttf in Resources */,
-				8CCF3DA61E43CDBF00CC4750 /* Roboto-Bold.ttf in Resources */,
 				8CE1D92C1F0355B00002A510 /* RooneySansLF-Regular.otf in Resources */,
-				8CCF3DA01E430AAA00CC4750 /* Playball-Regular.ttf in Resources */,
+				8C0AF7491F5516D0005AA0FF /* LilyScriptOne-Regular.ttf in Resources */,
 				8CE1D92B1F0355B00002A510 /* RooneySansLF-Medium.otf in Resources */,
 				8CC00FF21D9F2B1500BE487A /* LaunchScreen.storyboard in Resources */,
 				8CEB63991E5902A400F062A9 /* DraggableView.xib in Resources */,
@@ -997,6 +985,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DateApp/DateApp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1020,6 +1009,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = DateApp/DateApp.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
 				FRAMEWORK_SEARCH_PATHS = (

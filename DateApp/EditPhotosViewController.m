@@ -266,6 +266,8 @@
         if (indexPath.row <= count - 1 && count > 0)
         {
             
+            NSLog(@"%ld", indexPath.row);
+            
             [cell.photo sd_setImageWithURL:[NSURL URLWithString:[self.photo_arary objectAtIndex:indexPath.row]]
                           placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
                                    options:SDWebImageRefreshCached];
@@ -416,7 +418,7 @@
     if (indexPath){
         
         selectedIndex = indexPath.row;
-        
+        adding = YES;
         [self performSegueWithIdentifier:@"fbAlbumsSegue" sender:self];
         /*
         NSLog(@"couldn't find index path");

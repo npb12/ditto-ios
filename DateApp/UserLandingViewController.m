@@ -42,6 +42,9 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gotoProfile)];
     [self.profilePic addGestureRecognizer:tapGesture];
     
+    self.profilePic.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.profilePic.layer.borderWidth = 1;
+    
     [self getData];
     
 
@@ -180,7 +183,13 @@
     if ([self.user.pics count] > 0) {
         [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                            placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                                    options:SDWebImageRefreshCached];
+                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                      if (!error) {
+                                          self.profilePic.layer.borderWidth = 0;
+                                          self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
+                                          
+                                      }
+                                  }];
     }
     
 

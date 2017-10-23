@@ -66,13 +66,16 @@
     if ([users count] < 1)
     {
         [self.backgroundView.emptyLabel setAlpha:0];
+        [self.backgroundView.emptyLabel2 setAlpha:0];
     }
 }
 
 -(void)showEmptyLabel
 {
-    self.backgroundView.emptyLabel.text = @"No one new currently around.\nCheck back again soon!";
+    self.backgroundView.emptyLabel.text = @"No one new currently around.";
+    self.backgroundView.emptyLabel2.text = @"Check back again soon!";
     [self.backgroundView.emptyLabel setAlpha:1.0];
+    [self.backgroundView.emptyLabel2 setAlpha:1.0];
 }
 
 

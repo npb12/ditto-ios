@@ -59,7 +59,8 @@
         // User is logged in, do work such as go to next view controller.
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    
+   
+    [self.dittoHeading layoutIfNeeded];
     self.dittoHeading.textColor = [DAGradientColor gradientFromColor:self.dittoHeading.frame.size.width];
     
     CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 80;
@@ -113,10 +114,10 @@
     
     picWidth = screenWidth * 0.73;
     
-    text1 = @"See people around you who are also\nlooking for people to match with";
-    text2 = @"Swipe left to like someone. Swipe\nright to dislike someone";
-    text3 = @"Match with someone if you both\nswipe left on each other.";
-    text4 = @"You can only be matched with one\nperson at a time! Choose wisely ;)";
+    text1 = @"Discover people around you who are also\nlooking for people to match with";
+    text2 = @"Match with one person at a time\nswiping is disabled";
+    text3 = @"Connections are exclusive\nChat and learn about your match.";
+    text4 = @"Your connection will be put to the test\nChoose wisely ;)";
     
     [self initScrollView];
     [self addView1];
@@ -149,17 +150,12 @@
     
     
     self.tempView = [[UIView alloc] init];
-    //  [self.tempView setFrame:fullScreenRect];
     self.tempView.translatesAutoresizingMaskIntoConstraints = NO;
-    //  [self.tempView removeFromSuperview];
     
     
     
     UIView *tempView = self.tempView;
     UIScrollView *scrollView = self.scrollView;
-    
-
-    
     
     NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(scrollView, tempView);
     
@@ -170,7 +166,7 @@
     [self.scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tempView]|" options:0 metrics: 0 views:viewsDictionary]];
     [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fullScreenRect.size.width * 4]];
     
-    scrollHeight = [[UIScreen mainScreen] bounds].size.height * 0.52;
+    scrollHeight = [[UIScreen mainScreen] bounds].size.height * 0.6;
     
     screenWidth = fullScreenRect.size.width;
     
@@ -385,31 +381,32 @@
     
     self.pic = [[UIImageView alloc]init];
     
-    self.pic.backgroundColor = [self grayColor];
+    self.pic.backgroundColor = [UIColor clearColor];
     //  CGFloat width = CGRectGetWidth([[UIScreen mainScreen] bounds]);
     self.pic.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic invalidateIntrinsicContentSize];
    //
-  //  self.pic.image = [UIImage imageNamed:@"girl2"];
+    self.pic.image = [UIImage imageNamed:@"landing_1"];
     
     
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
-  //  [self.pic setClipsToBounds:YES];
     self.pic.layer.masksToBounds = YES;
     
     [self.view1 addSubview:self.pic];
     
+    int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.05;
+    
     
     NSDictionary *viewsDictionary = @{@"image":self.pic};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:offset / 2]} views:viewsDictionary];
     [self.view1 addConstraints:constraint1];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.view1 addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:scrollHeight * 0.85];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.9) - offset];
     [self.view1 addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth - offset];
     [self.view1 addConstraint:constraint4];
     
 }
@@ -418,12 +415,12 @@
 -(void)addPhoto2{
     
     self.pic2 = [[UIImageView alloc]init];
-    self.pic2.backgroundColor = [self grayColor];
+    self.pic2.backgroundColor = [UIColor clearColor];
 
     self.pic2.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic2 invalidateIntrinsicContentSize];
     [self.pic2 setClipsToBounds:YES];
-   // self.pic2.image = [UIImage imageNamed:@"page2"];
+    self.pic2.image = [UIImage imageNamed:@"landing_2"];
 
     self.pic2.alpha = 2.0;
     
@@ -433,7 +430,8 @@
     [self.view2 addSubview:self.pic2];
     
     
-    
+    int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.05;
+
     
     NSDictionary *viewsDictionary = @{@"image":self.pic2, @"pic1":self.pic};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view2 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
@@ -441,10 +439,10 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.view2 addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:scrollHeight * 0.85];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.9) - offset];
     [self.view2 addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth - offset];
     [self.tempView addConstraint:constraint4];
     
 }
@@ -456,9 +454,9 @@
     self.pic3.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic3 invalidateIntrinsicContentSize];
     [self.pic3 setClipsToBounds:YES];
-    self.pic3.backgroundColor = [self grayColor];
+    self.pic3.backgroundColor = [UIColor clearColor];
 
-  //  self.pic3.image = [UIImage imageNamed:@"page3"];
+    self.pic3.image = [UIImage imageNamed:@"landing_3"];
 
     
     self.pic3.contentMode = UIViewContentModeScaleAspectFit;
@@ -466,6 +464,7 @@
     
     [self.view3 addSubview:self.pic3];
     
+    int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.05;
     
     
     NSDictionary *viewsDictionary = @{@"image":self.pic3, @"pic2":self.pic2};
@@ -474,10 +473,10 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.view3 addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:scrollHeight * 0.85];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.9) - offset];
     [self.view3 addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth - offset];
     [self.view3 addConstraint:constraint4];
     
 }
@@ -490,16 +489,15 @@
     [self.pic4 invalidateIntrinsicContentSize];
     self.pic4.clipsToBounds = YES;
     self.pic4.contentMode = UIViewContentModeScaleAspectFit;
-    self.pic4.backgroundColor = [self grayColor];
+    self.pic4.backgroundColor = [UIColor clearColor];
 
-   // self.pic4.image = [UIImage imageNamed:@"page4"];
+    self.pic4.image = [UIImage imageNamed:@"landing_4"];
 
-    
-    
     
     [self.view4 addSubview:self.pic4];
     
-    
+    int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.05;
+
     
     NSDictionary *viewsDictionary = @{@"image":self.pic4, @"pic3":self.pic3};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view4 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
@@ -507,10 +505,10 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.view4 addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:scrollHeight * 0.85];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.9) - offset];
     [self.view4 addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth - offset];
     [self.view4 addConstraint:constraint4];
     
 }
@@ -539,7 +537,7 @@
     NSDictionary *viewsDictionary = @{@"label" : self.explainLabel};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.explainLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view1 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view1 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view1 addConstraints:constraint2];
     
 }
@@ -566,7 +564,7 @@
     NSDictionary *viewsDictionary = @{@"label" : self.explainLabel2};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.explainLabel2 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view2 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view2 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view2 addConstraints:constraint2];
     
 }
@@ -593,7 +591,7 @@
     NSDictionary *viewsDictionary = @{@"label" : self.explainLabel3};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.explainLabel3 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view3 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view3 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view3 addConstraints:constraint2];
     
 }
@@ -620,7 +618,7 @@
     NSDictionary *viewsDictionary = @{@"label" : self.explainLabel4};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.explainLabel4 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view4 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view4 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view4 addConstraints:constraint2];
 }
 

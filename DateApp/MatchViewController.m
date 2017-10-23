@@ -60,8 +60,9 @@
     }
     else
     {
-   //                                                                                                     self.topLabel.text = @"You're Unmatched";
+        self.topLabel.text = @"You're Unmatched";
         self.middleLabel.text = @"Go to the Discover section and\n swipe to find your next match!";
+        [self.profilePic setHidden:YES];
         
     }
     
@@ -145,6 +146,9 @@
     self.profilePic.layer.masksToBounds = YES;
     avatarImageViewHolder.layer.masksToBounds = NO;
     
+    self.profilePic.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.profilePic.layer.borderWidth = 1;
+    
     
     // set avatar image corner
     self.profilePic.layer.cornerRadius = dimen / 2;
@@ -211,7 +215,13 @@
          [self.nomatch_image setHidden:YES];
          [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                             placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                                     options:SDWebImageRefreshCached];
+                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                                       if (!error) {
+                                           self.profilePic.layer.borderWidth = 0;
+                                           self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
+                                           
+                                       }
+                                   }];
          [self.profilePic setHidden:NO];
          [self.discoverBtn setHidden:YES];
          [self.nomatch_image setHidden:YES];

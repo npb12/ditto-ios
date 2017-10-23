@@ -469,14 +469,16 @@
         if (indexPath.row == 1)
         {
             
-            
+            [DAServer facebookLogout];
+            [self performSegueWithIdentifier:@"returnToStepOne" sender:self];
+            /*
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Logout?"
                                                                            message:@"Are you sure you want to logout of Ditto?"
                                                                     preferredStyle:UIAlertControllerStyleAlert]; // 1
             UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"Yes"
                                                                   style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                       [DAServer facebookLogout];
-                                                                      [self performSegueWithIdentifier:@"unwindSegue" sender:self];
+                                                  [self performSegueWithIdentifier:@"returnToStepOne" sender:self];
                                                                   }];
             
             UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"No"
@@ -490,7 +492,7 @@
 
             
             [self presentViewController:alert animated:YES completion:nil]; // 6
-            
+            */
             
 
         }

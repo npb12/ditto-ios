@@ -264,10 +264,18 @@
     self.pic.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic invalidateIntrinsicContentSize];
     [self.pic setClipsToBounds:YES];
+    self.pic.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    self.pic.layer.borderWidth = 1;
     
     [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                  placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                          options:SDWebImageRefreshCached];
+                       completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                           if (!error) {
+                               self.pic.layer.borderWidth = 0;
+                               self.pic.layer.borderColor = [UIColor clearColor].CGColor;
+                               
+                           }
+                       }];
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
     
     [self.tempView addSubview:self.pic];
