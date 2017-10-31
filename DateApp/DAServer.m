@@ -18,10 +18,10 @@
 +(NSString*)baseURL
 {
     //production server
-  //  return @"http://54.174.235.42/api/dtloc.php";
+    return @"http://54.174.235.42/api/dtloc.php";
     
     //dev server
-        return @"https://www.portaldevservices.com/api/facebook/API/dtloc.php";
+    //    return @"https://www.portaldevservices.com/api/facebook/API/dtloc.php";
 
 }
 

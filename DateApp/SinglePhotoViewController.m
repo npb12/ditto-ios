@@ -72,7 +72,7 @@
         [self.photos addObject:self.photo];
     }
     
-   
+    [[SDImageCache sharedImageCache]clearMemory];
     
     [DAServer updateAlbum:self.photos completion:^(NSError *error) {
         // here, update the UI to say "Not busy anymore"

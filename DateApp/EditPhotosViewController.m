@@ -19,7 +19,7 @@
 }
 
 @property (strong,nonatomic) NSMutableArray *photo_arary;
-@property (nonatomic) BOOL didChangeOrder;
+@property (nonatomic) BOOL didChange;
 
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *collectionViewHeight;
@@ -43,11 +43,9 @@
     gradient.endPoint = CGPointMake(0.25,1.0);
     self.view.layer.masksToBounds = YES; */
     
-    self.didChangeOrder = NO;
+    self.didChange = NO;
     
     self.photo_arary = [[NSMutableArray alloc] init];
-
-    self.photo_arary = self.user.pics;
     
     adding = NO;
 
@@ -124,7 +122,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:NO];
-    if (self.didChangeOrder) {
+    if (self.didChange) {
         [self syncOrder];
     }
 }
@@ -156,17 +154,67 @@
             {
                 self.workLabel.text = user.job;
             }
-            [self.collectionView reloadData];
         });
-    } else {
+        
+        if ([self.user.pics count] > 0)
+        {
+            dispatch_group_t group = dispatch_group_create();
+            
+            
+            for (int i = 0; i < [self.user.pics count]; i++)
+            {
+                dispatch_group_enter(group);
+                
+                [self downloadImage:[self.user.pics objectAtIndex:i] completion:^(UIImage *image, NSError *error)
+                 {
+                     if (image && !error)
+                     {
+                         [self.photo_arary setObject:image atIndexedSubscript:i];
+                     }
+                     
+                     dispatch_group_leave(group);
+                     
+                 }];
+            }
+            
+            
+            dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+                [self.collectionView reloadData];
+            });
+        }
+        
+    }
+    else
+    {
         // update UI to indicate error or take remedial action
     }
-}];
+    }];
 
 
 
 }
 
+
+- (void)downloadImage:(NSString*)url
+             completion:(void (^)(UIImage *, NSError *))completion
+{
+    NSURL *imgURL = [NSURL URLWithString:url];
+
+    SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
+    [manager downloadImageWithURL:imgURL
+                          options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL *targetURL) {  } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
+                            {
+                                if (image && finished)
+                                {
+                                    completion(image, nil);
+                                }
+                                else
+                                {
+                                    completion(nil, error);
+                                }
+                            }];
+    
+}
 
 -(void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath{
     
@@ -175,7 +223,7 @@
     [self.photo_arary removeObjectAtIndex:sourceIndexPath.row];
     
     [self.photo_arary insertObject:image atIndex:destinationIndexPath.row];
-    self.didChangeOrder = YES;
+    self.didChange = YES;
     
     
 }
@@ -190,18 +238,55 @@
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
         
+        [cell setBackgroundColor:[UIColor whiteColor]];
+
+        
+        /*
         NSInteger count = [self.photo_arary count];
         
-        [cell setBackgroundColor:[UIColor whiteColor]];
         
        // CGFloat xImageSize = 24;
         
         cell.photo.image = nil;
-        cell.actionIcon.image = nil;
+        cell.actionIcon.image = nil; */
    //     x_image = nil;
         
+        if (indexPath.row < [self.photo_arary count])
+        {
+            if ([self.photo_arary objectAtIndex:indexPath.row])
+            {
+                
+                /*
+                [cell.photo sd_setImageWithURL:[NSURL URLWithString:[self.photo_arary objectAtIndex:indexPath.row]]
+                              placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                                       options:SDWebImageRefreshCached]; */
+                
+                UIImage *img = [self.photo_arary objectAtIndex:indexPath.row];
+                [cell.photo setImage:img];
+                
+                if (indexPath.row > 0)
+                {
+                    [cell.photo setHidden:NO];
+                    [cell.actionIcon setImage:[UIImage imageNamed:@"remove_image"]];
+                    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
+                                                          initWithTarget:self action:@selector(handleBtnPress:)];
+                    [cell.actionIcon setUserInteractionEnabled:YES];
+                    tapGesture.delegate = self;
+                    [cell.actionIcon addGestureRecognizer:tapGesture];
+                    [cell.actionIcon setTag:indexPath.row];
+                }
+            }
+        }
+        else
+        {
+            if (indexPath.row > 0)
+            {
+                [cell.actionIcon setImage:[UIImage imageNamed:@"add_image"]];
+            }
+            
+        }
         
-        
+    
 
         /*
         if (indexPath.row > 0 && (count - 1) >= indexPath.row) {
@@ -225,6 +310,10 @@
             
             [cell addSubview:x_image]; */
             
+            
+            
+            
+            /*
             if (indexPath.row <= (count - 1) && count > 0)
             {
             //    [x_image setImage:[UIImage imageNamed:@"remove_image"]];
@@ -236,9 +325,10 @@
                 tapGesture.delegate = self;
                 [cell.actionIcon addGestureRecognizer:tapGesture];
                 
-            }
+            } */
         }
         
+        /*
         
         if (indexPath.row == 0)
         {
@@ -265,68 +355,13 @@
         
         if (indexPath.row <= count - 1 && count > 0)
         {
-            
-            NSLog(@"%ld", indexPath.row);
-            
+                        
             [cell.photo sd_setImageWithURL:[NSURL URLWithString:[self.photo_arary objectAtIndex:indexPath.row]]
                           placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
                                    options:SDWebImageRefreshCached];
           //  [x_image setHidden:YES];
-        }
+        } */
         
-        
-        if([[[NSUserDefaults standardUserDefaults]valueForKey:@"longPressed"] isEqualToString:@"yes"])
-        {
-            CABasicAnimation* anim = [CABasicAnimation animationWithKeyPath:@"transform.rotation"];
-            [anim setToValue:[NSNumber numberWithFloat:0.0f]];
-            [anim setFromValue:[NSNumber numberWithDouble:M_PI/64]];
-            [anim setDuration:0.1];
-            [anim setRepeatCount:NSUIntegerMax];
-            [anim setAutoreverses:YES];
-            cell.layer.shouldRasterize = YES;
-            [cell.layer addAnimation:anim forKey:@"SpringboardShake"];
-            CGFloat xImageSize = 20;
-            
-            /*
-            x_image = [[UIImageView alloc] initWithFrame:CGRectMake(cellWidth, cellHeight, xImageSize, xImageSize)];
-            x_image.layer.cornerRadius = 10;
-            x_image.layer.masksToBounds = NO;
-            x_image.center = CGPointMake(5, 5); */
-          //  [cell bringSubviewToFront:x_image];
-            
-            [cell setClipsToBounds:NO];
-            //  [x_image setBackgroundColor:[UIColor grayColor]];
-         //   [x_image setImage:[UIImage imageNamed:@"xButton"]];
-            
-            //    [_deleteButton setImage: [UIImage imageNamed:@"delete.png"] forState:UIControlStateNormal];
-          //  [cell addSubview:x_image];
-            
-        }
-        
-        else if ([[[NSUserDefaults standardUserDefaults]valueForKey:@"singleTap"] isEqualToString:@"yes"])
-        {
-            
-            
-            
-            /*
-             for(UIView *subview in [cell subviews]) {
-             if([subview isKindOfClass:[UIImageView class]] && [subview isKindOfClass:x_image.]) {
-             [subview removeFromSuperview];
-             } else{
-             // Do nothing - not a UIButton or subclass instance
-             
-             }
-             } */
-            
-            //  [cell.layer removeAllAnimations];
-            //               _deleteButton.hidden = YES;
-            //              [_deleteButton removeFromSuperview];
-            
-            
-            //     [cell setBackgroundColor:[UIColor lightGrayColor]];
-            
-            
-        }
     }
     
     
@@ -393,7 +428,7 @@
         {
             if (self.photo_arary.count > 1) {
                 [self removePhoto:indexPath];
-                self.didChangeOrder = YES;
+                self.didChange = YES;
             }
         }else{
             
@@ -514,8 +549,30 @@
     
     if (tag > 0)
     {
-        [self.photo_arary removeObjectAtIndex:tag];
-        [self.collectionView reloadData];
+        
+        NSString *message = @"Remove photo from album?";
+        
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete"
+                                                                       message:message
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"YES"
+                                                              style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                  [self.photo_arary removeObjectAtIndex:tag];
+                                                                  [self.user.pics removeObjectAtIndex:tag];
+                                                                  [self.collectionView reloadData];
+                                                                  self.didChange = YES;
+                                                                  
+                                                              }];
+        UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"CANCEL"
+                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+                                                                   
+                                                               }];
+        
+        [alert addAction:firstAction]; // 4
+        [alert addAction:secondAction]; // 5
+        
+        [self presentViewController:alert animated:YES completion:nil];
+        
     }
 
 }
@@ -583,6 +640,7 @@
 
 -(void)syncOrder{
     
+    /*
     for (int i = 0; i < 5; i++) {
         switch (i) {
             case 0:
@@ -623,14 +681,17 @@
             default:
                 break;
         }
-    }
+    } */
     
-    [DAServer updateAlbum:self.photo_arary completion:^(NSError *error) {
+    
+    
+    [DAServer updateAlbum:self.user.pics completion:^(NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
                               // [self dismissViewControllerAnimated:NO completion:nil];
+                               [[SDImageCache sharedImageCache]clearMemory];
                            });
         } else {
 
