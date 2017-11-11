@@ -119,9 +119,13 @@ static const int MAX_BUFFER_SIZE = 2;
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
+    else
+    {
+        [self cardsEmptyAction];
+    }
+    
 }
 
-#warning include own action here!
 //%%% action called when the card goes to the right.
 // This should be customized with your own action
 -(void)cardSwipedRight:(UIView *)card
@@ -136,12 +140,24 @@ static const int MAX_BUFFER_SIZE = 2;
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
+    else
+    {
+        [self cardsEmptyAction];
+    }
     
 
     
   //  id<MatchSegueProtocol> strongDelegate = self.matched_delegate;
   //  [strongDelegate goToMatchedSegue:self obj:nil];
 
+}
+
+-(void)cardsEmptyAction
+{
+    [self.emptyLabel setAlpha:0.0];
+    [self.emptyLabel2 setAlpha:0.0];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"setLocationObserver" object:nil userInfo:nil];
 }
 
 

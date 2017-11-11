@@ -75,8 +75,7 @@
             
     //    }
         
-        [LocationManager sharedInstance];
-        [[LocationManager sharedInstance] addObserver:self forKeyPath:@"location" options:NSKeyValueObservingOptionNew context:nil];
+        [self setLocationObserver];
         
         
         [[NSNotificationCenter defaultCenter]
@@ -88,6 +87,9 @@
         [[NSNotificationCenter defaultCenter]
          addObserver:self selector:@selector(noMatchNotification:) name:@"noMatchNotification" object:nil];
         
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self selector:@selector(setLocationObserver) name:@"setLocationObserver" object:nil];
+        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(goToMessaging)
                                                      name: @"callSegue"
@@ -96,6 +98,12 @@
         
     }
  
+}
+
+-(void)setLocationObserver
+{
+    [LocationManager sharedInstance];
+    [[LocationManager sharedInstance] addObserver:self forKeyPath:@"location" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 

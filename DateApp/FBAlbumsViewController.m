@@ -12,10 +12,15 @@
 
 @property (strong, nonatomic) PhotoManager *album;
 
+@property (strong, nonatomic) IBOutlet UIView *gradientView;
+@property (strong, nonatomic) IBOutlet UILabel *headerLabel;
 
 @end
 
 @implementation FBAlbumsViewController
+{
+    NSString *name;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -46,6 +51,23 @@
     });
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    
+    self.headerLabel.textColor = [DAGradientColor gradientFromColor:self.headerLabel.frame.size.width];
+    
+    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
+    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
+    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+    
+    [self.gradientView layoutIfNeeded];
+    
+    
+    CAGradientLayer *grad = [CAGradientLayer layer];
+    grad.frame = self.gradientView.bounds;
+    grad.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
+    grad.startPoint = CGPointMake(0.0,0.5);
+    grad.endPoint = CGPointMake(1.0,0.5);
+    [self.gradientView.layer insertSublayer:grad atIndex:0];
     
 }
 
@@ -99,7 +121,11 @@
     
     instance.album_id = album.album_id;
     
+    name = album.album_name;
+    
     NSLog(@"%@", album.album_id);
+    
+    
     
     PhotoManager *albums = [PhotoManager singletonInstance];
     [albums getFacebookProfileInfos:2 completion:^{
@@ -125,6 +151,7 @@
         FBPhotosViewController *vc = segue.destinationViewController;
         vc.selectedIndex = self.selectedIndex;
         vc.photos = self.photos;
+        vc.albumName = name;
     }
 }
 

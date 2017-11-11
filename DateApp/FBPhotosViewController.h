@@ -16,4 +16,7 @@
 @property (strong, nonatomic) NSMutableArray *photos;
 @property (nonatomic, assign) NSInteger selectedIndex;
 
+
+@property (nonatomic, assign) NSString *albumName;
+
 @end

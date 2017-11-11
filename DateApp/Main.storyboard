@@ -1008,7 +1008,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="aFf-Nm-VTW" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qGD-Nd-d1k">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="qGD-Nd-d1k">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1716,25 +1716,51 @@ unmatch with ?</string>
                                 <rect key="frame" x="0.0" y="20" width="375" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xgj-Zp-pU3">
-                                        <rect key="frame" x="15" y="-1.5" width="44" height="44"/>
-                                        <state key="normal" image="Back_Icon"/>
+                                        <rect key="frame" x="15" y="9.5" width="14" height="22"/>
+                                        <state key="normal" image="close_icon"/>
                                         <connections>
                                             <action selector="backAction:" destination="ahx-Yg-168" eventType="touchUpInside" id="Lp9-0s-7wR"/>
                                         </connections>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FcU-h9-GjJ">
+                                        <rect key="frame" x="10" y="39" width="355" height="1"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="6EA-Tb-6UO"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit Profile" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kGD-f6-w4o">
+                                        <rect key="frame" x="111" y="8" width="153" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="153" id="Msa-03-eNb"/>
+                                            <constraint firstAttribute="height" constant="25" id="v7T-46-Ixb"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstItem="kGD-f6-w4o" firstAttribute="centerY" secondItem="Xgj-Zp-pU3" secondAttribute="centerY" id="B0l-KE-c8v"/>
+                                    <constraint firstItem="FcU-h9-GjJ" firstAttribute="leading" secondItem="TTu-kg-9pS" secondAttribute="leading" constant="10" id="BgS-ir-wWm"/>
                                     <constraint firstItem="Xgj-Zp-pU3" firstAttribute="centerY" secondItem="TTu-kg-9pS" secondAttribute="centerY" id="NGR-Xb-ueF"/>
                                     <constraint firstItem="Xgj-Zp-pU3" firstAttribute="leading" secondItem="TTu-kg-9pS" secondAttribute="leading" constant="15" id="dgd-f5-nUr"/>
+                                    <constraint firstItem="kGD-f6-w4o" firstAttribute="centerX" secondItem="TTu-kg-9pS" secondAttribute="centerX" id="flg-A4-MI1"/>
                                     <constraint firstAttribute="height" constant="40" id="l6z-5G-5KP"/>
+                                    <constraint firstAttribute="bottom" secondItem="FcU-h9-GjJ" secondAttribute="bottom" id="rZr-Bw-RhN"/>
+                                    <constraint firstAttribute="trailing" secondItem="FcU-h9-GjJ" secondAttribute="trailing" constant="10" id="stH-AS-BMA"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T3R-tJ-ifz">
+                                <rect key="frame" x="0.0" y="60" width="375" height="607"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qst-6v-V4i">
-                                <rect key="frame" x="0.0" y="65" width="375" height="602"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="10" y="75" width="355" height="592"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="375" id="rJ3-Ut-ckv"/>
+                                    <constraint firstAttribute="width" constant="355" id="rJ3-Ut-ckv"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="5" id="mcm-En-yCk">
                                     <size key="itemSize" width="100" height="90"/>
@@ -1752,6 +1778,11 @@ unmatch with ?</string>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jYj-y5-rmc">
                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="90"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="5"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
                                                 </imageView>
                                             </subviews>
                                         </view>
@@ -1761,6 +1792,11 @@ unmatch with ?</string>
                                             <constraint firstItem="jYj-y5-rmc" firstAttribute="top" secondItem="cnE-zf-2lQ" secondAttribute="top" id="X9J-M8-RRX"/>
                                             <constraint firstAttribute="bottom" secondItem="jYj-y5-rmc" secondAttribute="bottom" id="b57-HK-5gp"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="photo" destination="jYj-y5-rmc" id="hT5-eP-3WN"/>
                                         </connections>
@@ -1772,10 +1808,14 @@ unmatch with ?</string>
                                 </connections>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="T3R-tJ-ifz" secondAttribute="trailing" id="1U5-pg-cZt"/>
+                            <constraint firstItem="HEf-1V-5kA" firstAttribute="top" secondItem="T3R-tJ-ifz" secondAttribute="bottom" id="Nt5-vT-mDO"/>
                             <constraint firstItem="Qst-6v-V4i" firstAttribute="centerX" secondItem="hYh-Ot-kjs" secondAttribute="centerX" id="Ryq-j4-ssW"/>
-                            <constraint firstItem="Qst-6v-V4i" firstAttribute="top" secondItem="TTu-kg-9pS" secondAttribute="bottom" constant="5" id="heg-am-Xas"/>
+                            <constraint firstItem="T3R-tJ-ifz" firstAttribute="top" secondItem="TTu-kg-9pS" secondAttribute="bottom" id="VsL-G6-Lkx"/>
+                            <constraint firstItem="T3R-tJ-ifz" firstAttribute="leading" secondItem="hYh-Ot-kjs" secondAttribute="leading" id="f5w-gp-IyK"/>
+                            <constraint firstItem="Qst-6v-V4i" firstAttribute="top" secondItem="TTu-kg-9pS" secondAttribute="bottom" constant="15" id="heg-am-Xas"/>
                             <constraint firstItem="TTu-kg-9pS" firstAttribute="leading" secondItem="hYh-Ot-kjs" secondAttribute="leading" id="iQH-Zc-z8V"/>
                             <constraint firstItem="TTu-kg-9pS" firstAttribute="top" secondItem="tD2-Hp-XX9" secondAttribute="bottom" id="iyv-RI-Ptg"/>
                             <constraint firstAttribute="trailing" secondItem="TTu-kg-9pS" secondAttribute="trailing" id="noG-9q-4jO"/>
@@ -1785,6 +1825,8 @@ unmatch with ?</string>
                     <connections>
                         <outlet property="collectionView" destination="Qst-6v-V4i" id="e0A-ui-hGN"/>
                         <outlet property="collectionViewWidth" destination="rJ3-Ut-ckv" id="pGH-XE-GYr"/>
+                        <outlet property="gradientView" destination="FcU-h9-GjJ" id="KYw-ob-LBz"/>
+                        <outlet property="headerLabel" destination="kGD-f6-w4o" id="dOS-pt-a4y"/>
                         <segue destination="KBz-NG-sfj" kind="modal" identifier="singlePhotoSegue" id="xIb-3h-EZF"/>
                     </connections>
                 </viewController>
@@ -1808,7 +1850,7 @@ unmatch with ?</string>
                                 <rect key="frame" x="0.0" y="147" width="375" height="354"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ok_check" translatesAutoresizingMaskIntoConstraints="NO" id="jvy-cp-A03">
-                                <rect key="frame" x="324" y="20" width="35" height="35"/>
+                                <rect key="frame" x="335" y="25" width="24" height="24"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0U4-i8-P6p">
                                 <rect key="frame" x="296" y="0.0" width="79" height="73"/>
@@ -1822,18 +1864,18 @@ unmatch with ?</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ur-5I-jkG">
-                                <rect key="frame" x="15" y="15" width="44" height="44"/>
-                                <state key="normal" image="Back_Icon"/>
+                                <rect key="frame" x="15" y="25.5" width="14" height="22"/>
+                                <state key="normal" image="close_icon"/>
                                 <connections>
                                     <action selector="go_back:" destination="KBz-NG-sfj" eventType="touchUpInside" id="EG5-qg-jeN"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="9ur-5I-jkG" firstAttribute="centerY" secondItem="jvy-cp-A03" secondAttribute="centerY" id="3Iu-bj-ncF"/>
                             <constraint firstItem="mF8-67-y8T" firstAttribute="top" secondItem="VTc-dw-9nV" secondAttribute="bottom" constant="127" id="5jZ-9o-EQa"/>
-                            <constraint firstItem="jvy-cp-A03" firstAttribute="top" secondItem="VTc-dw-9nV" secondAttribute="bottom" id="P4q-yA-BI4"/>
+                            <constraint firstItem="jvy-cp-A03" firstAttribute="top" secondItem="VTc-dw-9nV" secondAttribute="bottom" constant="5" id="P4q-yA-BI4"/>
                             <constraint firstItem="jvy-cp-A03" firstAttribute="trailing" secondItem="o9Z-Qj-wIS" secondAttribute="trailingMargin" id="SVU-5v-Xib"/>
                             <constraint firstItem="zXa-pe-Bfk" firstAttribute="top" secondItem="mF8-67-y8T" secondAttribute="bottom" constant="166" id="VEx-LU-fbN"/>
                             <constraint firstAttribute="trailing" secondItem="mF8-67-y8T" secondAttribute="trailing" id="bkp-8T-F0K"/>
@@ -1868,18 +1910,40 @@ unmatch with ?</string>
                                 <rect key="frame" x="0.0" y="20" width="375" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u1X-fC-tUD">
-                                        <rect key="frame" x="15" y="-1.5" width="44" height="44"/>
-                                        <state key="normal" image="Back_Icon"/>
+                                        <rect key="frame" x="15" y="9.5" width="14" height="22"/>
+                                        <state key="normal" image="close_icon"/>
                                         <connections>
                                             <action selector="backAction:" destination="7th-C1-CwB" eventType="touchUpInside" id="6rr-dL-SM6"/>
                                         </connections>
                                     </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NFI-9c-mqY">
+                                        <rect key="frame" x="10" y="39" width="355" height="1"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="i9z-qp-pGn"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Albums" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m7F-sB-CRo">
+                                        <rect key="frame" x="111" y="8" width="153" height="25"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="153" id="0VG-hl-rP7"/>
+                                            <constraint firstAttribute="height" constant="25" id="xWg-Pc-nq8"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="u1X-fC-tUD" firstAttribute="centerY" secondItem="dTO-bM-CFk" secondAttribute="centerY" id="3M1-Cb-IvA"/>
+                                    <constraint firstItem="NFI-9c-mqY" firstAttribute="leading" secondItem="dTO-bM-CFk" secondAttribute="leading" constant="10" id="K3a-YG-0F2"/>
+                                    <constraint firstAttribute="trailing" secondItem="NFI-9c-mqY" secondAttribute="trailing" constant="10" id="f2f-Eb-p3E"/>
+                                    <constraint firstItem="m7F-sB-CRo" firstAttribute="centerY" secondItem="u1X-fC-tUD" secondAttribute="centerY" id="j8j-nM-ZFO"/>
+                                    <constraint firstAttribute="bottom" secondItem="NFI-9c-mqY" secondAttribute="bottom" id="lgI-mj-xYj"/>
                                     <constraint firstAttribute="height" constant="40" id="osG-ZE-4Xf"/>
                                     <constraint firstItem="u1X-fC-tUD" firstAttribute="leading" secondItem="dTO-bM-CFk" secondAttribute="leading" constant="15" id="utj-Mb-3io"/>
+                                    <constraint firstItem="m7F-sB-CRo" firstAttribute="centerX" secondItem="dTO-bM-CFk" secondAttribute="centerX" id="vRK-0d-Efc"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f6u-eb-cUm">
@@ -1928,6 +1992,8 @@ unmatch with ?</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="gradientView" destination="NFI-9c-mqY" id="rIV-HK-Pro"/>
+                        <outlet property="headerLabel" destination="m7F-sB-CRo" id="99v-bw-DL1"/>
                         <outlet property="tableView" destination="f6u-eb-cUm" id="JO2-oJ-bPD"/>
                         <segue destination="ahx-Yg-168" kind="modal" identifier="photosSegue" id="d6e-pk-rn0"/>
                     </connections>
@@ -2367,7 +2433,7 @@ unmatch with ?</string>
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="jdq-SG-Ufr" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" alpha="0.69999999999999996" contentMode="scaleToFill" id="hE8-Tf-3Gd">
+                    <navigationBar key="navigationBar" alpha="0.69999999999999996" contentMode="scaleToFill" misplaced="YES" id="hE8-Tf-3Gd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2980,7 +3046,7 @@ unmatch with ?</string>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="Z29-Ut-X3W" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="jIw-6w-2a8"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ywN-gc-UEn">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="ywN-gc-UEn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -3340,7 +3406,7 @@ unmatch with ?</string>
         <image name="indicator_active" width="14" height="14"/>
         <image name="like_active" width="90" height="90"/>
         <image name="nomatch_image" width="295" height="295"/>
-        <image name="ok_check" width="35" height="35"/>
+        <image name="ok_check" width="24" height="24"/>
         <image name="umatch" width="46" height="46"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

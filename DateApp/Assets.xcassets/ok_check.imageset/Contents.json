@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "yesButton-01-1.png",
+      "filename" : "photo_select2-1.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "yesButton-01-2.png",
+      "filename" : "photo_select2.png",
       "scale" : "2x"
     },
     {

@@ -795,7 +795,7 @@
     {
         FBAlbumsViewController *vc = segue.destinationViewController;
         vc.selectedIndex = selectedIndex;
-        vc.photos = self.photo_arary;
+        vc.photos = self.user.pics;
     }
 }
 

@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "DataAccess.h"
-@import SocketIO;
+@import SocketIO
+;
 #import "Messages.h"
 
 @interface DASocket : NSObject

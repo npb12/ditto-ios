@@ -17,6 +17,8 @@
 
 @property (nonatomic, assign) TOCropViewCroppingStyle croppingStyle; //The cropping style
 
+@property (strong, nonatomic) IBOutlet UIView *gradientView;
+@property (strong, nonatomic) IBOutlet UILabel *headerLabel;
 
 
 @end
@@ -41,12 +43,30 @@
         }];
 
     
-    CGFloat dimen = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 20;
 
     
     self.collectionViewWidth.constant = dimen;
 
+    self.headerLabel.text = self.albumName;
     
+    [self.headerLabel layoutIfNeeded];
+    
+    self.headerLabel.textColor = [DAGradientColor gradientFromColor:self.headerLabel.frame.size.width];
+    
+    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
+    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
+    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+    
+    [self.gradientView layoutIfNeeded];
+    
+    
+    CAGradientLayer *grad = [CAGradientLayer layer];
+    grad.frame = self.gradientView.bounds;
+    grad.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
+    grad.startPoint = CGPointMake(0.0,0.5);
+    grad.endPoint = CGPointMake(1.0,0.5);
+    [self.gradientView.layer insertSublayer:grad atIndex:0];
     
 }
 
@@ -86,6 +106,10 @@
         
         [cell setBackgroundColor:[UIColor lightGrayColor]];
         
+        
+        
+
+        
     }
     
     
@@ -119,10 +143,10 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 40;
     
-    CGFloat width = self.view.bounds.size.width / 3;
-    CGFloat height = self.view.bounds.size.width / 3;
-    
+    CGFloat width = dimen / 3;
+    CGFloat height = dimen / 3;
     
     return CGSizeMake(width, height);
 }
@@ -135,7 +159,7 @@
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
     
     if ([[[PhotoManager singletonInstance] photos] count] > 0) {
-        return 0;
+        return 10;
     }
     
     return 0;
