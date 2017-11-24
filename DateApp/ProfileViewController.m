@@ -31,6 +31,8 @@
 
 @property (nonatomic, copy) void (^blocksCompletionHandler)(void);
 
+@property (strong, nonatomic) IBOutlet UIButton *likeBtn;
+@property (strong, nonatomic) IBOutlet UIButton *dislikeBtn;
 
 
 @property (strong, nonatomic) IBOutlet UILabel *edu_job;
@@ -45,7 +47,6 @@
 
 @property (strong, nonatomic) IBOutlet UIView *scrollChildView;
 
-@property (strong, nonatomic) IBOutlet UIButton *likeBtn;
 @property (strong, nonatomic) IBOutlet UIView *grayView;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatBottom;
@@ -67,25 +68,26 @@
     {
         NSLog(@"View match profile");
         [self.chatBtn setHidden:NO];
+        [self.likeBtn setHidden:YES];
+        [self.dislikeBtn setHidden:YES];
+
     }
     else if(self.isMine)
     {
         [self.chatBtn setHidden:YES];
+        [self.likeBtn setHidden:YES];
+        [self.dislikeBtn setHidden:YES];
     }
     else
     {
         NSLog(@"Non match profile");
         [self.chatBtn setHidden:YES];
-        /*
-        [self addGradientLayer:self.likeBtn];
-        [self.likeBtn setImage:[UIImage imageNamed:@"Icon_HeartWithShadow_Active"] forState:UIControlStateNormal];
-        self.likeBtn.layer.cornerRadius = 37.5;
-        self.likeBtn.layer.shadowColor = [[UIColor colorWithRed:0 green:0 blue:0 alpha:0.25f] CGColor];
-        self.likeBtn.layer.shadowOffset = CGSizeMake(0, 2.5f);
-        self.likeBtn.layer.shadowOpacity = 1.0f;
-        self.likeBtn.layer.shadowRadius = 0.0f;
-        self.likeBtn.layer.borderWidth = 2;
-        self.likeBtn.layer.borderColor = [UIColor whiteColor].CGColor; */
+        CGFloat width = [UIScreen mainScreen].bounds.size.width;
+        CGFloat height = [UIScreen mainScreen].bounds.size.height + 35;
+        CGFloat bigSize = width / 4.5;
+         self.likeBtn.frame = CGRectMake(self.view.frame.size.width / 1.9,height,bigSize,bigSize);
+        self.dislikeBtn.frame = CGRectMake(self.view.frame.size.width / 4.1,height,bigSize,bigSize);
+        
     }
     
     
@@ -139,7 +141,11 @@
 
 - (void) viewDidAppear:(BOOL)animated
 {
-  //  NSInteger offset = (self.view.frame.size.height / 2.85);
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat bigSize = width / 4.5;
+    CGFloat height = [UIScreen mainScreen].bounds.size.height * 0.855;
+
+    
     [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
      {
          self.chatBottom.constant = 5;
@@ -148,6 +154,25 @@
                      completion:^(BOOL finished)
      {
 
+     }];
+    
+    [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
+     {
+        self.dislikeBtn.frame = CGRectMake(self.view.frame.size.width / 4.1,height,bigSize,bigSize);         [self.view layoutIfNeeded];
+     }
+                     completion:^(BOOL finished)
+     {
+         
+     }];
+    
+    [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
+     {
+         self.likeBtn.frame = CGRectMake(self.view.frame.size.width / 1.9,height,bigSize,bigSize);
+        [self.view layoutIfNeeded];
+     }
+                     completion:^(BOOL finished)
+     {
+         
      }];
 }
 
@@ -264,9 +289,10 @@
     self.pic.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic invalidateIntrinsicContentSize];
     [self.pic setClipsToBounds:YES];
-    self.pic.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.pic.layer.borderWidth = 1;
+    [self.pic setBackgroundColor:[UIColor lightTextColor]];
+
     
+    /*
     [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                  placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
                        completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -275,7 +301,18 @@
                                self.pic.layer.borderColor = [UIColor clearColor].CGColor;
                                
                            }
-                       }];
+                       }]; */
+    
+    [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:0] completion:^(UIImage *image, NSError *error)
+     {
+         if (image && !error)
+         {
+             self.pic.image = image;
+         }
+         
+     }];
+    
+    
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
     
     [self.tempView addSubview:self.pic];
@@ -304,9 +341,22 @@
     self.pic2.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic2 invalidateIntrinsicContentSize];
     [self.pic2 setClipsToBounds:YES];
+    [self.pic2 setBackgroundColor:[UIColor lightTextColor]];
+
+    /*
     [self.pic2 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:1]]
                  placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                          options:SDWebImageRefreshCached];
+                          options:SDWebImageRefreshCached]; */
+    
+    [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:1] completion:^(UIImage *image, NSError *error)
+     {
+         if (image && !error)
+         {
+             self.pic2.image = image;
+         }
+         
+     }];
+    
     self.pic2.alpha = 2.0;
     
     self.pic2.contentMode = UIViewContentModeScaleAspectFill;
@@ -338,10 +388,22 @@
     self.pic3.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic3 invalidateIntrinsicContentSize];
     [self.pic3 setClipsToBounds:YES];
+    [self.pic3 setBackgroundColor:[UIColor lightTextColor]];
+
     
+    /*
     [self.pic3 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:2]]
                  placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                          options:SDWebImageRefreshCached];
+                          options:SDWebImageRefreshCached]; */
+    
+    [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:2] completion:^(UIImage *image, NSError *error)
+     {
+         if (image && !error)
+         {
+             self.pic3.image = image;
+         }
+         
+     }];
     
     self.pic3.contentMode = UIViewContentModeScaleAspectFill;
     
@@ -371,11 +433,22 @@
     self.pic4.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic4 invalidateIntrinsicContentSize];
     self.pic4.clipsToBounds = YES;
-    self.pic4.contentMode = UIViewContentModeScaleAspectFill;
+    [self.pic4 setBackgroundColor:[UIColor lightTextColor]];
+
+    /*
     [self.pic4 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:3]]
                  placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                          options:SDWebImageRefreshCached];
-    
+                          options:SDWebImageRefreshCached]; */
+    [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:3] completion:^(UIImage *image, NSError *error)
+     {
+         if (image && !error)
+         {
+             self.pic4.image = image;
+         }
+         
+     }];
+    self.pic4.contentMode = UIViewContentModeScaleAspectFill;
+
     
     
     [self.tempView addSubview:self.pic4];
@@ -383,8 +456,8 @@
     
     
     NSDictionary *viewsDictionary = @{@"image":self.pic4, @"pic3":self.pic3};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[pic3]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic3]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
@@ -405,10 +478,21 @@
     [self.pic5 invalidateIntrinsicContentSize];
     self.pic5.clipsToBounds = YES;
     self.pic5.contentMode = UIViewContentModeScaleAspectFill;
+    
+    [self.pic5 setBackgroundColor:[UIColor lightTextColor]];
+    
+    /*
     [self.pic5 sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:4]]
                  placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                          options:SDWebImageRefreshCached];
-    
+                          options:SDWebImageRefreshCached]; */
+    [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:4] completion:^(UIImage *image, NSError *error)
+     {
+         if (image && !error)
+         {
+             self.pic5.image = image;
+         }
+         
+     }];
     
     
     [self.tempView addSubview:self.pic5];
@@ -416,8 +500,8 @@
     
     
     NSDictionary *viewsDictionary = @{@"image":self.pic5, @"pic4":self.pic4};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[pic4]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[pic4]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     

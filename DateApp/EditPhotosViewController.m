@@ -139,7 +139,7 @@
     // here, update the UI to say "Not busy anymore"
     if (!error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.photo_arary = user.pics;
+            //self.photo_arary = user.pics;
             if (user.bio)
             {
                 self.bioTV.text = user.bio;
@@ -169,7 +169,8 @@
                  {
                      if (image && !error)
                      {
-                         [self.photo_arary setObject:image atIndexedSubscript:i];
+                        // [self.photo_arary setObject:image atIndexedSubscript:i];
+                         [self.photo_arary addObject:image];
                      }
                      
                      dispatch_group_leave(group);
@@ -204,7 +205,7 @@
     [manager downloadImageWithURL:imgURL
                           options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL *targetURL) {  } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
                             {
-                                if (image && finished)
+                                if (image && finished && !error)
                                 {
                                     completion(image, nil);
                                 }
@@ -262,6 +263,8 @@
                                        options:SDWebImageRefreshCached]; */
                 
                 UIImage *img = [self.photo_arary objectAtIndex:indexPath.row];
+                
+
                 [cell.photo setImage:img];
                 
                 if (indexPath.row > 0)
@@ -454,7 +457,7 @@
         
         selectedIndex = indexPath.row;
         adding = YES;
-        [self performSegueWithIdentifier:@"fbAlbumsSegue" sender:self];
+        [self performSegueWithIdentifier:@"selectionSegue" sender:self];
         /*
         NSLog(@"couldn't find index path");
         [[NSUserDefaults standardUserDefaults]setValue:@"no" forKey:@"longPressed"];
@@ -767,7 +770,24 @@
  //   self.userImage = image;
     
     
-    [DAServer addLocalPhoto:image  completion:^(NSError *error) {
+    [DAServer addFoto:image index:selectedIndex completion:^(NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                           });
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^
+                           {
+                               [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                           });
+            NSLog(@"An error occured with the server!");
+        }
+    }];
+    
+    /*
+    [DAServer addLocalPhoto:image index:selectedIndex  completion:^(NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             dispatch_async(dispatch_get_main_queue(), ^
@@ -781,7 +801,7 @@
             });
             NSLog(@"An error occured with the server!");
         }
-    }];
+    }]; */
 
     
 }
@@ -791,11 +811,11 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     
-    if ([segue.identifier isEqualToString:@"fbAlbumsSegue"])
+    if ([segue.identifier isEqualToString:@"selectionSegue"])
     {
-        FBAlbumsViewController *vc = segue.destinationViewController;
+        AlbumSelectionViewController *vc = segue.destinationViewController;
         vc.selectedIndex = selectedIndex;
-        vc.photos = self.user.pics;
+        vc.user = self.user;
     }
 }
 

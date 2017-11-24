@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -30,46 +30,36 @@
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="17k-iJ-4Ye">
                     <rect key="frame" x="0.0" y="517" width="375" height="150"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Neil, 25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4kc-dW-g7M">
-                            <rect key="frame" x="15" y="59" width="345" height="26"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="26" id="fME-jG-lev"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="24"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Software Engineer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CZX-FU-cUd">
-                            <rect key="frame" x="15" y="85" width="345" height="26"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="26" id="CbS-f6-x22"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Florida State University" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="us6-fn-JCK">
-                            <rect key="frame" x="15" y="109" width="345" height="26"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="26" id="PGI-1s-YOK"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="PIX-sk-KP8">
+                            <rect key="frame" x="15" y="68" width="345" height="67"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Neil, 25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4kc-dW-g7M">
+                                    <rect key="frame" x="0.0" y="0.0" width="80.5" height="30"/>
+                                    <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="24"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Software Engineer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CZX-FU-cUd">
+                                    <rect key="frame" x="0.0" y="31" width="113" height="17.5"/>
+                                    <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Florida State University" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="us6-fn-JCK">
+                                    <rect key="frame" x="0.0" y="49.5" width="144" height="17.5"/>
+                                    <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="CZX-FU-cUd" firstAttribute="top" secondItem="4kc-dW-g7M" secondAttribute="bottom" id="4Lz-xm-Vba"/>
-                        <constraint firstItem="CZX-FU-cUd" firstAttribute="leading" secondItem="17k-iJ-4Ye" secondAttribute="leading" constant="15" id="5Le-PZ-CIX"/>
-                        <constraint firstAttribute="bottom" secondItem="us6-fn-JCK" secondAttribute="bottom" constant="15" id="DsN-jk-Cbh"/>
-                        <constraint firstAttribute="trailing" secondItem="us6-fn-JCK" secondAttribute="trailing" constant="15" id="JRn-JY-b2L"/>
-                        <constraint firstItem="4kc-dW-g7M" firstAttribute="leading" secondItem="17k-iJ-4Ye" secondAttribute="leading" constant="15" id="JYH-uO-0go"/>
-                        <constraint firstAttribute="trailing" secondItem="CZX-FU-cUd" secondAttribute="trailing" constant="15" id="MBs-bA-J5d"/>
-                        <constraint firstItem="us6-fn-JCK" firstAttribute="top" secondItem="CZX-FU-cUd" secondAttribute="bottom" constant="-2" id="Vcz-8Y-xCT"/>
+                        <constraint firstAttribute="trailing" secondItem="PIX-sk-KP8" secondAttribute="trailing" constant="15" id="SmJ-A1-6f9"/>
                         <constraint firstAttribute="height" constant="150" id="awk-GI-EzX"/>
-                        <constraint firstAttribute="trailing" secondItem="4kc-dW-g7M" secondAttribute="trailing" constant="15" id="m9O-iO-rZw"/>
-                        <constraint firstItem="us6-fn-JCK" firstAttribute="leading" secondItem="17k-iJ-4Ye" secondAttribute="leading" constant="15" id="zCJ-TG-Jh3"/>
+                        <constraint firstAttribute="bottom" secondItem="PIX-sk-KP8" secondAttribute="bottom" constant="15" id="dd5-Eu-Sn0"/>
+                        <constraint firstItem="PIX-sk-KP8" firstAttribute="leading" secondItem="17k-iJ-4Ye" secondAttribute="leading" constant="15" id="i6C-Xz-EDw"/>
                     </constraints>
                 </view>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gradient_BG" translatesAutoresizingMaskIntoConstraints="NO" id="lTK-yo-qQT">
@@ -91,7 +81,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EsD-dI-YxB">
-                                <rect key="frame" x="78" y="399" width="221" height="40"/>
+                                <rect key="frame" x="77" y="399" width="221" height="40"/>
                                 <string key="text">Unmatch with your current
 match to discover more people</string>
                                 <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="16"/>
@@ -130,9 +120,7 @@ match to discover more people</string>
                 <outlet property="bottomView" destination="17k-iJ-4Ye" id="LJ5-4A-38o"/>
                 <outlet property="bottomViewHeight" destination="awk-GI-EzX" id="JkF-jn-akf"/>
                 <outlet property="edu" destination="us6-fn-JCK" id="mps-1d-45R"/>
-                <outlet property="eduLabelHeight" destination="PGI-1s-YOK" id="4gN-13-MPr"/>
                 <outlet property="job" destination="CZX-FU-cUd" id="eKZ-FR-wd5"/>
-                <outlet property="jobLabelHeight" destination="CbS-f6-x22" id="x0N-6n-PNZ"/>
                 <outlet property="lock" destination="b8x-jC-Xy4" id="azY-84-FHo"/>
                 <outlet property="matchedLabel" destination="j2V-NH-CY8" id="bON-XV-rCG"/>
                 <outlet property="matchedSubLabel" destination="EsD-dI-YxB" id="LR6-a4-2Re"/>

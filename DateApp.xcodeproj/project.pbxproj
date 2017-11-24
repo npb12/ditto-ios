@@ -16,6 +16,9 @@
 		8C0AF7491F5516D0005AA0FF /* LilyScriptOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C0AF7481F5516D0005AA0FF /* LilyScriptOne-Regular.ttf */; };
 		8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */; };
 		8C1146831E7D838C003AB594 /* NewMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1146821E7D838C003AB594 /* NewMessageViewController.m */; };
+		8C1F8AE61FC0EFCE00D927D4 /* PhotoDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AE51FC0EFCE00D927D4 /* PhotoDownloader.m */; };
+		8C1F8AE91FC29F0400D927D4 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AE81FC29F0400D927D4 /* TutorialViewController.m */; };
+		8C1F8AEC1FC3AA1500D927D4 /* AlbumSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AEB1FC3AA1500D927D4 /* AlbumSelectionViewController.m */; };
 		8C2BE3031DE018820042BE6B /* CERangeSliderTrackLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE2FD1DE018820042BE6B /* CERangeSliderTrackLayer.m */; };
 		8C2BE3041DE018820042BE6B /* CERangeSliderKnobLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE2FF1DE018820042BE6B /* CERangeSliderKnobLayer.m */; };
 		8C2BE3051DE018820042BE6B /* CERangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE3011DE018820042BE6B /* CERangeSlider.m */; };
@@ -121,6 +124,12 @@
 		8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartingMessageViewController.m; sourceTree = "<group>"; };
 		8C1146811E7D838C003AB594 /* NewMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageViewController.h; sourceTree = "<group>"; };
 		8C1146821E7D838C003AB594 /* NewMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageViewController.m; sourceTree = "<group>"; };
+		8C1F8AE41FC0EFCE00D927D4 /* PhotoDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDownloader.h; sourceTree = "<group>"; };
+		8C1F8AE51FC0EFCE00D927D4 /* PhotoDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDownloader.m; sourceTree = "<group>"; };
+		8C1F8AE71FC29F0400D927D4 /* TutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TutorialViewController.h; sourceTree = "<group>"; };
+		8C1F8AE81FC29F0400D927D4 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
+		8C1F8AEA1FC3AA1500D927D4 /* AlbumSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumSelectionViewController.h; sourceTree = "<group>"; };
+		8C1F8AEB1FC3AA1500D927D4 /* AlbumSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumSelectionViewController.m; sourceTree = "<group>"; };
 		8C2BE2FD1DE018820042BE6B /* CERangeSliderTrackLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CERangeSliderTrackLayer.m; sourceTree = "<group>"; };
 		8C2BE2FE1DE018820042BE6B /* CERangeSliderTrackLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CERangeSliderTrackLayer.h; sourceTree = "<group>"; };
 		8C2BE2FF1DE018820042BE6B /* CERangeSliderKnobLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CERangeSliderKnobLayer.m; sourceTree = "<group>"; };
@@ -427,6 +436,12 @@
 				8C0669921F1487E800132E14 /* UUDoubleSliderView.m */,
 				8C0669941F1AFC5800132E14 /* UILabelDeviceClass.h */,
 				8C0669951F1AFC5800132E14 /* UILabelDeviceClass.m */,
+				8C1F8AE41FC0EFCE00D927D4 /* PhotoDownloader.h */,
+				8C1F8AE51FC0EFCE00D927D4 /* PhotoDownloader.m */,
+				8C1F8AE71FC29F0400D927D4 /* TutorialViewController.h */,
+				8C1F8AE81FC29F0400D927D4 /* TutorialViewController.m */,
+				8C1F8AEA1FC3AA1500D927D4 /* AlbumSelectionViewController.h */,
+				8C1F8AEB1FC3AA1500D927D4 /* AlbumSelectionViewController.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -797,6 +812,7 @@
 				8C2BE31D1DE693EB0042BE6B /* SinglePhotoViewController.m in Sources */,
 				8CEF36A01E2D97F10060CAF8 /* NSUserDefaults+DemoSettings.m in Sources */,
 				8C2BE32F1DEA3FE30042BE6B /* AlbumTableViewCell.m in Sources */,
+				8C1F8AEC1FC3AA1500D927D4 /* AlbumSelectionViewController.m in Sources */,
 				8C2BE30E1DE5543E0042BE6B /* BioViewController.m in Sources */,
 				8C2CE0CD1DA1825300592566 /* AppDelegate.m in Sources */,
 				8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */,
@@ -805,6 +821,7 @@
 				8C08FA151EA7115500A41FF5 /* DADateFormatter.m in Sources */,
 				8CC00FE41D9F2B1500BE487A /* main.m in Sources */,
 				8C9C19D71DD800DE0074A7D0 /* SettingsViewController.m in Sources */,
+				8C1F8AE91FC29F0400D927D4 /* TutorialViewController.m in Sources */,
 				8C2BE3201DE9297E0042BE6B /* LoginViewController.m in Sources */,
 				8CE1D9221F0214680002A510 /* DAGradientColor.m in Sources */,
 				8C5F0E1C1E8F30EE00C799B4 /* DAParser.m in Sources */,
@@ -835,6 +852,7 @@
 				8CCBF4CD1E7470D400C202CB /* User.m in Sources */,
 				8C2CE0EC1DA186D500592566 /* TFStyle.m in Sources */,
 				8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */,
+				8C1F8AE61FC0EFCE00D927D4 /* PhotoDownloader.m in Sources */,
 				8C2BE3141DE5549A0042BE6B /* OccupationViewController.m in Sources */,
 				8CEB63971E58F9ED00F062A9 /* SwipeViewController.m in Sources */,
 				8CCF3D9D1E42735300CC4750 /* LocationManager.m in Sources */,

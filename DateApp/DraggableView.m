@@ -127,7 +127,7 @@
         self.edu.text = self.user.edu;
         [self.edu.layer setShouldRasterize:YES];
     }else{
-        self.eduLabelHeight.constant = 0;
+        [self.edu setHidden:YES];
     }
     
     if (![self.user.job isEqualToString:@""] && self.user.job != nil) {
@@ -135,7 +135,7 @@
         [self.job.layer setShouldRasterize:YES];
 
     }else{
-        self.jobLabelHeight.constant = 0;
+        [self.job setHidden:YES];
     }
 }
 

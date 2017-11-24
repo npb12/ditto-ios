@@ -64,7 +64,8 @@
     
     if (![[DataAccess singletonInstance] UserIsLoggedIn])
     {
-        [self performSegueWithIdentifier:@"loginSegue" sender:self];
+        [self performSegueWithIdentifier:@"tutorialSegue" sender:self];
+       // [self performSegueWithIdentifier:@"loginSegue" sender:self];
     }
     else
     {
@@ -748,8 +749,12 @@
                         if (self.swipeVC)
                         {
                             [self.swipeVC loadCards:result];
-                            [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
-                            [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
+                            if (![[DataAccess singletonInstance] UserHasMatch])
+                            {
+                                [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
+                                [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
+                            }
+
                         }
                         else
                         {
@@ -1041,6 +1046,9 @@
 
 - (IBAction)returnToStepOne:(UIStoryboardSegue *)segue {
 
+}
+
+-(IBAction)afterLoginUnwind:(UIStoryboardSegue *)segue {
 }
 
 -(void)dealloc {

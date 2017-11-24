@@ -111,8 +111,6 @@
 
 @property (nonatomic, assign) BOOL isExpanded;
 
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *jobLabelHeight;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *eduLabelHeight;
 
 
 

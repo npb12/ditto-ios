@@ -748,26 +748,31 @@
     
 }
 
-+ (void)addLocalPhoto:(UIImage*)image completion:(void (^)(NSError *))completion {
++ (void)addLocalPhoto:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion {
     
-    NSString* boundary = [[NSProcessInfo processInfo] globallyUniqueString];
-    NSData* imageData = [DAServer createFormDataForImage:image args:nil boundary:boundary objectName:@"pic"];
     
-    NSString* content_type = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
     
-    NSDictionary *headers = @{ @"content-type": content_type,
+    NSDictionary *headers = @{ @"content-type": @"application/x-www-form-urlencoded",
                                @"cache-control": @"no-cache" };
     
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
+    
     NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
-
+    
+    NSString *strIndex = [NSString stringWithFormat:@"%ld", index];
+    
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+    
+    NSString *encodedString = [[self base64forData:imageData] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
     
     NSDictionary *parameters = @{
                                  @"request": @{
                                          @"id": uid,
                                          @"sessionToken": sessionToken,
                                          @"post": @"addPic",
+                                         @"image": encodedString,
+                                         @"index": strIndex
                                          }
                                  };
     
@@ -776,16 +781,11 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
-    
-    NSMutableData *httpBody = [NSMutableData data];
-    
-    [httpBody appendData:imageData];
-    [httpBody appendData:postData];
-    
     [request setHTTPMethod:@"POST"];
     [request setAllHTTPHeaderFields:headers];
-    [request setHTTPBody:httpBody];
-
+    [request setHTTPBody:postData];
+    
+    
     
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
@@ -794,6 +794,7 @@
                                                     NSInteger statusCode = [HTTPResponse statusCode];
                                                     
                                                     NSLog(@"response is %ld", (long)statusCode);
+                                                    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                     if (error) {
                                                         completion(error);
                                                         NSLog(@"%@", error);
@@ -806,6 +807,91 @@
     [dataTask resume];
     
     
+}
+
++ (void)addFoto:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion {
+    
+    
+    NSString *uid = [[DataAccess singletonInstance] getUserID];
+    
+    
+    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
+    
+    NSString *strIndex = [NSString stringWithFormat:@"%ld", index];
+
+    NSString *url = @"http://54.174.235.42/api/addFoto.php";
+    //[DAServer baseURL];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                           cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                       timeoutInterval:10.0];
+    
+    [request setHTTPMethod:@"POST"];
+    
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+    
+    NSString *encodedString = [[self base64forData:imageData] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+    
+    
+    
+    NSString *dataToSend = [[NSString alloc] initWithFormat:@"post=%@&uid=%@&sessionToken=%@&index=%@&image=%@", @"addLocal", uid, sessionToken, strIndex,  encodedString];
+    
+    [request setHTTPBody:[dataToSend dataUsingEncoding:NSUTF8StringEncoding]];
+
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+                                                    NSInteger statusCode = [HTTPResponse statusCode];
+                                                    
+                                                    NSLog(@"response is %ld", (long)statusCode);
+                                                    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                    if (error) {
+                                                        completion(error);
+                                                        NSLog(@"%@", error);
+                                                    } else {
+                                                        
+                                                        completion(nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+    
+    
+}
+
++(NSString*)base64forData:(NSData*) theData {
+    const uint8_t* input = (const uint8_t*)[theData bytes];
+    NSInteger length = [theData length];
+    
+    static char table[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+    
+    NSMutableData* data = [NSMutableData dataWithLength:((length + 2) / 3) * 4];
+    uint8_t* output = (uint8_t*)data.mutableBytes;
+    
+    NSInteger i;
+    for (i=0; i < length; i += 3) {
+        NSInteger value = 0;
+        NSInteger j;
+        for (j = i; j < (i + 3); j++) {
+            value <<= 8;
+            
+            if (j < length) {
+                value |= (0xFF & input[j]);
+            }
+        }
+        
+        NSInteger theIndex = (i / 3) * 4;
+        output[theIndex + 0] =                    table[(value >> 18) & 0x3F];
+        output[theIndex + 1] =                    table[(value >> 12) & 0x3F];
+        output[theIndex + 2] = (i + 1) < length ? table[(value >> 6)  & 0x3F] : '=';
+        output[theIndex + 3] = (i + 2) < length ? table[(value >> 0)  & 0x3F] : '=';
+    }
+    
+    return [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
 }
 
 + (NSData*) createFormDataForImage:(UIImage*)image args:(NSDictionary*)args boundary:(NSString*)boundary objectName:(NSString*)objectName

@@ -43,7 +43,9 @@
 
 + (void)updateAlbum:(NSMutableArray*)array completion:(void (^)(NSError *))completion;
 
-+ (void)addLocalPhoto:(UIImage*)image completion:(void (^)(NSError *))completion;
++ (void)addFoto:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion;
+
++ (void)addFoto:(UIImage*)image completion:(void (^)(NSError *))completion;
 
 + (void)facebookLogout;
 

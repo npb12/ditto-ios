@@ -89,5 +89,6 @@
 #import "DASocket.h"
 #import "UILabelDeviceClass.h"
 
+#import "PhotoDownloader.h"
 
 #endif

@@ -181,6 +181,19 @@
     }
     
     if ([self.user.pics count] > 0) {
+        
+        [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:0] completion:^(UIImage *image, NSError *error)
+         {
+             if (image && !error)
+             {
+                 self.profilePic.layer.borderWidth = 0;
+                 self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
+                 self.profilePic.image = image;
+             }
+             
+         }];
+        
+        /*
         [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                            placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -189,7 +202,7 @@
                                           self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
                                           
                                       }
-                                  }];
+                                  }]; */
     }
     
 

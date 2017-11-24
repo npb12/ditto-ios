@@ -8,6 +8,7 @@
 
 #import "Includes.h"
 #import "FBAlbumsViewController.h"
+#import "AlbumSelectionViewController.h"
 
 @interface EditPhotosViewController : UIViewController
                 <UICollectionViewDelegate,UICollectionViewDataSource, UIGestureRecognizerDelegate,

@@ -199,8 +199,8 @@
          self.topLabel.text = @"You're Unmatched";
          self.middleLabel.text = @"Go to the Discover section and\n swipe to find your next match!";
          [self.discoverBtn setHidden:NO];
-         [self.nomatch_image setHidden:YES];
-         [self.profilePic setHidden:NO];
+         [self.nomatch_image setHidden:NO];
+         [self.profilePic setHidden:YES];
      }];
 }
 
@@ -213,7 +213,7 @@
          self.topLabel.text = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];
          self.middleLabel.text = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
          [self.nomatch_image setHidden:YES];
-         [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
+        /* [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                             placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
                                        if (!error) {
@@ -221,7 +221,23 @@
                                            self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
                                            
                                        }
-                                   }];
+                                   }]; */
+         
+         if ([self.user.pics count] > 0)
+         {
+             [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:0] completion:^(UIImage *image, NSError *error)
+              {
+                  if (image && !error)
+                  {
+                      self.profilePic.layer.borderWidth = 0;
+                      self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
+                      self.profilePic.image = image;
+                  }
+                  
+              }];
+         }
+         
+
          [self.profilePic setHidden:NO];
          [self.discoverBtn setHidden:YES];
          [self.nomatch_image setHidden:YES];
