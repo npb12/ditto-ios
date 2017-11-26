@@ -59,7 +59,8 @@ static const int MAX_BUFFER_SIZE = 2;
     NSLog(@"%ld", (long)index);
         pad = 10;
         x_pad = 10;
-    CARD_HEIGHT = self.frame.size.height / 1.4;
+    
+    CARD_HEIGHT = [UIScreen mainScreen].bounds.size.height * 0.71;
         CARD_WIDTH = self.frame.size.width - 20;
 
     

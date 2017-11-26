@@ -139,7 +139,7 @@
     self.nav_height.constant = height;
     
     CGFloat sideSize = width / 9.5;
-    CGFloat bigSize = width / 4.5;
+    CGFloat bigSize = width / 5;
 
 
     self.profileBtn.frame = CGRectMake(20,sideSize * 1.1,sideSize,sideSize);
@@ -151,8 +151,8 @@
     [self.profileBtn setAlpha:0.9];
     self.profileBtn.layer.masksToBounds = NO;
 
-    self.likeBtn.frame = CGRectMake(self.view.frame.size.width / 1.9,bigSize * 0.05,bigSize,bigSize);
-
+    self.likeBtn.frame = CGRectMake(self.view.frame.size.width / 1.9,bigSize * 0.125,bigSize,bigSize);
+    
     [self addChildViewController:_pageViewController];
     [self.view addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
@@ -161,9 +161,9 @@
     self.indicatorView.frame = CGRectMake(10, 60, width/2 - 10, 2);
     [self addGradientLayer];
     
-    self.noButton.frame = CGRectMake(self.view.frame.size.width / 4.1,bigSize * 0.05,bigSize,bigSize);
+    self.noButton.frame = CGRectMake(self.view.frame.size.width / 4.1,bigSize * 0.125,bigSize,bigSize);
 
-    self.chatBtn.frame = CGRectMake(self.view.frame.size.width / 2 - 42,bigSize * 0.05,bigSize,bigSize);
+    self.chatBtn.frame = CGRectMake(self.view.frame.size.width / 2 - 42,bigSize * 0.125,bigSize,bigSize);
 
     self.discoverLabel.textColor = [DAGradientColor gradientFromColor:self.discoverLabel.frame.size.width];
     

@@ -463,7 +463,6 @@
     self.headingLabel = [[UILabel alloc] init];
     [self.headingLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.headingLabel invalidateIntrinsicContentSize];
-    self.headingLabel.textColor = [DAGradientColor gradientFromColor:dimen];
     self.headingLabel.numberOfLines = 1;
     self.headingLabel.textAlignment = NSTextAlignmentCenter;
     self.headingLabel.font = [UIFont fontWithName:@"RooneySansLF-Medium" size:24];
@@ -484,6 +483,9 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view1 addConstraints:constraint2];
     
+    [self.headingLabel layoutIfNeeded];
+    self.headingLabel.textColor = [DAGradientColor gradientFromColor:self.headingLabel.frame.size.width];
+
 
     
 }
@@ -496,7 +498,6 @@
     self.headingLabel2 = [[UILabel alloc] init];
     [self.headingLabel2 setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.headingLabel2 invalidateIntrinsicContentSize];
-    self.headingLabel2.textColor = [DAGradientColor gradientFromColor:dimen];
     self.headingLabel2.numberOfLines = 1;
     self.headingLabel2.textAlignment = NSTextAlignmentCenter;
     self.headingLabel2.font = [UIFont fontWithName:@"RooneySansLF-Medium" size:24];
@@ -515,6 +516,9 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view2 addConstraints:constraint2];
     
+    [self.headingLabel2 layoutIfNeeded];
+    self.headingLabel2.textColor = [DAGradientColor gradientFromColor:self.headingLabel2.frame.size.width];
+    
 }
 
 
@@ -527,7 +531,6 @@
     self.headingLabel3 = [[UILabel alloc] init];
     [self.headingLabel3 setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.headingLabel3 invalidateIntrinsicContentSize];
-    self.headingLabel3.textColor = [DAGradientColor gradientFromColor:dimen];
     self.headingLabel3.numberOfLines = 1;
     self.headingLabel3.textAlignment = NSTextAlignmentCenter;
     self.headingLabel3.font = [UIFont fontWithName:@"RooneySansLF-Medium" size:24];
@@ -546,6 +549,9 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view3 addConstraints:constraint2];
     
+    [self.headingLabel3 layoutIfNeeded];
+    self.headingLabel3.textColor = [DAGradientColor gradientFromColor:self.headingLabel3.frame.size.width];
+
 }
 
 - (void)setupHeadingLabel4 {
@@ -557,16 +563,11 @@
     self.headingLabel4 = [[UILabel alloc] init];
     [self.headingLabel4 setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.headingLabel4 invalidateIntrinsicContentSize];
-    self.headingLabel4.textColor = [DAGradientColor gradientFromColor:dimen];
     self.headingLabel4.numberOfLines = 1;
     self.headingLabel4.textAlignment = NSTextAlignmentCenter;
     self.headingLabel4.font = [UIFont fontWithName:@"RooneySansLF-Medium" size:24];
     self.headingLabel4.text = header4;
-    
-    
     self.headingLabel4.layer.masksToBounds = NO;
-    
-    
     
     [self.view4 addSubview:self.headingLabel4];
     
@@ -575,6 +576,9 @@
     [self.view4 addConstraint:constraint1];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view4 addConstraints:constraint2];
+    
+    [self.headingLabel4 layoutIfNeeded];
+    self.headingLabel4.textColor = [DAGradientColor gradientFromColor:self.headingLabel4.frame.size.width];
 }
 
 

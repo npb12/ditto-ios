@@ -84,7 +84,7 @@
         [self.chatBtn setHidden:YES];
         CGFloat width = [UIScreen mainScreen].bounds.size.width;
         CGFloat height = [UIScreen mainScreen].bounds.size.height + 35;
-        CGFloat bigSize = width / 4.5;
+        CGFloat bigSize = width / 5;
          self.likeBtn.frame = CGRectMake(self.view.frame.size.width / 1.9,height,bigSize,bigSize);
         self.dislikeBtn.frame = CGRectMake(self.view.frame.size.width / 4.1,height,bigSize,bigSize);
         
@@ -142,8 +142,8 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    CGFloat bigSize = width / 4.5;
-    CGFloat height = [UIScreen mainScreen].bounds.size.height * 0.855;
+    CGFloat bigSize = width / 5;
+    CGFloat height = [UIScreen mainScreen].bounds.size.height * 0.865;
 
     
     [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
