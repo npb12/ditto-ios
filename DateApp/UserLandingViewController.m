@@ -139,6 +139,7 @@
     //  [self.avatarImageView.layer setBorderWidth: 2.0];
     
     // set holder shadow
+    
     [avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
     [avatarImageViewHolder.layer setShadowOpacity:0.5];
     [avatarImageViewHolder.layer setShadowColor:[UIColor lightGrayColor].CGColor];

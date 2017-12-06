@@ -31,22 +31,22 @@
                     <rect key="frame" x="0.0" y="517" width="375" height="150"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="PIX-sk-KP8">
-                            <rect key="frame" x="15" y="68" width="345" height="67"/>
+                            <rect key="frame" x="15" y="67" width="345" height="68"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Neil, 25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4kc-dW-g7M">
-                                    <rect key="frame" x="0.0" y="0.0" width="80.5" height="30"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="81" height="30"/>
                                     <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="24"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Software Engineer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CZX-FU-cUd">
-                                    <rect key="frame" x="0.0" y="31" width="113" height="17.5"/>
+                                    <rect key="frame" x="0.0" y="31" width="113" height="18"/>
                                     <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Florida State University" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="us6-fn-JCK">
-                                    <rect key="frame" x="0.0" y="49.5" width="144" height="17.5"/>
+                                    <rect key="frame" x="0.0" y="50" width="144" height="18"/>
                                     <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -62,9 +62,6 @@
                         <constraint firstItem="PIX-sk-KP8" firstAttribute="leading" secondItem="17k-iJ-4Ye" secondAttribute="leading" constant="15" id="i6C-Xz-EDw"/>
                     </constraints>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gradient_BG" translatesAutoresizingMaskIntoConstraints="NO" id="lTK-yo-qQT">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                </imageView>
                 <visualEffectView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N0F-ch-6F8">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="yod-VU-buC">
@@ -80,10 +77,8 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EsD-dI-YxB">
-                                <rect key="frame" x="77" y="399" width="221" height="40"/>
-                                <string key="text">Unmatch with your current
-match to discover more people</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EsD-dI-YxB">
+                                <rect key="frame" x="188" y="399" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="16"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
@@ -101,19 +96,15 @@ match to discover more people</string>
                     <blurEffect style="light"/>
                 </visualEffectView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="lTK-yo-qQT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="1tm-YF-1Fw"/>
                 <constraint firstItem="N0F-ch-6F8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="APW-7O-8i1"/>
-                <constraint firstItem="lTK-yo-qQT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="KAY-26-mMQ"/>
                 <constraint firstAttribute="bottom" secondItem="N0F-ch-6F8" secondAttribute="bottom" id="NvL-NE-LO1"/>
                 <constraint firstAttribute="trailing" secondItem="N0F-ch-6F8" secondAttribute="trailing" id="S4J-2c-akb"/>
                 <constraint firstAttribute="bottom" secondItem="17k-iJ-4Ye" secondAttribute="bottom" id="Uvo-SC-i87"/>
-                <constraint firstAttribute="bottom" secondItem="lTK-yo-qQT" secondAttribute="bottom" id="V7l-Xf-omm"/>
                 <constraint firstItem="17k-iJ-4Ye" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="W7C-Jn-dZJ"/>
                 <constraint firstAttribute="trailing" secondItem="17k-iJ-4Ye" secondAttribute="trailing" id="X27-yV-NUw"/>
                 <constraint firstItem="N0F-ch-6F8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="eqr-O3-rrf"/>
-                <constraint firstAttribute="trailing" secondItem="lTK-yo-qQT" secondAttribute="trailing" id="oA3-iR-2mi"/>
             </constraints>
             <connections>
                 <outlet property="blurView" destination="N0F-ch-6F8" id="tgf-Hi-W9t"/>
@@ -131,7 +122,6 @@ match to discover more people</string>
         </view>
     </objects>
     <resources>
-        <image name="Gradient_BG" width="1005" height="690"/>
         <image name="lock" width="92" height="131"/>
     </resources>
 </document>

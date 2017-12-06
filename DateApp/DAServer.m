@@ -18,10 +18,9 @@
 +(NSString*)baseURL
 {
     //production server
-    return @"http://54.174.235.42/api/dtloc.php";
+  //  return @"http://54.174.235.42/api/dtloc.php";
     
-    //dev server
-    //    return @"https://www.portaldevservices.com/api/facebook/API/dtloc.php";
+    return @"http://portaldevservices.com/dtloc.php";
 
 }
 
@@ -141,7 +140,7 @@
                                                                          [[DataAccess singletonInstance] setUserLoginStatus:YES];
                                                                          
                                                                          
-                                                                         completion(nil, nil);
+                                                                         completion(nil, error);
 
                                                                      }
                                                                  }];
@@ -819,7 +818,7 @@
     
     NSString *strIndex = [NSString stringWithFormat:@"%ld", index];
 
-    NSString *url = @"http://54.174.235.42/api/addFoto.php";
+    NSString *url = @"http://portaldevservices.com/addFoto.php";
     //[DAServer baseURL];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]

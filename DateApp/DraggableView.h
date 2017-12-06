@@ -73,7 +73,9 @@
 @property (strong, nonatomic) IBOutlet UIImageView *lock;
 @property (strong, nonatomic) IBOutlet UILabel *matchedLabel;
 @property (strong, nonatomic) IBOutlet UILabel *matchedSubLabel;
+@property (strong, nonatomic) UIImageView *gradientView;
 
+@property (strong, nonatomic) UIView *avatarImageViewHolder;
 
 
 @property (nonatomic) CGFloat width;
@@ -91,7 +93,6 @@
 
 @property (strong, nonatomic) IBOutlet UIView *bottomView;
 @property (strong, nonatomic) IBOutlet UIView *fadeBottom1;
-@property (strong, nonatomic) IBOutlet UIScrollView *bottomScrollView;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *fadeBottom_height;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomViewHeight;

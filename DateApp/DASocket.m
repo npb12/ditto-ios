@@ -33,7 +33,8 @@
 
 -(void)initSocketIO
 {
-    NSURL* url = [[NSURL alloc] initWithString:@"http://54.174.235.42:8080"];
+    NSURL* url = [[NSURL alloc] initWithString:@"http://portaldevservices.com:8080"];
+    //NSURL* url = [[NSURL alloc] initWithString:@"http://54.174.235.42:8080"];
     self.socket = [[SocketIOClient alloc] initWithSocketURL:url config:@{@"log": @YES, @"forcePolling": @YES}];
     
     [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {

@@ -37,14 +37,7 @@
 - (void) awakeFromNib
 {
     [super awakeFromNib];
-    if (![[DataAccess singletonInstance] UserHasMatch])
-    {
-        
-    }
-    else
-    {
-        [self.blurView setHidden:NO];
-    }
+    
     
 }
 
@@ -57,8 +50,6 @@
         [self setupView];
         
         
-    
-        
         // self.backgroundColor = [UIColor clearColor];
         
         
@@ -69,8 +60,6 @@
         UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(processSingleTap:)];
         [self addGestureRecognizer:tapGesture2];
         
-        
-        [self addPhoto];
         
         
         UIColor *black = [UIColor blackColor];
@@ -87,9 +76,17 @@
         overlayView = [[OverlayView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-100, 0, 100, 100)];
         overlayView.alpha = 0;
         [self addSubview:overlayView];
+
+
         
-        self.bottomScrollView.layer.borderColor = [UIColor darkGrayColor].CGColor;
-        self.bottomScrollView.layer.borderWidth = 0.25;
+        if (![[DataAccess singletonInstance] UserHasMatch])
+        {
+            [self updateUnmatch];
+        }
+        else
+        {
+            [self updateMatch];
+        }
         
     
     }
@@ -106,20 +103,15 @@
 
 -(void)setupView
 {
-    self.layer.cornerRadius =10;
-    self.layer.shadowRadius = 10;
-    self.layer.shadowOpacity = 0.2;
-    self.layer.shadowOffset = CGSizeMake(4, 4);
-    self.layer.masksToBounds = YES;
-    self.layer.shadowColor = [UIColor blackColor].CGColor;
-    self.layer.shouldRasterize = YES;
+    [self profilePicFrame];
+    
 
+    self.matchedSubLabel.text = @"Unmatch with your current\nmatch to discover more people";
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(expandView:)];
 
     
     [self.bottomView  addGestureRecognizer:tapGesture];
-    [self.bottomScrollView setExclusiveTouch:NO];
-    self.bottomScrollView.userInteractionEnabled = NO;
     
     NSString *name = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];
     self.name_age.text = name;
@@ -155,45 +147,78 @@
 }
 
 
--(void)addPhoto{
+-(void)profilePicFrame
+{
     
-   // self.pic = [[UIImageView alloc]init];
-    
-   // self.pic.backgroundColor = [UIColor whiteColor];
+    [self layoutIfNeeded];
     
     self.pic.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
-    
-    
-
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
-    self.pic.clipsToBounds = YES;
-    
-    
-    
     [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                 placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
                          options:SDWebImageRefreshCached];
-  
+    
+    self.avatarImageViewHolder = [[UIView alloc] initWithFrame:self.pic.frame];
+    self.avatarImageViewHolder.backgroundColor = [UIColor clearColor];
+    [self.pic.superview addSubview:self.avatarImageViewHolder];
+    //[avatarImageView removeFromSuperview];//only use this if your object retains its' properties after being removedFromSuperview. (ARC? idk)
+    [self.avatarImageViewHolder addSubview:self.pic];
+    self.pic.center = CGPointMake(self.avatarImageViewHolder.frame.size.width/2.0f, self.avatarImageViewHolder.frame.size.height/2.0f);
     
     
+    self.pic.layer.masksToBounds = YES;
+    self.avatarImageViewHolder.layer.masksToBounds = NO;
     
-
+    
+    // set avatar image corner
+    self.pic.layer.cornerRadius = 10;
+    
+    [self setFrameShadow];
+    
+    [self.pic layoutIfNeeded];
     
     
+    UIImageView *gradient = [[UIImageView alloc] initWithFrame:self.pic.frame];
+    [self.pic addSubview:gradient];
+    gradient.center = CGPointMake(self.pic.frame.size.width/2.0f, self.pic.frame.size.height/2.0f);
+    [gradient setImage:[UIImage imageNamed:@"Gradient_BG"]];
+    gradient.contentMode = UIViewContentModeScaleAspectFill;
+    gradient.layer.masksToBounds = YES;
     
     /*
-    NSDictionary *viewsDictionary = @{@"image":self.pic};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
-    [self addConstraints:constraint1];
-    [self addConstraints:constraint2];
+    UIVisualEffect *blurEffect;
+    blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.height];
-    [self addConstraint:constraint3];
+    self.blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.width];
-    [self addConstraint:constraint4]; */
-    
+    self.blurView.frame = self.bounds;
+    [self.pic addSubview:self.blurView];
+    self.blurView.center = CGPointMake(self.pic.frame.size.width/2.0f, self.pic.frame.size.height/2.0f); */
+
+    [self.pic addSubview:self.blurView];
+    [self.pic addSubview:self.bottomView];
+
+}
+
+
+-(void)setFrameShadow
+{
+    self.avatarImageViewHolder.layer.shadowRadius = 4.5;
+    [self.avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
+    [self.avatarImageViewHolder.layer setShadowOpacity:0.6];
+    [self.avatarImageViewHolder.layer setShadowColor:[self shadowColor].CGColor];
+    self.avatarImageViewHolder.layer.shouldRasterize = YES;
+    self.avatarImageViewHolder.clipsToBounds = NO;
+}
+
+-(void)unsetFrameShadow
+{
+    self.avatarImageViewHolder.layer.shadowRadius = 0;
+    [self.avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
+    [self.avatarImageViewHolder.layer setShadowOpacity:0];
+    [self.avatarImageViewHolder.layer setShadowColor:[UIColor clearColor].CGColor];
+    self.avatarImageViewHolder.layer.shouldRasterize = YES;
+    self.avatarImageViewHolder.clipsToBounds = NO;
 }
 
 
@@ -447,6 +472,8 @@
     [self.lock setHidden:NO];
     [self.matchedLabel setHidden:NO];
     [self.matchedSubLabel setHidden:NO];
+    [self.bottomView setHidden:YES];
+    [self unsetFrameShadow];
 }
 
 -(void)updateUnmatch
@@ -455,11 +482,16 @@
     [self.lock setHidden:YES];
     [self.matchedLabel setHidden:YES];
     [self.matchedSubLabel setHidden:YES];
-
+    [self.bottomView setHidden:NO];
+    [self setFrameShadow];
 }
 
 
 
+-(UIColor*)shadowColor
+{
+    return [UIColor colorWithRed:0.49 green:0.65 blue:0.86 alpha:1.0];
+}
 
 
 

@@ -94,7 +94,7 @@
     header4 = @"Decision";
 
 
-    text1 = @"Ditto helps find people around you\nand helps in matching you with the\nones that you’re interested in.";
+    text1 = @"Ditto helps find people nearby and\nmatches you with the ones\nthat you’re interested in.";
     text2 = @"Match with only one person at a\ntime, so you and your match have\neach others complete attention.";
     text3 = @"Swiping is disabled while matched,\nallowing for a sincere connection\nbetween two people.";
     text4 = @"Your connection will be put to the\ntest when a new match occurs.\nChoose wisely ;)";
