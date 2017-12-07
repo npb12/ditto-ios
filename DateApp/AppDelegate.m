@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 
 #import "NSUserDefaults+DemoSettings.h"
+@import Fabric;
+@import Crashlytics;
 
 
 @interface AppDelegate ()
@@ -23,6 +25,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    //Fabric.with([Crashlytics.self])
+    
+    [Fabric with:@[[Crashlytics sharedInstance]]];
     
     [[SDImageCache sharedImageCache]clearMemory];
     
@@ -49,7 +55,9 @@
     [[DataAccess singletonInstance] setaskedForNotifications:YES];
     [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
         if(!error){
-            [[UIApplication sharedApplication] registerForRemoteNotifications];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[UIApplication sharedApplication] registerForRemoteNotifications];
+            });
         }
     }];
     
@@ -154,6 +162,10 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+    if ([self.window.rootViewController isKindOfClass:[RootViewController class]])
+    {
+        self.rootVC = (RootViewController*)self.window.rootViewController;
+    }
 }
 
 

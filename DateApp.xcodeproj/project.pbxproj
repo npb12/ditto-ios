@@ -78,7 +78,6 @@
 		8CEF36A31E2D9B710060CAF8 /* MessageModelData.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF36A21E2D9B710060CAF8 /* MessageModelData.m */; };
 		8CEF3F1A1E3071DB00CC4485 /* MatchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF3F191E3071DB00CC4485 /* MatchTableViewCell.m */; };
 		8CEF96991DCC3B1B004D76A7 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CEF96981DCC3B1B004D76A7 /* ProfileViewController.m */; };
-		8CF2860E1E989CEB005B94E9 /* CropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF2860D1E989CEB005B94E9 /* CropViewController.m */; };
 		8CF286111E9B3C0B005B94E9 /* Messages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF286101E9B3C0B005B94E9 /* Messages.m */; };
 		8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF62C7A1E1A069700BBAF0D /* NewMatchConflictViewController.m */; };
 		8CF62C7E1E1E204000BBAF0D /* NewMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CF62C7D1E1E204000BBAF0D /* NewMatchViewController.m */; };
@@ -240,8 +239,6 @@
 		8CEF96971DCC3B1B004D76A7 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		8CEF96981DCC3B1B004D76A7 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		8CEF969D1DCC48DA004D76A7 /* Includes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Includes.h; sourceTree = "<group>"; };
-		8CF2860C1E989CEB005B94E9 /* CropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CropViewController.h; sourceTree = "<group>"; };
-		8CF2860D1E989CEB005B94E9 /* CropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CropViewController.m; sourceTree = "<group>"; };
 		8CF2860F1E9B3C0B005B94E9 /* Messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Messages.h; sourceTree = "<group>"; };
 		8CF286101E9B3C0B005B94E9 /* Messages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Messages.m; sourceTree = "<group>"; };
 		8CF62C791E1A069700BBAF0D /* NewMatchConflictViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMatchConflictViewController.h; sourceTree = "<group>"; };
@@ -424,8 +421,6 @@
 				8CCF830E1E91CB7F00C8CF9C /* DASocket.m */,
 				8C08FA131EA7115500A41FF5 /* DADateFormatter.h */,
 				8C08FA141EA7115500A41FF5 /* DADateFormatter.m */,
-				8CF2860C1E989CEB005B94E9 /* CropViewController.h */,
-				8CF2860D1E989CEB005B94E9 /* CropViewController.m */,
 				8CF2860F1E9B3C0B005B94E9 /* Messages.h */,
 				8CF286101E9B3C0B005B94E9 /* Messages.m */,
 				8CE1D9201F0214680002A510 /* DAGradientColor.h */,
@@ -525,6 +520,7 @@
 				8CC00FDD1D9F2B1500BE487A /* Resources */,
 				94D86A9D3182B4B802C11BD3 /* [CP] Embed Pods Frameworks */,
 				BC3F7D95672C4B9303C9EBC2 /* [CP] Copy Pods Resources */,
+				8CD50E841FD895740047F100 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -670,13 +666,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DateAppUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		47CA7E4643BFD751E91B819A /* [CP] Embed Pods Frameworks */ = {
@@ -730,14 +729,30 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DateApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8CD50E841FD895740047F100 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 9e81907b7173e7b4a64b768a9b88bb2df219de59 bb8670bd9fe5b6b42dd555c85c76eb1ea08c781ecb26b0046a9fbb2c61eab1e6";
 		};
 		94D86A9D3182B4B802C11BD3 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -745,9 +760,18 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-DateApp/Pods-DateApp-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/JSQMessagesViewController/JSQMessagesViewController.framework",
+				"${BUILT_PRODUCTS_DIR}/JSQSystemSoundPlayer/JSQSystemSoundPlayer.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQMessagesViewController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JSQSystemSoundPlayer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -790,13 +814,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DateAppTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -840,7 +867,6 @@
 				8CEF3F1A1E3071DB00CC4485 /* MatchTableViewCell.m in Sources */,
 				8CEB63961E58F9ED00F062A9 /* OverlayView.m in Sources */,
 				8C2BE3041DE018820042BE6B /* CERangeSliderKnobLayer.m in Sources */,
-				8CF2860E1E989CEB005B94E9 /* CropViewController.m in Sources */,
 				8C071DD41F0B1EEF00900A42 /* UserLandingViewController.m in Sources */,
 				8CB05FFA1DD187F300EB7BB6 /* MatchViewController.m in Sources */,
 				8CD2BD8B1E3EE65D00A293CE /* SettingsTableViewCell.m in Sources */,
@@ -1005,6 +1031,7 @@
 				CODE_SIGN_ENTITLEMENTS = DateApp/DateApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1012,7 +1039,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = DateApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1036,7 +1063,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = DateApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -10,7 +10,6 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 
-
 @implementation DAServer
 
 #pragma POST requests
@@ -113,6 +112,8 @@
                                                                          getdata=[json objectForKey:@"user"];
                                                                          
                                                                          NSString *user_id = [getdata objectForKey:@"id"];
+                                                                         
+                                                                         
                                                                          NSString *long_token = [getdata objectForKey:@"long_live_token"];
                                                                          NSString *first_name = [getdata objectForKey:@"first_name"];
                                                                          
@@ -138,7 +139,7 @@
                                                                          [[DataAccess singletonInstance] setGender:gender];
                                                                          
                                                                          [[DataAccess singletonInstance] setUserLoginStatus:YES];
-                                                                         
+                                                                        
                                                                          
                                                                          completion(nil, error);
 

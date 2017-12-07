@@ -712,7 +712,6 @@
 
 - (IBAction)nextAction:(id)sender
 {
-    
     int destPage = [self getCurrentPage] + 1;
     CGFloat dimen = [[UIScreen mainScreen] bounds].size.width;
     
@@ -728,12 +727,6 @@
     {
         [self performSegueWithIdentifier:@"loginSegue" sender:self];
     }
-
-
-    //if on last page segue to login screen
-    //else
-    //go to next screen
-    
 }
 
 -(UIColor*)borderColor

@@ -8,14 +8,12 @@
 
 #import "FBPhotosViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-@import TOCropViewController;
 
 
-@interface FBPhotosViewController ()<TOCropViewControllerDelegate>
+@interface FBPhotosViewController ()
 
 @property (nonatomic, assign) BOOL didLoad;
 
-@property (nonatomic, assign) TOCropViewCroppingStyle croppingStyle; //The cropping style
 
 @property (strong, nonatomic) IBOutlet UIView *gradientView;
 @property (strong, nonatomic) IBOutlet UILabel *headerLabel;

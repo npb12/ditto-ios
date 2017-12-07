@@ -28,7 +28,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.7</string>
+	<string>1.8</string>
 	<key>FacebookAppID</key>
 	<string>992281634217164</string>
 	<key>FacebookDisplayName</key>
@@ -76,5 +76,19 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>9e81907b7173e7b4a64b768a9b88bb2df219de59</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 </dict>
 </plist>
