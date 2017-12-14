@@ -14,6 +14,8 @@
     UIColor* purpleColor;
     BOOL isMatch;
     BOOL notif;
+    CGFloat height;
+    CGFloat pvcHeight;
 }
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
@@ -40,6 +42,7 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *noButton;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *topViewHeight;
 
 @property (strong, nonatomic) IBOutlet UILabel *discoverLabel;
 @property (strong, nonatomic) IBOutlet UILabel *mymatchLabel;
@@ -58,14 +61,29 @@
     
 }
 
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    UIEdgeInsets safeAreaInsets = self.view.safeAreaInsets;
+    
+    CGFloat top = safeAreaInsets.top + self.topViewHeight.constant;
+    CGFloat bottom = safeAreaInsets.bottom + self.nav_height.constant;
+    pvcHeight = self.view.frame.size.height - (top + bottom);
+    
+    // Change the size of page view controller
+    self.pageViewController.view.frame = CGRectMake(0, top, self.view.frame.size.width, pvcHeight);
+
+}
+
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:NO];
    
     
     if (![[DataAccess singletonInstance] UserIsLoggedIn])
     {
-        [self performSegueWithIdentifier:@"tutorialSegue" sender:self];
-       // [self performSegueWithIdentifier:@"loginSegue" sender:self];
+        //[self performSegueWithIdentifier:@"tutorialSegue" sender:self];
+        [self performSegueWithIdentifier:@"loginSegue" sender:self];
     }
     else
     {
@@ -78,6 +96,10 @@
         
         [self setLocationObserver];
         
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationEnteredForeground:)
+                                                     name:UIApplicationWillEnterForegroundNotification
+                                                   object:nil];
         
         [[NSNotificationCenter defaultCenter]
          addObserver:self selector:@selector(altMatchesNotification:) name:@"altMatchesNotification" object:nil];
@@ -99,6 +121,17 @@
         
     }
  
+}
+
+- (void)applicationEnteredForeground:(NSNotification *)notification {
+    NSLog(@"Application Entered Foreground");
+    if ([[DataAccess singletonInstance] UserIsLoggedIn])
+    {
+        if (self.swipeVC)
+        {
+            
+        }
+    }
 }
 
 -(void)setLocationObserver
@@ -129,14 +162,11 @@
     nCurIdx = 0;
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    CGFloat height = [UIScreen mainScreen].bounds.size.height * 0.15;
+    height = [UIScreen mainScreen].bounds.size.height * 0.1;
+    
+    self.topViewHeight.constant = [UIScreen mainScreen].bounds.size.height * 0.08;
 
-    
-    // Change the size of page view controller
-    self.pageViewController.view.frame = CGRectMake(0, 65, self.view.frame.size.width, self.view.frame.size.height);
-    
-    
-    self.nav_height.constant = height;
+    self.nav_height.constant = [UIScreen mainScreen].bounds.size.height * 0.15;
     
     CGFloat sideSize = width / 9.5;
     CGFloat bigSize = width / 5;
@@ -158,13 +188,13 @@
     [self.pageViewController didMoveToParentViewController:self];
     [self.view bringSubviewToFront:self.bottomView];
     
-    self.indicatorView.frame = CGRectMake(10, 60, width/2 - 10, 2);
+    self.indicatorView.frame = CGRectMake(10, self.topViewHeight.constant, width/2 - 10, 2);
     [self addGradientLayer];
     
     self.noButton.frame = CGRectMake(self.view.frame.size.width / 4.1,bigSize * 0.125,bigSize,bigSize);
 
-    self.chatBtn.frame = CGRectMake(self.view.frame.size.width / 2 - 42,bigSize * 0.125,bigSize,bigSize);
-
+    self.chatBtn.frame = CGRectMake(self.view.frame.size.width / 2 - (bigSize / 2),bigSize * 0.125,bigSize,bigSize);
+    
     self.discoverLabel.textColor = [DAGradientColor gradientFromColor:self.discoverLabel.frame.size.width];
     
     
@@ -251,6 +281,10 @@
     }
 }
 
+- (IBAction)tap:(id)sender {
+    NSLog(@"tap");
+}
+
 
 -(void)noSwipingAlert{
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Swiper no swiping!"
@@ -267,13 +301,6 @@
     [self presentViewController:alert animated:YES completion:nil]; // 6
 }
 
--(void) viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    
-   // [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
-
-    
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -292,7 +319,7 @@
         [UIView animateWithDuration:duration animations:^{
 
             self.indicatorView.alpha = 1;
-            self.indicatorView.frame = CGRectMake(10, 60, width/2 - 10, 2);
+            self.indicatorView.frame = CGRectMake(10, self.topViewHeight.constant, width/2 - 10, 2);
             [self.noButton setHidden:NO];
             [self.likeBtn setHidden:NO];
             [self.chatBtn setAlpha:0];
@@ -306,7 +333,7 @@
     } else if( i == 1 ) {
         [UIView animateWithDuration:duration animations:^{
    
-            self.indicatorView.frame = CGRectMake(width/2, 60, width/2 - 10, 2);
+            self.indicatorView.frame = CGRectMake(width/2, self.topViewHeight.constant, width/2 - 10, 2);
             [self.noButton setHidden:YES];
             [self.likeBtn setHidden:YES];
             [self.discoverLabel setTextColor:[self grayColor]];
@@ -551,10 +578,12 @@
     }
     else if ([segue.destinationViewController isKindOfClass:[NewMatchConflictViewController class]])
     {
+        /*
         if (self.presentedViewController)
         {
             [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
-        }
+        } */
+        
         NewMatchConflictViewController *matchVC = (NewMatchConflictViewController *)segue.destinationViewController;
         if ([[DataAccess singletonInstance] UserHasMatch] && !notif)
         {
@@ -563,7 +592,6 @@
 
         matchVC.altMatches = self.altMatches;
         matchVC.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
-        matchVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     }
 }
 
@@ -748,7 +776,7 @@
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (self.swipeVC)
                         {
-                            [self.swipeVC loadCards:result];
+                            [self.swipeVC loadCards:result withHeight: pvcHeight];
                             if (![[DataAccess singletonInstance] UserHasMatch])
                             {
                                 [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
@@ -823,11 +851,16 @@
         notif = YES;
     }
     
-    [[TFHeartAnimationView sharedInstance] showWithAnchorPoint:[self.view convertPoint:self.view.center toView:nil] completion:^(void)
-     {
-     }];
     
-    [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[TFHeartAnimationView sharedInstance] showWithAnchorPoint:[self.view convertPoint:self.view.center toView:nil] completion:^(void)
+         {
+            [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
+         }];
+        
+    });
+    
+
 
     
     /*

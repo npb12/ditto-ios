@@ -59,9 +59,9 @@
 }
 
 
--(void)loadCards:(NSMutableArray*)users
+-(void)loadCards:(NSMutableArray*)users withHeight:(CGFloat)height
 {
-    [self.backgroundView createViewWithUsers:users];
+    [self.backgroundView createViewWithUsers:users withHeight:height];
     
     if ([users count] < 1)
     {

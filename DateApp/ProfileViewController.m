@@ -53,6 +53,9 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *chatBtn;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatWidth;
+
 
 @end
 
@@ -63,6 +66,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    CGFloat width = [UIScreen mainScreen].bounds.size.width;
+    CGFloat bigSize = width / 5;
+    
+    self.chatHeight.constant = bigSize;
+    self.chatWidth.constant = bigSize;
     
     if (self.match)
     {
@@ -148,7 +156,7 @@
     
     [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
      {
-         self.chatBottom.constant = 5;
+         self.chatBottom.constant = 10;
          [self.view layoutIfNeeded];
      }
                      completion:^(BOOL finished)

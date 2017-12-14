@@ -89,7 +89,7 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
             }
         }];
     }
-    else if([type isEqualToString:@"altmatch"])
+    else if([type isEqualToString:@"altMatch"])
     {
         [DAServer getMatchesData:YES completion:^(NSError *error) {
             // here, update the UI to say "Not busy anymore"
@@ -116,11 +116,7 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
         {
             [self.rootVC updateUnmatch];
         }
-
     }
-    
-    
-
 }
 
 //Called to let your app know which action was selected by the user for a given notification.

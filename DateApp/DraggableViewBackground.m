@@ -18,6 +18,7 @@
  //   UIButton* messageButton;
     UIButton* checkButton;
     UIButton* xButton;
+    CGFloat parentHeight;
 }
 
 static const int MAX_BUFFER_SIZE = 2;
@@ -26,8 +27,9 @@ static const int MAX_BUFFER_SIZE = 2;
 @synthesize allCards;
 
 
--(void)createViewWithUsers:(NSMutableArray*)users{
+-(void)createViewWithUsers:(NSMutableArray*)users withHeight:(CGFloat)height{
     userCards = users;
+    parentHeight = height;
   //  userCards = [[NSArray alloc]initWithObjects:@"first",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
     loadedCards = [[NSMutableArray alloc] init];
     allCards = [[NSMutableArray alloc] init];
@@ -57,10 +59,12 @@ static const int MAX_BUFFER_SIZE = 2;
 
     
     NSLog(@"%ld", (long)index);
-        pad = 10;
+        pad = 12;
         x_pad = 10;
     
-    CARD_HEIGHT = [UIScreen mainScreen].bounds.size.height * 0.71;
+    UIEdgeInsets safeAreaInsets = self.safeAreaInsets;
+
+    CARD_HEIGHT = parentHeight * 0.95;
         CARD_WIDTH = self.frame.size.width - 20;
 
     

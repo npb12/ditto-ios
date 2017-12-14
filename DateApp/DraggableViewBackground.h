@@ -49,7 +49,7 @@
 @interface DraggableViewBackground : UIView <DraggableViewDelegate, UITextFieldDelegate>
 
 
--(void)createViewWithUsers:(NSMutableArray*)users;
+-(void)createViewWithUsers:(NSMutableArray*)users withHeight:(CGFloat)height;
 
 //methods called in DraggableView
 -(void)cardSwipedLeft:(UIView *)card;

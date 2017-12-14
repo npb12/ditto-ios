@@ -129,7 +129,7 @@
     self.match_new_label.text = self.match_user.name;
     self.match_current_label.text = match.name;
     
-    self.mesage_label.text = [NSString stringWithFormat:@"Looks like you have a\ndecision. Stay with %@ or\nmatch with %@?", match_name, self.match_user.name];
+    self.mesage_label.text = [NSString stringWithFormat:@"Decision time!\nStay with %@ or\nmatch with %@?", match_name, self.match_user.name];
     
   //  self.option1_btn.titleLabel.text = [NSString stringWithFormat:@"Match With %@", self.match_user.name];
 //    self.option2_btn.titleLabel.text = @"Ignore";
@@ -234,7 +234,7 @@
         else
         {
             //reload data for new user
-            [self loadUserData];
+            [self loadUserDataConflict];
         }
     }
     else
@@ -274,10 +274,11 @@
         }
         else
         {
-            
+            [self loadUserDataConflict];
+            /*
             [self dismissViewControllerAnimated:YES completion:^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"altMatchesNotification" object:self.altMatches userInfo:nil];
-            }];
+            }]; */
         }
         
     }
@@ -327,16 +328,26 @@
 {
     if ([[segue identifier] isEqualToString:@"gotoProfile"])
     {
-        
         ProfileViewController *profileVC = (ProfileViewController *)segue.destinationViewController;
-        if ([sender tag] == 0)
+        if (self.isConflict)
         {
-            profileVC.user = [self convertToUser:match];
+            if ([sender tag] == 0)
+            {
+                profileVC.user = [self convertToUser:match];
+            }
+            else
+            {
+                profileVC.user = [self.altMatches objectAtIndex:0];
+            }
+            
+            profileVC.isMine = YES;
         }
         else
         {
-            profileVC.user = [self.altMatches objectAtIndex:0];
+            profileVC.user = [self convertToUser:match];
+            profileVC.match = YES;
         }
+
      //   profileVC.user_data = self.matched_user;
      //   profileVC.mode = @"matched";
         

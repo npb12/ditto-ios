@@ -49,9 +49,6 @@
         
         self.topLabel.text = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];
         self.middleLabel.text = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
-        [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
-                    placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                             options:SDWebImageRefreshCached];
         [self.discoverBtn setHidden:YES];
         [self.nomatch_image setHidden:YES];
         
@@ -68,15 +65,15 @@
     
     CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 80;
     
-    self.picHeight.constant = dimen;
-    
+    self.picHeight.constant = [[UIScreen mainScreen] bounds].size.width - 112;
+
     
     [self profilePicFrame];
     
-    self.noMatchWidth.constant = dimen;
-    self.noMatchHeight.constant = dimen;
+    self.noMatchWidth.constant = self.picHeight.constant;
+    self.noMatchHeight.constant = self.picHeight.constant;
     
-    self.discoverBtnWidth.constant = dimen;
+    self.discoverBtnWidth.constant = self.picHeight.constant;
     
     CGFloat height = (dimen - 15) / 5;
     
@@ -133,7 +130,7 @@
 -(void)profilePicFrame
 {
     
-    CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 80;
+    [self.profilePic layoutIfNeeded];
     
     UIView *avatarImageViewHolder = [[UIView alloc] initWithFrame:self.profilePic.frame];
     avatarImageViewHolder.backgroundColor = [UIColor clearColor];
@@ -146,24 +143,25 @@
     self.profilePic.layer.masksToBounds = YES;
     avatarImageViewHolder.layer.masksToBounds = NO;
     
-    self.profilePic.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    self.profilePic.layer.borderWidth = 1;
-    
     
     // set avatar image corner
-    self.profilePic.layer.cornerRadius = dimen / 2;
+    self.profilePic.layer.cornerRadius = self.picHeight.constant / 2;
     // set avatar image border
-  //  [self.avatarImageView.layer setBorderColor: [[UIColor whiteColor] CGColor]];
-  //  [self.avatarImageView.layer setBorderWidth: 2.0];
+    //  [self.avatarImageView.layer setBorderColor: [[UIColor whiteColor] CGColor]];
+    //  [self.avatarImageView.layer setBorderWidth: 2.0];
     
     // set holder shadow
+    
     [avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
     [avatarImageViewHolder.layer setShadowOpacity:0.5];
     [avatarImageViewHolder.layer setShadowColor:[UIColor lightGrayColor].CGColor];
     avatarImageViewHolder.layer.shouldRasterize = YES;
     avatarImageViewHolder.clipsToBounds = NO;
+    
+    [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
+                       placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                                options:SDWebImageRefreshCached];
 }
-
 
 - (void)currentMatchNotification:(NSNotification *)notification
 {

@@ -14,11 +14,16 @@
 
 @interface PartingMessageViewController : UIViewController
 
-
-typedef NS_ENUM(NSUInteger, parting_type) {
-    DROP_CURRENT                = 0,
-    DROP_SWAP                 = 1
+//enum temperature {cold = 5, warm = 50, hot = 95};
+enum PartingType {
+    INAPPROPRIATE=1,
+    CHEMISTRY,
+    RESPONSE_TIME,
+    INTEREST,
+    NO_REASON,
 };
+
+@property (nonatomic,assign) enum PartingType currentType;
 
 @property (nonatomic, weak) id<PartingMessageDelegate> delegate;
 

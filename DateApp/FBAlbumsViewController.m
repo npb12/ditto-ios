@@ -94,13 +94,9 @@
 
         PhotoManager *album = (PhotoManager*)[[[PhotoManager singletonInstance] albums] objectAtIndex:indexPath.row];
         cell.album_label.text = album.album_name;
-    [cell.album_label layoutIfNeeded];
-        cell.album_label.textColor = [DAGradientColor gradientFromColor:cell.album_label.frame.size.width];
-        UIFont *font;
 
-        
-        cell.album_label.font = font;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         
     

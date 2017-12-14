@@ -26,7 +26,7 @@
 
 -(void) pushDetailView:(id)sender;
 -(void)likeCurrentCard:(BOOL)option;
--(void)loadCards:(NSMutableArray*)users;
+-(void)loadCards:(NSMutableArray*)users withHeight:(CGFloat)height;
 -(void)showEmptyLabel;
 @property NSUInteger pageIndex;
 

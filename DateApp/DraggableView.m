@@ -205,7 +205,7 @@
 {
     self.avatarImageViewHolder.layer.shadowRadius = 4.5;
     [self.avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
-    [self.avatarImageViewHolder.layer setShadowOpacity:0.6];
+    [self.avatarImageViewHolder.layer setShadowOpacity:0.7];
     [self.avatarImageViewHolder.layer setShadowColor:[self shadowColor].CGColor];
     self.avatarImageViewHolder.layer.shouldRasterize = YES;
     self.avatarImageViewHolder.clipsToBounds = NO;

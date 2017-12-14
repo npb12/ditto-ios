@@ -11,7 +11,7 @@
 
 @interface TutorialViewController ()
 {
-    CGFloat screenWidth, picWidth;
+    CGFloat screenWidth;
     NSString *text1, *text2, *text3, *text4;
     NSString *header1, *header2, *header3, *header4;
     CGFloat scrollHeight;
@@ -86,7 +86,6 @@
     
     [self setCurrentPage:0];
 
-    picWidth = screenWidth * 0.8;
     
     header1 = @"Discover";
     header2 = @"Match";
@@ -339,10 +338,11 @@
     [self.view1 addSubview:self.pic];
     
     int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.125;
-    
+    int widthOffset = CGRectGetWidth([[UIScreen mainScreen] bounds]) * 0.09;
+
     
     NSDictionary *viewsDictionary = @{@"image":self.pic};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:offset / 2]} views:viewsDictionary];
+    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:widthOffset / 2]} views:viewsDictionary];
     [self.view1 addConstraints:constraint1];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.view1 addConstraints:constraint2];
@@ -350,7 +350,7 @@
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.85) - offset];
     [self.view1 addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth - offset];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth - widthOffset];
     [self.view1 addConstraint:constraint4];
     
 }

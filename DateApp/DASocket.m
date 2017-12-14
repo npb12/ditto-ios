@@ -53,13 +53,6 @@
         
         [self parseMessageRecieved:full_message];
 
-        /*
-        [[self.socket emitWithAck:@"canUpdate" with:@[@(cur)]] timingOutAfter:0 callback:^(NSArray* data) {
-            [self.socket emit:@"update" with:@[@{@"amount": @(cur + 2.50)}]];
-        }];
-        
-        
-        [ack with:@[@"Got your currentAmount, ", @"dude"]]; */
     }];
     
     [self.socket connect];
