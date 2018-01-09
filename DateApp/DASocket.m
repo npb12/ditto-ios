@@ -33,12 +33,12 @@
 
 -(void)initSocketIO
 {
-    NSURL* url = [[NSURL alloc] initWithString:@"http://portaldevservices.com:8080"];
-    //NSURL* url = [[NSURL alloc] initWithString:@"http://54.174.235.42:8080"];
+    NSURL* url = [[NSURL alloc] initWithString:@"https://www.portaldevservices.com/"];
+   // NSURL* url = [[NSURL alloc] initWithString:@"http://54.174.235.42:443"];
     self.socket = [[SocketIOClient alloc] initWithSocketURL:url config:@{@"log": @YES, @"forcePolling": @YES}];
     
     [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"socket connected");
+        NSLog(@"socket connected"); 
         
         NSInteger uid = [[[DataAccess singletonInstance] getUserID] integerValue];
         NSArray *arr = @[@(uid)];
@@ -55,6 +55,7 @@
 
     }];
     
+
     [self.socket connect];
 }
 

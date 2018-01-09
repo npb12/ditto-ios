@@ -8,7 +8,9 @@
 
 #import "AlbumSelectionViewController.h"
 
-@interface AlbumSelectionViewController ()<UIImagePickerControllerDelegate>
+@interface AlbumSelectionViewController ()
+
+@property (nonatomic) UIImagePickerController *imagePickerController;
 
 @end
 
@@ -49,6 +51,7 @@
 
 -(IBAction)gotoCamRoll
 {
+    /*
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         UIImagePickerController* imagePickerController = [[UIImagePickerController alloc] init];
         imagePickerController.allowsEditing = YES;
@@ -56,37 +59,59 @@
         imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         
         [self presentViewController:imagePickerController animated:YES completion:nil];
-    }
+    } */
+    
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+    imagePickerController.delegate = self;
+    
+    UIPopoverPresentationController *presentationController = imagePickerController.popoverPresentationController;
+    presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
+
+    
+    _imagePickerController = imagePickerController; // we need this for later
+    
+    [self presentViewController:self.imagePickerController animated:YES completion:^{
+        //.. done presenting
+    }];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    UIImage* image = info[UIImagePickerControllerEditedImage];
-    if (!image)
-        image = info[UIImagePickerControllerOriginalImage];
+    UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
     
+    [self dismissViewControllerAnimated:YES completion:nil];
     
     [DAServer addFoto:image index:self.selectedIndex completion:^(NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
+                               /*
                                [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                               [self dismissViewControllerAnimated:NO completion:nil];
+                               [self dismissViewControllerAnimated:NO completion:nil]; */
                            });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
+                               /*
                                [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                               [self dismissViewControllerAnimated:NO completion:nil];
-
+                               [self dismissViewControllerAnimated:NO completion:nil]; */
+                               
                            });
             NSLog(@"An error occured with the server!");
         }
     }];
+    
+    _imagePickerController = nil;
 
-    
-    
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        //.. done dismissing
+    }];
 }
 
 - (IBAction)goBack:(id)sender

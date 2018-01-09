@@ -19,7 +19,7 @@
     //production server
   //  return @"http://54.174.235.42/api/dtloc.php";
     
-    return @"http://portaldevservices.com/dtloc.php";
+    return @"https://www.portaldevservices.com/dtloc.php";
 
 }
 
@@ -288,7 +288,6 @@
                                                         
                                                         NSData *ns = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                         id json = [NSJSONSerialization JSONObjectWithData:ns options:0 error:nil];
-                                                        
                                                         
                                                         NSDictionary *temp_users=[[NSDictionary alloc]init];
                                                         temp_users=[json objectForKey:@"users"];
@@ -819,7 +818,7 @@
     
     NSString *strIndex = [NSString stringWithFormat:@"%ld", index];
 
-    NSString *url = @"http://portaldevservices.com/addFoto.php";
+    NSString *url = @"https://www.portaldevservices.com/addFoto.php";
     //[DAServer baseURL];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]

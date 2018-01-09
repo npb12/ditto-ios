@@ -19,6 +19,7 @@
     UIButton* checkButton;
     UIButton* xButton;
     CGFloat parentHeight;
+    NSInteger totalCards;
 }
 
 static const int MAX_BUFFER_SIZE = 2;
@@ -29,6 +30,7 @@ static const int MAX_BUFFER_SIZE = 2;
 
 -(void)createViewWithUsers:(NSMutableArray*)users withHeight:(CGFloat)height{
     userCards = users;
+    totalCards = [users count];
     parentHeight = height;
   //  userCards = [[NSArray alloc]initWithObjects:@"first",@"second",@"third",@"fourth",@"last", nil]; //%%% placeholder for card-specific information
     loadedCards = [[NSMutableArray alloc] init];
@@ -118,17 +120,13 @@ static const int MAX_BUFFER_SIZE = 2;
     //    DraggableView *c = (DraggableView *)card;
     
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
+    totalCards--;
     
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
         [loadedCards addObject:[allCards objectAtIndex:cardsLoadedIndex]];
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
-    else
-    {
-        [self cardsEmptyAction];
-    }
-    
 }
 
 //%%% action called when the card goes to the right.
@@ -139,28 +137,31 @@ static const int MAX_BUFFER_SIZE = 2;
     //    DraggableView *c = (DraggableView *)card;
     
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
-    
+    totalCards--;
+
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
         [loadedCards addObject:[allCards objectAtIndex:cardsLoadedIndex]];
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
-    else
-    {
-        [self cardsEmptyAction];
-    }
-    
-
     
   //  id<MatchSegueProtocol> strongDelegate = self.matched_delegate;
   //  [strongDelegate goToMatchedSegue:self obj:nil];
 
 }
 
+-(void)checkEmpty
+{
+    if (totalCards == 0)
+    {
+        [self cardsEmptyAction];
+    }
+}
+
 -(void)cardsEmptyAction
 {
-    [self.emptyLabel setAlpha:0.0];
-    [self.emptyLabel2 setAlpha:0.0];
+   // [self.emptyLabel setAlpha:1.0];
+   // [self.emptyLabel2 setAlpha:1.0];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setLocationObserver" object:nil userInfo:nil];
 }
@@ -267,6 +268,11 @@ static const int MAX_BUFFER_SIZE = 2;
         [[loadedCards objectAtIndex:i] updateMatch];
     }
 
+}
+
+-(NSInteger)getTotalCardsCount
+{
+    return totalCards;
 }
 
 

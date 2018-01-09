@@ -25,12 +25,24 @@
     SinglePhotoViewController *singletonInstance = [SinglePhotoViewController singletonInstance];
     
     self.photo = singletonInstance.photo;
-    
-    
-
+    /*
     [self.photoView sd_setImageWithURL:[NSURL URLWithString:singletonInstance.photo]
                 placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                         options:SDWebImageRefreshCached];
+                         options:SDWebImageRefreshCached]; */
+    [self.photoView layoutIfNeeded];
+    
+    NSURL *Url = [NSURL URLWithString:self.photo];
+    SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
+    [manager downloadImageWithURL:Url
+                          options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL *targetURL) {  } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
+     {
+         if (image && finished && !error)
+         {
+             
+             UIImage *resizedImage =  [image scaleImageToSize:CGSizeMake(self.photoView.frame.size.width, self.photoView.frame.size.height)];
+             self.photoView.image = resizedImage;
+         }
+     }];
 }
 
 - (void)didReceiveMemoryWarning {

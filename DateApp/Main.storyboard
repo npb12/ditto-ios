@@ -367,13 +367,13 @@
                                         <rect key="frame" x="15" y="40" width="375" height="157"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ditto" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raJ-Pu-ccV">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="124.33333333333333"/>
-                                                <fontDescription key="fontDescription" name="LilyScriptOne-Regular" family="Lily Script One" pointSize="55"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="120.66666666666667"/>
+                                                <fontDescription key="fontDescription" name="LilyScriptOne-Regular" family="Lily Script One" pointSize="48"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sublabl" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z90-v0-Li3">
-                                                <rect key="frame" x="0.0" y="124.33333333333336" width="375" height="32.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="120.66666666666664" width="375" height="36.333333333333329"/>
                                                 <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="16"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
@@ -1038,7 +1038,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No one new is currently around. Check back again soon!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B50-En-hNZ">
-                                <rect key="frame" x="16" y="332.33333333333331" width="343" height="47.666666666666686"/>
+                                <rect key="frame" x="16" y="372.33333333333331" width="343" height="47.666666666666686"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="Wom-eN-nxu"/>
                                 </constraints>
@@ -1047,7 +1047,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kCx-Ug-aIB">
-                                <rect key="frame" x="187" y="380" width="0.0" height="0.0"/>
+                                <rect key="frame" x="187" y="420" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
                                 <color key="textColor" red="0.56078431370000004" green="0.5568627451" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -1056,7 +1056,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="kCx-Ug-aIB" firstAttribute="top" secondItem="B50-En-hNZ" secondAttribute="bottom" id="4DF-ts-avG"/>
-                            <constraint firstItem="B50-En-hNZ" firstAttribute="centerY" secondItem="pSK-rn-Bhb" secondAttribute="centerY" constant="-50" id="Bho-6i-nqo"/>
+                            <constraint firstItem="B50-En-hNZ" firstAttribute="centerY" secondItem="pSK-rn-Bhb" secondAttribute="centerY" constant="-10" id="Bho-6i-nqo"/>
                             <constraint firstItem="kCx-Ug-aIB" firstAttribute="centerX" secondItem="yE3-Rt-te2" secondAttribute="centerX" id="Kf8-0f-5B6"/>
                             <constraint firstItem="B50-En-hNZ" firstAttribute="leading" secondItem="pSK-rn-Bhb" secondAttribute="leadingMargin" id="OD2-VI-nZl"/>
                             <constraint firstItem="B50-En-hNZ" firstAttribute="trailing" secondItem="pSK-rn-Bhb" secondAttribute="trailingMargin" id="Yzb-6X-Lhg"/>
@@ -1224,7 +1224,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="100" height="90"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oDK-9M-Fe2">
+                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oDK-9M-Fe2">
                                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="90"/>
                                                                     <userDefinedRuntimeAttributes>
                                                                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -3362,6 +3362,10 @@ unmatch with ?</string>
                                     <action selector="gotoCamRoll" destination="m6a-6U-BIa" eventType="touchUpInside" id="avU-xo-dwA"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EoA-fR-zuU">
+                                <rect key="frame" x="15" y="53" width="14" height="22"/>
+                                <state key="normal" image="close_icon"/>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ssi-TJ-MTN">
                                 <rect key="frame" x="0.0" y="34" width="82" height="62"/>
                                 <constraints>
@@ -3371,10 +3375,6 @@ unmatch with ?</string>
                                 <connections>
                                     <action selector="goBack:" destination="m6a-6U-BIa" eventType="touchUpInside" id="7Tw-yY-bFI"/>
                                 </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EoA-fR-zuU">
-                                <rect key="frame" x="15" y="53.666666666666657" width="14" height="22"/>
-                                <state key="normal" image="close_icon"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3576,7 +3576,7 @@ unmatch with ?</string>
         <image name="color_gradient" width="375" height="667"/>
         <image name="dark_gradient" width="375" height="667"/>
         <image name="dislike_active" width="90" height="90"/>
-        <image name="edit_icon" width="16" height="16"/>
+        <image name="edit_icon" width="98" height="35"/>
         <image name="indicator_active" width="14" height="14"/>
         <image name="indicator_inactive" width="14" height="14"/>
         <image name="like_active" width="90" height="90"/>
@@ -3591,10 +3591,10 @@ unmatch with ?</string>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="BJJ-d1-gti"/>
-        <segue reference="Qkx-BG-5qG"/>
-        <segue reference="nSO-Fe-gBK"/>
-        <segue reference="OTf-El-YDe"/>
+        <segue reference="Wtj-o0-hrB"/>
+        <segue reference="tue-rP-1LX"/>
+        <segue reference="EhE-qe-M4n"/>
         <segue reference="Zo8-NT-l3W"/>
-        <segue reference="vOV-mm-yTx"/>
+        <segue reference="mDJ-fp-Qj0"/>
     </inferredMetricsTieBreakers>
 </document>

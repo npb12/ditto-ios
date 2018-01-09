@@ -50,10 +50,11 @@
 
 
 -(void)createViewWithUsers:(NSMutableArray*)users withHeight:(CGFloat)height;
-
+-(void)checkEmpty;
 //methods called in DraggableView
 -(void)cardSwipedLeft:(UIView *)card;
 -(void)cardSwipedRight:(UIView *)card;
+
 
 -(void)likedCurrent:(BOOL)option;
 
@@ -70,6 +71,8 @@
 -(void)updateUnmatch;
 
 -(void)updateMatch;
+
+-(NSInteger)getTotalCardsCount;
 
 @end
 

@@ -16,6 +16,7 @@
     BOOL notif;
     CGFloat height;
     CGFloat pvcHeight;
+    BOOL observerActive;
 }
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
@@ -51,6 +52,7 @@
 @end
 
 @implementation RootViewController
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -111,7 +113,7 @@
          addObserver:self selector:@selector(noMatchNotification:) name:@"noMatchNotification" object:nil];
         
         [[NSNotificationCenter defaultCenter]
-         addObserver:self selector:@selector(setLocationObserver) name:@"setLocationObserver" object:nil];
+         addObserver:self selector:@selector(setLocationObserver:) name:@"setLocationObserver" object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(goToMessaging)
@@ -129,15 +131,51 @@
     {
         if (self.swipeVC)
         {
-            
+            if (!observerActive)
+            {
+                if ([self.swipeVC noUsers])
+                {
+                    [self setLocationObserver];
+                }
+                else
+                {
+                    [DAServer getMatchesData:NO completion:^(NSError *error) {
+                        // here, update the UI to say "Not busy anymore"
+                        if (!error) {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                ///  [self.chatBtn setImage:[UIImage imageNamed:@"chat_full_message"] forState:UIControlStateNormal];
+                            });
+                        } else {
+                            // update UI to indicate error or take remedial action
+                        }
+                    }];
+                }
+            }
         }
     }
 }
 
+-(void)setLocationObserver:(NSNotification *)notification
+{
+    [self setLocationObserver];
+}
+
 -(void)setLocationObserver
 {
-    [LocationManager sharedInstance];
-    [[LocationManager sharedInstance] addObserver:self forKeyPath:@"location" options:NSKeyValueObservingOptionNew context:nil];
+    if ([self.swipeVC noUsers])
+    {
+        if (self.curr_location.longitude != 0 && self.curr_location.latitude != 0)
+        {
+            [self runLocationRequest];
+        }
+        else
+        {
+            [LocationManager sharedInstance];
+            [[LocationManager sharedInstance] addObserver:self forKeyPath:@"location" options:NSKeyValueObservingOptionNew context:nil];
+            observerActive = YES;
+        }
+    }
+
 }
 
 
@@ -761,65 +799,74 @@
 {
     if([keyPath isEqualToString:@"location"]) {
         
-        
-        self.curr_location = [LocationManager sharedInstance].location;
-        
-        [[DataAccess singletonInstance] setUserLocation:self.curr_location];
-        
-        User *user = [User new];
-        
-        
-        [DAServer postLocation:user completion:^(NSMutableArray *result, NSError *error) {
-            // here, update the UI to say "Not busy anymore"
-            if (!error) {
-                if ([result count] > 0) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (self.swipeVC)
-                        {
-                            [self.swipeVC loadCards:result withHeight: pvcHeight];
-                            if (![[DataAccess singletonInstance] UserHasMatch])
-                            {
-                                [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
-                                [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
-                            }
-
-                        }
-                        else
-                        {
-                            //figure this stuff out for loading cards before user tranistions
-                            //to index 2
-                        }
-                    });
-                }
-                else
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (self.swipeVC)
-                        {
-                            [self.swipeVC showEmptyLabel];
-                            [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
-                            [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
-                        }
-                    });
-                }
-                
-                if ([[DataAccess singletonInstance] UserHasMatch])
-                {
-                    [self checkForNewMessage];
-                }
-                
-            } else {
-                // update UI to indicate error or take remedial action
-            }
-        }];
+        [self runLocationRequest];
         
         @try {
             [object removeObserver:self forKeyPath:@"location"];
+            observerActive = NO;
         }
-        @catch (NSException * __unused exception) {}
+        @catch (NSException * __unused exception) {
+            NSLog(@"oh here we go %@", exception);
+        }
         
         
     }
+}
+
+-(void)runLocationRequest
+{
+    self.curr_location = [LocationManager sharedInstance].location;
+    
+    [[DataAccess singletonInstance] setUserLocation:self.curr_location];
+    
+    User *user = [User new];
+    
+    [self.swipeVC showEmptyLabel:NO];
+    
+    
+    [DAServer postLocation:user completion:^(NSMutableArray *result, NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        if (!error) {
+            if ([result count] > 0) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (self.swipeVC)
+                    {
+                        [self.swipeVC loadCards:result withHeight: pvcHeight];
+                        if (![[DataAccess singletonInstance] UserHasMatch])
+                        {
+                            [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
+                            [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
+                        }
+                        
+                    }
+                    else
+                    {
+                        //figure this stuff out for loading cards before user tranistions
+                        //to index 2
+                    }
+                });
+            }
+            else
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (self.swipeVC)
+                    {
+                        [self.swipeVC showEmptyLabel:YES];
+                        [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
+                        [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
+                    }
+                });
+            }
+            
+            if ([[DataAccess singletonInstance] UserHasMatch])
+            {
+                [self checkForNewMessage];
+            }
+            
+        } else {
+            // update UI to indicate error or take remedial action
+        }
+    }];
 }
 
 -(void)checkForNewMessage
@@ -1082,6 +1129,12 @@
 }
 
 -(IBAction)afterLoginUnwind:(UIStoryboardSegue *)segue {
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:NO];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)dealloc {

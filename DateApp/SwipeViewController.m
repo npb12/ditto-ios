@@ -39,7 +39,10 @@
 }
 
 
-
+-(BOOL)noUsers
+{
+    return [self.backgroundView getTotalCardsCount] == 0;
+}
 
 
 -(void)viewDidAppear:(BOOL)animated {
@@ -70,12 +73,22 @@
     }
 }
 
--(void)showEmptyLabel
+-(void)showEmptyLabel:(BOOL)show
 {
-    self.backgroundView.emptyLabel.text = @"No one new currently around.";
-    self.backgroundView.emptyLabel2.text = @"Check back again soon!";
-    [self.backgroundView.emptyLabel setAlpha:1.0];
-    [self.backgroundView.emptyLabel2 setAlpha:1.0];
+    if (show)
+    {
+        self.backgroundView.emptyLabel.text = @"No one new currently around.";
+        self.backgroundView.emptyLabel2.text = @"Check back again soon!";
+        [self.backgroundView.emptyLabel setAlpha:1.0];
+        [self.backgroundView.emptyLabel2 setAlpha:1.0];
+    }
+    else
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+                [self.backgroundView.emptyLabel setAlpha:0.0];
+                [self.backgroundView.emptyLabel2 setAlpha:0.0];
+        });
+    }
 }
 
 

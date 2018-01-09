@@ -17,6 +17,7 @@
     
     NSLog(@"nearby users:: %@", dict);
     
+    
     for(id key in dict)
     {
         User *user = [User new];
@@ -24,7 +25,7 @@
         user.user_id = [[key objectForKey:@"id"] integerValue];
         
        // user.name = [key objectForKey:@"fb_firstname"];
-        user.name = [key objectForKey:@"name"];
+        user.name = [key objectForKey:@"fb_firstname"];
         user.age = [NSString stringWithFormat: @"%ld", [[key objectForKey:@"age"] integerValue]];
 
         NSString *edu = [key objectForKey:@"education"];
@@ -35,7 +36,7 @@
         }
         user.edu = edu;
         
-        NSString *job = [key objectForKey:@"work"];
+        NSString *job = [key objectForKey:@"occupation"];
         
         if (job == nil || [DAParser nsnullCheck:job])
         {

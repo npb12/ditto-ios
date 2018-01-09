@@ -158,9 +158,22 @@
     avatarImageViewHolder.layer.shouldRasterize = YES;
     avatarImageViewHolder.clipsToBounds = NO;
     
+    /*
     [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                        placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                                options:SDWebImageRefreshCached];
+                                options:SDWebImageRefreshCached]; */
+    NSURL *url = [NSURL URLWithString:[self.user.pics objectAtIndex:0]];
+    SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
+    [manager downloadImageWithURL:url
+                          options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL *targetURL) {  } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
+     {
+         if (image && finished && !error)
+         {
+             CGSize size = CGSizeMake(self.picHeight.constant, self.picHeight.constant);
+             UIImage *resizedImage =  [image scaleImageToSize:size];
+             [self.profilePic setImage:resizedImage];
+         }
+     }];
 }
 
 - (void)currentMatchNotification:(NSNotification *)notification

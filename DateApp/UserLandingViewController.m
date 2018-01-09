@@ -189,7 +189,9 @@
              {
                  self.profilePic.layer.borderWidth = 0;
                  self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
-                 self.profilePic.image = image;
+                 CGSize size = CGSizeMake(self.picHeight.constant, self.picHeight.constant);
+                 UIImage *scaledImage = [image scaleImageToSize:size];
+                 self.profilePic.image = scaledImage;
              }
              
          }];
@@ -263,6 +265,5 @@
         
     }
 }
-
 
 @end

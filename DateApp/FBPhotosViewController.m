@@ -95,11 +95,24 @@
     if(self.didLoad){
         
         PhotoManager *album = (PhotoManager*)[[[PhotoManager singletonInstance] photos] objectAtIndex:indexPath.row];
-        
-        
+        CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 40;
+        CGFloat size = dimen / 3;
+        NSURL *Url = [NSURL URLWithString:album.photo];
+        SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
+        [manager downloadImageWithURL:Url
+                              options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL *targetURL) {  } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
+         {
+             if (image && finished && !error)
+             {
+                 
+                 UIImage *resizedImage =  [image scaleImageToSize:CGSizeMake(size, size)];
+                 cell.photo.image = resizedImage;
+             }
+         }];
+        /*
         [cell.photo sd_setImageWithURL:[NSURL URLWithString:album.photo]
                     placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                             options:SDWebImageRefreshCached];
+                             options:SDWebImageRefreshCached]; */
         
         
         [cell setBackgroundColor:[UIColor lightGrayColor]];
@@ -143,10 +156,9 @@
     
     CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 40;
     
-    CGFloat width = dimen / 3;
-    CGFloat height = dimen / 3;
+    CGFloat size = dimen / 3;
     
-    return CGSizeMake(width, height);
+    return CGSizeMake(size, size);
 }
 
 -(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{

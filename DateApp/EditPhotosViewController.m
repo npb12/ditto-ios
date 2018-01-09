@@ -207,7 +207,9 @@
                             {
                                 if (image && finished && !error)
                                 {
-                                    completion(image, nil);
+                                    CGSize size = CGSizeMake(cellWidth, cellHeight);
+                                    UIImage *resizedImage =  [image scaleImageToSize:size];
+                                    completion(resizedImage, nil);
                                 }
                                 else
                                 {

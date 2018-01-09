@@ -32,6 +32,7 @@
 
 #import "Includes.h"
 #import "OverlayView.h"
+#import "UIImage+Scale.h"
 
 @protocol HasMatchDelegate <NSObject>
 
@@ -49,8 +50,7 @@
 
 -(void)cardSwipedLeft:(UIView *)card;
 -(void)cardSwipedRight:(UIView *)card;
-
-
+-(void)checkEmpty;
 @end
 
 @interface DraggableView : UIView

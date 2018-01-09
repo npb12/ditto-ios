@@ -27,7 +27,9 @@
 -(void) pushDetailView:(id)sender;
 -(void)likeCurrentCard:(BOOL)option;
 -(void)loadCards:(NSMutableArray*)users withHeight:(CGFloat)height;
--(void)showEmptyLabel;
+-(void)showEmptyLabel:(BOOL)show;
+-(BOOL)noUsers;
+
 @property NSUInteger pageIndex;
 
 @property (nonatomic, weak) id<GoToProfileProtocol> profile_delegate;

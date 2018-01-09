@@ -154,14 +154,27 @@
     
     self.pic.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
+    //self.pic.backgroundColor = [UIColor blackColor];
+    /*
     [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                 placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                         options:SDWebImageRefreshCached];
+                         options:SDWebImageRefreshCached]; */
+    NSURL *url = [NSURL URLWithString:[self.user.pics objectAtIndex:0]];
+    SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
+    [manager downloadImageWithURL:url
+                          options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL *targetURL) {  } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
+     {
+         if (image && finished && !error)
+         {
+            CGSize size = CGSizeMake(self.frame.size.width, self.frame.size.height);
+            UIImage *resizedImage =  [image scaleImageToSize:size];
+             [self.pic setImage:resizedImage];
+         }
+     }];
     
     self.avatarImageViewHolder = [[UIView alloc] initWithFrame:self.pic.frame];
     self.avatarImageViewHolder.backgroundColor = [UIColor clearColor];
     [self.pic.superview addSubview:self.avatarImageViewHolder];
-    //[avatarImageView removeFromSuperview];//only use this if your object retains its' properties after being removedFromSuperview. (ARC? idk)
     [self.avatarImageViewHolder addSubview:self.pic];
     self.pic.center = CGPointMake(self.avatarImageViewHolder.frame.size.width/2.0f, self.avatarImageViewHolder.frame.size.height/2.0f);
     
@@ -184,6 +197,7 @@
     [gradient setImage:[UIImage imageNamed:@"Gradient_BG"]];
     gradient.contentMode = UIViewContentModeScaleAspectFill;
     gradient.layer.masksToBounds = YES;
+    [gradient setAlpha:0.0];
     
     /*
     UIVisualEffect *blurEffect;
@@ -203,9 +217,9 @@
 
 -(void)setFrameShadow
 {
-    self.avatarImageViewHolder.layer.shadowRadius = 4.5;
+    self.avatarImageViewHolder.layer.shadowRadius = 6;
     [self.avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
-    [self.avatarImageViewHolder.layer setShadowOpacity:0.7];
+    [self.avatarImageViewHolder.layer setShadowOpacity:0.8];
     [self.avatarImageViewHolder.layer setShadowColor:[self shadowColor].CGColor];
     self.avatarImageViewHolder.layer.shouldRasterize = YES;
     self.avatarImageViewHolder.clipsToBounds = NO;
@@ -375,11 +389,16 @@
     NSString *uid = [NSString stringWithFormat:@"%ld", (long)self.user.user_id];
     [DAServer swipe:uid liked:result completion:^(NSError *error) {
         // here, update the UI to say "Not busy anymore"
-        if (!error) {
-            
-        } else {
+        if (!error)
+        {
+
+        }
+        else
+        {
             // update UI to indicate error or take remedial action
         }
+        [delegate checkEmpty];
+
     }];
 }
 

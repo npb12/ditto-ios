@@ -63,8 +63,8 @@
     CAGradientLayer *grad = [CAGradientLayer layer];
     grad.frame = self.bgView.bounds;
     grad.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
-    grad.startPoint = CGPointMake(0.0,0.5);
-    grad.endPoint = CGPointMake(1.0,0.5);
+    grad.startPoint = CGPointMake(0.5,0.0);
+    grad.endPoint = CGPointMake(0.5,1.0);
     [self.bgView.layer insertSublayer:grad atIndex:0];
 
     self.btnWidth.constant = dimen;

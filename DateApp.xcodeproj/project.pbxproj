@@ -58,6 +58,8 @@
 		8CC00FF21D9F2B1500BE487A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8CC00FF01D9F2B1500BE487A /* LaunchScreen.storyboard */; };
 		8CC00FFD1D9F2B1500BE487A /* DateAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC00FFC1D9F2B1500BE487A /* DateAppTests.m */; };
 		8CC010081D9F2B1500BE487A /* DateAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC010071D9F2B1500BE487A /* DateAppUITests.m */; };
+		8CCA5E941FE39C1400AEE99F /* ScaledImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA5E931FE39C1400AEE99F /* ScaledImage.m */; };
+		8CCA5E971FF17DCE00AEE99F /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA5E961FF17DCE00AEE99F /* UIImage+Scale.m */; };
 		8CCBF4CD1E7470D400C202CB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCBF4CC1E7470D400C202CB /* User.m */; };
 		8CCF3D9A1E42706500CC4750 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCF3D991E42706500CC4750 /* CoreLocation.framework */; };
 		8CCF3D9D1E42735300CC4750 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCF3D9C1E42735300CC4750 /* LocationManager.m */; };
@@ -205,6 +207,10 @@
 		8CC010031D9F2B1500BE487A /* DateAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DateAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC010071D9F2B1500BE487A /* DateAppUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DateAppUITests.m; sourceTree = "<group>"; };
 		8CC010091D9F2B1500BE487A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8CCA5E921FE39C1400AEE99F /* ScaledImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScaledImage.h; sourceTree = "<group>"; };
+		8CCA5E931FE39C1400AEE99F /* ScaledImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScaledImage.m; sourceTree = "<group>"; };
+		8CCA5E951FF17DCE00AEE99F /* UIImage+Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Scale.h"; sourceTree = "<group>"; };
+		8CCA5E961FF17DCE00AEE99F /* UIImage+Scale.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Scale.m"; sourceTree = "<group>"; };
 		8CCBF4CB1E7470D400C202CB /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		8CCBF4CC1E7470D400C202CB /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		8CCF3D991E42706500CC4750 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -437,6 +443,10 @@
 				8C1F8AE81FC29F0400D927D4 /* TutorialViewController.m */,
 				8C1F8AEA1FC3AA1500D927D4 /* AlbumSelectionViewController.h */,
 				8C1F8AEB1FC3AA1500D927D4 /* AlbumSelectionViewController.m */,
+				8CCA5E921FE39C1400AEE99F /* ScaledImage.h */,
+				8CCA5E931FE39C1400AEE99F /* ScaledImage.m */,
+				8CCA5E951FF17DCE00AEE99F /* UIImage+Scale.h */,
+				8CCA5E961FF17DCE00AEE99F /* UIImage+Scale.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -841,6 +851,7 @@
 				8C2BE32F1DEA3FE30042BE6B /* AlbumTableViewCell.m in Sources */,
 				8C1F8AEC1FC3AA1500D927D4 /* AlbumSelectionViewController.m in Sources */,
 				8C2BE30E1DE5543E0042BE6B /* BioViewController.m in Sources */,
+				8CCA5E971FF17DCE00AEE99F /* UIImage+Scale.m in Sources */,
 				8C2CE0CD1DA1825300592566 /* AppDelegate.m in Sources */,
 				8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */,
 				8CEB63941E58F9ED00F062A9 /* DraggableView.m in Sources */,
@@ -865,6 +876,7 @@
 				8C2BE32C1DEA3EE40042BE6B /* FBAlbumsViewController.m in Sources */,
 				8CEF36A31E2D9B710060CAF8 /* MessageModelData.m in Sources */,
 				8CEF3F1A1E3071DB00CC4485 /* MatchTableViewCell.m in Sources */,
+				8CCA5E941FE39C1400AEE99F /* ScaledImage.m in Sources */,
 				8CEB63961E58F9ED00F062A9 /* OverlayView.m in Sources */,
 				8C2BE3041DE018820042BE6B /* CERangeSliderKnobLayer.m in Sources */,
 				8C071DD41F0B1EEF00900A42 /* UserLandingViewController.m in Sources */,
@@ -1039,7 +1051,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = DateApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1063,7 +1075,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = DateApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

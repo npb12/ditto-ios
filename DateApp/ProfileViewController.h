@@ -10,6 +10,7 @@
 #import "User.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "MessageViewController.h"
+#import "UIImage+Scale.h"
 
 @protocol LikedProfileProtocol <NSObject>
 -(void)likeCurrent:(BOOL)option;

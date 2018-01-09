@@ -33,7 +33,7 @@
 
 -(void)cardSwipedLeft:(UIView *)card;
 -(void)cardSwipedRight:(UIView *)card;
-
+-(void)checkEmpty;
 
 @end
 
