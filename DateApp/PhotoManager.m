@@ -8,21 +8,14 @@
 
 #import "PhotoManager.h"
 
-@implementation PhotoManager{
-    NSString *token;
-}
+@implementation PhotoManager
 
--(void)getFacebookProfileInfos:(int)type completion:(void (^)(void))completionBlock{
++(void)getFacebookProfileAlbums:(void (^)(NSMutableArray *, NSError *))completionBlock{
     
-    token = [[DataAccess singletonInstance] getToken];
-    
-    
+    NSString *token = [[DataAccess singletonInstance] getToken];
     
     FBSDKGraphRequest *requestMe = [[FBSDKGraphRequest alloc]initWithGraphPath:@"me" parameters:@{@"fields": @"id, first_name"} tokenString:token version:nil HTTPMethod:@"GET"];
-    
-    self.albums = [[NSMutableArray alloc]init];
-    self.photos = [[NSMutableArray alloc]init];
-    
+        
     FBSDKGraphRequestConnection *connection = [[FBSDKGraphRequestConnection alloc] init];
     
     [connection addRequest:requestMe completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
@@ -30,17 +23,11 @@
         if(result)
         {
             
-            self.userid = [result objectForKey:@"id"];
+            NSString *userid = [result objectForKey:@"id"];
             
-            if(type == 1)
-            {
-
-                                
-                PhotoManager *singleton = [PhotoManager singletonInstance];
-                
                 NSString *aurl = @"/%@/albums";
                 
-                NSString *url = [NSString stringWithFormat:aurl, singleton.userid];
+                NSString *url = [NSString stringWithFormat:aurl, userid];
                 
                 FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
                                               initWithGraphPath:url
@@ -53,89 +40,25 @@
         
                     NSArray *data =  result[@"data"];
                     NSDictionary *albums_id;
+                    NSMutableArray *albumArray = [NSMutableArray new];
+                    
                     for(albums_id in data) {
-                        PhotoManager *albumObject = [[PhotoManager alloc] init];
+                        FBAlbumObject *albumObject = [FBAlbumObject new];
+                        albumObject.userid = userid;
                         albumObject.album_id = (NSString*)[albums_id objectForKey:@"id"];
                         albumObject.album_name = (NSString*)[albums_id objectForKey:@"name"];
-                      //  NSLog(@"%@", albumObject.album_name);
-                        [singleton.albums addObject: albumObject];
+                        if (albumObject)
+                        {
+                            [albumArray addObject:albumObject];
+                        }
                     }
                     
-                    completionBlock();
+                    completionBlock(albumArray, error);
                     
                 }];
-            }
-            else if(type == 2)
-            {
-                
-                PhotoManager *singleton = [PhotoManager singletonInstance];
-                 
-                 NSString *aurl = @"/%@/photos";
-                 
-                 NSString *url = [NSString stringWithFormat:aurl, self.album_id];
-                 
-                 FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
-                 initWithGraphPath:url
-                 parameters:@{@"fields": @"images"}
-                tokenString:token version:nil
-                 HTTPMethod:@"GET"];
-                 [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection,
-                 id result,
-                 NSError *error) {
-                
-                  //   NSLog(@"%@", result);
-                     
-                
-            
-                 NSArray *data =  result[@"data"];
-                     
-                     NSLog(@"%@", data);
-                
-                
-                 NSDictionary *albums_id;
-                for(albums_id in data) {
-                PhotoManager *albumObject = [[PhotoManager alloc] init];
-                 albumObject.photo_id = (NSString*)[albums_id objectForKey:@"id"];
-                 NSArray *images = [albums_id objectForKey:@"images"];
-                    
-                // (NSString*)[albums_id objectForKey:@"source"]
-                  
-                    NSDictionary *dict;
-          //           NSLog(@"%@", albumObject.photo);
-                    int largest = 0, smallest = 300;
-                for(dict in images){
-                 //    NSLog(@"%@", dict);
-                    NSString *photo = [dict valueForKey:@"height"];
-
-                    int height = [photo intValue];
-                    
-                    //get the smallest photo for the icon
-                    if (height < smallest) {
-                        albumObject.photo = [dict valueForKey:@"source"];
-                        smallest = height;
-                        
-                    }
-                    //get the largest photo for the full screen photos
-                    if (height > largest) {
-                        albumObject.fullSizePhoto = [dict valueForKey:@"source"];
-                        largest = height;
-                    }
-                    
-                 }
-           //         NSLog(@"%@", albumObject.photo_id);
-         //            NSLog(@"%@", albumObject.photo);
-                 [singleton.photos addObject: albumObject];
-                 }
-         //            NSLog(@"%lu", (unsigned long)[singleton.photos count]);
-                 completionBlock();
-                 
-                 }];
-                 
-                
-            }
-            
             
         }else{
+            completionBlock(nil, error);
             NSLog(@"%@", error);
         }
         
@@ -145,11 +68,99 @@
 }
 
 
-
-
--(void)getPhoto{
++(void)getFacebookProfilePhotos:(PhotoManager*)albumObject completion:(void (^)(NSMutableArray *, NSError *))completionBlock{
     
-    NSString *url = [@"/" stringByAppendingString:self.photo_id];
+    NSString *token = [[DataAccess singletonInstance] getToken];
+    
+    FBSDKGraphRequest *requestMe = [[FBSDKGraphRequest alloc]initWithGraphPath:@"me" parameters:@{@"fields": @"id, first_name"} tokenString:token version:nil HTTPMethod:@"GET"];
+    
+    FBSDKGraphRequestConnection *connection = [[FBSDKGraphRequestConnection alloc] init];
+    
+    [connection addRequest:requestMe completionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+        
+        if(result)
+        {
+            
+            albumObject.userid = [result objectForKey:@"id"];
+            
+                
+                NSString *aurl = @"/%@/photos";
+                
+                NSString *url = [NSString stringWithFormat:aurl, albumObject.album_id];
+                
+                FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
+                                              initWithGraphPath:url
+                                              parameters:@{@"fields": @"images"}
+                                              tokenString:token version:nil
+                                              HTTPMethod:@"GET"];
+                [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection,
+                                                      id result,
+                                                      NSError *error) {
+                    
+                    //   NSLog(@"%@", result);
+                    
+                    
+                    
+                    NSArray *data =  result[@"data"];
+                    
+                    NSLog(@"%@", data);
+                    NSMutableArray *photos = [NSMutableArray new];
+                    
+                    NSDictionary *albums_id;
+                    for(albums_id in data) {
+                        PhotoManager *albumObject = [[PhotoManager alloc] init];
+                        albumObject.photo_id = (NSString*)[albums_id objectForKey:@"id"];
+                        NSArray *images = [albums_id objectForKey:@"images"];
+                        
+                        // (NSString*)[albums_id objectForKey:@"source"]
+                        
+                        NSDictionary *dict;
+                        //           NSLog(@"%@", albumObject.photo);
+                        int largest = 0, smallest = 300;
+                        for(dict in images){
+                            //    NSLog(@"%@", dict);
+                            NSString *photo = [dict valueForKey:@"height"];
+                            
+                            int height = [photo intValue];
+                            
+                            //get the smallest photo for the icon
+                            if (height < smallest) {
+                                albumObject.photo = [dict valueForKey:@"source"];
+                                smallest = height;
+                                
+                            }
+                            //get the largest photo for the full screen photos
+                            if (height > largest) {
+                                albumObject.fullSizePhoto = [dict valueForKey:@"source"];
+                                largest = height;
+                            }
+                            
+                        }
+                        //         NSLog(@"%@", albumObject.photo_id);
+                        //            NSLog(@"%@", albumObject.photo);
+                        [photos addObject:albumObject];
+                    }
+                    completionBlock(photos, error);
+                }];
+            
+            
+        }else{
+            NSLog(@"%@", error);
+            completionBlock(nil, error);
+        }
+        
+    }];
+    
+    [connection start];
+}
+
+
++(void)getPhoto:(NSString*)photo_id completion:(void (^)(void))completionBlock
+{
+    
+    NSString *token = [[DataAccess singletonInstance] getToken];
+    
+    NSString *url = [@"/" stringByAppendingString:photo_id];
     
     FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
                                   initWithGraphPath:url
@@ -166,11 +177,12 @@
 }
 
 
--(void)getPhotos{
-    
++(void)getPhotos:(NSString*)album_id completion:(void (^)(void))completionBlock
+{
+    NSString *token = [[DataAccess singletonInstance] getToken];
     NSString *aurl = @"/%@/photos";
     
-    NSString *url = [NSString stringWithFormat:aurl, self.album_id];
+    NSString *url = [NSString stringWithFormat:aurl, album_id];
     
     FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
                                   initWithGraphPath:url
@@ -183,20 +195,6 @@
         NSLog(@"%@", result);
         
     }];
-    
-}
-
-
-+ (id)singletonInstance {
-    
-    static PhotoManager *sharedOTTODataAccess = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedOTTODataAccess = [[self alloc] init];
-    });
-    
-    return sharedOTTODataAccess;
     
 }
 

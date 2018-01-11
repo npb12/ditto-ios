@@ -637,9 +637,9 @@
 - (void)goto_albums
 {
     adding = YES;
-    PhotoManager *box = [PhotoManager singletonInstance];
+ //   PhotoManager *box = [PhotoManager singletonInstance];
     
-    box.boxID = [self.photo_arary count] + 1;
+ //   box.boxID = [self.photo_arary count] + 1;
     [self performSegueWithIdentifier:@"fbAlbumsSegue" sender:self];
 }
 
@@ -817,7 +817,7 @@
     {
         AlbumSelectionViewController *vc = segue.destinationViewController;
         vc.selectedIndex = selectedIndex;
-        vc.user = self.user;
+        vc.user = self.user;        
     }
 }
 

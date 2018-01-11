@@ -60,6 +60,7 @@
 		8CC010081D9F2B1500BE487A /* DateAppUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CC010071D9F2B1500BE487A /* DateAppUITests.m */; };
 		8CCA5E941FE39C1400AEE99F /* ScaledImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA5E931FE39C1400AEE99F /* ScaledImage.m */; };
 		8CCA5E971FF17DCE00AEE99F /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA5E961FF17DCE00AEE99F /* UIImage+Scale.m */; };
+		8CCA5E9B2007088500AEE99F /* FBAlbumObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA5E9A2007088500AEE99F /* FBAlbumObject.m */; };
 		8CCBF4CD1E7470D400C202CB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCBF4CC1E7470D400C202CB /* User.m */; };
 		8CCF3D9A1E42706500CC4750 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCF3D991E42706500CC4750 /* CoreLocation.framework */; };
 		8CCF3D9D1E42735300CC4750 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCF3D9C1E42735300CC4750 /* LocationManager.m */; };
@@ -211,6 +212,8 @@
 		8CCA5E931FE39C1400AEE99F /* ScaledImage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScaledImage.m; sourceTree = "<group>"; };
 		8CCA5E951FF17DCE00AEE99F /* UIImage+Scale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Scale.h"; sourceTree = "<group>"; };
 		8CCA5E961FF17DCE00AEE99F /* UIImage+Scale.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Scale.m"; sourceTree = "<group>"; };
+		8CCA5E992007088500AEE99F /* FBAlbumObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBAlbumObject.h; sourceTree = "<group>"; };
+		8CCA5E9A2007088500AEE99F /* FBAlbumObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBAlbumObject.m; sourceTree = "<group>"; };
 		8CCBF4CB1E7470D400C202CB /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		8CCBF4CC1E7470D400C202CB /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		8CCF3D991E42706500CC4750 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -447,6 +450,8 @@
 				8CCA5E931FE39C1400AEE99F /* ScaledImage.m */,
 				8CCA5E951FF17DCE00AEE99F /* UIImage+Scale.h */,
 				8CCA5E961FF17DCE00AEE99F /* UIImage+Scale.m */,
+				8CCA5E992007088500AEE99F /* FBAlbumObject.h */,
+				8CCA5E9A2007088500AEE99F /* FBAlbumObject.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -854,6 +859,7 @@
 				8CCA5E971FF17DCE00AEE99F /* UIImage+Scale.m in Sources */,
 				8C2CE0CD1DA1825300592566 /* AppDelegate.m in Sources */,
 				8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */,
+				8CCA5E9B2007088500AEE99F /* FBAlbumObject.m in Sources */,
 				8CEB63941E58F9ED00F062A9 /* DraggableView.m in Sources */,
 				8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */,
 				8C08FA151EA7115500A41FF5 /* DADateFormatter.m in Sources */,

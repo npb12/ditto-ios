@@ -27,8 +27,23 @@
     [super viewDidLoad];
     
     
+    [PhotoManager getFacebookProfilePhotos:self.album completion:^(NSMutableArray *photos, NSError *error)
+    {
+    
+        // here, update the UI to say "Not busy anymore"
+        if (!error)
+        {
+            self.photos = photos;
+            [self.collectionView reloadData];
+        }
+        else
+        {
+            
+        }
+    }];
 
-        
+    
+    /*
         PhotoManager *albums = [PhotoManager singletonInstance];
         [albums getFacebookProfileInfos:2 completion:^{
             
@@ -38,7 +53,7 @@
             [self.collectionView reloadData];
                     
                         });
-        }];
+        }]; */
 
     
     CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 20;
@@ -89,12 +104,8 @@
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (PhotosCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     PhotosCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
-    
-    
-    
-    if(self.didLoad){
-        
-        PhotoManager *album = (PhotoManager*)[[[PhotoManager singletonInstance] photos] objectAtIndex:indexPath.row];
+
+        PhotoManager *album = (PhotoManager*)[self.photos objectAtIndex:indexPath.row];
         CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 40;
         CGFloat size = dimen / 3;
         NSURL *Url = [NSURL URLWithString:album.photo];
@@ -109,39 +120,19 @@
                  cell.photo.image = resizedImage;
              }
          }];
-        /*
-        [cell.photo sd_setImageWithURL:[NSURL URLWithString:album.photo]
-                    placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                             options:SDWebImageRefreshCached]; */
-        
-        
+
+    
         [cell setBackgroundColor:[UIColor lightGrayColor]];
         
-        
-        
-
-        
-    }
     
-    
-
-    
-    
-
     return cell;
 }
 
 
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    
-    PhotoManager *album = [PhotoManager singletonInstance];
-    
-    if ([album.photos count] > 0) {
-        return [album.photos count];
-    }
-    
-    return 1;
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return [self.photos count];
 }
 
 
@@ -166,13 +157,9 @@
     return 0;
 }
 
--(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
-    
-    if ([[[PhotoManager singletonInstance] photos] count] > 0) {
-        return 10;
-    }
-    
-    return 0;
+-(CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
+{
+    return 10;
 }
 
 
@@ -184,14 +171,19 @@
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    PhotoManager *photo = (PhotoManager*)[self.photos objectAtIndex:indexPath.row];
+    self.selectedPhoto = photo.fullSizePhoto;
+    [self performSegueWithIdentifier:@"singlePhotoSegue" sender:self];
     
-    PhotoManager *album = (PhotoManager*)[[[PhotoManager singletonInstance] photos] objectAtIndex:indexPath.row];
+    /*
+    
+    PhotoManager *album = (PhotoManager*)[self.photos objectAtIndex:indexPath.row];
     
     SinglePhotoViewController *singleInstance = [SinglePhotoViewController singletonInstance];
     
     singleInstance.photo = album.fullSizePhoto;
     
-    [self performSegueWithIdentifier:@"singlePhotoSegue" sender:self];
+    [self performSegueWithIdentifier:@"singlePhotoSegue" sender:self]; */
     
     /*
     
@@ -221,8 +213,9 @@
     if ([segue.identifier isEqualToString:@"singlePhotoSegue"])
     {
         SinglePhotoViewController *vc = segue.destinationViewController;
+        vc.selectedPhoto = self.selectedPhoto;
         vc.selectedIndex = self.selectedIndex;
-        vc.photos = self.photos;
+        vc.photos = self.userPhotos;
     }
 }
 

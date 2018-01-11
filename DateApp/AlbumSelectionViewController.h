@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "FBAlbumsViewController.h"
+#import "User.h"
+#import "DAServer.h"
 
 
 @interface AlbumSelectionViewController : UIViewController

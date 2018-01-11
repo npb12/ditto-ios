@@ -6,9 +6,10 @@
 //  Copyright © 2015 Neil_appworld. All rights reserved.
 //
 
-#import "Includes.h"
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
+#import "FBAlbumObject.h"
+#import "DataAccess.h"
 
 @interface PhotoManager : NSObject
 
@@ -24,12 +25,9 @@
 
 @property (nonatomic) NSInteger boxID;
 
-
-
-
-
-+ (id)singletonInstance;
-//+ (PhotoManager *)sharedInstance;
--(void)getFacebookProfileInfos:(int)type completion:(void (^)(void))completionBlock;
++(void)getFacebookProfileAlbums:(void (^)(NSMutableArray *, NSError *))completionBlock;
++(void)getFacebookProfilePhotos:(PhotoManager*)albumObject completion:(void (^)(NSMutableArray *, NSError *))completionBlock;
++(void)getPhoto:(NSString*)photo_id completion:(void (^)(void))completionBlock;
++(void)getPhotos:(NSString*)album_id completion:(void (^)(void))completionBlock;
 
 @end

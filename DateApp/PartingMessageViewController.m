@@ -112,7 +112,7 @@
     
     if (self.currentType != INAPPROPRIATE)
     {
-        message = [NSString stringWithFormat:@"%@ felt your messages were innapropriate", [User currentUser].name];
+        message = [NSString stringWithFormat:@"%@ felt your messages may have been innapropriate", [User currentUser].name];
         self.currentType = INAPPROPRIATE;
     }
     else
@@ -146,7 +146,7 @@
     
     if (self.currentType != CHEMISTRY)
     {
-        message = [NSString stringWithFormat:@"%@ felt there wasn't enough chemistry", [User currentUser].name];
+        message = @"Seems like the connection wasn’t there";
         self.currentType = CHEMISTRY;
     }
     else
@@ -173,7 +173,6 @@
     }
     
     [self setStuff];
-
 }
 
 - (IBAction)noReasonAction:(id)sender

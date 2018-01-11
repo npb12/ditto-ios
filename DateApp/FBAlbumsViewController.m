@@ -10,8 +10,6 @@
 
 @interface FBAlbumsViewController ()
 
-@property (strong, nonatomic) PhotoManager *album;
-
 @property (strong, nonatomic) IBOutlet UIView *gradientView;
 @property (strong, nonatomic) IBOutlet UILabel *headerLabel;
 
@@ -36,10 +34,23 @@
 
     
     
+     [PhotoManager getFacebookProfileAlbums:^(NSMutableArray *albums, NSError *error) {
+     // here, update the UI to say "Not busy anymore"
+         if (!error)
+         {
+                self.albums = albums;
+                [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+         }
+         else
+         {
+            
+         }
+     }];
+     
+    /*
     dispatch_async(dispatch_get_main_queue(), ^{
         
-        PhotoManager *albums = [PhotoManager singletonInstance];
-        [albums getFacebookProfileInfos:1 completion:^{
+        [PhotoManager getFacebookProfileInfos:1 completion:^{
             
             
             [self.tableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
@@ -48,7 +59,7 @@
             
             
         }];
-    });
+    }); */
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -82,8 +93,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    PhotoManager *albums = [PhotoManager singletonInstance];
-    return [albums.albums count];
+    return [self.albums count];
 }
 
 
@@ -92,7 +102,7 @@
 {
     AlbumTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"albumcell"];
 
-        PhotoManager *album = (PhotoManager*)[[[PhotoManager singletonInstance] albums] objectAtIndex:indexPath.row];
+        PhotoManager *album = (PhotoManager*)[self.albums objectAtIndex:indexPath.row];
         cell.album_label.text = album.album_name;
 
 
@@ -111,30 +121,20 @@
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    PhotoManager *album = (PhotoManager*)[[[PhotoManager singletonInstance] albums] objectAtIndex:indexPath.row];
+    PhotoManager *album = (PhotoManager*)[self.albums objectAtIndex:indexPath.row];
     
-    PhotoManager *instance = [PhotoManager singletonInstance];
+    self.selectedAlbum = [PhotoManager new];
     
-    instance.album_id = album.album_id;
+   // self.selectedAlbum.album_id = album.album_id;
+    
+    self.selectedAlbum = album;
     
     name = album.album_name;
     
-    NSLog(@"%@", album.album_id);
-    
-    
-    
-    PhotoManager *albums = [PhotoManager singletonInstance];
-    [albums getFacebookProfileInfos:2 completion:^{
-        
-        /*
-        PhotosViewController *controller = [[PhotosViewController alloc] initWithNibName:NSStringFromClass([PhotosViewController class]) bundle:nil]; */
-        
-        [self performSegueWithIdentifier:@"photosSegue" sender:self];
+    [self performSegueWithIdentifier:@"photosSegue" sender:self];
 
-        
-    }];
     
-    
+
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
@@ -146,8 +146,10 @@
     {
         FBPhotosViewController *vc = segue.destinationViewController;
         vc.selectedIndex = self.selectedIndex;
-        vc.photos = self.photos;
+        vc.album = self.selectedAlbum;
         vc.albumName = name;
+        vc.userPhotos = self.photos;
+      //  vc.photos = self.selectedAlbum;
     }
 }
 

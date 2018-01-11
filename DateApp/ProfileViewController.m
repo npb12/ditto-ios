@@ -535,6 +535,12 @@
     
 }
 
+- (IBAction)disliked:(id)sender {
+    id<LikedProfileProtocol> strongDelegate = self.delegate;
+    [strongDelegate likeCurrent:NO];
+    
+}
+
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     
     

@@ -817,56 +817,58 @@
 {
     self.curr_location = [LocationManager sharedInstance].location;
     
-    [[DataAccess singletonInstance] setUserLocation:self.curr_location];
+   // [[DataAccess singletonInstance] setUserLocation:self.curr_location];
     
     User *user = [User new];
     
     [self.swipeVC showEmptyLabel:NO];
     
-    
-    [DAServer postLocation:user completion:^(NSMutableArray *result, NSError *error) {
-        // here, update the UI to say "Not busy anymore"
-        if (!error) {
-            if ([result count] > 0) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (self.swipeVC)
-                    {
-                        [self.swipeVC loadCards:result withHeight: pvcHeight];
-                        if (![[DataAccess singletonInstance] UserHasMatch])
+    if (CLLocationCoordinate2DIsValid(self.curr_location))
+    {
+        [DAServer postLocation:self.curr_location completion:^(NSMutableArray *result, NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+                if ([result count] > 0) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (self.swipeVC)
                         {
-                            [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
-                            [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
+                            [self.swipeVC loadCards:result withHeight: pvcHeight];
+                            if (![[DataAccess singletonInstance] UserHasMatch])
+                            {
+                                [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
+                                [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
+                            }
+                            
                         }
-                        
-                    }
-                    else
-                    {
-                        //figure this stuff out for loading cards before user tranistions
-                        //to index 2
-                    }
-                });
+                        else
+                        {
+                            //figure this stuff out for loading cards before user tranistions
+                            //to index 2
+                        }
+                    });
+                }
+                else
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if (self.swipeVC)
+                        {
+                            [self.swipeVC showEmptyLabel:YES];
+                            [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
+                            [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
+                        }
+                    });
+                }
+                
+                if ([[DataAccess singletonInstance] UserHasMatch])
+                {
+                    [self checkForNewMessage];
+                }
+                
+            } else {
+                // update UI to indicate error or take remedial action
             }
-            else
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (self.swipeVC)
-                    {
-                        [self.swipeVC showEmptyLabel:YES];
-                        [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
-                        [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
-                    }
-                });
-            }
-            
-            if ([[DataAccess singletonInstance] UserHasMatch])
-            {
-                [self checkForNewMessage];
-            }
-            
-        } else {
-            // update UI to indicate error or take remedial action
-        }
-    }];
+        }];
+    }
 }
 
 -(void)checkForNewMessage

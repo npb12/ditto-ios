@@ -44,6 +44,7 @@
         self.rootVC = (RootViewController*)self.window.rootViewController;
     }
     
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 
     return YES;
 }

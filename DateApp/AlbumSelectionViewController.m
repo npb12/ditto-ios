@@ -39,7 +39,6 @@
         vc.selectedIndex = self.selectedIndex;
         vc.photos = self.user.pics;
     }
-
 }
 
 -(IBAction)gotoFB

@@ -22,16 +22,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    SinglePhotoViewController *singletonInstance = [SinglePhotoViewController singletonInstance];
     
-    self.photo = singletonInstance.photo;
     /*
     [self.photoView sd_setImageWithURL:[NSURL URLWithString:singletonInstance.photo]
                 placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
                          options:SDWebImageRefreshCached]; */
     [self.photoView layoutIfNeeded];
     
-    NSURL *Url = [NSURL URLWithString:self.photo];
+    NSURL *Url = [NSURL URLWithString:self.selectedPhoto];
     SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
     [manager downloadImageWithURL:Url
                           options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL *targetURL) {  } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
@@ -60,28 +58,16 @@
 }
 */
 
-+ (id)singletonInstance {
-    
-    static SinglePhotoViewController *sharedDataAccess = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedDataAccess = [[self alloc] init];
-    });
-    
-    return sharedDataAccess;
-    
-}
 
 - (IBAction)select:(id)sender {
     
     if(self.selectedIndex <= self.photos.count - 1)
     {
-        [self.photos setObject:self.photo atIndexedSubscript:self.selectedIndex];
+        [self.photos setObject:self.selectedPhoto atIndexedSubscript:self.selectedIndex];
     }
     else
     {
-        [self.photos addObject:self.photo];
+        [self.photos addObject:self.selectedPhoto];
     }
     
     [[SDImageCache sharedImageCache]clearMemory];

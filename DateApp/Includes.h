@@ -55,9 +55,6 @@
 #import "EduViewController.h"
 #import "OccupationViewController.h"
 
-#import "PhotoManager.h"
-
-
 #import "AppDelegate.h"
 
 #import "FBPhotosViewController.h"

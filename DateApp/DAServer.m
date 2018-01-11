@@ -30,7 +30,8 @@
     FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
     login.loginBehavior = FBSDKLoginBehaviorNative;
     [login
-     logInWithReadPermissions: @[@"email", @"public_profile",  @"user_photos", @"user_birthday"]
+     logInWithReadPermissions: @[@"email", @"public_profile",  @"user_photos", @"user_birthday",
+                                 @"user_education_history", @"user_work_history"]
      fromViewController:vc
      handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
          if (error) {
@@ -232,7 +233,7 @@
 }
 
 
-+ (void)postLocation:(User*)param
++ (void)postLocation:(CLLocationCoordinate2D)location
            completion:(void (^)(NSMutableArray *, NSError *))completion {
     
     __block NSMutableArray *users = [NSMutableArray new];
@@ -246,7 +247,7 @@
     double time_stamp = [[NSDate date] timeIntervalSince1970];
     
     NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
-
+    
     
     NSDictionary *parameters = @{
                                  @"request": @{
@@ -256,8 +257,8 @@
                                          @"locations": @[
                                                  @{
                                                      @"timestamp": @(time_stamp),
-                                                     @"lon": @([[LocationManager sharedInstance] location].longitude),
-                                                     @"lat": @([[LocationManager sharedInstance] location].latitude)
+                                                     @"lon": @(location.latitude),
+                                                     @"lat": @(location.longitude)
                                                      }
                                                  ]
                                          }

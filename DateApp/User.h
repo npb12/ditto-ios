@@ -15,6 +15,7 @@
 @property (nullable, nonatomic, retain) NSString *job;
 @property (nullable, nonatomic, retain) NSString *bio;
 @property (nullable, nonatomic, retain) NSString *age;
+@property (nullable, nonatomic, retain) NSString *gender;
 @property (nonatomic, assign) NSInteger user_id;
 @property (nullable, nonatomic, retain) NSString *imageRemoteUrl;
 @property (nullable, nonatomic, retain) NSString *profilePic;

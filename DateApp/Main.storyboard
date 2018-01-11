@@ -853,6 +853,9 @@
                                 <state key="normal" image="like_active">
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="liked:" destination="Ykz-qb-f0l" eventType="touchUpInside" id="cPB-am-YGo"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jN9-JT-h72">
                                 <rect key="frame" x="100" y="600" width="88" height="88"/>
@@ -861,6 +864,9 @@
                                 <state key="normal" image="dislike_active">
                                     <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="disliked:" destination="Ykz-qb-f0l" eventType="touchUpInside" id="nRx-bb-GGc"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

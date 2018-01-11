@@ -20,7 +20,7 @@
 + (void)postDeviceToken:(NSString*)token
              completion:(void (^)(NSMutableArray *, NSError *))completion;
 
-+ (void)postLocation:(User*)param
++ (void)postLocation:(CLLocationCoordinate2D)location
           completion:(void (^)(NSMutableArray *, NSError *))completion;
 
 + (void)swipe:(NSString*)likedID liked:(int)like
