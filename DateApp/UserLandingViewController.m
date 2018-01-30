@@ -24,6 +24,9 @@
 @end
 
 @implementation UserLandingViewController
+{
+    BOOL notInitial;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,6 +36,11 @@
     
     self.picHeight.constant = [[UIScreen mainScreen] bounds].size.width - 112;
     
+    if (notInitial)
+    {
+        [self getData];
+        notInitial = YES;
+    }
     
  //   self.profilePic.layer.masksToBounds = YES;
   //  self.profilePic.layer.cornerRadius = self.picHeight.constant / 2;
@@ -44,9 +52,6 @@
     
     self.profilePic.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.profilePic.layer.borderWidth = 1;
-    
-    [self getData];
-    
 
     CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 80;
     CGFloat height = (dimen - 15) / 5;
@@ -83,8 +88,7 @@
     grad.startPoint = CGPointMake(0.0,0.5);
     grad.endPoint = CGPointMake(1.0,0.5);
     [self.gradientView.layer insertSublayer:grad atIndex:0];
-
-
+    
     self.settingsBtnWidth.constant = dimen;
     self.settingsBtnHeight.constant = height;
     [self.settingsBtn layoutIfNeeded];
@@ -113,6 +117,15 @@
     
      //   [self.settingsBtn setTitleColor:[DAGradientColor gradientFromColor:self.settingsBtn.titleLabel.frame.size.width] forState:UIControlStateNormal];
 
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:NO];
+    if (!notInitial)
+    {
+        [self getData];
+    }
 }
 
 -(void)profilePicFrame
@@ -149,7 +162,7 @@
 
 -(void)getData
 {
-    [DAServer getProfile:@"" completion:^(User *user, NSError *error) {
+    [DAServer getProfile:^(User *user, NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -181,6 +194,11 @@
         self.middleLabel.text = @"Go to Facebook to add work and education info.";
     }
     
+    [self getPhotoData];
+}
+
+-(void)getPhotoData
+{
     if ([self.user.pics count] > 0) {
         
         [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:0] completion:^(UIImage *image, NSError *error)
@@ -197,18 +215,16 @@
          }];
         
         /*
-        [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
-                           placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                                  completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                      if (!error) {
-                                          self.profilePic.layer.borderWidth = 0;
-                                          self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
-                                          
-                                      }
-                                  }]; */
+         [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
+         placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+         completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+         if (!error) {
+         self.profilePic.layer.borderWidth = 0;
+         self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
+         
+         }
+         }]; */
     }
-    
-
 }
 
 - (void)didReceiveMemoryWarning {

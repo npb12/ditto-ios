@@ -42,6 +42,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(updateMatch) name:@"updateNewMatch" object:nil];
     
     if ([[DataAccess singletonInstance] UserHasMatch])
     {
@@ -51,8 +53,6 @@
         self.middleLabel.text = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
         [self.discoverBtn setHidden:YES];
         [self.nomatch_image setHidden:YES];
-        
-        
         
     }
     else

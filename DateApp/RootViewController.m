@@ -6,10 +6,11 @@
 //  Copyright © 2016 Neil Ballard. All rights reserved.
 //
 
-#import "Includes.h"
+#import "RootViewController.h"
 #import "DAGradientColor.h"
+#import <DateApp-Swift.h>
 
-@interface RootViewController ()<GoToProfileProtocol,MessageViewControllerDelegate,LikedProfileProtocol>{
+@interface RootViewController ()<GoToProfileProtocol,LikedProfileProtocol>{
     int nCurIdx, nPrevIdx;
     UIColor* purpleColor;
     BOOL isMatch;
@@ -54,13 +55,10 @@
 @implementation RootViewController
 
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    
-    
     [self initViewController];
-
-    
 }
 
 -(void)viewDidLayoutSubviews
@@ -119,8 +117,6 @@
                                                  selector: @selector(goToMessaging)
                                                      name: @"callSegue"
                                                    object: nil];
-
-        
     }
  
 }
@@ -164,7 +160,7 @@
 {
     if ([self.swipeVC noUsers])
     {
-        if (self.curr_location.longitude != 0 && self.curr_location.latitude != 0)
+        if (CLLocationCoordinate2DIsValid(self.curr_location) && self.curr_location.latitude != 0 && self.curr_location.longitude != 0)
         {
             [self runLocationRequest];
         }
@@ -175,7 +171,6 @@
             observerActive = YES;
         }
     }
-
 }
 
 
@@ -213,8 +208,6 @@
     self.profileBtn.frame = CGRectMake(20,sideSize * 1.1,sideSize,sideSize);
     self.unmatchBtn.frame = CGRectMake(width / 1.2,sideSize * 1.1,sideSize,sideSize);
     
-
-
     [self.profileBtn setBackgroundColor:[UIColor clearColor]];
     [self.profileBtn setAlpha:0.9];
     self.profileBtn.layer.masksToBounds = NO;
@@ -570,9 +563,9 @@
 {
     if ([segue.identifier isEqualToString:@"segueMessageVC"])
     {
+        
         UINavigationController *nc = segue.destinationViewController;
-        MessageViewController *vc = (MessageViewController *)nc.topViewController;
-        vc.delegateModal = self;
+        ConversationViewController *vc = (ConversationViewController *)nc.topViewController;
     }
     else if ([segue.destinationViewController isKindOfClass:[PartingMessageViewController class]])
     {
@@ -616,18 +609,18 @@
     }
     else if ([segue.destinationViewController isKindOfClass:[NewMatchConflictViewController class]])
     {
-        /*
+        
         if (self.presentedViewController)
         {
             [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
-        } */
+        }
         
         NewMatchConflictViewController *matchVC = (NewMatchConflictViewController *)segue.destinationViewController;
         if ([[DataAccess singletonInstance] UserHasMatch] && !notif)
         {
             matchVC.isConflict = YES;
         }
-
+        
         matchVC.altMatches = self.altMatches;
         matchVC.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
     }
@@ -635,27 +628,27 @@
 
 -(void)showMatchIcon
 {
- //   if (nCurIdx == 1)
- //   {
-        
-        self.unmatchBtn.layer.borderWidth = 2;
-        self.unmatchBtn.layer.borderColor = [UIColor whiteColor].CGColor;
-        [self.unmatchBtn setImage:nil forState:UIControlStateNormal];
-        [self.unmatchBtn setBackgroundColor:[UIColor clearColor]];
-      //  [unmatchBtn setImage:[UIImage imageNamed:@"girl3"] forState:UIControlStateNormal];
-        
-        [self.unmatchBtn sd_setImageWithURL:[NSURL URLWithString:[[MatchUser currentUser].pics objectAtIndex:0]]
-                   forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                             options:SDWebImageRefreshCached];
-        
-        self.unmatchBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-        self.unmatchBtn.layer.shadowOpacity = 0.75;
-        self.unmatchBtn.layer.shadowRadius = 3;
-        self.unmatchBtn.layer.shadowOffset = CGSizeZero;
-        self.unmatchBtn.layer.masksToBounds = NO;
-        self.unmatchBtn.imageView.layer.cornerRadius = 20;
-        
-   // }
+    //   if (nCurIdx == 1)
+    //   {
+    
+    self.unmatchBtn.layer.borderWidth = 2;
+    self.unmatchBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+    [self.unmatchBtn setImage:nil forState:UIControlStateNormal];
+    [self.unmatchBtn setBackgroundColor:[UIColor clearColor]];
+    //  [unmatchBtn setImage:[UIImage imageNamed:@"girl3"] forState:UIControlStateNormal];
+    
+    [self.unmatchBtn sd_setImageWithURL:[NSURL URLWithString:[[MatchUser currentUser].pics objectAtIndex:0]]
+                               forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+                                options:SDWebImageRefreshCached];
+    
+    self.unmatchBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    self.unmatchBtn.layer.shadowOpacity = 0.75;
+    self.unmatchBtn.layer.shadowRadius = 3;
+    self.unmatchBtn.layer.shadowOffset = CGSizeZero;
+    self.unmatchBtn.layer.masksToBounds = NO;
+    self.unmatchBtn.imageView.layer.cornerRadius = 20;
+    
+    // }
 }
 
 - (void)unmatchAction {
@@ -669,7 +662,7 @@
     UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"YES"
                                                           style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                               NSArray * controllerArray = self.pageViewController.childViewControllers;
-
+                                                              
                                                               
                                                               for (UIViewController *controller in controllerArray){
                                                                   if([controller isKindOfClass:[MatchViewController class]])
@@ -698,20 +691,20 @@
 -(void)resetMatchButton
 {
     /*
-    [self.unmatchBtn setBackgroundColor:[UIColor whiteColor]];
-    self.unmatchBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    self.unmatchBtn.layer.shadowOpacity = 0.75;
-    self.unmatchBtn.layer.shadowRadius = 3;
-    self.unmatchBtn.layer.shadowOffset = CGSizeZero;
-    [self.unmatchBtn setImage:[UIImage imageNamed:@"heart2_Icon"] forState:UIControlStateNormal];
-    self.unmatchBtn.layer.masksToBounds = NO;
-    [self.unmatchBtn setAlpha:1.0]; */
+     [self.unmatchBtn setBackgroundColor:[UIColor whiteColor]];
+     self.unmatchBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+     self.unmatchBtn.layer.shadowOpacity = 0.75;
+     self.unmatchBtn.layer.shadowRadius = 3;
+     self.unmatchBtn.layer.shadowOffset = CGSizeZero;
+     [self.unmatchBtn setImage:[UIImage imageNamed:@"heart2_Icon"] forState:UIControlStateNormal];
+     self.unmatchBtn.layer.masksToBounds = NO;
+     [self.unmatchBtn setAlpha:1.0]; */
 }
-
+/*
 - (void)didDismissMessageViewController:(MessageViewController *)vc
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
+} */
 
 -(UIColor*)blackColor{
     return [UIColor colorWithRed:0.16 green:0.16 blue:0.17 alpha:1.0];
@@ -762,8 +755,8 @@
 
 - (void)sendMessageBack:(NSString *)message
 {
-      [self.matchVC UnmatchSelected:self.unmatchBtn];
-      self.unmatchBtn.userInteractionEnabled = NO;
+    [self.matchVC UnmatchSelected:self.unmatchBtn];
+    self.unmatchBtn.userInteractionEnabled = NO;
 }
 
 -(void)selectedProfile:(User *)user matched:(BOOL)match{
@@ -785,7 +778,7 @@
             [self.swipeVC likeCurrentCard:NO];
         }
         
-
+        
     }];
 }
 
@@ -817,13 +810,11 @@
 {
     self.curr_location = [LocationManager sharedInstance].location;
     
-   // [[DataAccess singletonInstance] setUserLocation:self.curr_location];
-    
-    User *user = [User new];
+    // [[DataAccess singletonInstance] setUserLocation:self.curr_location];
     
     [self.swipeVC showEmptyLabel:NO];
     
-    if (CLLocationCoordinate2DIsValid(self.curr_location))
+    if (CLLocationCoordinate2DIsValid(self.curr_location) && self.curr_location.latitude != 0 && self.curr_location.longitude != 0)
     {
         [DAServer postLocation:self.curr_location completion:^(NSMutableArray *result, NSError *error) {
             // here, update the UI to say "Not busy anymore"
@@ -894,33 +885,32 @@
     }
     else if(notification.userInfo)
     {
-      //regular match
+        //regular match
         [self updateMatch];
-        [self.altMatches setObject:notification.userInfo atIndexedSubscript:0];
+        MatchUser *matchUser = [[notification userInfo] valueForKey:@"Match"];
+        [self.altMatches setObject:matchUser atIndexedSubscript:0];
         notif = YES;
     }
     
     
     dispatch_async(dispatch_get_main_queue(), ^{
+        [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
         [[TFHeartAnimationView sharedInstance] showWithAnchorPoint:[self.view convertPoint:self.view.center toView:nil] completion:^(void)
          {
-            [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
          }];
         
     });
     
-
-
-    
     /*
-    if ([[DataAccess singletonInstance] UserHasMatch])
-    {
-        [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
-    }
-    else
-    {
-        [self performSegueWithIdentifier:@"MatchedViewController" sender:self];
-    }
+     if ([[DataAccess singletonInstance] UserHasMatch])
+     {
+     [self performSegueWithIdentifier:@"MatchedConflictViewController" sender:self];
+     }
+     else
+     {
+     [self performSegueWithIde
+     ntifier:@"MatchedViewController" sender:self];
+     }
      */
     
 }
@@ -1001,8 +991,8 @@
 {
     [self.noButton setUserInteractionEnabled:YES];
     [self.likeBtn setUserInteractionEnabled:YES];
-    [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
-    [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
+    [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
+    [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
     
     
     [self.unmatchBtn setHidden:YES];
@@ -1021,7 +1011,7 @@
     {
         [self.matchVC updateUnmatch];
     }
-
+    
     
 }
 
@@ -1057,7 +1047,7 @@
 - (IBAction)profileAction:(id)sender
 {
     [self performSegueWithIdentifier:@"proSegue" sender:self];
-
+    
 }
 
 - (IBAction)gotoMessaging:(id)sender
@@ -1127,7 +1117,7 @@
 
 
 - (IBAction)returnToStepOne:(UIStoryboardSegue *)segue {
-
+    
 }
 
 -(IBAction)afterLoginUnwind:(UIStoryboardSegue *)segue {
@@ -1142,6 +1132,5 @@
 -(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 @end

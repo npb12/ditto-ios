@@ -7,7 +7,7 @@
 //
 
 #import "Includes.h"
-#import "Messages.h"
+#import "Message.h"
 
 
 @interface DAServer : NSObject
@@ -51,14 +51,12 @@
 
 #pragma GET requests
 
-+ (void)getProfile:(NSString *)param
-        completion:(void (^)(User *, NSError *))completion;
++ (void)getProfile:(void (^)(User *, NSError *))completion;
 
 + (void)getSettings:(NSString *)param
          completion:(void (^)(User *, NSError *))completion;
 
-+ (void)getMessages:(NSString *)param
-         completion:(void (^)(NSArray *, NSError *))completion;
++ (void)getMessages:(void (^)(NSArray *, NSError *))completion;
 
 + (void)LastMessageNew:(NSString *)param
             completion:(void (^)(bool, NSError *))completion;

@@ -71,7 +71,6 @@
 #import "DraggableView.h"
 #import "OverlayView.h"
 
-#import "MessageViewController.h"
 
 #import "SettingsTableViewCell.h"
 

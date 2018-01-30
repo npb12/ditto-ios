@@ -8,7 +8,7 @@
 
 #import "NewMatchConflictViewController.h"
 
-@interface NewMatchConflictViewController ()<MessageViewControllerDelegate>{
+@interface NewMatchConflictViewController (){
     MatchUser *match;
 }
 
@@ -157,7 +157,7 @@
                                    options:SDWebImageRefreshCached];
     
     
-    [DAServer getProfile:@"" completion:^(User *user, NSError *error) {
+    [DAServer getProfile:^(User *user, NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -253,33 +253,33 @@
         
         [DAServer dropSwapMatch:uid completion:^(NSError *error) {
             // here, update the UI to say "Not busy anymore"
-            if (!error) {
+            if (!error)
+            {
+                //convert user to MatchUser
+                //save result as match to nsuserdefaults
+                
+                [self saveUser:self.match_user];
+                
+                [self.altMatches removeObjectAtIndex:0];
+                
+                
+                if ([self.altMatches count] < 1)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self dismissViewControllerAnimated:YES completion:nil];
+                    });
+                }
+                else
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self loadUserDataConflict];
+                    });
+                }
                 
             } else {
                 // update UI to indicate error or take remedial action
             }
         }];
-        
-        //convert user to MatchUser
-        //save result as match to nsuserdefaults
-        
-        [self saveUser:self.match_user];
-        
-        [self.altMatches removeObjectAtIndex:0];
-        
-        
-        if ([self.altMatches count] < 1)
-        {
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else
-        {
-            [self loadUserDataConflict];
-            /*
-            [self dismissViewControllerAnimated:YES completion:^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"altMatchesNotification" object:self.altMatches userInfo:nil];
-            }]; */
-        }
         
     }
     else
@@ -309,6 +309,7 @@
     match_user.age = user.age;
     match_user.education = user.edu;
     match_user.work = user.job;
+    match_user.pics = user.pics;
     
     return match_user;
 }
@@ -355,9 +356,10 @@
     }
     else if ([segue.identifier isEqualToString:@"startMessageSegue"])
     {
+        /*
         UINavigationController *nc = segue.destinationViewController;
         MessageViewController *vc = (MessageViewController *)nc.topViewController;
-        vc.delegateModal = self;
+        vc.delegateModal = self; */
     }
     
 }

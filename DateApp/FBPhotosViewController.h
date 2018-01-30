@@ -8,6 +8,7 @@
 
 #import "PhotoManager.h"
 #import "PhotosCollectionViewCell.h"
+#import "PhotoCropViewController.h"
 
 @interface FBPhotosViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;

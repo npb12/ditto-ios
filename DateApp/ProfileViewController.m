@@ -8,7 +8,8 @@
 
 #import "Includes.h"
 
-@interface ProfileViewController ()<MessageViewControllerDelegate>{
+
+@interface ProfileViewController (){
     UIColor *blackColor;
     UIFont *headerFont;
     UIFont *contentFont;
@@ -554,6 +555,10 @@
     
 }
 
+-(BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
 
 /*
 - (IBAction)heart_button:(id)sender {
@@ -712,16 +717,17 @@
 {
     if ([segue.identifier isEqualToString:@"messageSegue"])
     {
+        /*
         UINavigationController *nc = segue.destinationViewController;
         MessageViewController *vc = (MessageViewController *)nc.topViewController;
-        vc.delegateModal = self;
+        vc.delegateModal = self; */
     }
 }
-
+/*
 - (void)didDismissMessageViewController:(MessageViewController *)vc
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
+} */
 
 
 -(UIColor*)bgGray

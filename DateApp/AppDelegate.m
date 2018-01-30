@@ -44,8 +44,6 @@
         self.rootVC = (RootViewController*)self.window.rootViewController;
     }
     
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-
     return YES;
 }
 
@@ -69,13 +67,11 @@
 
 notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler{
     NSLog(@"User Info foreground: %@",notification.request.content.userInfo);
-    completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge);
+    completionHandler(UNAuthorizationOptionSound | UNAuthorizationOptionBadge);
     
     NSDictionary *notif = [notification.request.content.userInfo objectForKey:@"aps"];
     
     NSString *type = [notif objectForKey:@"type"];
-    
-    NSLog(@"The type of notification is::: %@", type);
     
     if ([type isEqualToString:@"match"])
     {
@@ -107,7 +103,10 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
     {
         if (self.rootVC)
         {
+            dispatch_async(dispatch_get_main_queue(), ^{
             [self.rootVC.chatBtn setImage:[UIImage imageNamed:@"chat_full_message"] forState:UIControlStateNormal];
+            });
+
         }
     }
     else if([type isEqualToString:@"drop"])
@@ -130,18 +129,20 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
     NSString *deviceTokenString = deviceToken.description;
     deviceTokenString = [deviceTokenString stringByReplacingOccurrencesOfString:@"[< >]" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, deviceTokenString.length)];
     NSLog(@" device token eeees %@", deviceTokenString.description);
-    
 
-    [DAServer postDeviceToken:deviceTokenString.description completion:^(NSMutableArray *result, NSError *error) {
-        // here, update the UI to say "Not busy anymore"
-        if (!error) {
-            if ([result count] > 0) {
-
+    if (deviceTokenString.description)
+    {
+        [DAServer postDeviceToken:deviceTokenString.description completion:^(NSMutableArray *result, NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+                if ([result count] > 0) {
+                    
+                }
+            } else {
+                // update UI to indicate error or take remedial action
             }
-        } else {
-            // update UI to indicate error or take remedial action
-        }
-    }];
+        }];
+    }
 }
 
 
@@ -163,6 +164,8 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
     {
         self.rootVC = (RootViewController*)self.window.rootViewController;
     }
+    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
 

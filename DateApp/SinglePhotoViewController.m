@@ -39,6 +39,7 @@
              
              UIImage *resizedImage =  [image scaleImageToSize:CGSizeMake(self.photoView.frame.size.width, self.photoView.frame.size.height)];
              self.photoView.image = resizedImage;
+             
          }
      }];
 }

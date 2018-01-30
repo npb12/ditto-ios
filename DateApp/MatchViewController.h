@@ -7,10 +7,8 @@
 //
 
 #import "Includes.h"
-#import <JSQMessagesViewController/JSQMessages.h>
 #import "MatchTableViewCell.h"
 #import "DADateFormatter.h"
-#import "MessageModelData.h"
 #import "User.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -60,9 +58,6 @@
 
 
 @property (strong, nonatomic) IBOutlet UIImageView *profilePic;
-
-
-@property (strong, nonatomic) MessageModelData *demoData;
 
 
 @property (nonatomic, weak) id<GoToProfileProtocol> profile_delegate;

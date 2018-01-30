@@ -7,7 +7,6 @@
 //
 
 #import "Includes.h"
-#import "MessageViewController.h"
 
 @interface NewMatchConflictViewController : UIViewController
 

@@ -176,7 +176,10 @@
     if ([matches count] > 0)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"altMatchesNotification" object:matches userInfo:nil];
+            if ([matches count] > 0)
+            {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"altMatchesNotification" object:matches userInfo:nil];
+            }
         });
 
     }
@@ -264,7 +267,12 @@
     if (notification)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"altMatchesNotification" object:nil userInfo:user];
+            if (user)
+            {
+                NSDictionary *dictionary = [NSDictionary dictionaryWithObject:user forKey:@"Match"];
+
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"altMatchesNotification" object:nil userInfo:dictionary];
+            }
         });
     }
     
@@ -366,12 +374,33 @@
 }
 
 
-+(NSArray*)messages:(NSDictionary*)recieved_dict sent:(NSDictionary*)sent_dict
++(NSArray*)messages:(NSDictionary*)messages_dict
 {
     
     NSMutableArray *conversation = [NSMutableArray new];
-    long curr = 0;
+    NSString *uid = [[DataAccess singletonInstance] getUserID];
 
+    for(id key in messages_dict)
+    {
+        Message *message = [Message new];
+        message.timestamp = [[key objectForKey:@"time_stamp"] floatValue];
+        message.message = [key objectForKey:@"content"];
+        if ([uid isEqualToString:[key objectForKey:@"uid1"]])
+        {
+            message.type = SENT_MESSAGE;
+        }
+        else
+        {
+            message.type = RECEIVED_MESSAGE;
+
+        }
+        
+        [conversation addObject:message];
+    }
+    
+    return conversation;
+    
+    /*
     for(id key in sent_dict)
     {
         Messages *message = [Messages new];
@@ -400,7 +429,7 @@
     NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES];
     NSArray *orderedConversation = [conversation sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
     
-    return orderedConversation;
+    return orderedConversation; */
     
 }
 
@@ -413,7 +442,7 @@
     
     for(id key in sent_dict)
     {
-        Messages *message = [Messages new];
+        Message *message = [Message new];
         message.timestamp = [[key objectForKey:@"time_stamp"] floatValue];
         message.message = [key objectForKey:@"content"];
         message.type = SENT_MESSAGE;
@@ -422,7 +451,7 @@
     
     for(id key in recieved_dict)
     {
-        Messages *message = [Messages new];
+        Message *message = [Message new];
         message.timestamp = [[key objectForKey:@"time_stamp"] floatValue];
         message.message = [key objectForKey:@"content"];
         message.type = RECEIVED_MESSAGE;

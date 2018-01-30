@@ -15,6 +15,6 @@
 +(void)alternateMatches:(NSDictionary*)dict;
 +(User*)myprofile:(NSDictionary*)dict;
 +(User*)mysettings:(NSDictionary*)dict;
-+(NSArray*)messages:(NSDictionary*)recieved_dict sent:(NSDictionary*)sent_dict;
++(NSArray*)messages:(NSDictionary*)messages_dict;
 +(bool)messageNew:(NSDictionary*)recieved_dict sent:(NSDictionary*)sent_dict;
 @end

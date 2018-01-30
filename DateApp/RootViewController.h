@@ -6,15 +6,13 @@
 //  Copyright © 2016 Neil Ballard. All rights reserved.
 //
 
-#import "Includes.h"
-#import <JSQMessagesViewController/JSQMessages.h>
-#import "MessageViewController.h"
 #import "PartingMessageViewController.h"
 #import "NewMessageViewController.h"
 #import "SwipeViewController.h"
 #import <SDWebImage/UIButton+WebCache.h>
+#import "DateApp-Swift.h"
 
-
+@protocol ConversationDelegate;
 
 @interface RootViewController : UIViewController<UIPageViewControllerDelegate, UIScrollViewDelegate,  PartingMessageDelegate, SegueProtocol, GoDiscoverProtocol>
 

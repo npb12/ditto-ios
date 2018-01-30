@@ -33,12 +33,13 @@
 
 -(void)initSocketIO
 {
+    
     NSURL* url = [[NSURL alloc] initWithString:@"https://www.portaldevservices.com/"];
-   // NSURL* url = [[NSURL alloc] initWithString:@"http://54.174.235.42:443"];
+    // NSURL* url = [[NSURL alloc] initWithString:@"http://54.174.235.42:443"];
     self.socket = [[SocketIOClient alloc] initWithSocketURL:url config:@{@"log": @YES, @"forcePolling": @YES}];
     
     [self.socket on:@"connect" callback:^(NSArray* data, SocketAckEmitter* ack) {
-        NSLog(@"socket connected"); 
+        NSLog(@"socket connected");
         
         NSInteger uid = [[[DataAccess singletonInstance] getUserID] integerValue];
         NSArray *arr = @[@(uid)];
@@ -46,16 +47,16 @@
     }];
     
     [self.socket on:@"message" callback:^(NSArray* data, SocketAckEmitter* ack) {
-       // double cur = [[data objectAtIndex:0] floatValue];
-      //  NSArray *messageComponents = [data[0] componentsSeparatedByString:@"|"];
+        // double cur = [[data objectAtIndex:0] floatValue];
+        //  NSArray *messageComponents = [data[0] componentsSeparatedByString:@"|"];
         
         NSString *full_message = data[0];
         
         [self parseMessageRecieved:full_message];
-
+        
     }];
     
-
+    
     [self.socket connect];
 }
 
@@ -68,7 +69,8 @@
 
 -(void)sendMessage:(NSString*)message
 {
-    NSArray *arr = @[message];
+    NSData *utf8Data = [message dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *arr = @[utf8Data];
     [self.socket emit:@"message" with:arr];
 }
 
@@ -99,7 +101,7 @@
         timestamp=[items objectAtIndex:1];
     }
     
-    Messages *message_received = [Messages new];
+    Message *message_received = [Message new];
     
     message_received.timestamp = [timestamp longLongValue];
     message_received.message = message;

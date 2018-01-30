@@ -9,7 +9,6 @@
 #import "Includes.h"
 #import "User.h"
 #import <SDWebImage/UIImageView+WebCache.h>
-#import "MessageViewController.h"
 #import "UIImage+Scale.h"
 
 @protocol LikedProfileProtocol <NSObject>

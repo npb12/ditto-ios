@@ -16,6 +16,7 @@
     CGFloat cellWidth, cellHeight;
     NSInteger selectedIndex;
     BOOL tvDidChange;
+    BOOL notInitial;
 }
 
 @property (strong,nonatomic) NSMutableArray *photo_arary;
@@ -102,6 +103,15 @@
     UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
     
     [self.gradientView layoutIfNeeded];
+    
+    if (notInitial)
+    {
+        if (adding)
+        {
+            [self getProfile];
+            notInitial = YES;
+        }
+    }
 
     
     CAGradientLayer *grad = [CAGradientLayer layer];
@@ -114,9 +124,18 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:NO];
-    if (adding) {
-        [self.photo_arary removeAllObjects];
-        [self getProfile];
+}
+
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:NO];
+    if (!notInitial)
+    {
+        if (adding)
+        {
+            [self.photo_arary removeAllObjects];
+            [self getProfile];
+        }
     }
 }
 
@@ -135,7 +154,9 @@
 
 -(void)getProfile{
 
-    [DAServer getProfile:@"" completion:^(User *user, NSError *error) {
+    [self.photo_arary removeAllObjects];
+    
+    [DAServer getProfile:^(User *user, NSError *error) {
     // here, update the UI to say "Not busy anymore"
     if (!error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -156,10 +177,14 @@
             }
         });
         
+        
+        NSMutableDictionary *dict = [NSMutableDictionary new];
+        
         if ([self.user.pics count] > 0)
         {
             dispatch_group_t group = dispatch_group_create();
             
+            //__block NSInteger *count = 0;;
             
             for (int i = 0; i < [self.user.pics count]; i++)
             {
@@ -169,19 +194,23 @@
                  {
                      if (image && !error)
                      {
-                        // [self.photo_arary setObject:image atIndexedSubscript:i];
-                         [self.photo_arary addObject:image];
+                         NSLog(@"count is hit");
+                         
+                         int offset = i + 1;
+                         //  [dict setValue:image forKey:[NSString stringWithFormat:@"%d", offset]];
+                         [dict setObject:image forKey:[NSString stringWithFormat:@"%d", offset]];
+                         
+                         if ([dict count] == [self.user.pics count])
+                         {
+                             [self updatePhotos:dict dispatch:group];
+                         }
+                         
                      }
                      
                      dispatch_group_leave(group);
                      
                  }];
             }
-            
-            
-            dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-                [self.collectionView reloadData];
-            });
         }
         
     }
@@ -190,9 +219,21 @@
         // update UI to indicate error or take remedial action
     }
     }];
+}
 
-
-
+-(void)updatePhotos:(NSDictionary*)dict dispatch:(dispatch_group_t)group
+{
+    
+    self.photo_arary = [NSMutableArray new];
+    
+    for (int i = 1; i <= [dict count]; i++)
+    {
+        [self.photo_arary addObject:[dict objectForKey:[NSString stringWithFormat:@"%d", i]]];
+    }
+    
+    dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+        [self.collectionView reloadData];
+    });
 }
 
 
@@ -560,7 +601,7 @@
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete"
                                                                        message:message
                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
-        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"YES"
+        UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"Yes"
                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                   [self.photo_arary removeObjectAtIndex:tag];
                                                                   [self.user.pics removeObjectAtIndex:tag];
@@ -568,7 +609,7 @@
                                                                   self.didChange = YES;
                                                                   
                                                               }];
-        UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"CANCEL"
+        UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"Cancel"
                                                                style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                    
                                                                }];

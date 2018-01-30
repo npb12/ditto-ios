@@ -61,18 +61,24 @@
     } */
     
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-    imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
+   // imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
     imagePickerController.delegate = self;
-    
+    imagePickerController.allowsEditing = YES;
     UIPopoverPresentationController *presentationController = imagePickerController.popoverPresentationController;
     presentationController.permittedArrowDirections = UIPopoverArrowDirectionAny;
-
     
     _imagePickerController = imagePickerController; // we need this for later
     
     [self presentViewController:self.imagePickerController animated:YES completion:^{
         //.. done presenting
     }];
+    /*
+    dispatch_async(dispatch_get_main_queue(), ^
+                   {
+
+                       
+                   }); */
+    
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info

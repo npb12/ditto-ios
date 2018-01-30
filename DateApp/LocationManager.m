@@ -117,6 +117,9 @@
     location =  [locations lastObject];
     self.location = [location coordinate];
     [locationManager stopUpdatingLocation];
+  /*  if (condition) {
+        <#statements#>
+    } */
 }
 
 - (void)getUsersInLocation{

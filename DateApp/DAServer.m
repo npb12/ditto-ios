@@ -188,8 +188,6 @@
     NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
 
     
-    
-    
     NSDictionary *parameters = @{
                                  @"request": @{
                                          @"id": uid,
@@ -287,6 +285,8 @@
 
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
+                                                        NSLog(@"jsonnnn %@", jsonString);
+                                                        
                                                         NSData *ns = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                         id json = [NSJSONSerialization JSONObjectWithData:ns options:0 error:nil];
                                                         
@@ -312,8 +312,10 @@
                                                         }
 
                                                         
-                                                        [DAParser alternateMatches:matches];
-
+                                                        if ([matches count] > 0)
+                                                        {
+                                                            [DAParser alternateMatches:matches];
+                                                        }
 
                                                         
                                                         completion(users, nil);
@@ -565,6 +567,7 @@
                                  };
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -924,8 +927,7 @@
 #pragma GET Requests
 
 
-+ (void)getProfile:(NSString *)param
-        completion:(void (^)(User *, NSError *))completion {
++ (void)getProfile:(void (^)(User *, NSError *))completion {
     
     NSDictionary *headers = @{ @"content-type": @"application/json",
                                @"cache-control": @"no-cache" };
@@ -949,7 +951,8 @@
                                                         completion(nil, error);
                                                     } else {
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                                        
+                                                        NSLog(@"json response: %@", jsonString);
+
                                                         NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                         id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
 
@@ -1006,8 +1009,7 @@
     [dataTask resume];
 }
 
-+ (void)getMessages:(NSString *)param
-         completion:(void (^)(NSArray *, NSError *))completion {
++ (void)getMessages:(void (^)(NSArray *, NSError *))completion {
     
     NSDictionary *headers = @{ @"content-type": @"application/json",
                                @"cache-control": @"no-cache" };
@@ -1029,21 +1031,20 @@
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    
                                                     if (error) {
                                                         completion(nil, error);
                                                     } else {
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
+                                                        NSLog(@"json:: %@", jsonString);
+                                                        
                                                         NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                         id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                                         
-                                                        
-                                                        NSDictionary *recieved = [json objectForKey:@"recieved"];
+                                                        NSDictionary *dict = [json objectForKey:@"messages"];
 
-                                                        NSDictionary *sent = [json objectForKey:@"sent"];
-
-                                                        
-                                                       NSArray *messages =  [DAParser messages:recieved sent:sent];
+                                                        NSArray *messages =  [DAParser messages:dict];
                                                         
                                                         
                                                         completion(messages, nil);

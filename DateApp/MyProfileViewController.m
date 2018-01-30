@@ -81,7 +81,7 @@
 
 -(void)getData
 {
-    [DAServer getProfile:@"" completion:^(User *user, NSError *error) {
+    [DAServer getProfile:^(User *user, NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             dispatch_async(dispatch_get_main_queue(), ^{
