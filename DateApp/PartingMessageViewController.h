@@ -14,7 +14,6 @@
 
 @interface PartingMessageViewController : UIViewController
 
-//enum temperature {cold = 5, warm = 50, hot = 95};
 enum PartingType {
     INAPPROPRIATE=1,
     CHEMISTRY,

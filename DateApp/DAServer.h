@@ -12,13 +12,22 @@
 
 @interface DAServer : NSObject
 
+enum RequestType {
+    GET=1,
+    PUT,
+    POST,
+};
+
+@property (nonatomic,assign) enum RequestType requestType;
+
+
 #pragma POST requests
 
 + (void)facebookLogin:(UIViewController*)vc
            completion:(void (^)(NSMutableArray *, NSError *))completion;
 
 + (void)postDeviceToken:(NSString*)token
-             completion:(void (^)(NSMutableArray *, NSError *))completion;
+             completion:(void (^)(NSError *))completion;
 
 + (void)postLocation:(CLLocationCoordinate2D)location
           completion:(void (^)(NSMutableArray *, NSError *))completion;
@@ -29,7 +38,7 @@
 + (void)dropMatch:(NSString*)message
        completion:(void (^)(NSError *))completion;
 
-+ (void)updateProfile:(NSString*)type description:(NSString*)text
++ (void)updateProfile:(NSString*)requestType editType:(NSString*)type description:(NSString*)text
            completion:(void (^)(NSError *))completion;
 
 + (void)updateSettings:(NSString*)type setting:(NSString*)edit
@@ -50,6 +59,9 @@
 + (void)facebookLogout;
 
 #pragma GET requests
+
++ (void)facebookAuth:(UIViewController*)vc
+          completion:(void (^)(NSError *))completion;
 
 + (void)getProfile:(void (^)(User *, NSError *))completion;
 

@@ -23,14 +23,14 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb992281634217164</string>
+				<string>fb179947372771626</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2.2</string>
 	<key>FacebookAppID</key>
-	<string>992281634217164</string>
+	<string>179947372771626</string>
 	<key>FacebookDisplayName</key>
 	<string>Ditto</string>
 	<key>Fonts provided by application</key>

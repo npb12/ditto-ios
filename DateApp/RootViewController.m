@@ -624,6 +624,18 @@
         matchVC.altMatches = self.altMatches;
         matchVC.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
     }
+    else if ([segue.destinationViewController isKindOfClass:[SecondChancePickerViewController class]])
+    {
+        if (self.presentedViewController)
+        {
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+        SecondChancePickerViewController *secondChanceVC = segue.destinationViewController;
+        secondChanceVC.view.backgroundColor = [UIColor clearColor];
+        secondChanceVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        
+    }
 }
 
 -(void)showMatchIcon
@@ -1046,7 +1058,8 @@
 
 - (IBAction)profileAction:(id)sender
 {
-    [self performSegueWithIdentifier:@"proSegue" sender:self];
+    //[self performSegueWithIdentifier:@"proSegue" sender:self];
+    [self performSegueWithIdentifier:@"secondChanceSegue" sender:self];
     
 }
 

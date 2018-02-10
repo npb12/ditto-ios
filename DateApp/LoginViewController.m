@@ -133,7 +133,7 @@
 
 - (IBAction)loginAction:(id)sender
 {
-    [DAServer facebookLogin:self completion:^(NSMutableArray *result, NSError *error) {
+    [DAServer facebookAuth:self completion:^(NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             

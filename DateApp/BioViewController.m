@@ -61,7 +61,7 @@
     
     NSString *bioText = self.bioTextView.text;
     //update user profile with bio/occupation and string description
-    [DAServer updateProfile:@"bio" description:bioText completion:^(NSError *error) {
+    [DAServer updateProfile:@"PUT" editType:@"bio" description:bioText completion:^(NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             dispatch_async(dispatch_get_main_queue(), ^

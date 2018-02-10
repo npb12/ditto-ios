@@ -21,6 +21,8 @@
 		8C1F8AE61FC0EFCE00D927D4 /* PhotoDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AE51FC0EFCE00D927D4 /* PhotoDownloader.m */; };
 		8C1F8AE91FC29F0400D927D4 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AE81FC29F0400D927D4 /* TutorialViewController.m */; };
 		8C1F8AEC1FC3AA1500D927D4 /* AlbumSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AEB1FC3AA1500D927D4 /* AlbumSelectionViewController.m */; };
+		8C268128202A035800F92967 /* SecondChancePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C268127202A035800F92967 /* SecondChancePickerViewController.m */; };
+		8C26812B202A089600F92967 /* SecondChanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26812A202A089600F92967 /* SecondChanceCell.m */; };
 		8C2BE3031DE018820042BE6B /* CERangeSliderTrackLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE2FD1DE018820042BE6B /* CERangeSliderTrackLayer.m */; };
 		8C2BE3041DE018820042BE6B /* CERangeSliderKnobLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE2FF1DE018820042BE6B /* CERangeSliderKnobLayer.m */; };
 		8C2BE3051DE018820042BE6B /* CERangeSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE3011DE018820042BE6B /* CERangeSlider.m */; };
@@ -135,6 +137,10 @@
 		8C1F8AE81FC29F0400D927D4 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
 		8C1F8AEA1FC3AA1500D927D4 /* AlbumSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumSelectionViewController.h; sourceTree = "<group>"; };
 		8C1F8AEB1FC3AA1500D927D4 /* AlbumSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumSelectionViewController.m; sourceTree = "<group>"; };
+		8C268126202A035800F92967 /* SecondChancePickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondChancePickerViewController.h; sourceTree = "<group>"; };
+		8C268127202A035800F92967 /* SecondChancePickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondChancePickerViewController.m; sourceTree = "<group>"; };
+		8C268129202A089600F92967 /* SecondChanceCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondChanceCell.h; sourceTree = "<group>"; };
+		8C26812A202A089600F92967 /* SecondChanceCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondChanceCell.m; sourceTree = "<group>"; };
 		8C2BE2FD1DE018820042BE6B /* CERangeSliderTrackLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CERangeSliderTrackLayer.m; sourceTree = "<group>"; };
 		8C2BE2FE1DE018820042BE6B /* CERangeSliderTrackLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CERangeSliderTrackLayer.h; sourceTree = "<group>"; };
 		8C2BE2FF1DE018820042BE6B /* CERangeSliderKnobLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CERangeSliderKnobLayer.m; sourceTree = "<group>"; };
@@ -455,6 +461,10 @@
 				8CFB0C382013BB01001F5F3B /* DateApp-Bridging-Header.h */,
 				8C1B7BD92013D96C00D39235 /* ConversationViewController.swift */,
 				8C1B7BDB2014F4C300D39235 /* ChatMessage.swift */,
+				8C268126202A035800F92967 /* SecondChancePickerViewController.h */,
+				8C268127202A035800F92967 /* SecondChancePickerViewController.m */,
+				8C268129202A089600F92967 /* SecondChanceCell.h */,
+				8C26812A202A089600F92967 /* SecondChanceCell.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -896,8 +906,10 @@
 				8C5F0E141E8D70B300C799B4 /* DAServer.m in Sources */,
 				8C2BE31A1DE693830042BE6B /* FBPhotosViewController.m in Sources */,
 				8C0669961F1AFC5800132E14 /* UILabelDeviceClass.m in Sources */,
+				8C268128202A035800F92967 /* SecondChancePickerViewController.m in Sources */,
 				8CCBF4CD1E7470D400C202CB /* User.m in Sources */,
 				8C2CE0EC1DA186D500592566 /* TFStyle.m in Sources */,
+				8C26812B202A089600F92967 /* SecondChanceCell.m in Sources */,
 				8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */,
 				8C1F8AE61FC0EFCE00D927D4 /* PhotoDownloader.m in Sources */,
 				8C2BE3141DE5549A0042BE6B /* OccupationViewController.m in Sources */,

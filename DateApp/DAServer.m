@@ -16,12 +16,124 @@
 
 +(NSString*)baseURL
 {
-    //production server
-  //  return @"http://54.174.235.42/api/dtloc.php";
-    
-    return @"https://www.portaldevservices.com/dtloc.php";
+    return @"http://dev.portaldevservices.com/api";
 
 }
+
++(NSDictionary*)AuthHeader
+{
+    NSString *token = [NSString stringWithFormat:@"Token %@", [[DataAccess singletonInstance] getSessionToken]];
+    
+    return@{ @"content-type": @"application/json",
+            @"cache-control": @"no-cache",
+            @"Authorization" : token
+        };
+}
+
++ (void)facebookAuth:(UIViewController*)vc
+           completion:(void (^)(NSError *))completion {
+    
+    FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
+    login.loginBehavior = FBSDKLoginBehaviorNative;
+    [login
+     logInWithReadPermissions: @[@"email", @"public_profile",  @"user_photos", @"user_birthday",
+                                 @"user_education_history", @"user_work_history"]
+     fromViewController:vc
+     handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
+         if (error) {
+             NSLog(@"Process error %@", error);
+         } else if (result.isCancelled) {
+             NSLog(@"Cancelled");
+         } else {
+             if ([result.grantedPermissions containsObject:@"email"] && [result.grantedPermissions containsObject:@"public_profile"]){ //&& [result.grantedPermissions containsObject:@"user_photos"]) {
+                 
+                 
+                 
+                 if ([FBSDKAccessToken currentAccessToken])
+                 {
+                     NSString *access_token = [[FBSDKAccessToken currentAccessToken] tokenString];
+                     
+                     NSLog(@"token::: %@", access_token);
+                     
+                     NSDictionary *headers = @{ @"content-type": @"application/json",
+                                                @"cache-control": @"no-cache" };
+                    
+                     
+                     NSString *urlStr = [NSString stringWithFormat:@"%@/login/?sl_token=%@", [DAServer baseURL], access_token];
+                     
+                     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlStr]
+                                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                        timeoutInterval:10.0];
+                     [request setHTTPMethod:@"GET"];
+                     [request setAllHTTPHeaderFields:headers];
+                     
+                     NSURLSession *session = [NSURLSession sharedSession];
+                     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                                     NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+                                                                     NSInteger statusCode = [HTTPResponse statusCode];
+                                                                     
+                                                                     NSLog(@"response is %ld", (long)statusCode);
+                                                                     if (error) {
+                                                                         completion(error);
+                                                                         NSLog(@"%@", error);
+                                                                     } else {
+                                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                                         
+                                                                         NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+                                                                         id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                                                         
+                                                                         
+                                                                         NSLog(@"%@", jsonString);
+                                                                         
+                                                                         
+                                                                         NSString *user_id = [json objectForKey:@"user"];
+                                                                         
+                                                                         
+                                                                         NSString *long_token = [json objectForKey:@"ll_token"];
+                                                                         NSString *first_name = [json objectForKey:@"name"];
+                                                                         
+                                                                         NSString *gender = [json objectForKey:@"gender"];
+                                                                         
+                                                                         
+                                                                         NSString *sessionToken = [json objectForKey:@"token"];
+                                                                         
+                                                                         
+                                                                         [[DataAccess singletonInstance] setToken:long_token];
+                                                                         [[DataAccess singletonInstance] setUserID:user_id];
+                                                                         
+                                                                         [[DataAccess singletonInstance] setSessionToken:sessionToken];
+                                                                         
+                                                                         [[DataAccess singletonInstance] setName:first_name];
+                                                                         
+                                                                         
+                                                                         //   [[DataAccess singletonInstance] setProfileImage:picture];
+                                                                         
+                                                                         [[DataAccess singletonInstance] setGender:gender];
+                                                                         
+                                                                         [[DataAccess singletonInstance] setUserLoginStatus:YES];
+                                                                         
+                                                                         
+                                                                         completion(nil);
+                                                                         
+                                                                     }
+                                                                 }];
+                     [dataTask resume];
+                     
+                 }
+                 
+                 
+                 
+             }
+             
+             
+         }
+         
+         
+     }];
+     
+     
+     }
 
 
 + (void)facebookLogin:(UIViewController*)vc
@@ -120,7 +232,6 @@
                                                                          
                                                                          NSString *gender = [getdata objectForKey:@"setGender"];
                                                                          
-                                                                         NSString *distance = [getdata objectForKey:@"setGender"];
                                                                          
                                                                          NSString *age = [getdata objectForKey:@"setAge"];
                                                                          
@@ -175,9 +286,7 @@
 }
 
 + (void)postDeviceToken:(NSString*)token
-       completion:(void (^)(NSMutableArray *, NSError *))completion {
-    
-    __block NSMutableArray *temp_users = [NSMutableArray new];
+       completion:(void (^)(NSError *))completion {
     
     
     NSDictionary *headers = @{ @"content-type": @"application/json",
@@ -214,14 +323,13 @@
                                                     
                                                     NSLog(@"response is %ld", (long)statusCode);
                                                     if (error) {
-                                                        completion(nil, error);
+                                                        completion(error);
                                                         NSLog(@"%@", error);
                                                     } else {
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
-                                                    //    NSLog(@"json response: %@", jsonString);
                                                         
-                                                        completion(temp_users, nil);
+                                                        completion(nil);
                                                         
                                                     }
                                                 }];
@@ -545,34 +653,28 @@
     
 }
 
-//bio, occupation
-+ (void)updateProfile:(NSString*)type description:(NSString*)text
+//bio, occupation, education, d_token
++ (void)updateProfile:(NSString*)requestType editType:(NSString*)type description:(NSString*)text
            completion:(void (^)(NSError *))completion {
     
     
-    NSDictionary *headers = @{ @"content-type": @"application/json",
-                               @"cache-control": @"no-cache" };
+    NSDictionary *headers = [DAServer AuthHeader];
     
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
-    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
     
     NSDictionary *parameters = @{
-                                 @"request": @{
-                                         @"id": uid,
-                                         @"sessionToken": sessionToken,
-                                         @"post": @"profile",
                                          type: text
-                                         }
                                  };
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
 
+        NSString *urlStr = [NSString stringWithFormat:@"%@/profiles/%@/", [DAServer baseURL], uid];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlStr]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
-    [request setHTTPMethod:@"POST"];
+    [request setHTTPMethod:requestType];
     [request setAllHTTPHeaderFields:headers];
     [request setHTTPBody:postData];
     
