@@ -87,7 +87,7 @@
                                                                          NSLog(@"%@", jsonString);
                                                                          
                                                                          
-                                                                         NSString *user_id = [json objectForKey:@"user"];
+                                                                         NSString *user_id = [json objectForKey:@"id"];
                                                                          
                                                                          
                                                                          NSString *long_token = [json objectForKey:@"ll_token"];
