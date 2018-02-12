@@ -9,6 +9,7 @@
 #import "Includes.h"
 #import "FBAlbumsViewController.h"
 #import "AlbumSelectionViewController.h"
+#import "UserInfoTableViewCell.h"
 
 @interface EditPhotosViewController : UIViewController
                 <UICollectionViewDelegate,UICollectionViewDataSource, UIGestureRecognizerDelegate,
@@ -19,11 +20,6 @@
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *collectionViewWidth;
 
-@property (strong, nonatomic) IBOutlet UITextView *bio_textview;
-
-@property (strong, nonatomic) IBOutlet UITextView *edu_textview;
-
-@property (strong, nonatomic) IBOutlet UITextView *occu_textview;
 
 @property (nullable, strong, nonatomic)  NSMutableArray *pics;
 

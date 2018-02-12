@@ -38,5 +38,7 @@
 @property (nonatomic, assign) NSInteger settingsInvisible;
 @property (nonatomic, assign) NSInteger settingsNotifications;
 @property (nonatomic, assign) NSInteger settingsDistance;
+@property (nonatomic, assign) NSInteger ageMin;
+@property (nonatomic, assign) NSInteger ageMax;
 
 @end

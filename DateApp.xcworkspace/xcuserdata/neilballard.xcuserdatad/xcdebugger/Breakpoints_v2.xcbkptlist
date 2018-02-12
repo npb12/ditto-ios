@@ -160,7 +160,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "539930328.488282"
+            timestampString = "540172472.971272"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "29"
@@ -176,28 +176,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "539930328.488832"
+            timestampString = "540172472.971343"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "28"
             endingLineNumber = "28"
             landmarkName = "+AuthHeader"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "DateApp/DAServer.m"
-            timestampString = "539930391.790588"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "695"
-            endingLineNumber = "695"
-            landmarkName = "+updateProfile:editType:description:completion:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

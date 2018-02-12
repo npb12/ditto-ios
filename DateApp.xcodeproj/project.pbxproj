@@ -50,6 +50,7 @@
 		8C5F0E141E8D70B300C799B4 /* DAServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E131E8D70B300C799B4 /* DAServer.m */; };
 		8C5F0E191E8F2F8200C799B4 /* MatchUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E181E8F2F8200C799B4 /* MatchUser.m */; };
 		8C5F0E1C1E8F30EE00C799B4 /* DAParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E1B1E8F30EE00C799B4 /* DAParser.m */; };
+		8C76FADE203122BF00E45880 /* UserInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C76FADD203122BF00E45880 /* UserInfoTableViewCell.m */; };
 		8C92D2671E32E1E40071A737 /* MyProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C92D2661E32E1E40071A737 /* MyProfileTableViewCell.m */; };
 		8C9C19D71DD800DE0074A7D0 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C19D61DD800DE0074A7D0 /* SettingsViewController.m */; };
 		8C9C19DA1DD829680074A7D0 /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C19D91DD829680074A7D0 /* MyProfileViewController.m */; };
@@ -191,6 +192,8 @@
 		8C5F0E181E8F2F8200C799B4 /* MatchUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchUser.m; sourceTree = "<group>"; };
 		8C5F0E1A1E8F30EE00C799B4 /* DAParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAParser.h; sourceTree = "<group>"; };
 		8C5F0E1B1E8F30EE00C799B4 /* DAParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAParser.m; sourceTree = "<group>"; };
+		8C76FADC203122BF00E45880 /* UserInfoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserInfoTableViewCell.h; sourceTree = "<group>"; };
+		8C76FADD203122BF00E45880 /* UserInfoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserInfoTableViewCell.m; sourceTree = "<group>"; };
 		8C92D2651E32E1E40071A737 /* MyProfileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyProfileTableViewCell.h; sourceTree = "<group>"; };
 		8C92D2661E32E1E40071A737 /* MyProfileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyProfileTableViewCell.m; sourceTree = "<group>"; };
 		8C9C19D51DD800DE0074A7D0 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -465,6 +468,8 @@
 				8C268127202A035800F92967 /* SecondChancePickerViewController.m */,
 				8C268129202A089600F92967 /* SecondChanceCell.h */,
 				8C26812A202A089600F92967 /* SecondChanceCell.m */,
+				8C76FADC203122BF00E45880 /* UserInfoTableViewCell.h */,
+				8C76FADD203122BF00E45880 /* UserInfoTableViewCell.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -886,6 +891,7 @@
 				8C2BE30B1DE20C0E0042BE6B /* EditPhotosViewController.m in Sources */,
 				8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */,
 				8CCF830F1E91CB7F00C8CF9C /* DASocket.m in Sources */,
+				8C76FADE203122BF00E45880 /* UserInfoTableViewCell.m in Sources */,
 				8C5F0E191E8F2F8200C799B4 /* MatchUser.m in Sources */,
 				8C1146831E7D838C003AB594 /* NewMessageViewController.m in Sources */,
 				8CEB63951E58F9ED00F062A9 /* DraggableViewBackground.m in Sources */,

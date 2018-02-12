@@ -133,7 +133,11 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
     if (deviceTokenString.description)
     {
         
-        [DAServer updateProfile:@"PUT" editType:@"d_token" description:deviceTokenString.description completion:^(NSError *error) {
+        NSDictionary *dict = @{
+                               @"d_token": deviceTokenString.description
+                               };
+        
+        [DAServer updateProfile:@"PUT" data:dict completion:^(NSError *error) {
             // here, update the UI to say "Not busy anymore"
             if (!error)
             {

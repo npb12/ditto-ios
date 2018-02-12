@@ -654,7 +654,7 @@
 }
 
 //bio, occupation, education, d_token
-+ (void)updateProfile:(NSString*)requestType editType:(NSString*)type description:(NSString*)text
++ (void)updateProfile:(NSString*)requestType data:(NSDictionary*)dict
            completion:(void (^)(NSError *))completion {
     
     
@@ -662,12 +662,7 @@
     
     NSString *uid = [[DataAccess singletonInstance] getUserID];
     
-    
-    NSDictionary *parameters = @{
-                                         type: text
-                                 };
-    
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
 
         NSString *urlStr = [NSString stringWithFormat:@"%@/profiles/%@/", [DAServer baseURL], uid];
     
@@ -1031,10 +1026,9 @@
 
 + (void)getProfile:(void (^)(User *, NSError *))completion {
     
-    NSDictionary *headers = @{ @"content-type": @"application/json",
-                               @"cache-control": @"no-cache" };
+    NSDictionary *headers = [DAServer AuthHeader];
     
-    NSString *args = [NSString stringWithFormat:@"?uid=%@&get=profile&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    NSString *args = [NSString stringWithFormat:@"/profiles/%@/", [[DataAccess singletonInstance] getUserID]];
     
     NSString *URL = [[DAServer baseURL] stringByAppendingString:args];
     
@@ -1057,10 +1051,8 @@
 
                                                         NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                         id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-
-                                                        NSDictionary *dict = [json objectForKey:@"infos"];
                                                         
-                                                        User *user = [DAParser myprofile:dict];
+                                                        User *user = [DAParser myprofile:json];
                                                         
                                                         completion(user, nil);
                                                         
@@ -1102,9 +1094,9 @@
                                                         
                                                         NSDictionary *dict = [json objectForKey:@"infos"];
                                                         
-                                                        User *settings = [DAParser mysettings:dict];
+                                //                        User *settings = [DAParser mysettings:dict];
                                                         
-                                                        completion(settings, nil);
+                                                        completion(nil, nil);
                                                         
                                                     }
                                                 }];

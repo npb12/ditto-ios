@@ -1058,8 +1058,8 @@
 
 - (IBAction)profileAction:(id)sender
 {
-    //[self performSegueWithIdentifier:@"proSegue" sender:self];
-    [self performSegueWithIdentifier:@"secondChanceSegue" sender:self];
+    [self performSegueWithIdentifier:@"proSegue" sender:self];
+    //[self performSegueWithIdentifier:@"secondChanceSegue" sender:self];
     
 }
 

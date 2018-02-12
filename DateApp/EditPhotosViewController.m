@@ -9,14 +9,14 @@
 #import "EditPhotosViewController.h"
 #import "DAGradientColor.h"
 
-@interface EditPhotosViewController ()<UIImagePickerControllerDelegate>{
+@interface EditPhotosViewController ()<UIImagePickerControllerDelegate, UITextFieldDelegate>{
     CGPoint p;
   //  UIImageView *x_image;
     BOOL adding;
     CGFloat cellWidth, cellHeight;
     NSInteger selectedIndex;
     BOOL tvDidChange;
-    BOOL notInitial;
+    BOOL notInitial, heightChanged;
 }
 
 @property (strong,nonatomic) NSMutableArray *photo_arary;
@@ -24,9 +24,7 @@
 
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *collectionViewHeight;
-@property (strong, nonatomic) IBOutlet UILabel *workLabel;
-@property (strong, nonatomic) IBOutlet UILabel *eduLabel;
-@property (strong, nonatomic) IBOutlet UITextView *bioTV;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 
 @end
@@ -60,21 +58,6 @@
     
     self.collectionViewHeight.constant = cellHeight * 2.1;
     
-    if (self.user.bio)
-    {
-        self.bioTV.text = self.user.bio;
-    }
-    
-    if (self.user.edu)
-    {
-        self.eduLabel.text = self.user.edu;
-    }
-    
-    if (self.user.job)
-    {
-        self.workLabel.text = self.user.job;
-    }
-
     [self getProfile];
 
     
@@ -160,21 +143,8 @@
     // here, update the UI to say "Not busy anymore"
     if (!error) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            //self.photo_arary = user.pics;
-            if (user.bio)
-            {
-                self.bioTV.text = user.bio;
-            }
-            
-            if (user.edu)
-            {
-                self.eduLabel.text = user.edu;
-            }
-            
-            if (user.job)
-            {
-                self.workLabel.text = user.job;
-            }
+            self.user = user;
+            [self.tableView reloadData];
         });
         
         
@@ -776,6 +746,186 @@
     [self presentViewController:alert animated:YES completion:nil]; // 6
 }
 
+#pragma mark - TableView
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 3;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    // Number of rows is the number of time zones in the region for the specified section.
+    return 1;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 2:
+            return 150.0;
+        default:
+            return 58.0;
+    }
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MyIdentifier];
+    /*    ConnectionsTableViewCell *cell = (ConnectionsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:MyIdentifier]; */
+    
+    
+    UserInfoTableViewCell *cell;
+    
+    if (indexPath.section == 0)
+    {
+        
+        cell = (UserInfoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"textFieldIdentifier"];
+        cell.textField.delegate = self;
+        cell.textField.tag = 0;
+        cell.textField.placeholder = @"Current place of work";
+        if (self.user.job.length)
+        {
+            [cell.textField setText:self.user.job];
+        }
+            /*
+            cell.distance_slider.minimumValue = 1.0;
+            cell.distance_slider.maximumValue = 90.0;
+            
+            [cell.distance_slider addTarget:self
+                                     action:@selector(distanceValueChanged:)
+                           forControlEvents:UIControlEventValueChanged];
+            cell.distance_slider.minimumTrackTintColor = [DAGradientColor gradientFromColor:cell.distance_slider.frame.size.width];
+            cell.sliderLabel.text = @"Maximum Distance";
+            // cell.sliderDataLabel.text = @"30 mi. Away";
+            [cell.doubleSlider setHidden:YES]; */
+            
+    }
+    else if (indexPath.section == 1)
+    {
+        cell = (UserInfoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"textFieldIdentifier"];
+        cell.textField.delegate = self;
+        cell.textField.tag = 1;
+        cell.textField.placeholder = @"School or place of education";
+        if (self.user.edu.length)
+        {
+            [cell.textField setText:self.user.edu];
+        }
+    }
+    else if (indexPath.section == 2)
+    {
+        cell = (UserInfoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"textViewIdentifier"];
+        cell.textView.delegate = self;
+        if (self.user.bio)
+        {
+            [cell.textView setText:self.user.bio];
+        }
+    }
+    
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    return cell;
+    
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+
+    
+}
+
+-(CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section 
+{
+    return 35.0;
+}
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 55)];
+    UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(20,0,100,40)];
+    
+    
+    switch (section) {
+        case 0:
+        case 1:
+        case 2:
+            if (section == 0) {
+                UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(20,5,200,40)];
+                lbl.text = @"CURRENT WORK";
+                footer.backgroundColor=[UIColor clearColor];
+                lbl.backgroundColor = [UIColor clearColor];
+                lbl.textAlignment = NSTextAlignmentLeft;
+                [lbl setNumberOfLines:1];//set line if you need
+                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:14.0]];//font size and style
+                [lbl setTextColor:[self headerColor]];
+                [footer addSubview:lbl];
+                break;
+                
+            }else if(section == 1){
+                UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(20,0,200,40)];
+                lbl.text = @"EDUCATION";
+                footer.backgroundColor=[UIColor clearColor];
+                lbl.backgroundColor = [UIColor clearColor];
+                lbl.textAlignment = NSTextAlignmentLeft;
+                [lbl setNumberOfLines:1];//set line if you need
+                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:14.0]];//font size and style
+                [lbl setTextColor:[self headerColor]];
+                [footer addSubview:lbl];
+                /*
+                 self.distanceLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 80,0,100,40)];
+                 self.distanceLabel.text = self.distance;
+                 self.distanceLabel.backgroundColor = [UIColor clearColor];
+                 self.distanceLabel.textAlignment = NSTextAlignmentLeft;
+                 [self.distanceLabel setNumberOfLines:1];
+                 [self.distanceLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
+                 [self.distanceLabel setTextColor:[self othBlueColor]];
+                 [footer addSubview:self.distanceLabel]; */
+                
+            }else{
+                UILabel *lbl = [[UILabel alloc]initWithFrame:CGRectMake(20,0,200,40)];
+                lbl.text = @"ABOUT ME";
+                footer.backgroundColor=[UIColor clearColor];
+                lbl.backgroundColor = [UIColor clearColor];
+                lbl.textAlignment = NSTextAlignmentLeft;
+                [lbl setNumberOfLines:1];//set line if you need
+                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:14.0]];//font size and style
+                [lbl setTextColor:[self headerColor]];
+                [footer addSubview:lbl];
+                // lbl.text = @"Age Range:";
+                /*self.ageRangeLabel = [[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width - 80,0,100,40)];
+                 self.ageRangeLabel.text = self.ageRange;
+                 self.ageRangeLabel.backgroundColor = [UIColor clearColor];
+                 self.ageRangeLabel.textAlignment = NSTextAlignmentLeft;
+                 [self.ageRangeLabel setNumberOfLines:1];
+                 [self.ageRangeLabel setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
+                 [self.ageRangeLabel setTextColor:[self othBlueColor]];
+                 [footer addSubview:self.ageRangeLabel]; */
+                
+            }
+            /*
+             footer.backgroundColor=[UIColor clearColor];
+             lbl.backgroundColor = [UIColor clearColor];
+             lbl.textAlignment = NSTextAlignmentLeft;
+             [lbl setNumberOfLines:1];//set line if you need
+             [lbl setFont:[UIFont fontWithName:@"HelveticaNeue" size:16.0]];//font size and style
+             [lbl setTextColor:[UIColor blackColor]];
+             [footer addSubview:lbl]; */
+            break;
+        default:
+            break;
+    }
+    
+    
+    
+    return footer;
+}
+
+
+-(CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section {
+    return 10.0;
+}
+
+
 #pragma mark - Photo Selector
 
 - (IBAction) onCameraPressed:(id)sender
@@ -883,6 +1033,17 @@
     return YES;
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([string containsString:@"\n"])
+    {
+        [textField resignFirstResponder];
+        return NO;
+    }
+    tvDidChange = YES;
+    
+    return YES;
+}
+
 - (IBAction)closeAction:(id)sender
 {
     
@@ -892,6 +1053,28 @@
         return;
     }
     
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:2];
+    UserInfoTableViewCell *cell = (UserInfoTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    NSString *bio =  cell.textView.text;
+    
+        indexPath =[NSIndexPath indexPathForRow:0 inSection:1];
+        cell = (UserInfoTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+        NSString *edu =  cell.textField.text;
+
+        indexPath =[NSIndexPath indexPathForRow:0 inSection:0];
+        cell = (UserInfoTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+        NSString *job =  cell.textField.text;
+    
+    
+    NSDictionary *dict = @{
+                                  @"bio": bio,
+                                  @"occupation": job,
+                                  @"education": edu
+                                  };
+    
+    [self updateData:dict];
+
+    /*
     NSString *bioText = self.bioTV.text;
     //update user profile with bio/occupation and string description
     [DAServer updateProfile:@"PUT" editType:@"bio" description:bioText completion:^(NSError *error) {
@@ -908,7 +1091,23 @@
                            });
             NSLog(@"An error occured with the server!");
         }
+    }]; */
+}
+
+-(void)updateData:(NSDictionary*)dict
+{
+    [DAServer updateProfile:@"PUT" data:dict completion:^(NSError *error) {
+        // here, update the UI to say "Not busy anymore"
+        dispatch_async(dispatch_get_main_queue(), ^
+                       {
+                           [self dismissViewControllerAnimated:YES completion:nil];
+                       });
     }];
+}
+
+-(UIColor*)headerColor
+{
+    return [UIColor colorWithRed:0.56 green:0.56 blue:0.58 alpha:1.0];
 }
 
 

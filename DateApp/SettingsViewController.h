@@ -25,6 +25,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *distance_label;
 
 @property (strong, nonatomic) IBOutlet UILabel *age_label;
+@property (strong, nonatomic)  User *settings;
 
 
 @end

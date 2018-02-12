@@ -191,7 +191,7 @@
     else
     {
         
-        self.middleLabel.text = @"Go to Facebook to add work and education info.";
+        self.middleLabel.text = @"Go to Edit Profile to add more info about yourself.";
     }
     
     [self getPhotoData];
@@ -279,6 +279,11 @@
         EditPhotosViewController *profileVC = segue.destinationViewController;
         profileVC.user = self.user;
         
+    }
+    else if ([segue.destinationViewController isKindOfClass:[SettingsViewController class]])
+    {
+        SettingsViewController *settingsVC = segue.destinationViewController;
+        settingsVC.settings = self.user;
     }
 }
 

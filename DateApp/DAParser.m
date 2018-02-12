@@ -196,7 +196,7 @@
     user.user_id = [[dict objectForKey:@"id"] integerValue];
     
     user.name = [dict objectForKey:@"fb_firstname"];
-    user.age = [NSString stringWithFormat: @"%d", [[dict objectForKey:@"age"] integerValue]];
+    user.age = [NSString stringWithFormat: @"%ld", [[dict objectForKey:@"age"] integerValue]];
     
     NSString *edu = [dict objectForKey:@"education"];
     
@@ -287,9 +287,10 @@
     
     user.user_id = [[dict objectForKey:@"id"] integerValue];
     
-    user.name = [dict objectForKey:@"fb_firstname"];
-    user.age = [NSString stringWithFormat: @"%d", [[dict objectForKey:@"age"] integerValue]];
+    user.name = [dict objectForKey:@"first_name"];
     
+    user.age = [NSString stringWithFormat: @"%ld", [[dict objectForKey:@"age"] integerValue]];
+
     NSString *edu = [dict objectForKey:@"education"];
     
     if (edu == nil || [DAParser nsnullCheck:edu])
@@ -351,6 +352,7 @@
         
     }
     
+    [DAParser mysettings:dict usr:user];
     
     [User saveAsCurrentUser:user];
     
@@ -359,18 +361,14 @@
 }
 
 
-+(User*)mysettings:(NSDictionary*)dict
++(void)mysettings:(NSDictionary*)dict usr:(User*)settings
 {
-    User *settings = [User new];
-
-    settings.ageRange = [dict objectForKey:@"settingsAge"];
-    settings.settingsGender = [dict objectForKey:@"settingsGender"];
-    settings.settingsInvisible = [[dict objectForKey:@"invisible"] integerValue];
-    settings.settingsDistance = [[dict objectForKey:@"settingsDistance"] integerValue];
-    settings.settingsNotifications = [[dict objectForKey:@"enable_notification"] integerValue];
-    
-    return settings;
-    
+    settings.ageMin = [[dict objectForKey:@"pref_min_age"] integerValue];
+    settings.ageMax = [[dict objectForKey:@"pref_max_age"] integerValue];
+    settings.settingsGender = [dict objectForKey:@"pref_gender"];
+  //  settings.settingsInvisible = [[dict objectForKey:@"invisible"] integerValue];
+    settings.settingsDistance = [[dict objectForKey:@"pref_distance"] integerValue];
+    settings.settingsNotifications = [[dict objectForKey:@"receive_notifications"] integerValue];
 }
 
 

@@ -18,6 +18,7 @@ enum RequestType {
     POST,
 };
 
+
 @property (nonatomic,assign) enum RequestType requestType;
 
 
@@ -38,7 +39,7 @@ enum RequestType {
 + (void)dropMatch:(NSString*)message
        completion:(void (^)(NSError *))completion;
 
-+ (void)updateProfile:(NSString*)requestType editType:(NSString*)type description:(NSString*)text
++ (void)updateProfile:(NSString*)requestType data:(NSDictionary*)dict
            completion:(void (^)(NSError *))completion;
 
 + (void)updateSettings:(NSString*)type setting:(NSString*)edit

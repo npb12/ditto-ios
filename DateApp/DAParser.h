@@ -14,7 +14,7 @@
 +(void)currentMatch:(NSDictionary*)dict notif:(BOOL)notification;
 +(void)alternateMatches:(NSDictionary*)dict;
 +(User*)myprofile:(NSDictionary*)dict;
-+(User*)mysettings:(NSDictionary*)dict;
++(void)mysettings:(NSDictionary*)dict usr:(User*)settings;
 +(NSArray*)messages:(NSDictionary*)messages_dict;
 +(bool)messageNew:(NSDictionary*)recieved_dict sent:(NSDictionary*)sent_dict;
 @end
