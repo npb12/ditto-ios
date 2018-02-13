@@ -345,39 +345,17 @@
     __block NSMutableArray *users = [NSMutableArray new];
     
     
-    NSDictionary *headers = @{ @"content-type": @"application/json",
-                               @"cache-control": @"no-cache" };
+    NSDictionary *headers = [DAServer AuthHeader];
     
-    NSString *uid = [[DataAccess singletonInstance] getUserID];
+    NSString *urlStr = [NSString stringWithFormat:@"/latest/?lat=%@&lon=%@", @(location.latitude), @(location.longitude)];
     
-    double time_stamp = [[NSDate date] timeIntervalSince1970];
+    NSString *url = [[DAServer baseURL] stringByAppendingString:urlStr];
     
-    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
-    
-    
-    NSDictionary *parameters = @{
-                                 @"request": @{
-                                         @"id": uid,
-                                         @"sessionToken": sessionToken,
-                                         @"post": @"location",
-                                         @"locations": @[
-                                                 @{
-                                                     @"timestamp": @(time_stamp),
-                                                     @"lon": @(location.latitude),
-                                                     @"lat": @(location.longitude)
-                                                     }
-                                                 ]
-                                         }
-                                 };
-    
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
-    [request setHTTPMethod:@"POST"];
+    [request setHTTPMethod:@"GET"];
     [request setAllHTTPHeaderFields:headers];
-    [request setHTTPBody:postData];
     
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
