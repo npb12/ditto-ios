@@ -10,10 +10,7 @@
 
 @implementation DADateFormatter
 
-+ (NSString *)timeAgoStringFromDate:(double)match_time {
-    
-    NSTimeInterval timestamp = (NSTimeInterval)match_time;
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp];
++ (NSString *)timeAgoStringFromDate:(NSDate*)date {
     
     NSDateComponentsFormatter *formatter = [[NSDateComponentsFormatter alloc] init];
     formatter.unitsStyle = NSDateComponentsFormatterUnitsStyleFull;

@@ -69,7 +69,7 @@
     if (self.bio)
         [dictionary setObject:self.bio forKey:@"bio"];
     if (self.match_time)
-        [dictionary setObject:[NSNumber numberWithDouble: self.match_time] forKey:@"timestamp"];
+        [dictionary setObject:self.match_time forKey:@"timestamp"];
     if ([self.pics count])
         [dictionary setObject:self.pics forKey:@"pics"];
     if (self.distance)
@@ -98,8 +98,7 @@
     user.education = [userDictionary objectForKey:@"education"];
     user.work = [userDictionary objectForKey:@"work"];
     user.bio = [userDictionary objectForKey:@"bio"];
-    NSNumber *timestamp = [userDictionary objectForKey:@"timestamp"];
-    user.match_time = [timestamp doubleValue];
+    user.match_time = [userDictionary objectForKey:@"timestamp"];
     user.pics = [userDictionary objectForKey:@"pics"];
     NSNumber *distance = [userDictionary objectForKey:@"distance"];
     user.distance = [distance integerValue];

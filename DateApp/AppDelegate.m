@@ -42,6 +42,12 @@
     if ([self.window.rootViewController isKindOfClass:[RootViewController class]])
     {
         self.rootVC = (RootViewController*)self.window.rootViewController;
+        
+    }
+    
+    if ([[DataAccess singletonInstance] UserIsLoggedIn])
+    {
+        [(AppDelegate*)[UIApplication sharedApplication].delegate registerForRemoteNotifications];
     }
     
     return YES;
@@ -54,9 +60,18 @@
     [[DataAccess singletonInstance] setaskedForNotifications:YES];
     [center requestAuthorizationWithOptions:(UNAuthorizationOptionSound | UNAuthorizationOptionAlert | UNAuthorizationOptionBadge) completionHandler:^(BOOL granted, NSError * _Nullable error){
         if(!error){
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[UIApplication sharedApplication] registerForRemoteNotifications];
-            });
+            if (granted)
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] registerForRemoteNotifications];
+                });
+            }
+            else
+            {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] registerForRemoteNotifications];
+                });
+            }
         }
     }];
     
@@ -138,15 +153,6 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
                                };
         
         [DAServer updateProfile:@"PUT" data:dict completion:^(NSError *error) {
-            // here, update the UI to say "Not busy anymore"
-            if (!error)
-            {
-
-            }
-            else
-            {
-
-            }
         }];
         /*
         [DAServer postDeviceToken:deviceTokenString.description completion:^(NSError *error) {
@@ -158,6 +164,22 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
             }
         }]; */
     }
+}
+
+- (void)application:(UIApplication *)application
+didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+    if (error)
+    {
+        
+    }
+}
+
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))completionHandler
+{
+    completionHandler(UIBackgroundFetchResultNoData);
 }
 
 

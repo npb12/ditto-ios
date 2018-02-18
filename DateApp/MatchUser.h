@@ -24,7 +24,7 @@
 @property (nullable, nonatomic, retain) NSString *age;
 @property (nonatomic, assign) NSInteger user_id;
 @property (nonatomic, assign) NSInteger distance;
-@property (nonatomic, assign) double match_time;
+@property (nonatomic, assign) NSDate *match_time;
 @property (nullable, nonatomic, retain) NSMutableArray *pics;
 
 @end

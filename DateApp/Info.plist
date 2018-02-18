@@ -23,14 +23,28 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb179947372771626</string>
+				<string>fb992281634217164</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2.2</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>9e81907b7173e7b4a64b768a9b88bb2df219de59</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>FacebookAppID</key>
-	<string>179947372771626</string>
+	<string>992281634217164</string>
 	<key>FacebookDisplayName</key>
 	<string>Ditto</string>
 	<key>Fonts provided by application</key>
@@ -64,6 +78,11 @@
 	<string>This application requires location services to calculate your encounters</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access your photos to add to your album</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -76,19 +95,5 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>Fabric</key>
-	<dict>
-		<key>APIKey</key>
-		<string>9e81907b7173e7b4a64b768a9b88bb2df219de59</string>
-		<key>Kits</key>
-		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict/>
-				<key>KitName</key>
-				<string>Crashlytics</string>
-			</dict>
-		</array>
-	</dict>
 </dict>
 </plist>

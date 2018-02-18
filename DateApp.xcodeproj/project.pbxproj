@@ -51,6 +51,7 @@
 		8C5F0E191E8F2F8200C799B4 /* MatchUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E181E8F2F8200C799B4 /* MatchUser.m */; };
 		8C5F0E1C1E8F30EE00C799B4 /* DAParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E1B1E8F30EE00C799B4 /* DAParser.m */; };
 		8C76FADE203122BF00E45880 /* UserInfoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C76FADD203122BF00E45880 /* UserInfoTableViewCell.m */; };
+		8C76FAE32033AA9000E45880 /* SelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C76FAE22033AA9000E45880 /* SelectionViewController.m */; };
 		8C92D2671E32E1E40071A737 /* MyProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C92D2661E32E1E40071A737 /* MyProfileTableViewCell.m */; };
 		8C9C19D71DD800DE0074A7D0 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C19D61DD800DE0074A7D0 /* SettingsViewController.m */; };
 		8C9C19DA1DD829680074A7D0 /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C19D91DD829680074A7D0 /* MyProfileViewController.m */; };
@@ -194,6 +195,8 @@
 		8C5F0E1B1E8F30EE00C799B4 /* DAParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAParser.m; sourceTree = "<group>"; };
 		8C76FADC203122BF00E45880 /* UserInfoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserInfoTableViewCell.h; sourceTree = "<group>"; };
 		8C76FADD203122BF00E45880 /* UserInfoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserInfoTableViewCell.m; sourceTree = "<group>"; };
+		8C76FAE12033AA9000E45880 /* SelectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectionViewController.h; sourceTree = "<group>"; };
+		8C76FAE22033AA9000E45880 /* SelectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectionViewController.m; sourceTree = "<group>"; };
 		8C92D2651E32E1E40071A737 /* MyProfileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyProfileTableViewCell.h; sourceTree = "<group>"; };
 		8C92D2661E32E1E40071A737 /* MyProfileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyProfileTableViewCell.m; sourceTree = "<group>"; };
 		8C9C19D51DD800DE0074A7D0 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
@@ -470,6 +473,8 @@
 				8C26812A202A089600F92967 /* SecondChanceCell.m */,
 				8C76FADC203122BF00E45880 /* UserInfoTableViewCell.h */,
 				8C76FADD203122BF00E45880 /* UserInfoTableViewCell.m */,
+				8C76FAE12033AA9000E45880 /* SelectionViewController.h */,
+				8C76FAE22033AA9000E45880 /* SelectionViewController.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -621,6 +626,9 @@
 						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -917,6 +925,7 @@
 				8C2CE0EC1DA186D500592566 /* TFStyle.m in Sources */,
 				8C26812B202A089600F92967 /* SecondChanceCell.m in Sources */,
 				8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */,
+				8C76FAE32033AA9000E45880 /* SelectionViewController.m in Sources */,
 				8C1F8AE61FC0EFCE00D927D4 /* PhotoDownloader.m in Sources */,
 				8C2BE3141DE5549A0042BE6B /* OccupationViewController.m in Sources */,
 				8CEB63971E58F9ED00F062A9 /* SwipeViewController.m in Sources */,

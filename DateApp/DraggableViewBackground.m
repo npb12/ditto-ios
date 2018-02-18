@@ -61,7 +61,7 @@ static const int MAX_BUFFER_SIZE = 2;
 
     
     NSLog(@"%ld", (long)index);
-        pad = 12;
+        pad = 15;
         x_pad = 10;
     
     UIEdgeInsets safeAreaInsets = self.safeAreaInsets;

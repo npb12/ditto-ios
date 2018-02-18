@@ -25,7 +25,7 @@
         user.user_id = [[key objectForKey:@"id"] integerValue];
         
        // user.name = [key objectForKey:@"fb_firstname"];
-        user.name = [key objectForKey:@"fb_firstname"];
+        user.name = [key objectForKey:@"first_name"];
         user.age = [NSString stringWithFormat: @"%ld", [[key objectForKey:@"age"] integerValue]];
 
         NSString *edu = [key objectForKey:@"education"];
@@ -189,13 +189,12 @@
 +(void)currentMatch:(NSDictionary*)dict notif:(BOOL)notification
 {
     
-    NSLog(@"match::: %@", dict);
     
     MatchUser *user = [MatchUser new];
 
     user.user_id = [[dict objectForKey:@"id"] integerValue];
     
-    user.name = [dict objectForKey:@"fb_firstname"];
+    user.name = [dict objectForKey:@"first_name"];
     user.age = [NSString stringWithFormat: @"%ld", [[dict objectForKey:@"age"] integerValue]];
     
     NSString *edu = [dict objectForKey:@"education"];
@@ -225,35 +224,45 @@
     }
     user.bio = bio;
     
-    user.match_time = [[dict objectForKey:@"timestamp"] doubleValue];
+    
+    NSString *dateStr = [dict objectForKey:@"date_matched"];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"YYYY-MM-dd'T'HH:mm:ss"];
+    
+    user.match_time = [dateFormat dateFromString:dateStr];
     
     user.pics = [NSMutableArray new];
     
     NSString *pic1 = [dict objectForKey:@"pic1"];
-    [user.pics addObject:pic1];
     
-    NSString *pic2 = [dict objectForKey:@"pic2"];
-    
-    if (![pic2 isEqualToString:@""])
+    if (![pic1 isEqualToString:@""])
     {
-        [user.pics addObject:pic2];
-        
-        NSString *pic3 = [dict objectForKey:@"pic3"];
-        if (![pic3 isEqualToString:@""])
+        [user.pics addObject:pic1];
+    
+        NSString *pic2 = [dict objectForKey:@"pic2"];
+    
+        if (![pic2 isEqualToString:@""])
         {
-            [user.pics addObject:pic3];
+            [user.pics addObject:pic2];
             
-            NSString *pic4 = [dict objectForKey:@"pic4"];
-            if (![pic4 isEqualToString:@""])
+            NSString *pic3 = [dict objectForKey:@"pic3"];
+            if (![pic3 isEqualToString:@""])
             {
-                [user.pics addObject:pic4];
+                [user.pics addObject:pic3];
                 
-                NSString *pic5 = [dict objectForKey:@"pic5"];
-                if (![pic5 isEqualToString:@""])
+                NSString *pic4 = [dict objectForKey:@"pic4"];
+                if (![pic4 isEqualToString:@""])
                 {
-                    [user.pics addObject:pic5];
+                    [user.pics addObject:pic4];
+                    
+                    NSString *pic5 = [dict objectForKey:@"pic5"];
+                    if (![pic5 isEqualToString:@""])
+                    {
+                        [user.pics addObject:pic5];
+                    }
                 }
             }
+            
         }
         
     }

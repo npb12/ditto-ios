@@ -33,7 +33,7 @@ enum RequestType {
 + (void)postLocation:(CLLocationCoordinate2D)location
           completion:(void (^)(NSMutableArray *, NSError *))completion;
 
-+ (void)swipe:(NSString*)likedID liked:(int)like
++ (void)swipe:(NSString*)likedID liked:(BOOL)like
    completion:(void (^)(NSError *))completion;
 
 + (void)dropMatch:(NSString*)message

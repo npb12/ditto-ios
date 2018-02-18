@@ -152,12 +152,12 @@
 {
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat bigSize = width / 5;
-    CGFloat height = [UIScreen mainScreen].bounds.size.height * 0.825;
+    CGFloat height = [UIScreen mainScreen].bounds.size.height * 0.86;
 
     
     [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
      {
-         self.chatBottom.constant = 63;
+         self.chatBottom.constant = 50;
          [self.view layoutIfNeeded];
      }
                      completion:^(BOOL finished)

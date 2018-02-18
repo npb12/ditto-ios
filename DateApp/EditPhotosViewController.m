@@ -22,9 +22,11 @@
 @property (strong,nonatomic) NSMutableArray *photo_arary;
 @property (nonatomic) BOOL didChange;
 
+@property (strong, nonatomic) IBOutlet UIButton *touchBtn;
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *collectionViewHeight;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 
 
 @end
@@ -1043,6 +1045,44 @@
     
     return YES;
 }
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    CGFloat mid = [[UIScreen mainScreen] bounds].size.height / 2;
+    CGPoint pt = [textField.superview convertPoint:textField.frame.origin toView:nil];
+    CGFloat target = pt.y - mid;
+    [self.scrollView setContentOffset:CGPointMake(0, target) animated:YES];
+    [self.touchBtn setUserInteractionEnabled:YES];
+    [self.touchBtn setHidden:NO];
+}
+
+-(void)textViewDidBeginEditing:(UITextView *)textView
+{
+    CGFloat mid = [[UIScreen mainScreen] bounds].size.height / 2;
+    CGPoint pt = [textView.superview convertPoint:textView.frame.origin toView:nil];
+    CGFloat target = pt.y - mid;
+    [self.scrollView setContentOffset:CGPointMake(0, target + 50) animated:YES];
+    [self.touchBtn setUserInteractionEnabled:YES];
+    [self.touchBtn setHidden:NO];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    //[self.scrollView setContentOffset:CGPointMake(0, -100) animated:YES];
+}
+
+- (void)textViewDidEndEditing:(UITextField *)textField
+{
+    //[self.scrollView setContentOffset:CGPointMake(0, -100) animated:YES];
+}
+
+- (IBAction)dismissAction:(id)sender
+{
+    [[self view] endEditing:YES];
+    [self.touchBtn setUserInteractionEnabled:NO];
+    [self.touchBtn setHidden:YES];
+}
+
 
 - (IBAction)closeAction:(id)sender
 {

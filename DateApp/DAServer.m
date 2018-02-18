@@ -347,7 +347,9 @@
     
     NSDictionary *headers = [DAServer AuthHeader];
     
-    NSString *urlStr = [NSString stringWithFormat:@"/latest/?lat=%@&lon=%@", @(location.latitude), @(location.longitude)];
+    NSString *urlStr = [NSString stringWithFormat:@"/latest/?lat=%@&lon=%@",
+                       // @(42.000), @(42.000)];
+                        @(location.latitude), @(location.longitude)];
     
     NSString *url = [[DAServer baseURL] stringByAppendingString:urlStr];
     
@@ -377,13 +379,13 @@
                                                         id json = [NSJSONSerialization JSONObjectWithData:ns options:0 error:nil];
                                                         
                                                         NSDictionary *temp_users=[[NSDictionary alloc]init];
-                                                        temp_users=[json objectForKey:@"users"];
+                                                        temp_users=[json objectForKey:@"nearby"];
                                                         
                                                         NSDictionary *matches=[[NSDictionary alloc]init];
-                                                        matches=[json objectForKey:@"alternateMatchs"];
+                                                        matches=[json objectForKey:@"alternates"];
                                                         
                                                         NSDictionary *currentMatch=[[NSDictionary alloc]init];
-                                                        currentMatch=[json objectForKey:@"currentMatch"];
+                                                        currentMatch=[json objectForKey:@"match"];
                                                         
                                                         
                                                         users = [DAParser nearbyUsers:temp_users];
@@ -413,36 +415,27 @@
     
 }
 
-+ (void)swipe:(NSString*)likedID liked:(int)like
++ (void)swipe:(NSString*)likedID liked:(BOOL)like
              completion:(void (^)(NSError *))completion {
     
+    NSString *swipeAction;
     
-    NSDictionary *headers = @{ @"content-type": @"application/json",
-                               @"cache-control": @"no-cache" };
+    if (like)
+    {
+        swipeAction = @"swipe-right";
+    }
+    else
+    {
+        swipeAction = @"swipe-left";
+    }
     
-    NSString *uid = [[DataAccess singletonInstance] getUserID];
+    NSString *url = [NSString stringWithFormat:@"%@/%@/%@/", [DAServer baseURL], swipeAction, likedID];
     
-    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
-    
-    
-    NSDictionary *parameters = @{
-                                 @"request": @{
-                                         @"post": @"like",
-                                         @"id": uid,
-                                         @"sessionToken": sessionToken,
-                                         @"like_id": likedID,
-                                         @"like": @(like)
-                                         }
-                                 };
-    
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
-                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
-    [request setAllHTTPHeaderFields:headers];
-    [request setHTTPBody:postData];
+    [request setAllHTTPHeaderFields:[DAServer AuthHeader]];
     
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
@@ -475,21 +468,13 @@
     NSDictionary *headers = @{ @"content-type": @"application/json",
                                @"cache-control": @"no-cache" };
     
-    NSString *uid = [[DataAccess singletonInstance] getUserID];
-    
-    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
-    
-    
     NSDictionary *parameters = @{
-                                 @"request": @{
-                                         @"post": @"dropCurrent",
-                                         @"id": uid,
-                                         @"sessionToken": sessionToken,
-                                         @"message": message
-                                         }
+                                    @"reason": message,
                                  };
     
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+    
+    NSString *url = [[DAServer baseURL] stringByAppendingString:@"/drop-match/"];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy

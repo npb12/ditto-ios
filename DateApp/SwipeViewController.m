@@ -53,10 +53,6 @@
 
     
     
-    if ([[DataAccess singletonInstance] IsInitialUser]) {
-        [self pushIntro];
-    }
-    
 
     
 }

@@ -31,6 +31,8 @@
 
 @property (nonatomic, unsafe_unretained) BOOL hasMatch;
 
+@property (nonatomic, unsafe_unretained) BOOL firstLaunch;
+
 @property (nonatomic, unsafe_unretained) BOOL askedNotifications;
 @property (nonatomic, assign) long lastMessageTime;
 
@@ -144,8 +146,8 @@
 
 - (void)setUserGrantedLocationPermission:(BOOL)status;
 
-- (BOOL)IsInitialUser;
-- (void)setInitialUserStatus:(BOOL)status;
+- (BOOL)IsReturningUser;
+- (void)setReturningUserStatus:(BOOL)status;
 
 -(void)setLastMessage:(long)timestamp;
 -(long)getLastMessage;

@@ -356,7 +356,7 @@
                      animations:^{
                          self.center = finishPoint;
                      }completion:^(BOOL complete){
-                         [self cardResult:1];
+                         [self cardResult:YES];
                          [self removeFromSuperview];
                      }];
     
@@ -374,7 +374,7 @@
                      animations:^{
                          self.center = finishPoint;
                      }completion:^(BOOL complete){
-                         [self cardResult:0];
+                         [self cardResult:NO];
                          [self removeFromSuperview];
                      }];
     
@@ -411,7 +411,7 @@
                          self.center = finishPoint;
                          self.transform = CGAffineTransformMakeRotation(1);
                      }completion:^(BOOL complete){
-                         [self cardResult:1];
+                         [self cardResult:YES];
                          [self removeFromSuperview];
                      }];
     
@@ -427,7 +427,7 @@
                          self.center = finishPoint;
                          self.transform = CGAffineTransformMakeRotation(-1);
                      }completion:^(BOOL complete){
-                         [self cardResult:0];
+                         [self cardResult:NO];
                          [self removeFromSuperview];
                      }];
     

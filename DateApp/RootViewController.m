@@ -77,7 +77,7 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:NO];
+    [super viewDidAppear:animated];
    
     
     if (![[DataAccess singletonInstance] UserIsLoggedIn])
@@ -87,15 +87,16 @@
     }
     else
     {
+        
+        if (![[DataAccess singletonInstance] IsReturningUser])
+        {
+            [self performSegueWithIdentifier:@"selectionVC" sender:self];
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+            return;
+        }
 
-  //      if (![[DataAccess singletonInstance] askedForNotifications])
-   //     {
-        [(AppDelegate*)[UIApplication sharedApplication].delegate registerForRemoteNotifications];
-            
-    //    }
-        
         [self setLocationObserver];
-        
+                
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationEnteredForeground:)
                                                      name:UIApplicationWillEnterForegroundNotification
@@ -135,6 +136,8 @@
                 }
                 else
                 {
+                    
+                /*
                     [DAServer getMatchesData:NO completion:^(NSError *error) {
                         // here, update the UI to say "Not busy anymore"
                         if (!error) {
@@ -144,7 +147,7 @@
                         } else {
                             // update UI to indicate error or take remedial action
                         }
-                    }];
+                    }]; */
                 }
             }
         }
@@ -636,6 +639,21 @@
         secondChanceVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         
     }
+    else if ([segue.destinationViewController isKindOfClass:[SelectionViewController class]])
+    {
+        if (self.presentedViewController)
+        {
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+        SelectionViewController *selectionVC = segue.destinationViewController;
+        
+  //      selectionVC.delegate = self;
+        selectionVC.view.backgroundColor = [UIColor whiteColor];
+       // [selectionVC.view setAlpha:0.97];
+     //   selectionVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        
+    }
 }
 
 -(void)showMatchIcon
@@ -1059,7 +1077,7 @@
 - (IBAction)profileAction:(id)sender
 {
     [self performSegueWithIdentifier:@"proSegue" sender:self];
-    //[self performSegueWithIdentifier:@"secondChanceSegue" sender:self];
+  //  [self performSegueWithIdentifier:@"selectionVC" sender:self];
     
 }
 
