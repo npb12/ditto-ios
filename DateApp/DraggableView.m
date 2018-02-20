@@ -217,7 +217,7 @@
 
 -(void)setFrameShadow
 {
-    self.avatarImageViewHolder.layer.shadowRadius = 6;
+    self.avatarImageViewHolder.layer.shadowRadius = 2;
     [self.avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
     [self.avatarImageViewHolder.layer setShadowOpacity:0.8];
     [self.avatarImageViewHolder.layer setShadowColor:[self shadowColor].CGColor];

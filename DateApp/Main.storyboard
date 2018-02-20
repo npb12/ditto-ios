@@ -155,7 +155,7 @@
                                             <constraint firstItem="IIg-ib-cw7" firstAttribute="centerY" secondItem="LEJ-fO-sUq" secondAttribute="centerY" id="qAO-TE-7Bq"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JEC-qu-3pQ">
+                                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JEC-qu-3pQ">
                                         <rect key="frame" x="112" y="30" width="150" height="2"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </view>
