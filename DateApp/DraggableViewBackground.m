@@ -66,7 +66,7 @@ static const int MAX_BUFFER_SIZE = 2;
     
     UIEdgeInsets safeAreaInsets = self.safeAreaInsets;
 
-    CARD_HEIGHT = parentHeight * 0.95;
+    CARD_HEIGHT = parentHeight * 0.96;
         CARD_WIDTH = self.frame.size.width - 20;
 
     
