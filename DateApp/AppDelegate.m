@@ -137,6 +137,43 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
 //Called to let your app know which action was selected by the user for a given notification.
 -(void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void(^)(void))completionHandler{
     NSLog(@"User Info background: %@",response.notification.request.content.userInfo);
+    
+    
+    NSDictionary *notif = [response.notification.request.content.userInfo objectForKey:@"aps"];
+    
+    NSString *type = [notif objectForKey:@"type"];
+    
+    if ([type isEqualToString:@"match"])
+    {
+        [DAServer getMatchesData:NO completion:^(NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+
+            } else {
+                // update UI to indicate error or take remedial action
+            }
+        }];
+    }
+    else if([type isEqualToString:@"altMatch"])
+    {
+        [DAServer getMatchesData:YES completion:^(NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+
+            } else {
+                // update UI to indicate error or take remedial action
+            }
+        }];
+    }
+    else if([type isEqualToString:@"message"])
+    {
+
+    }
+    else if([type isEqualToString:@"drop"])
+    {
+        [MatchUser removeCurrentMatch];
+    }
+    
     completionHandler();
 }
 
