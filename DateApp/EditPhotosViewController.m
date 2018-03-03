@@ -823,9 +823,10 @@
     {
         cell = (UserInfoTableViewCell *)[tableView dequeueReusableCellWithIdentifier:@"textViewIdentifier"];
         cell.textView.delegate = self;
-        if (self.user.bio)
+        if (self.user.bio.length)
         {
             [cell.textView setText:self.user.bio];
+            [cell.textViewPlaceholder setHidden:YES];
         }
     }
     
@@ -1055,22 +1056,14 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    CGFloat mid = [[UIScreen mainScreen] bounds].size.height / 2;
-    CGPoint pt = [textField.superview convertPoint:textField.frame.origin toView:nil];
-    CGFloat target = pt.y - mid;
-    [self.scrollView setContentOffset:CGPointMake(0, target) animated:YES];
-    [self.touchBtn setUserInteractionEnabled:YES];
-    [self.touchBtn setHidden:NO];
+
 }
 
 -(void)textViewDidBeginEditing:(UITextView *)textView
 {
-    CGFloat mid = [[UIScreen mainScreen] bounds].size.height / 2;
-    CGPoint pt = [textView.superview convertPoint:textView.frame.origin toView:nil];
-    CGFloat target = pt.y - mid;
-    [self.scrollView setContentOffset:CGPointMake(0, target + 50) animated:YES];
-    [self.touchBtn setUserInteractionEnabled:YES];
-    [self.touchBtn setHidden:NO];
+    NSIndexPath *indexPath =[NSIndexPath indexPathForRow:0 inSection:2];
+    UserInfoTableViewCell *cell = (UserInfoTableViewCell*) [self.tableView cellForRowAtIndexPath:indexPath];
+    [cell.textViewPlaceholder setHidden:YES];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField

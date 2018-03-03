@@ -14,5 +14,6 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *headerLabel;
 @property (strong, nonatomic) IBOutlet UISlider *slider;
+@property (strong, nonatomic) IBOutlet UITextView *textViewPlaceholder;
 
 @end

@@ -155,6 +155,7 @@
     [avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
     [avatarImageViewHolder.layer setShadowOpacity:0.5];
     [avatarImageViewHolder.layer setShadowColor:[UIColor lightGrayColor].CGColor];
+  //  avatarImageViewHolder.layer.shouldRasterize = YES;
     avatarImageViewHolder.clipsToBounds = NO;
     
     /*

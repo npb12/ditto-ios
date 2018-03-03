@@ -21,13 +21,6 @@
 
 #import "MatchViewController.h"
 
-
-
-//Daily
-
-
-#import "TFConstants.h"
-
 #import "ProfileViewController.h"
 
 #import "TFHeartAnimationView.h"

@@ -176,7 +176,6 @@
 		8C2BE32D1DEA3FE30042BE6B /* AlbumTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumTableViewCell.h; sourceTree = "<group>"; };
 		8C2BE32E1DEA3FE30042BE6B /* AlbumTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumTableViewCell.m; sourceTree = "<group>"; };
 		8C2CE0CC1DA1825300592566 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		8C2CE0D81DA186D500592566 /* TFConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFConstants.h; sourceTree = "<group>"; };
 		8C2CE0F01DA2DC8A00592566 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8C4117F61DD03E1000DBC38F /* TFHeartAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHeartAnimationView.h; sourceTree = "<group>"; };
 		8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHeartAnimationView.m; sourceTree = "<group>"; };
@@ -365,7 +364,6 @@
 				8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */,
 				8CEF969D1DCC48DA004D76A7 /* Includes.h */,
 				8C2CE0F01DA2DC8A00592566 /* Main.storyboard */,
-				8C2CE0D81DA186D500592566 /* TFConstants.h */,
 				8C2CE0CC1DA1825300592566 /* AppDelegate.m */,
 				8CC00FE51D9F2B1500BE487A /* AppDelegate.h */,
 				8CC00FEE1D9F2B1500BE487A /* Assets.xcassets */,
@@ -797,12 +795,14 @@
 				"${BUILT_PRODUCTS_DIR}/MessageKit/MessageKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
 				"${BUILT_PRODUCTS_DIR}/Socket.IO-Client-Swift/SocketIO.framework",
+				"${BUILT_PRODUCTS_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MessageKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketIO.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPKeyboardAvoiding.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

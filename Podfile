@@ -10,6 +10,7 @@ use_frameworks!
   pod 'Fabric'
   pod 'Crashlytics'
   pod 'MessageKit'
+  pod 'TPKeyboardAvoiding'
   target 'DateAppTests' do
     inherit! :search_paths
     # Pods for testing
