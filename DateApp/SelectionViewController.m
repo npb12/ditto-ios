@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *firstOptionBtn;
 @property (strong, nonatomic) IBOutlet UIButton *bottomOptionBtn;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomBtnHeight;
+
 @end
 
 @implementation SelectionViewController

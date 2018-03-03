@@ -21,7 +21,6 @@
 @property (nonatomic, assign) BOOL match;
 @property (nonatomic, assign) BOOL isMine;
 
-
 @property (nonatomic, weak) id<LikedProfileProtocol> delegate;
 
 

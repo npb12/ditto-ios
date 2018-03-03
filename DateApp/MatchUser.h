@@ -26,5 +26,6 @@
 @property (nonatomic, assign) NSInteger distance;
 @property (nonatomic, assign) NSDate *match_time;
 @property (nullable, nonatomic, retain) NSMutableArray *pics;
+@property (nonatomic, strong) UIImage *profileImage;
 
 @end

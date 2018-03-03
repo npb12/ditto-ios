@@ -204,7 +204,7 @@
                         <outlet property="unmatchBtn" destination="v5u-Gj-hcz" id="ur7-kd-eif"/>
                         <segue destination="jdq-SG-Ufr" kind="modal" identifier="segueMessageVC" id="Qkx-BG-5qG"/>
                         <segue destination="AN8-VE-ckM" kind="modal" identifier="partingSegue" modalTransitionStyle="crossDissolve" id="LkF-td-DZc"/>
-                        <segue destination="Ykz-qb-f0l" kind="modal" identifier="goToProfile" animates="NO" id="vOV-mm-yTx"/>
+                        <segue destination="Ykz-qb-f0l" kind="modal" identifier="goToProfile" animates="NO" modalPresentationStyle="currentContext" id="vOV-mm-yTx"/>
                         <segue destination="0hX-NR-34o" kind="modal" identifier="MatchedConflictViewController" id="OTf-El-YDe"/>
                         <segue destination="4rj-1c-laJ" kind="modal" identifier="proSegue" id="dLS-bo-YAS"/>
                         <segue destination="gdE-HF-AgR" kind="modal" identifier="loginSegue" modalTransitionStyle="flipHorizontal" id="n9Z-Lq-kE0"/>
@@ -1177,26 +1177,39 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="100" height="90"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
-                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oDK-9M-Fe2">
+                                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="byz-Ob-Ysf">
                                                                     <rect key="frame" x="0.0" y="0.0" width="100" height="90"/>
-                                                                    <userDefinedRuntimeAttributes>
-                                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                            <integer key="value" value="5"/>
-                                                                        </userDefinedRuntimeAttribute>
-                                                                    </userDefinedRuntimeAttributes>
-                                                                </imageView>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_image" translatesAutoresizingMaskIntoConstraints="NO" id="lhk-7r-arf">
-                                                                    <rect key="frame" x="81" y="71" width="24" height="24"/>
-                                                                </imageView>
+                                                                    <subviews>
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oDK-9M-Fe2">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="90"/>
+                                                                            <userDefinedRuntimeAttributes>
+                                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                                    <integer key="value" value="5"/>
+                                                                                </userDefinedRuntimeAttribute>
+                                                                            </userDefinedRuntimeAttributes>
+                                                                        </imageView>
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_image" translatesAutoresizingMaskIntoConstraints="NO" id="lhk-7r-arf">
+                                                                            <rect key="frame" x="76" y="66" width="24" height="24"/>
+                                                                        </imageView>
+                                                                    </subviews>
+                                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="trailing" secondItem="lhk-7r-arf" secondAttribute="trailing" id="KrJ-dY-F60"/>
+                                                                        <constraint firstItem="oDK-9M-Fe2" firstAttribute="leading" secondItem="byz-Ob-Ysf" secondAttribute="leading" id="LZe-H5-dLe"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="lhk-7r-arf" secondAttribute="bottom" id="YYF-VV-7IN"/>
+                                                                        <constraint firstItem="oDK-9M-Fe2" firstAttribute="top" secondItem="byz-Ob-Ysf" secondAttribute="top" id="hg3-9D-JbK"/>
+                                                                        <constraint firstAttribute="bottom" secondItem="oDK-9M-Fe2" secondAttribute="bottom" id="jeE-Zf-vDS"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="oDK-9M-Fe2" secondAttribute="trailing" id="wig-wv-cLz"/>
+                                                                    </constraints>
+                                                                </view>
                                                             </subviews>
                                                         </view>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="bottom" secondItem="lhk-7r-arf" secondAttribute="bottom" constant="-5" id="7NZ-cm-hTQ"/>
-                                                            <constraint firstAttribute="trailing" secondItem="oDK-9M-Fe2" secondAttribute="trailing" id="GmC-U5-BQA"/>
-                                                            <constraint firstAttribute="trailing" secondItem="lhk-7r-arf" secondAttribute="trailing" constant="-5" id="MSt-du-xpW"/>
-                                                            <constraint firstItem="oDK-9M-Fe2" firstAttribute="top" secondItem="5xz-p4-ZrC" secondAttribute="top" id="Zld-eu-4BY"/>
-                                                            <constraint firstItem="oDK-9M-Fe2" firstAttribute="leading" secondItem="5xz-p4-ZrC" secondAttribute="leading" id="rCS-t4-oQy"/>
-                                                            <constraint firstAttribute="bottom" secondItem="oDK-9M-Fe2" secondAttribute="bottom" id="tZm-9R-T9A"/>
+                                                            <constraint firstItem="byz-Ob-Ysf" firstAttribute="leading" secondItem="5xz-p4-ZrC" secondAttribute="leading" id="8xI-UX-6G6"/>
+                                                            <constraint firstItem="byz-Ob-Ysf" firstAttribute="top" secondItem="5xz-p4-ZrC" secondAttribute="top" id="CRU-Km-4iw"/>
+                                                            <constraint firstAttribute="trailing" secondItem="byz-Ob-Ysf" secondAttribute="trailing" id="YZv-oP-akJ"/>
+                                                            <constraint firstAttribute="bottom" secondItem="byz-Ob-Ysf" secondAttribute="bottom" id="cis-Af-0je"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -1205,6 +1218,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <outlet property="actionIcon" destination="lhk-7r-arf" id="Via-gf-zYZ"/>
+                                                            <outlet property="containerView" destination="byz-Ob-Ysf" id="Wdi-8d-DS2"/>
                                                             <outlet property="photo" destination="oDK-9M-Fe2" id="muE-L1-09y"/>
                                                         </connections>
                                                     </collectionViewCell>
@@ -1791,10 +1805,14 @@ unmatch with ?</string>
                                     <outlet property="delegate" destination="ahx-Yg-168" id="G5G-j7-IGG"/>
                                 </connections>
                             </collectionView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Xtj-Oe-H93">
+                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="jF1-oA-R5N" firstAttribute="trailing" secondItem="T3R-tJ-ifz" secondAttribute="trailing" id="1U5-pg-cZt"/>
+                            <constraint firstItem="Xtj-Oe-H93" firstAttribute="centerX" secondItem="hYh-Ot-kjs" secondAttribute="centerX" id="CDh-Wx-L9a"/>
                             <constraint firstItem="jF1-oA-R5N" firstAttribute="bottom" secondItem="T3R-tJ-ifz" secondAttribute="bottom" id="Nt5-vT-mDO"/>
                             <constraint firstItem="Qst-6v-V4i" firstAttribute="centerX" secondItem="jF1-oA-R5N" secondAttribute="centerX" id="Ryq-j4-ssW"/>
                             <constraint firstItem="T3R-tJ-ifz" firstAttribute="top" secondItem="TTu-kg-9pS" secondAttribute="bottom" id="VsL-G6-Lkx"/>
@@ -1802,80 +1820,25 @@ unmatch with ?</string>
                             <constraint firstItem="Qst-6v-V4i" firstAttribute="top" secondItem="TTu-kg-9pS" secondAttribute="bottom" constant="15" id="heg-am-Xas"/>
                             <constraint firstItem="TTu-kg-9pS" firstAttribute="leading" secondItem="jF1-oA-R5N" secondAttribute="leading" id="iQH-Zc-z8V"/>
                             <constraint firstItem="TTu-kg-9pS" firstAttribute="top" secondItem="jF1-oA-R5N" secondAttribute="top" id="iyv-RI-Ptg"/>
+                            <constraint firstItem="Xtj-Oe-H93" firstAttribute="centerY" secondItem="hYh-Ot-kjs" secondAttribute="centerY" id="myJ-dw-pCx"/>
                             <constraint firstItem="jF1-oA-R5N" firstAttribute="trailing" secondItem="TTu-kg-9pS" secondAttribute="trailing" id="noG-9q-4jO"/>
                             <constraint firstItem="jF1-oA-R5N" firstAttribute="bottom" secondItem="Qst-6v-V4i" secondAttribute="bottom" id="zce-gt-v9Q"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="jF1-oA-R5N"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="Xtj-Oe-H93" id="bg9-lc-aZu"/>
                         <outlet property="collectionView" destination="Qst-6v-V4i" id="e0A-ui-hGN"/>
                         <outlet property="collectionViewWidth" destination="rJ3-Ut-ckv" id="pGH-XE-GYr"/>
                         <outlet property="gradientView" destination="FcU-h9-GjJ" id="KYw-ob-LBz"/>
                         <outlet property="headerLabel" destination="kGD-f6-w4o" id="dOS-pt-a4y"/>
-                        <segue destination="KBz-NG-sfj" kind="modal" identifier="singlePhotoSegue" id="xIb-3h-EZF"/>
+                        <segue destination="K0b-OF-oNd" kind="unwind" identifier="unwindToEdit" unwindAction="prepareForUnwind:" id="OxV-uq-0lU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Ws-uz-OJv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="K0b-OF-oNd" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="3464" y="1008"/>
-        </scene>
-        <!--Single Photo View Controller-->
-        <scene sceneID="FZN-dx-4VJ">
-            <objects>
-                <viewController id="KBz-NG-sfj" customClass="SinglePhotoViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="o9Z-Qj-wIS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mF8-67-y8T">
-                                <rect key="frame" x="0.0" y="20" width="375" height="627"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ok_check" translatesAutoresizingMaskIntoConstraints="NO" id="jvy-cp-A03">
-                                <rect key="frame" x="335" y="25" width="24" height="24"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0U4-i8-P6p">
-                                <rect key="frame" x="296" y="0.0" width="79" height="73"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="73" id="2lB-rC-mlx"/>
-                                    <constraint firstAttribute="width" constant="79" id="f4T-fn-MLJ"/>
-                                </constraints>
-                                <connections>
-                                    <action selector="select:" destination="KBz-NG-sfj" eventType="touchUpInside" id="BdD-gW-9TQ"/>
-                                    <segue destination="SbI-fM-hix" kind="unwind" unwindAction="prepareForUnwind:" id="3ZR-W5-0uj"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9ur-5I-jkG">
-                                <rect key="frame" x="15" y="25.5" width="14" height="22"/>
-                                <state key="normal" image="close_icon"/>
-                                <connections>
-                                    <action selector="go_back:" destination="KBz-NG-sfj" eventType="touchUpInside" id="EG5-qg-jeN"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="9ur-5I-jkG" firstAttribute="centerY" secondItem="jvy-cp-A03" secondAttribute="centerY" id="3Iu-bj-ncF"/>
-                            <constraint firstItem="mF8-67-y8T" firstAttribute="top" secondItem="hpx-CL-iGM" secondAttribute="top" id="D2q-yh-Btp"/>
-                            <constraint firstItem="jvy-cp-A03" firstAttribute="top" secondItem="hpx-CL-iGM" secondAttribute="top" constant="5" id="P4q-yA-BI4"/>
-                            <constraint firstItem="mF8-67-y8T" firstAttribute="centerY" secondItem="o9Z-Qj-wIS" secondAttribute="centerY" id="QaA-qG-NS8"/>
-                            <constraint firstItem="jvy-cp-A03" firstAttribute="trailing" secondItem="o9Z-Qj-wIS" secondAttribute="trailingMargin" id="SVU-5v-Xib"/>
-                            <constraint firstItem="hpx-CL-iGM" firstAttribute="trailing" secondItem="mF8-67-y8T" secondAttribute="trailing" id="bkp-8T-F0K"/>
-                            <constraint firstItem="0U4-i8-P6p" firstAttribute="top" secondItem="o9Z-Qj-wIS" secondAttribute="top" id="egG-Gc-7FC"/>
-                            <constraint firstItem="mF8-67-y8T" firstAttribute="centerX" secondItem="o9Z-Qj-wIS" secondAttribute="centerX" id="jyO-q4-hdT"/>
-                            <constraint firstItem="9ur-5I-jkG" firstAttribute="leading" secondItem="hpx-CL-iGM" secondAttribute="leading" constant="15" id="kc4-ln-SuN"/>
-                            <constraint firstItem="mF8-67-y8T" firstAttribute="leading" secondItem="hpx-CL-iGM" secondAttribute="leading" id="p7Q-fi-bfd"/>
-                            <constraint firstItem="hpx-CL-iGM" firstAttribute="trailing" secondItem="0U4-i8-P6p" secondAttribute="trailing" id="yhq-1r-NXw"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="hpx-CL-iGM"/>
-                    </view>
-                    <connections>
-                        <outlet property="photoView" destination="mF8-67-y8T" id="NjS-aV-x25"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rIL-ve-pRT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="SbI-fM-hix" userLabel="Exit" sceneMemberID="exit"/>
-            </objects>
-            <point key="canvasLocation" x="4062.5" y="1008"/>
         </scene>
         <!--Albums View Controller-->
         <scene sceneID="lbK-nM-NuV">
@@ -2391,7 +2354,7 @@ unmatch with ?</string>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nyl-tW-X5d">
-                                                    <rect key="frame" x="27" y="21.5" width="36" height="19"/>
+                                                    <rect key="frame" x="27" y="23" width="37" height="17.5"/>
                                                     <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="15"/>
                                                     <color key="textColor" red="0.011764705882352941" green="0.011764705882352941" blue="0.011764705882352941" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2423,7 +2386,7 @@ unmatch with ?</string>
                                                     </constraints>
                                                 </slider>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z4E-eW-wYe">
-                                                    <rect key="frame" x="312" y="21.5" width="36" height="19"/>
+                                                    <rect key="frame" x="311" y="23" width="37" height="17.5"/>
                                                     <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="15"/>
                                                     <color key="textColor" red="0.01176470588" green="0.01176470588" blue="0.01176470588" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2580,6 +2543,9 @@ unmatch with ?</string>
                                     <action selector="goBack:" destination="m6a-6U-BIa" eventType="touchUpInside" id="7Tw-yY-bFI"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="mpv-4l-z3W">
+                                <rect key="frame" x="177" y="323.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -2588,10 +2554,12 @@ unmatch with ?</string>
                             <constraint firstItem="EzV-22-vzn" firstAttribute="top" secondItem="2qO-mn-q4J" secondAttribute="bottom" constant="10" id="DCj-YH-x1j"/>
                             <constraint firstItem="kSV-wP-v1b" firstAttribute="centerY" secondItem="I5w-5J-inb" secondAttribute="centerY" constant="-20" id="KyF-vo-fAe"/>
                             <constraint firstItem="EzV-22-vzn" firstAttribute="leading" secondItem="I5w-5J-inb" secondAttribute="leadingMargin" id="LCY-9m-u6M"/>
+                            <constraint firstItem="mpv-4l-z3W" firstAttribute="centerY" secondItem="I5w-5J-inb" secondAttribute="centerY" id="M7S-dc-Eoo"/>
                             <constraint firstItem="nq7-Np-hA1" firstAttribute="leading" secondItem="I5w-5J-inb" secondAttribute="leadingMargin" id="M86-aS-Qk2"/>
                             <constraint firstItem="EzV-22-vzn" firstAttribute="trailing" secondItem="I5w-5J-inb" secondAttribute="trailingMargin" id="NMB-xP-L1M"/>
                             <constraint firstItem="2qO-mn-q4J" firstAttribute="trailing" secondItem="I5w-5J-inb" secondAttribute="trailingMargin" id="TFE-Hn-CRb"/>
                             <constraint firstItem="kSV-wP-v1b" firstAttribute="leading" secondItem="I5w-5J-inb" secondAttribute="leadingMargin" id="U98-Ig-bJY"/>
+                            <constraint firstItem="mpv-4l-z3W" firstAttribute="centerX" secondItem="I5w-5J-inb" secondAttribute="centerX" id="YdV-ku-And"/>
                             <constraint firstItem="nq7-Np-hA1" firstAttribute="trailing" secondItem="I5w-5J-inb" secondAttribute="trailingMargin" id="a7J-F5-tyi"/>
                             <constraint firstItem="kSV-wP-v1b" firstAttribute="top" secondItem="nq7-Np-hA1" secondAttribute="bottom" constant="15" id="aS2-dM-Lhc"/>
                             <constraint firstItem="kSV-wP-v1b" firstAttribute="trailing" secondItem="I5w-5J-inb" secondAttribute="trailingMargin" id="dEo-VF-Pa1"/>
@@ -2603,6 +2571,7 @@ unmatch with ?</string>
                         <viewLayoutGuide key="safeArea" id="4dv-zi-5DF"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="mpv-4l-z3W" id="J8W-ee-hhn"/>
                         <segue destination="7th-C1-CwB" kind="modal" identifier="fbAlbumsSegue" id="gX1-eT-3y4"/>
                     </connections>
                 </viewController>
@@ -2901,10 +2870,9 @@ unmatch with ?</string>
         <image name="dislike_inactive" width="84" height="84"/>
         <image name="indicator_active" width="14" height="14"/>
         <image name="indicator_inactive" width="14" height="14"/>
-        <image name="like_active" width="90" height="90"/>
+        <image name="like_active" width="78" height="78"/>
         <image name="like_inactive" width="84" height="84"/>
         <image name="nomatch_image" width="295" height="295"/>
-        <image name="ok_check" width="24" height="24"/>
         <image name="search" width="14" height="14"/>
         <image name="umatch" width="46" height="46"/>
         <image name="unmatch_chemistry_icon" width="42" height="42"/>

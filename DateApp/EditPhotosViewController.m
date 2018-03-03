@@ -49,14 +49,16 @@
     self.photo_arary = [[NSMutableArray alloc] init];
     
     adding = NO;
+    
+    CGFloat width = [UIScreen mainScreen].bounds.size.width / 1.1;
 
-    CGFloat commonWidth = self.view.frame.size.width / 1.1;
+    CGFloat commonWidth = width;
     
     self.collectionViewWidth.constant = commonWidth;
     
         
-    cellWidth = self.view.bounds.size.width / 3.6;
-    cellHeight = self.view.bounds.size.width / 3.6;
+    cellWidth = width / 3.4;
+    cellHeight = cellWidth;
     
     self.collectionViewHeight.constant = cellHeight * 2.1;
     
@@ -254,7 +256,12 @@
     {
         cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
         
-        [cell setBackgroundColor:[UIColor whiteColor]];
+//        [cell setBackgroundColor:[UIColor whiteColor]];
+        
+        cell.containerView.layer.cornerRadius = cellWidth / 2;
+        cell.layer.masksToBounds = NO;
+        cell.layer.cornerRadius = cellWidth / 2;
+        cell.photo.layer.cornerRadius = cellWidth / 2;
 
         
         /*

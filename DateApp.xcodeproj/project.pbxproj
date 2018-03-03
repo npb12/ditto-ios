@@ -21,6 +21,8 @@
 		8C1F8AE61FC0EFCE00D927D4 /* PhotoDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AE51FC0EFCE00D927D4 /* PhotoDownloader.m */; };
 		8C1F8AE91FC29F0400D927D4 /* TutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AE81FC29F0400D927D4 /* TutorialViewController.m */; };
 		8C1F8AEC1FC3AA1500D927D4 /* AlbumSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AEB1FC3AA1500D927D4 /* AlbumSelectionViewController.m */; };
+		8C21E091203CE56D00DEA088 /* UIImageCropper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21E08F203CE56D00DEA088 /* UIImageCropper.swift */; };
+		8C21E092203CE56D00DEA088 /* UIImage+FixOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C21E090203CE56D00DEA088 /* UIImage+FixOrientation.swift */; };
 		8C268128202A035800F92967 /* SecondChancePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C268127202A035800F92967 /* SecondChancePickerViewController.m */; };
 		8C26812B202A089600F92967 /* SecondChanceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C26812A202A089600F92967 /* SecondChanceCell.m */; };
 		8C2BE3031DE018820042BE6B /* CERangeSliderTrackLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE2FD1DE018820042BE6B /* CERangeSliderTrackLayer.m */; };
@@ -33,7 +35,6 @@
 		8C2BE3141DE5549A0042BE6B /* OccupationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE3131DE5549A0042BE6B /* OccupationViewController.m */; };
 		8C2BE3171DE55B030042BE6B /* DataAccess.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE3161DE55B030042BE6B /* DataAccess.m */; };
 		8C2BE31A1DE693830042BE6B /* FBPhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE3191DE693830042BE6B /* FBPhotosViewController.m */; };
-		8C2BE31D1DE693EB0042BE6B /* SinglePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE31C1DE693EB0042BE6B /* SinglePhotoViewController.m */; };
 		8C2BE3201DE9297E0042BE6B /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE31F1DE9297E0042BE6B /* LoginViewController.m */; };
 		8C2BE3221DE930F00042BE6B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BE3211DE930F00042BE6B /* FBSDKLoginKit.framework */; };
 		8C2BE3241DE9342B0042BE6B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2BE3231DE9342B0042BE6B /* FBSDKCoreKit.framework */; };
@@ -42,7 +43,6 @@
 		8C2BE32C1DEA3EE40042BE6B /* FBAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE32B1DEA3EE40042BE6B /* FBAlbumsViewController.m */; };
 		8C2BE32F1DEA3FE30042BE6B /* AlbumTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE32E1DEA3FE30042BE6B /* AlbumTableViewCell.m */; };
 		8C2CE0CD1DA1825300592566 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0CC1DA1825300592566 /* AppDelegate.m */; };
-		8C2CE0EC1DA186D500592566 /* TFStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0E41DA186D500592566 /* TFStyle.m */; };
 		8C2CE0F11DA2DC8B00592566 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C2CE0F01DA2DC8A00592566 /* Main.storyboard */; };
 		8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */; };
 		8C4117FA1DD03E1000DBC38F /* TFHeartAnimationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */; };
@@ -67,7 +67,6 @@
 		8CCA5E941FE39C1400AEE99F /* ScaledImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA5E931FE39C1400AEE99F /* ScaledImage.m */; };
 		8CCA5E971FF17DCE00AEE99F /* UIImage+Scale.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA5E961FF17DCE00AEE99F /* UIImage+Scale.m */; };
 		8CCA5E9B2007088500AEE99F /* FBAlbumObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA5E9A2007088500AEE99F /* FBAlbumObject.m */; };
-		8CCA5E9E2008675000AEE99F /* PhotoCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCA5E9D2008675000AEE99F /* PhotoCropViewController.m */; };
 		8CCBF4CD1E7470D400C202CB /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCBF4CC1E7470D400C202CB /* User.m */; };
 		8CCF3D9A1E42706500CC4750 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CCF3D991E42706500CC4750 /* CoreLocation.framework */; };
 		8CCF3D9D1E42735300CC4750 /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CCF3D9C1E42735300CC4750 /* LocationManager.m */; };
@@ -139,6 +138,8 @@
 		8C1F8AE81FC29F0400D927D4 /* TutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TutorialViewController.m; sourceTree = "<group>"; };
 		8C1F8AEA1FC3AA1500D927D4 /* AlbumSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumSelectionViewController.h; sourceTree = "<group>"; };
 		8C1F8AEB1FC3AA1500D927D4 /* AlbumSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumSelectionViewController.m; sourceTree = "<group>"; };
+		8C21E08F203CE56D00DEA088 /* UIImageCropper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageCropper.swift; sourceTree = "<group>"; };
+		8C21E090203CE56D00DEA088 /* UIImage+FixOrientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+FixOrientation.swift"; sourceTree = "<group>"; };
 		8C268126202A035800F92967 /* SecondChancePickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondChancePickerViewController.h; sourceTree = "<group>"; };
 		8C268127202A035800F92967 /* SecondChancePickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondChancePickerViewController.m; sourceTree = "<group>"; };
 		8C268129202A089600F92967 /* SecondChanceCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondChanceCell.h; sourceTree = "<group>"; };
@@ -163,8 +164,6 @@
 		8C2BE3161DE55B030042BE6B /* DataAccess.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataAccess.m; sourceTree = "<group>"; };
 		8C2BE3181DE693830042BE6B /* FBPhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBPhotosViewController.h; sourceTree = "<group>"; };
 		8C2BE3191DE693830042BE6B /* FBPhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBPhotosViewController.m; sourceTree = "<group>"; };
-		8C2BE31B1DE693EB0042BE6B /* SinglePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SinglePhotoViewController.h; sourceTree = "<group>"; };
-		8C2BE31C1DE693EB0042BE6B /* SinglePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SinglePhotoViewController.m; sourceTree = "<group>"; };
 		8C2BE31E1DE9297E0042BE6B /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		8C2BE31F1DE9297E0042BE6B /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		8C2BE3211DE930F00042BE6B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -178,8 +177,6 @@
 		8C2BE32E1DEA3FE30042BE6B /* AlbumTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumTableViewCell.m; sourceTree = "<group>"; };
 		8C2CE0CC1DA1825300592566 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8C2CE0D81DA186D500592566 /* TFConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFConstants.h; sourceTree = "<group>"; };
-		8C2CE0E31DA186D500592566 /* TFStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFStyle.h; sourceTree = "<group>"; };
-		8C2CE0E41DA186D500592566 /* TFStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFStyle.m; sourceTree = "<group>"; };
 		8C2CE0F01DA2DC8A00592566 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8C4117F61DD03E1000DBC38F /* TFHeartAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHeartAnimationView.h; sourceTree = "<group>"; };
 		8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHeartAnimationView.m; sourceTree = "<group>"; };
@@ -229,8 +226,6 @@
 		8CCA5E961FF17DCE00AEE99F /* UIImage+Scale.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Scale.m"; sourceTree = "<group>"; };
 		8CCA5E992007088500AEE99F /* FBAlbumObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FBAlbumObject.h; sourceTree = "<group>"; };
 		8CCA5E9A2007088500AEE99F /* FBAlbumObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FBAlbumObject.m; sourceTree = "<group>"; };
-		8CCA5E9C2008675000AEE99F /* PhotoCropViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhotoCropViewController.h; sourceTree = "<group>"; };
-		8CCA5E9D2008675000AEE99F /* PhotoCropViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PhotoCropViewController.m; sourceTree = "<group>"; };
 		8CCBF4CB1E7470D400C202CB /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		8CCBF4CC1E7470D400C202CB /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		8CCF3D991E42706500CC4750 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -371,8 +366,6 @@
 				8CEF969D1DCC48DA004D76A7 /* Includes.h */,
 				8C2CE0F01DA2DC8A00592566 /* Main.storyboard */,
 				8C2CE0D81DA186D500592566 /* TFConstants.h */,
-				8C2CE0E31DA186D500592566 /* TFStyle.h */,
-				8C2CE0E41DA186D500592566 /* TFStyle.m */,
 				8C2CE0CC1DA1825300592566 /* AppDelegate.m */,
 				8CC00FE51D9F2B1500BE487A /* AppDelegate.h */,
 				8CC00FEE1D9F2B1500BE487A /* Assets.xcassets */,
@@ -402,10 +395,6 @@
 				8C2BE3101DE554500042BE6B /* EduViewController.m */,
 				8C2BE3121DE5549A0042BE6B /* OccupationViewController.h */,
 				8C2BE3131DE5549A0042BE6B /* OccupationViewController.m */,
-				8C2BE3181DE693830042BE6B /* FBPhotosViewController.h */,
-				8C2BE3191DE693830042BE6B /* FBPhotosViewController.m */,
-				8C2BE31B1DE693EB0042BE6B /* SinglePhotoViewController.h */,
-				8C2BE31C1DE693EB0042BE6B /* SinglePhotoViewController.m */,
 				8C2BE31E1DE9297E0042BE6B /* LoginViewController.h */,
 				8C2BE31F1DE9297E0042BE6B /* LoginViewController.m */,
 				8C2BE32A1DEA3EE40042BE6B /* FBAlbumsViewController.h */,
@@ -462,8 +451,6 @@
 				8CCA5E961FF17DCE00AEE99F /* UIImage+Scale.m */,
 				8CCA5E992007088500AEE99F /* FBAlbumObject.h */,
 				8CCA5E9A2007088500AEE99F /* FBAlbumObject.m */,
-				8CCA5E9C2008675000AEE99F /* PhotoCropViewController.h */,
-				8CCA5E9D2008675000AEE99F /* PhotoCropViewController.m */,
 				8CFB0C382013BB01001F5F3B /* DateApp-Bridging-Header.h */,
 				8C1B7BD92013D96C00D39235 /* ConversationViewController.swift */,
 				8C1B7BDB2014F4C300D39235 /* ChatMessage.swift */,
@@ -475,6 +462,10 @@
 				8C76FADD203122BF00E45880 /* UserInfoTableViewCell.m */,
 				8C76FAE12033AA9000E45880 /* SelectionViewController.h */,
 				8C76FAE22033AA9000E45880 /* SelectionViewController.m */,
+				8C21E090203CE56D00DEA088 /* UIImage+FixOrientation.swift */,
+				8C21E08F203CE56D00DEA088 /* UIImageCropper.swift */,
+				8C2BE3181DE693830042BE6B /* FBPhotosViewController.h */,
+				8C2BE3191DE693830042BE6B /* FBPhotosViewController.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -876,7 +867,7 @@
 				8C0669931F1487E900132E14 /* UUDoubleSliderView.m in Sources */,
 				8C2BE3081DE01A640042BE6B /* DistanceRangeSlider.m in Sources */,
 				8C2BE3291DEA3EA10042BE6B /* PhotoManager.m in Sources */,
-				8C2BE31D1DE693EB0042BE6B /* SinglePhotoViewController.m in Sources */,
+				8C21E091203CE56D00DEA088 /* UIImageCropper.swift in Sources */,
 				8CEF36A01E2D97F10060CAF8 /* NSUserDefaults+DemoSettings.m in Sources */,
 				8C2BE32F1DEA3FE30042BE6B /* AlbumTableViewCell.m in Sources */,
 				8C1F8AEC1FC3AA1500D927D4 /* AlbumSelectionViewController.m in Sources */,
@@ -894,7 +885,6 @@
 				8C2BE3201DE9297E0042BE6B /* LoginViewController.m in Sources */,
 				8CE1D9221F0214680002A510 /* DAGradientColor.m in Sources */,
 				8C5F0E1C1E8F30EE00C799B4 /* DAParser.m in Sources */,
-				8CCA5E9E2008675000AEE99F /* PhotoCropViewController.m in Sources */,
 				8C2BE3171DE55B030042BE6B /* DataAccess.m in Sources */,
 				8C2BE30B1DE20C0E0042BE6B /* EditPhotosViewController.m in Sources */,
 				8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */,
@@ -922,10 +912,10 @@
 				8C0669961F1AFC5800132E14 /* UILabelDeviceClass.m in Sources */,
 				8C268128202A035800F92967 /* SecondChancePickerViewController.m in Sources */,
 				8CCBF4CD1E7470D400C202CB /* User.m in Sources */,
-				8C2CE0EC1DA186D500592566 /* TFStyle.m in Sources */,
 				8C26812B202A089600F92967 /* SecondChanceCell.m in Sources */,
 				8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */,
 				8C76FAE32033AA9000E45880 /* SelectionViewController.m in Sources */,
+				8C21E092203CE56D00DEA088 /* UIImage+FixOrientation.swift in Sources */,
 				8C1F8AE61FC0EFCE00D927D4 /* PhotoDownloader.m in Sources */,
 				8C2BE3141DE5549A0042BE6B /* OccupationViewController.m in Sources */,
 				8CEB63971E58F9ED00F062A9 /* SwipeViewController.m in Sources */,

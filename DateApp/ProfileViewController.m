@@ -144,9 +144,13 @@
     
     //   [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
     
+    /*
+    UIPanGestureRecognizer * pan1 = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveObject:)];
+    pan1.minimumNumberOfTouches = 1;
+    [self.scrollView addGestureRecognizer:pan1]; */
 
-    
 }
+
 
 - (void) viewDidAppear:(BOOL)animated
 {
@@ -277,16 +281,11 @@
     
 }
 
-
-
-
-
-
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 
 -(void)addPhoto{
@@ -312,16 +311,27 @@
                            }
                        }]; */
     
-    [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:0] completion:^(UIImage *image, NSError *error)
-     {
-         if (image && !error)
+    if (self.user.profileImage)
+    {
+        CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+        UIImage *scaledImage = [self.user.profileImage scaleImageToSize:size];
+        self.pic.image = scaledImage;
+    }
+    else
+    {
+        [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:0] completion:^(UIImage *image, NSError *error)
          {
-             CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
-             UIImage *scaledImage = [image scaleImageToSize:size];
-             self.pic.image = scaledImage;
-         }
-         
-     }];
+             if (image && !error)
+             {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                     UIImage *scaledImage = [image scaleImageToSize:size];
+                     self.pic.image = scaledImage;
+                 });
+             }
+             
+         }];
+    }
     
     
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
@@ -363,9 +373,13 @@
      {
          if (image && !error)
          {
-             CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
-             UIImage *scaledImage = [image scaleImageToSize:size];
-             self.pic2.image = scaledImage;         }
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                 UIImage *scaledImage = [image scaleImageToSize:size];
+                 self.pic2.image = scaledImage;
+             });
+        
+         }
          
      }];
     
@@ -412,9 +426,12 @@
      {
          if (image && !error)
          {
-             CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
-             UIImage *scaledImage = [image scaleImageToSize:size];
-             self.pic3.image = scaledImage;         }
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                 UIImage *scaledImage = [image scaleImageToSize:size];
+                 self.pic3.image = scaledImage;
+             });
+         }
          
      }];
     
@@ -456,9 +473,14 @@
      {
          if (image && !error)
          {
-             CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
-             UIImage *scaledImage = [image scaleImageToSize:size];
-             self.pic4.image = scaledImage;         }
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                 UIImage *scaledImage = [image scaleImageToSize:size];
+                 self.pic4.image = scaledImage;
+             });
+
+             
+         }
          
      }];
     self.pic4.contentMode = UIViewContentModeScaleAspectFill;
@@ -503,9 +525,12 @@
      {
          if (image && !error)
          {
-             CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
-             UIImage *scaledImage = [image scaleImageToSize:size];
-             self.pic5.image = scaledImage;
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                 UIImage *scaledImage = [image scaleImageToSize:size];
+                 self.pic5.image = scaledImage;
+             });
+
          }
          
      }];
@@ -734,5 +759,7 @@
 {
     return [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
 }
+
+
 
 @end

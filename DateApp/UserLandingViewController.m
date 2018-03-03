@@ -156,7 +156,6 @@
     [avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
     [avatarImageViewHolder.layer setShadowOpacity:0.5];
     [avatarImageViewHolder.layer setShadowColor:[UIColor lightGrayColor].CGColor];
-    avatarImageViewHolder.layer.shouldRasterize = YES;
     avatarImageViewHolder.clipsToBounds = NO;
 }
 
@@ -205,11 +204,14 @@
          {
              if (image && !error)
              {
-                 self.profilePic.layer.borderWidth = 0;
-                 self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
-                 CGSize size = CGSizeMake(self.picHeight.constant, self.picHeight.constant);
-                 UIImage *scaledImage = [image scaleImageToSize:size];
-                 self.profilePic.image = scaledImage;
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     self.user.profileImage = image;
+                     self.profilePic.layer.borderWidth = 0;
+                     self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
+                     CGSize size = CGSizeMake(self.picHeight.constant, self.picHeight.constant);
+                     UIImage *scaledImage = [image scaleImageToSize:size];
+                     self.profilePic.image = scaledImage;
+                 });
              }
              
          }];

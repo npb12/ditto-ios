@@ -8,15 +8,22 @@
 
 #import "FBPhotosViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <DateApp-Swift.h>
 
 
-@interface FBPhotosViewController ()
+
+@interface FBPhotosViewController ()<UIImageCropperProtocol>
 
 @property (nonatomic, assign) BOOL didLoad;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (strong, nonatomic) IBOutlet UIView *gradientView;
 @property (strong, nonatomic) IBOutlet UILabel *headerLabel;
+
+@property (strong, nonatomic) UIImageCropper *cropper;
+@property (strong, nonatomic) UIImagePickerController *picker;
+@property (strong, nonatomic) UIImage *selectedImage;
 
 
 @end
@@ -25,6 +32,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    self.cropper = [UIImageCropper new];
+    self.picker = [UIImagePickerController new];
+    self.cropper.picker = self.picker;
+    self.cropper.delegate = self;
+    
+    self.activityIndicator.hidden = NO;
+    [self.activityIndicator startAnimating];
+    [self.activityIndicator setHidesWhenStopped:YES];
     
     
     [PhotoManager getFacebookProfilePhotos:self.album completion:^(NSMutableArray *photos, NSError *error)
@@ -40,6 +56,7 @@
         {
             
         }
+        [self.activityIndicator stopAnimating];
     }];
 
     
@@ -104,10 +121,15 @@
 // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
 - (PhotosCollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     PhotosCollectionViewCell* cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photoCell" forIndexPath:indexPath];
+    
 
         PhotoManager *album = (PhotoManager*)[self.photos objectAtIndex:indexPath.row];
         CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 40;
         CGFloat size = dimen / 3;
+   // cell.containerView.layer.cornerRadius = size / 2;
+  //  cell.layer.masksToBounds = NO;
+  //  cell.layer.cornerRadius = size / 2;
+  //  cell.photo.layer.cornerRadius = size / 2;
         NSURL *Url = [NSURL URLWithString:album.photo];
         SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
         [manager downloadImageWithURL:Url
@@ -115,9 +137,10 @@
          {
              if (image && finished && !error)
              {
-                 
-                 UIImage *resizedImage =  [image scaleImageToSize:CGSizeMake(size, size)];
-                 cell.photo.image = resizedImage;
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     UIImage *resizedImage =  [image scaleImageToSize:CGSizeMake(size, size)];
+                     cell.photo.image = resizedImage;
+                 });
              }
          }];
 
@@ -170,31 +193,36 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    PhotoManager *photo = (PhotoManager*)[self.photos objectAtIndex:indexPath.row];
-    self.selectedPhoto = photo.fullSizePhoto;
-    [self performSegueWithIdentifier:@"singlePhotoSegue" sender:self];
-    
     /*
+     CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 40;
+     CGFloat size = dimen / 3;
+     NSURL *Url = [NSURL URLWithString:album.photo];
+     SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
+     [manager downloadImageWithURL:Url
+     options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL *targetURL) {  } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
+     {
+     if (image && finished && !error)
+     {
+     UIImage *resizedImage =  [image scaleImageToSize:CGSizeMake(size, size)];
+     cell.photo.image = resizedImage;
+     }
+     }]; */
     
     PhotoManager *album = (PhotoManager*)[self.photos objectAtIndex:indexPath.row];
+    NSURL *Url = [NSURL URLWithString:album.fullSizePhoto];
+    SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
+    [manager downloadImageWithURL:Url
+                          options:0 progress:^(NSInteger receivedSize, NSInteger expectedSize, NSURL *targetURL) {  } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
+     {
+         if (image && finished && !error)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 self.cropper.image = image;
+                 [self presentViewController:self.cropper animated:YES completion:nil];
+             });
+         }
+     }];
     
-    SinglePhotoViewController *singleInstance = [SinglePhotoViewController singletonInstance];
-    
-    singleInstance.photo = album.fullSizePhoto;
-    
-    [self performSegueWithIdentifier:@"singlePhotoSegue" sender:self]; */
-    
-    /*
-    
-    self.croppingStyle = TOCropViewCroppingStyleDefault;
-    
-    UIImage *image = [UIImage imageNamed:@"girl1"];
-    
-    TOCropViewController *cropController = [[TOCropViewController alloc] initWithCroppingStyle:self.croppingStyle image:image];
-    cropController.delegate = self;
-    
-    [self presentViewController:cropController animated:YES completion:nil]; */
 
 }
 
@@ -204,19 +232,25 @@
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)didCropImageWithOriginalImage:(UIImage * _Nullable)originalImage croppedImage:(UIImage * _Nullable)croppedImage
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    NSLog(@"didCropImageWithOriginalImage");
+    self.activityIndicator.hidden = NO;
+    [self.activityIndicator startAnimating];
+    [self.activityIndicator setHidesWhenStopped:YES];
     
-    if ([segue.identifier isEqualToString:@"singlePhotoSegue"])
-    {
-        SinglePhotoViewController *vc = segue.destinationViewController;
-        vc.selectedPhoto = self.selectedPhoto;
-        vc.selectedIndex = self.selectedIndex;
-        vc.photos = self.userPhotos;
-    }
+    [DAServer addFoto:croppedImage index:self.selectedIndex completion:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.activityIndicator stopAnimating];
+            [self performSegueWithIdentifier:@"unwindToEdit" sender:self];
+        });
+    }];
+    
+}
+
+-(void)didCancel
+{
+    [self.picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 /*

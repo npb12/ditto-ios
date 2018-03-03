@@ -10,7 +10,7 @@
 #import "DAGradientColor.h"
 #import <DateApp-Swift.h>
 
-@interface RootViewController ()<GoToProfileProtocol,LikedProfileProtocol>{
+@interface RootViewController ()<GoToProfileProtocol,LikedProfileProtocol, UIViewControllerTransitioningDelegate>{
     int nCurIdx, nPrevIdx;
     UIColor* purpleColor;
     BOOL isMatch;
@@ -608,6 +608,11 @@
         profileVC.user = self.user;
         profileVC.match = isMatch;
         profileVC.delegate = self;
+        profileVC.transitioningDelegate = self;
+        /*
+         destinationViewController.transitioningDelegate = self
+         destinationViewController.interactor = interactor
+         */
         
     }
     else if ([segue.destinationViewController isKindOfClass:[NewMatchConflictViewController class]])
@@ -1163,5 +1168,17 @@
 -(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+/*
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return [DismissAnimator new];
+}
+
+- (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
+{
+    
+    return nil;
+} */
 
 @end

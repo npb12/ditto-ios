@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface User : NSObject
 
@@ -21,6 +22,7 @@
 @property (nullable, nonatomic, retain) NSString *profilePic;
 @property (nullable, nonatomic, retain) NSMutableArray *pics;
 @property (nonatomic, assign) NSInteger distance;
+@property (nonatomic, strong) UIImage *profileImage;
 
 
 -(NSMutableArray*)genData;

@@ -155,7 +155,6 @@
     [avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
     [avatarImageViewHolder.layer setShadowOpacity:0.5];
     [avatarImageViewHolder.layer setShadowColor:[UIColor lightGrayColor].CGColor];
-    avatarImageViewHolder.layer.shouldRasterize = YES;
     avatarImageViewHolder.clipsToBounds = NO;
     
     /*
@@ -169,9 +168,13 @@
      {
          if (image && finished && !error)
          {
-             CGSize size = CGSizeMake(self.picHeight.constant, self.picHeight.constant);
-             UIImage *resizedImage =  [image scaleImageToSize:size];
-             [self.profilePic setImage:resizedImage];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 self.user.profileImage = image;
+                 CGSize size = CGSizeMake(self.picHeight.constant, self.picHeight.constant);
+                 UIImage *resizedImage =  [image scaleImageToSize:size];
+                 [self.profilePic setImage:resizedImage];
+             });
+
          }
      }];
 }
@@ -240,9 +243,12 @@
               {
                   if (image && !error)
                   {
-                      self.profilePic.layer.borderWidth = 0;
-                      self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
-                      self.profilePic.image = image;
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          self.profilePic.layer.borderWidth = 0;
+                          self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
+                          self.profilePic.image = image;
+                      });
+
                   }
                   
               }];
@@ -378,6 +384,10 @@
     user.job = matchUser.work;
     user.pics = matchUser.pics;
     user.distance = matchUser.distance;
+    if (matchUser.profileImage)
+    {
+        user.profileImage = matchUser.profileImage;
+    }
     
     return user;
 }

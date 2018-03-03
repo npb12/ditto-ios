@@ -37,8 +37,7 @@
 - (void) awakeFromNib
 {
     [super awakeFromNib];
-    
-    
+    [self setHidden:YES];
 }
 
 - (id)initWithUser:(User*)user viewFrame:(CGRect)frame{
@@ -166,9 +165,19 @@
      {
          if (image && finished && !error)
          {
-            CGSize size = CGSizeMake(self.frame.size.width, self.frame.size.height);
-            UIImage *resizedImage =  [image scaleImageToSize:size];
-             [self.pic setImage:resizedImage];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 self.user.profileImage = image;
+                 CGSize size = CGSizeMake(self.frame.size.width, self.frame.size.height);
+                 UIImage *resizedImage =  [image scaleImageToSize:size];
+                 [self.pic setImage:resizedImage];
+                 [self setHidden:NO];
+             });
+         }
+         else
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [self setHidden:NO];
+             });
          }
      }];
     
@@ -221,7 +230,6 @@
     [self.avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
     [self.avatarImageViewHolder.layer setShadowOpacity:0.8];
     [self.avatarImageViewHolder.layer setShadowColor:[self shadowColor].CGColor];
-    self.avatarImageViewHolder.layer.shouldRasterize = YES;
     self.avatarImageViewHolder.clipsToBounds = NO;
 }
 
@@ -231,7 +239,6 @@
     [self.avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
     [self.avatarImageViewHolder.layer setShadowOpacity:0];
     [self.avatarImageViewHolder.layer setShadowColor:[UIColor clearColor].CGColor];
-    self.avatarImageViewHolder.layer.shouldRasterize = YES;
     self.avatarImageViewHolder.clipsToBounds = NO;
 }
 

@@ -7,11 +7,14 @@
 //
 
 #import "AlbumSelectionViewController.h"
+#import <DateApp-Swift.h>
 
-@interface AlbumSelectionViewController ()
+@interface AlbumSelectionViewController ()<UIImageCropperProtocol>
 
 @property (nonatomic) UIImagePickerController *imagePickerController;
-
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) UIImageCropper *cropper;
+@property (strong, nonatomic) UIImagePickerController *picker;
 @end
 
 @implementation AlbumSelectionViewController
@@ -20,6 +23,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.activityIndicator.hidden = YES;
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -60,6 +65,18 @@
         [self presentViewController:imagePickerController animated:YES completion:nil];
     } */
     
+    self.cropper = [UIImageCropper new];
+    self.picker = [UIImagePickerController new];
+    self.cropper.picker = self.picker;
+    self.cropper.delegate = self;
+    
+
+    self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self presentViewController:self.picker animated:YES completion:nil];
+    
+
+    
+    /*
     UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
    // imagePickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
     imagePickerController.delegate = self;
@@ -71,7 +88,7 @@
     
     [self presentViewController:self.imagePickerController animated:YES completion:^{
         //.. done presenting
-    }];
+    }]; */
     /*
     dispatch_async(dispatch_get_main_queue(), ^
                    {
@@ -81,6 +98,25 @@
     
 }
 
+- (void)didCropImageWithOriginalImage:(UIImage * _Nullable)originalImage croppedImage:(UIImage * _Nullable)croppedImage
+{
+    NSLog(@"didCropImageWithOriginalImage");
+
+    
+    [DAServer addFoto:croppedImage index:self.selectedIndex completion:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+        });
+    }];
+    
+}
+
+-(void)didCancel
+{
+    [self.picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+/*
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
@@ -92,16 +128,12 @@
         if (!error) {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
-                               /*
-                               [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                               [self dismissViewControllerAnimated:NO completion:nil]; */
+
                            });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^
                            {
-                               /*
-                               [picker.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                               [self dismissViewControllerAnimated:NO completion:nil]; */
+                              
                                
                            });
             NSLog(@"An error occured with the server!");
@@ -117,7 +149,7 @@
     [self dismissViewControllerAnimated:YES completion:^{
         //.. done dismissing
     }];
-}
+} */
 
 - (IBAction)goBack:(id)sender
 {

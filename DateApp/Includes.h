@@ -19,14 +19,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import <EventKit/EventKit.h>
 
-
-
-
-
-
-
-#import "TFStyle.h"
-
 #import "MatchViewController.h"
 
 
@@ -58,8 +50,6 @@
 #import "AppDelegate.h"
 
 #import "FBPhotosViewController.h"
-
-#import "SinglePhotoViewController.h"
 
 #import "EditPhotosViewController.h"
 

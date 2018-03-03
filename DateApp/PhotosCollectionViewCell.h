@@ -12,5 +12,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *photo;
 @property (strong, nonatomic) IBOutlet UIView *borderView;
 @property (strong, nonatomic) IBOutlet UIImageView *actionIcon;
+@property (strong, nonatomic) UIImage *fullSizePhoto;
+@property (strong, nonatomic) IBOutlet UIView *containerView;
 
 @end
