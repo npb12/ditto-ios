@@ -83,13 +83,7 @@
     tap.delegate = self;
     [self.view addGestureRecognizer:tap];
     
-    self.headerLabel.textColor = [DAGradientColor gradientFromColor:self.headerLabel.frame.size.width];
-    
-    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
-    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
-    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
-    
-    [self.gradientView layoutIfNeeded];
+ //   self.headerLabel.textColor = [DAGradientColor gradientFromColor:self.headerLabel.frame.size.width];
     
     if (notInitial)
     {
@@ -99,14 +93,6 @@
             notInitial = YES;
         }
     }
-
-    
-    CAGradientLayer *grad = [CAGradientLayer layer];
-    grad.frame = self.gradientView.bounds;
-    grad.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
-    grad.startPoint = CGPointMake(0.0,0.5);
-    grad.endPoint = CGPointMake(1.0,0.5);
-    [self.gradientView.layer insertSublayer:grad atIndex:0];
 }
 
 -(void)viewWillAppear:(BOOL)animated{

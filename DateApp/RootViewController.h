@@ -29,6 +29,9 @@
 @property (strong, nonatomic) IBOutlet UIButton *chatBtn;
 
 -(void)updateUnmatch;
+- (void)profileAction:(User*)user;
+-(void)editProfile:(User*)user;
+-(void)settingsAction;
 
 
 @end

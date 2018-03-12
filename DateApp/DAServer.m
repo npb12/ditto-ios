@@ -650,6 +650,10 @@
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
                                                         NSLog(@"json response: %@", jsonString);
+                                                        NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+                                                        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                                        
+                                                        [DAParser myprofile:json];
                                                         completion(nil);
                                                         
                                                     }

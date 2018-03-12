@@ -80,9 +80,9 @@
 
     self.headerLabel.text = self.albumName;
     
-    [self.headerLabel layoutIfNeeded];
+  //  [self.headerLabel layoutIfNeeded];
     
-    self.headerLabel.textColor = [DAGradientColor gradientFromColor:self.headerLabel.frame.size.width];
+  // self.headerLabel.textColor = [DAGradientColor gradientFromColor:self.headerLabel.frame.size.width];
     
     UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
     UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];

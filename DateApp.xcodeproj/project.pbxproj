@@ -44,6 +44,12 @@
 		8C2BE32F1DEA3FE30042BE6B /* AlbumTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2BE32E1DEA3FE30042BE6B /* AlbumTableViewCell.m */; };
 		8C2CE0CD1DA1825300592566 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C2CE0CC1DA1825300592566 /* AppDelegate.m */; };
 		8C2CE0F11DA2DC8B00592566 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8C2CE0F01DA2DC8A00592566 /* Main.storyboard */; };
+		8C39D81B2053B92500FAE208 /* UUGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C39D81A2053B92500FAE208 /* UUGradientView.swift */; };
+		8C39D81D2053B96D00FAE208 /* UUColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C39D81C2053B96D00FAE208 /* UUColor.swift */; };
+		8C39D8242054D15300FAE208 /* MenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C39D8232054D15300FAE208 /* MenuView.m */; };
+		8C39D8262054D16E00FAE208 /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C39D8252054D16E00FAE208 /* MenuView.xib */; };
+		8C39D82A2054F25900FAE208 /* MenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C39D8282054F25900FAE208 /* MenuTableViewCell.m */; };
+		8C39D82B2054F25900FAE208 /* MenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C39D8292054F25900FAE208 /* MenuTableViewCell.xib */; };
 		8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */; };
 		8C4117FA1DD03E1000DBC38F /* TFHeartAnimationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */; };
 		8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5657A91DD9639E0081D082 /* AlbumViewController.m */; };
@@ -177,6 +183,14 @@
 		8C2BE32E1DEA3FE30042BE6B /* AlbumTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumTableViewCell.m; sourceTree = "<group>"; };
 		8C2CE0CC1DA1825300592566 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8C2CE0F01DA2DC8A00592566 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		8C39D81A2053B92500FAE208 /* UUGradientView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UUGradientView.swift; sourceTree = "<group>"; };
+		8C39D81C2053B96D00FAE208 /* UUColor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UUColor.swift; sourceTree = "<group>"; };
+		8C39D8222054D15300FAE208 /* MenuView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuView.h; sourceTree = "<group>"; };
+		8C39D8232054D15300FAE208 /* MenuView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenuView.m; sourceTree = "<group>"; };
+		8C39D8252054D16E00FAE208 /* MenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuView.xib; sourceTree = "<group>"; };
+		8C39D8272054F25900FAE208 /* MenuTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuTableViewCell.h; sourceTree = "<group>"; };
+		8C39D8282054F25900FAE208 /* MenuTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenuTableViewCell.m; sourceTree = "<group>"; };
+		8C39D8292054F25900FAE208 /* MenuTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuTableViewCell.xib; sourceTree = "<group>"; };
 		8C4117F61DD03E1000DBC38F /* TFHeartAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHeartAnimationView.h; sourceTree = "<group>"; };
 		8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHeartAnimationView.m; sourceTree = "<group>"; };
 		8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TFHeartAnimationView.xib; sourceTree = "<group>"; };
@@ -464,6 +478,14 @@
 				8C21E08F203CE56D00DEA088 /* UIImageCropper.swift */,
 				8C2BE3181DE693830042BE6B /* FBPhotosViewController.h */,
 				8C2BE3191DE693830042BE6B /* FBPhotosViewController.m */,
+				8C39D81A2053B92500FAE208 /* UUGradientView.swift */,
+				8C39D81C2053B96D00FAE208 /* UUColor.swift */,
+				8C39D8222054D15300FAE208 /* MenuView.h */,
+				8C39D8232054D15300FAE208 /* MenuView.m */,
+				8C39D8252054D16E00FAE208 /* MenuView.xib */,
+				8C39D8272054F25900FAE208 /* MenuTableViewCell.h */,
+				8C39D8282054F25900FAE208 /* MenuTableViewCell.m */,
+				8C39D8292054F25900FAE208 /* MenuTableViewCell.xib */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -661,12 +683,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CE1D92A1F0355B00002A510 /* RooneyLF-Regular.otf in Resources */,
+				8C39D8262054D16E00FAE208 /* MenuView.xib in Resources */,
 				8CE1D9281F0355B00002A510 /* RooneyLF-Medium.otf in Resources */,
 				8CE1D92C1F0355B00002A510 /* RooneySansLF-Regular.otf in Resources */,
 				8C0AF7491F5516D0005AA0FF /* LilyScriptOne-Regular.ttf in Resources */,
 				8CE1D92B1F0355B00002A510 /* RooneySansLF-Medium.otf in Resources */,
 				8CC00FF21D9F2B1500BE487A /* LaunchScreen.storyboard in Resources */,
 				8CEB63991E5902A400F062A9 /* DraggableView.xib in Resources */,
+				8C39D82B2054F25900FAE208 /* MenuTableViewCell.xib in Resources */,
 				8CC00FEF1D9F2B1500BE487A /* Assets.xcassets in Resources */,
 				8C4117FA1DD03E1000DBC38F /* TFHeartAnimationView.xib in Resources */,
 				8C2CE0F11DA2DC8B00592566 /* Main.storyboard in Resources */,
@@ -876,11 +900,14 @@
 				8C2CE0CD1DA1825300592566 /* AppDelegate.m in Sources */,
 				8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */,
 				8CCA5E9B2007088500AEE99F /* FBAlbumObject.m in Sources */,
+				8C39D82A2054F25900FAE208 /* MenuTableViewCell.m in Sources */,
 				8CEB63941E58F9ED00F062A9 /* DraggableView.m in Sources */,
 				8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */,
 				8C08FA151EA7115500A41FF5 /* DADateFormatter.m in Sources */,
 				8CC00FE41D9F2B1500BE487A /* main.m in Sources */,
 				8C9C19D71DD800DE0074A7D0 /* SettingsViewController.m in Sources */,
+				8C39D8242054D15300FAE208 /* MenuView.m in Sources */,
+				8C39D81D2053B96D00FAE208 /* UUColor.swift in Sources */,
 				8C1F8AE91FC29F0400D927D4 /* TutorialViewController.m in Sources */,
 				8C2BE3201DE9297E0042BE6B /* LoginViewController.m in Sources */,
 				8CE1D9221F0214680002A510 /* DAGradientColor.m in Sources */,
@@ -898,6 +925,7 @@
 				8C2BE32C1DEA3EE40042BE6B /* FBAlbumsViewController.m in Sources */,
 				8CEF3F1A1E3071DB00CC4485 /* MatchTableViewCell.m in Sources */,
 				8C1B7BDC2014F4C300D39235 /* ChatMessage.swift in Sources */,
+				8C39D81B2053B92500FAE208 /* UUGradientView.swift in Sources */,
 				8CCA5E941FE39C1400AEE99F /* ScaledImage.m in Sources */,
 				8CEB63961E58F9ED00F062A9 /* OverlayView.m in Sources */,
 				8C2BE3041DE018820042BE6B /* CERangeSliderKnobLayer.m in Sources */,

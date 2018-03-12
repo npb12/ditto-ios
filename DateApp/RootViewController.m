@@ -8,27 +8,36 @@
 
 #import "RootViewController.h"
 #import "DAGradientColor.h"
+#import "MenuView.h"
 #import <DateApp-Swift.h>
 
-@interface RootViewController ()<GoToProfileProtocol,LikedProfileProtocol, UIViewControllerTransitioningDelegate>{
+@interface RootViewController ()<GoToProfileProtocol,LikedProfileProtocol, UIViewControllerTransitioningDelegate>
+{
     int nCurIdx, nPrevIdx;
     UIColor* purpleColor;
     BOOL isMatch;
+    BOOL isMine;
     BOOL notif;
     CGFloat height;
     CGFloat pvcHeight;
     BOOL observerActive;
+    BOOL hamburgerMenuIsVisible;
+    UIColor *headerColor;
 }
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
 @property (strong, nonatomic) SwipeViewController *swipeVC;
 @property (strong, nonatomic) MatchViewController *matchVC;
 @property (strong, nonatomic) MenuViewController *menuVC;
+@property (strong, nonatomic) IBOutlet UIView *menuContainer;
 
+@property (strong, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) NSArray *pageTitles;
 @property (strong, nonatomic) NSArray *pageImages;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *menuTrailing;
 
 @property (strong, nonatomic) NSMutableArray *altMatches;
+@property (strong, nonatomic) IBOutlet UIButton *menuButton;
 
 @property (strong, nonatomic) IBOutlet UIButton *profileBtn;
 @property (strong, nonatomic) IBOutlet UIButton *likeBtn;
@@ -72,9 +81,9 @@
     pvcHeight = self.view.frame.size.height - (top + bottom);
     
     // Change the size of page view controller
-    self.pageViewController.view.frame = CGRectMake(0, top, self.view.frame.size.width, pvcHeight);
-
+    self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, pvcHeight);
 }
+
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -176,7 +185,6 @@
     }
 }
 
-
 -(void)initViewController{
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
@@ -202,7 +210,7 @@
     
     self.topViewHeight.constant = [UIScreen mainScreen].bounds.size.height * 0.08;
 
-    self.nav_height.constant = [UIScreen mainScreen].bounds.size.height * 0.15;
+    self.nav_height.constant = 0;//[UIScreen mainScreen].bounds.size.height * 0.15;
     
     CGFloat sideSize = width / 9.5;
     CGFloat bigSize = width / 5;
@@ -218,9 +226,9 @@
     self.likeBtn.frame = CGRectMake(self.view.frame.size.width / 1.9,bigSize * 0.125,bigSize,bigSize);
     
     [self addChildViewController:_pageViewController];
-    [self.view addSubview:_pageViewController.view];
+    [self.containerView addSubview:_pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
-    [self.view bringSubviewToFront:self.bottomView];
+  //  [self.view bringSubviewToFront:self.bottomView];
     
     self.indicatorView.frame = CGRectMake(10, self.topViewHeight.constant, width/2 - 10, 2);
     [self addGradientLayer];
@@ -229,7 +237,7 @@
 
     self.chatBtn.frame = CGRectMake(self.view.frame.size.width / 2 - (bigSize / 2),bigSize * 0.125,bigSize,bigSize);
     
-    self.discoverLabel.textColor = [DAGradientColor gradientFromColor:self.discoverLabel.frame.size.width];
+   // self.discoverLabel.textColor = [DAGradientColor gradientFromColor:self.discoverLabel.frame.size.width];
     
     
     if (![[DataAccess singletonInstance] UserHasMatch])
@@ -247,8 +255,58 @@
 
     [self.chatBtn setAlpha:1.0];
     [self.chatBtn setHidden:YES];
+    /*
+    self.topView.layer.masksToBounds = NO;
+    self.topView.layer.shadowOffset = CGSizeMake(-1, 1);
+    self.topView.layer.shadowRadius = 1;
+    self.topView.layer.shadowOpacity = 0.1; */
+    
+    MenuView  *menuView =   [[[NSBundle mainBundle] loadNibNamed:@"MenuView" owner:self options:nil] firstObject];
+    menuView.parentVC = self;
+    menuView.frame = CGRectMake(0, 0, 260, 500);
+    [self.menuContainer addSubview:menuView];
 }
 
+- (IBAction)hamburgerAction:(id)sender
+{
+    if (!hamburgerMenuIsVisible)
+    {
+        self.menuTrailing.constant = -260;
+        hamburgerMenuIsVisible = YES;
+        [self.menuButton setHidden:NO];
+        [self.menuButton setUserInteractionEnabled:YES];
+        [self animationOpen];
+    }
+    else
+    {
+        [self closeMenu];
+    }
+    
+}
+
+- (IBAction)outsideTouch:(id)sender
+{
+    [self closeMenu];
+}
+
+-(void)closeMenu
+{
+    self.menuTrailing.constant = 0;
+    hamburgerMenuIsVisible = NO;
+    [self.menuButton setHidden:YES];
+    [self.menuButton setUserInteractionEnabled:NO];
+    [self animationClose];
+}
+
+-(void)animationClose
+{
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseIn animations:^{[self.view layoutIfNeeded];} completion:nil];
+}
+
+-(void)animationOpen
+{
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^{[self.view layoutIfNeeded];} completion:nil];
+}
 
 /*
 -(void) onMiddleClick {
@@ -360,7 +418,9 @@
             [self.chatBtn setHidden:YES];
             [self.profileBtn setHidden:NO];
             [self.mymatchLabel setTextColor:[self grayColor]];
-            self.discoverLabel.textColor = [DAGradientColor gradientFromColor:self.discoverLabel.frame.size.width];
+            self.discoverLabel.textColor = [self baseColor];
+            
+            //[DAGradientColor gradientFromColor:self.discoverLabel.frame.size.width];
             
         }];
         
@@ -371,7 +431,7 @@
             [self.noButton setHidden:YES];
             [self.likeBtn setHidden:YES];
             [self.discoverLabel setTextColor:[self grayColor]];
-            self.mymatchLabel.textColor = [DAGradientColor gradientFromColor:self.mymatchLabel.frame.size.width];
+            self.mymatchLabel.textColor = [self baseColor];//[DAGradientColor gradientFromColor:self.mymatchLabel.frame.size.width];
 
             
             if (![[DataAccess singletonInstance] UserHasMatch])
@@ -607,6 +667,7 @@
         ProfileViewController *profileVC = segue.destinationViewController;
         profileVC.user = self.user;
         profileVC.match = isMatch;
+        profileVC.isMine = isMine;
         profileVC.delegate = self;
         profileVC.transitioningDelegate = self;
         /*
@@ -658,6 +719,16 @@
        // [selectionVC.view setAlpha:0.97];
      //   selectionVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         
+    }
+    else if ([segue.destinationViewController isKindOfClass:[EditPhotosViewController class]])
+    {
+        if (self.presentedViewController)
+        {
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+        EditPhotosViewController *selectionVC = segue.destinationViewController;
+        selectionVC.user = self.user;
     }
 }
 
@@ -1078,12 +1149,24 @@
     
 }
 
-
-- (IBAction)profileAction:(id)sender
+-(void)settingsAction
 {
-    [self performSegueWithIdentifier:@"proSegue" sender:self];
+    [self performSegueWithIdentifier:@"settingsSegue" sender:self];
+}
+
+- (void)profileAction:(User*)user
+{
+    self.user = user;
+    isMatch = NO;
+    isMine = YES;
+    [self performSegueWithIdentifier:@"myprofileSegue" sender:self];
   //  [self performSegueWithIdentifier:@"selectionVC" sender:self];
-    
+}
+
+-(void)editProfile:(User*)user
+{
+    self.user = user;
+    [self performSegueWithIdentifier:@"editProfileSegue" sender:self];
 }
 
 - (IBAction)gotoMessaging:(id)sender
@@ -1169,6 +1252,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+-(UIColor*)baseColor
+{
+    return [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+}
+
 /*
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
@@ -1180,5 +1268,6 @@
     
     return nil;
 } */
+
 
 @end

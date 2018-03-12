@@ -41,6 +41,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    /*
     self.headerLabel.textColor = [DAGradientColor gradientFromColor:self.headerLabel.frame.size.width];
     
     UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
@@ -60,12 +61,10 @@
     self.navbar.layer.shadowOffset = CGSizeMake(-2, 2);
     self.navbar.layer.shadowRadius = 0.05;
     self.navbar.layer.shadowOpacity = 0.05;
-    self.navbar.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    self.navbar.layer.shadowColor = [UIColor lightGrayColor].CGColor; */
     
-    self.ageRange = self.settings.ageRange;
-    self.distance = [NSString stringWithFormat:@"%ld miles", (long)self.settings.settingsDistance];
     //[self.tableView reloadData];
-    /*
+    
     [DAServer getProfile:^(User *settings, NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
@@ -73,18 +72,13 @@
                 self.settings = settings;
                 
                 self.ageRange = self.settings.ageRange;
-                [self splitAgeRange];
                 self.distance = [NSString stringWithFormat:@"%ld miles", (long)self.settings.settingsDistance];
-                [self setdistanceValue];
-                [self updateGenderSelection];
-                [self updateInvisibleSwitch];
-                [self updateNotificationsSwitch];
                 [self.tableView reloadData];
             });
         } else {
             // update UI to indicate error or take remedial action
         }
-    }]; */
+    }];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView sizeToFit];
@@ -280,7 +274,8 @@
                 [cell.distance_slider addTarget:self
                                          action:@selector(distanceValueChanged:)
                                forControlEvents:UIControlEventValueChanged];
-                cell.distance_slider.minimumTrackTintColor = [DAGradientColor gradientFromColor:cell.distance_slider.frame.size.width];
+                cell.distance_slider.minimumTrackTintColor = [self baseColor];
+                //[DAGradientColor gradientFromColor:cell.distance_slider.frame.size.width];
                 cell.sliderLabel.text = @"Maximum Distance";
                // cell.sliderDataLabel.text = @"30 mi. Away";
                 [cell.doubleSlider setHidden:YES];
@@ -312,7 +307,7 @@
                 cell.doubleSlider.maximumValue = 65;
              //   cell.doubleSlider.minimumSliderValue = 18;
              //   cell.doubleSlider.maximumSliderValue = 65;
-                cell.doubleSlider.sliderColor = [DAGradientColor gradientFromColor:cell.doubleSlider.frame.size.width];
+                cell.doubleSlider.sliderColor = [self baseColor];//self.distance_slider.maximumTrackTintColor;//[DAGradientColor gradientFromColor:cell.doubleSlider.frame.size.width];
 
                 /*
                 self.ageRangeSlider = [[CERangeSlider alloc] initWithFrame:CGRectMake(20, 62, self.view.frame.size.width - 45, 32)];
@@ -417,7 +412,7 @@
                 
                 [cell.setting_switch addTarget:self action:@selector(notificationValueChanged) forControlEvents:UIControlEventValueChanged];
                 
-                cell.setting_switch.onTintColor = [DAGradientColor gradientFromColor:cell.setting_switch.frame.size.width];
+               // cell.setting_switch.onTintColor = [DAGradientColor gradientFromColor:cell.setting_switch.frame.size.width];
                 [self updateNotificationsSwitch:cell];
             }
             else if(indexPath.row == 1)
@@ -751,7 +746,11 @@
     
 }
 
-
+//
+-(UIColor*)baseColor
+{
+    return [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+}
 
 -(UIColor*)headerColor
 {

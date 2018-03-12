@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Checkmark1x.png",
+      "filename" : "hamburger1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Checkmark2x.png",
+      "filename" : "hamburger2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Checkmark3x.png",
+      "filename" : "hamburger3x.png",
       "scale" : "3x"
     }
   ],

@@ -117,6 +117,8 @@
 
 -(void)updateMatch;
 -(void)updateUnmatch;
-
+-(void)setFrameShadow;
+-(void)removeBlur;
+-(void)showBlur;
 
 @end

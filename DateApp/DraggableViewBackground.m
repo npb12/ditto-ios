@@ -43,14 +43,18 @@ static const int MAX_BUFFER_SIZE = 2;
     {
         self.userInteractionEnabled = NO;
     }
+    
+    if ([userCards count] > 0)
+    {
+        self.labelTop.constant = parentHeight * 0.78;
+        [self.stackLabels setHidden:NO];
+    }
 }
 
 
 
 
 
-// use "index" to indicate where the information should be pulled.  If this doesn't apply to you, feel free
-// to get rid of it (eg: if you are building cards from data from the internet)
 -(DraggableView *)createDraggableViewWithDataAtIndex:(NSInteger)index
 {
     
@@ -61,18 +65,27 @@ static const int MAX_BUFFER_SIZE = 2;
 
     
     NSLog(@"%ld", (long)index);
-        pad = 5;
-        x_pad = 10;
+        pad = (parentHeight * 0.05) / 2;
+        x_pad = 20;
     
-    UIEdgeInsets safeAreaInsets = self.safeAreaInsets;
-
-    CARD_HEIGHT = parentHeight * 0.96;
-        CARD_WIDTH = self.frame.size.width - 20;
+    CARD_HEIGHT = parentHeight * 0.73;
+    CARD_WIDTH = self.frame.size.width - 40;
 
     
     User *user = [userCards objectAtIndex:index];
-
-    DraggableView *draggableView = [[DraggableView alloc] initWithUser:user viewFrame:CGRectMake(x_pad, pad, CARD_WIDTH, CARD_HEIGHT)];
+    
+    DraggableView *draggableView;
+    
+    if (index == 0)
+    {
+        draggableView = [[DraggableView alloc] initWithUser:user viewFrame:CGRectMake(x_pad, pad, CARD_WIDTH, CARD_HEIGHT)];
+    }
+    else
+    {
+        draggableView = [[DraggableView alloc] initWithUser:user viewFrame:CGRectMake(x_pad, parentHeight * 0.86, CARD_WIDTH, CARD_HEIGHT)];
+        [draggableView showBlur];
+        [draggableView setUserInteractionEnabled:NO];
+    }
 
     draggableView.noswipe_delegate = self;
     draggableView.delegate = self;
@@ -100,9 +113,13 @@ static const int MAX_BUFFER_SIZE = 2;
         
         //%%% displays the small number of loaded cards dictated by MAX_BUFFER_SIZE so that not all the cards
         // are showing at once and clogging a ton of data
+        
+        
+        //this method here -- instead of "belowSubview", position the view Ybelow
         for (int i = 0; i<[loadedCards count]; i++) {
             if (i>0) {
                 [self insertSubview:[loadedCards objectAtIndex:i] belowSubview:[loadedCards objectAtIndex:i-1]];
+               // [self addSubview:[loadedCards objectAtIndex:i -]];
             } else {
                 [self addSubview:[loadedCards objectAtIndex:i]];
             }
@@ -122,6 +139,11 @@ static const int MAX_BUFFER_SIZE = 2;
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     totalCards--;
     
+    if ([loadedCards count] > 0)
+    {
+        [self bringNextCardUp];
+    }
+    
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
         [loadedCards addObject:[allCards objectAtIndex:cardsLoadedIndex]];
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
@@ -138,6 +160,11 @@ static const int MAX_BUFFER_SIZE = 2;
     
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     totalCards--;
+    
+    if ([loadedCards count] > 0)
+    {
+        [self bringNextCardUp];
+    }
 
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
         [loadedCards addObject:[allCards objectAtIndex:cardsLoadedIndex]];
@@ -148,6 +175,28 @@ static const int MAX_BUFFER_SIZE = 2;
   //  id<MatchSegueProtocol> strongDelegate = self.matched_delegate;
   //  [strongDelegate goToMatchedSegue:self obj:nil];
 
+}
+
+
+-(void)bringNextCardUp
+{
+    DraggableView *view = [loadedCards objectAtIndex:0];
+    [view removeBlur];
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^
+     {
+         CGFloat pad = (parentHeight * 0.05) / 2;
+         CGFloat x_pad = 20;
+         
+         CGFloat CARD_HEIGHT = parentHeight * 0.73;
+         CGFloat CARD_WIDTH = self.frame.size.width - 40;
+         
+         view.frame = CGRectMake(x_pad, pad, CARD_WIDTH, CARD_HEIGHT);
+         [view layoutIfNeeded];
+         
+     } completion:^(BOOL finished)
+     {
+         [view setUserInteractionEnabled:YES];
+     }];
 }
 
 -(void)checkEmpty

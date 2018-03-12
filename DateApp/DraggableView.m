@@ -6,7 +6,7 @@
 //  Copyright © 2015 Neil_appworld. All rights reserved.
 //
 
- //%%% distance from center where the action applies. Higher = swipe further in order for the action to be called
+//%%% distance from center where the action applies. Higher = swipe further in order for the action to be called
 #define ACTION_MARGIN 120
 #define SCALE_STRENGTH 4 //%%% how quickly the card shrinks. Higher = slower shrinking
 #define SCALE_MAX .93 //%%% upper bar for how much the card shrinks. Higher = shrinks less
@@ -75,8 +75,8 @@
         overlayView = [[OverlayView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-100, 0, 100, 100)];
         overlayView.alpha = 0;
         [self addSubview:overlayView];
-
-
+        
+        
         
         if (![[DataAccess singletonInstance] UserHasMatch])
         {
@@ -87,11 +87,11 @@
             [self updateMatch];
         }
         
-    
+        
     }
     
     return self;
-
+    
 }
 
 
@@ -104,11 +104,11 @@
 {
     [self profilePicFrame];
     
-
+    
     self.matchedSubLabel.text = @"Unmatch with your current\nmatch to discover more people";
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(expandView:)];
-
+    
     
     [self.bottomView  addGestureRecognizer:tapGesture];
     
@@ -126,7 +126,7 @@
     if (![self.user.job isEqualToString:@""] && self.user.job != nil) {
         self.job.text = self.user.job;
         [self.job.layer setShouldRasterize:YES];
-
+        
     }else{
         [self.job setHidden:YES];
     }
@@ -155,9 +155,9 @@
     self.pic.contentMode = UIViewContentModeScaleAspectFill;
     //self.pic.backgroundColor = [UIColor blackColor];
     /*
-    [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
-                placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                         options:SDWebImageRefreshCached]; */
+     [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
+     placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
+     options:SDWebImageRefreshCached]; */
     NSURL *url = [NSURL URLWithString:[self.user.pics objectAtIndex:0]];
     SDWebImageDownloader *manager = [SDWebImageDownloader sharedDownloader];
     [manager downloadImageWithURL:url
@@ -180,7 +180,7 @@
              });
          }
      }];
-    
+    /*
     self.avatarImageViewHolder = [[UIView alloc] initWithFrame:self.pic.frame];
     self.avatarImageViewHolder.backgroundColor = [UIColor clearColor];
     [self.pic.superview addSubview:self.avatarImageViewHolder];
@@ -188,12 +188,13 @@
     self.pic.center = CGPointMake(self.avatarImageViewHolder.frame.size.width/2.0f, self.avatarImageViewHolder.frame.size.height/2.0f);
     
     
-    self.pic.layer.masksToBounds = YES;
-    self.avatarImageViewHolder.layer.masksToBounds = NO;
+    self.avatarImageViewHolder.layer.masksToBounds = NO; */
     
     
     // set avatar image corner
-    self.pic.layer.cornerRadius = 10;
+    self.pic.layer.cornerRadius = 14;
+    self.pic.layer.masksToBounds = YES;
+
     
     [self setFrameShadow];
     
@@ -209,28 +210,74 @@
     [gradient setAlpha:0.0];
     
     /*
-    UIVisualEffect *blurEffect;
-    blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+     UIVisualEffect *blurEffect;
+     blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+     
+     self.blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+     
+     self.blurView.frame = self.bounds;
+     [self.pic addSubview:self.blurView];
+     self.blurView.center = CGPointMake(self.pic.frame.size.width/2.0f, self.pic.frame.size.height/2.0f); */
     
-    self.blurView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    
-    self.blurView.frame = self.bounds;
-    [self.pic addSubview:self.blurView];
-    self.blurView.center = CGPointMake(self.pic.frame.size.width/2.0f, self.pic.frame.size.height/2.0f); */
-
     [self.pic addSubview:self.blurView];
     [self.pic addSubview:self.bottomView];
-
+    
 }
 
 
 -(void)setFrameShadow
 {
+    /*
     self.avatarImageViewHolder.layer.shadowRadius = 2;
-    [self.avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
+    [self.avatarImageViewHolder.layer setShadowOffset:CGSizeMake(-2, 2)];
     [self.avatarImageViewHolder.layer setShadowOpacity:0.8];
     [self.avatarImageViewHolder.layer setShadowColor:[self shadowColor].CGColor];
     self.avatarImageViewHolder.clipsToBounds = NO;
+     
+     let shadowPath = UIBezierPath(roundedRect: shadowView.bounds, cornerRadius: 14.0)
+
+     shadowView.layer.shadowRadius = 8.0
+     shadowView.layer.shadowColor = UIColor.black.cgColor
+     shadowView.layer.shadowOffset = CGSize(width: width, height: height)
+     shadowView.layer.shadowOpacity = 0.35
+     shadowView.layer.shadowPath = shadowPath.cgPath
+     */
+    /*
+    self.avatarImageViewHolder.layer.shadowRadius = 8;
+    [self.avatarImageViewHolder.layer setShadowOffset:CGSizeMake(-2, 2)];
+    [self.avatarImageViewHolder.layer setShadowOpacity:0.8];
+    [self.avatarImageViewHolder.layer setShadowColor:[self shadowColor].CGColor];
+    self.avatarImageViewHolder.clipsToBounds = NO;
+     
+     
+     self.shadowView?.removeFromSuperview()
+     let shadowView = UIView(frame: CGRect(x: BaseRoundedCardCell.kInnerMargin,
+     y: BaseRoundedCardCell.kInnerMargin,
+     width: bounds.width - (2 * BaseRoundedCardCell.kInnerMargin),
+     height: bounds.height - (2 * BaseRoundedCardCell.kInnerMargin)))
+     insertSubview(shadowView, at: 0)
+     self.shadowView = shadowView
+     
+     let shadowPath = UIBezierPath(roundedRect: shadowView.bounds, cornerRadius: 14.0)
+     shadowView.layer.masksToBounds = false
+     shadowView.layer.shadowRadius = 8.0
+     shadowView.layer.shadowColor = UIColor.black.cgColor
+     shadowView.layer.shadowOffset = CGSize(width: width, height: height)
+     shadowView.layer.shadowOpacity = 0.35
+     shadowView.layer.shadowPath = shadowPath.cgPath
+     */
+    
+    UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(self.bounds.origin.x, self.bounds.origin.x, self.bounds.size.width - (2 * self.bounds.origin.x), self.bounds.size.height - (2 * self.bounds.origin.y))];
+    [self insertSubview:shadowView atIndex:0];
+    
+    UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRoundedRect:shadowView.bounds cornerRadius:14.0];
+    shadowView.layer.masksToBounds = NO;
+    shadowView.layer.shadowRadius = 12.0;
+    shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+    [shadowView.layer setShadowOffset:CGSizeMake(-0.5, 0.6)];
+    [shadowView.layer setShadowOpacity:0.08];
+    shadowView.layer.shadowPath = shadowPath.CGPath;
+    
 }
 
 -(void)unsetFrameShadow
@@ -244,13 +291,13 @@
 
 
 /*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
+ // Only override drawRect: if you perform custom drawing.
+ // An empty implementation adversely affects performance during animation.
+ - (void)drawRect:(CGRect)rect
+ {
+ // Drawing code
+ }
+ */
 
 //%%% called when you move your finger across the screen.
 // called many times a second
@@ -270,7 +317,7 @@
             //%%% in the middle of a swipe
         case UIGestureRecognizerStateChanged:{
             //%%% dictates rotation (see ROTATION_MAX and ROTATION_STRENGTH for details)
-                        
+            
             CGFloat rotationStrength = MIN(xFromCenter / ROTATION_STRENGTH, ROTATION_MAX);
             
             //%%% degree change in radians
@@ -359,7 +406,7 @@
 {
     
     CGPoint finishPoint = CGPointMake(500, 2*yFromCenter +self.originalPoint.y);
-    [UIView animateWithDuration:0.3
+    [UIView animateWithDuration:0.2
                      animations:^{
                          self.center = finishPoint;
                      }completion:^(BOOL complete){
@@ -377,7 +424,7 @@
 -(void)leftAction
 {
     CGPoint finishPoint = CGPointMake(-500, 2*yFromCenter +self.originalPoint.y);
-    [UIView animateWithDuration:0.3
+    [UIView animateWithDuration:0.2
                      animations:^{
                          self.center = finishPoint;
                      }completion:^(BOOL complete){
@@ -398,14 +445,14 @@
         // here, update the UI to say "Not busy anymore"
         if (!error)
         {
-
+            
         }
         else
         {
             // update UI to indicate error or take remedial action
         }
         [delegate checkEmpty];
-
+        
     }];
 }
 
@@ -472,19 +519,19 @@
 }
 
 - (void)goThere:(id)sender {
-        
+    
     NSNotification* notification = [NSNotification notificationWithName:@"pushDetailView" object:self];
     [[NSNotificationCenter defaultCenter] postNotification:notification];
     /*
-    NSNumber *indexPathRow = [NSNumber numberWithInt: indexPath.row];
-    NSNotification* notification = [NSNotification notificationWithName:@"pushDetailView" indexPathRow object:indexPathRow];
-    [[NSNotificationCenter defaultCenter] postNotification:notification]; */
-
+     NSNumber *indexPathRow = [NSNumber numberWithInt: indexPath.row];
+     NSNotification* notification = [NSNotification notificationWithName:@"pushDetailView" indexPathRow object:indexPathRow];
+     [[NSNotificationCenter defaultCenter] postNotification:notification]; */
+    
 }
 
 - (void) processSingleTap:(UITapGestureRecognizer *)sender
 {
-
+    
     id<ProfileProtocol> strongDelegate = self.profile_delegate;
     [strongDelegate profileSelected:self.user];
     
@@ -513,10 +560,21 @@
 }
 
 
+-(void)removeBlur
+{
+    [self.blurView setHidden:YES];
+}
+
+-(void)showBlur
+{
+    [self.blurView setHidden:NO];
+}
+
+
 
 -(UIColor*)shadowColor
 {
-    return [UIColor colorWithRed:0.49 green:0.65 blue:0.86 alpha:1.0];
+    return [[UIColor blackColor] colorWithAlphaComponent:0.3];
 }
 
 
