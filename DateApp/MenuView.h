@@ -25,5 +25,5 @@
 
 @property (strong, nonatomic) RootViewController *parentVC;
 
-
+-(void)displayData;
 @end

@@ -83,6 +83,7 @@
                                                                          NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                                          id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                                                          
+                                                                         [DAParser myprofile:json];
                                                                          
                                                                          NSLog(@"%@", jsonString);
                                                                          
@@ -208,7 +209,8 @@
                                                                      
                                                                      NSLog(@"%ld", (long)statusCode);
                                                                      
-                                                                     if (error) {
+                                                                     if (error)
+                                                                     {
                                                                          NSLog(@"%@", error);
                                                                      } else {
                                                                          
@@ -251,6 +253,7 @@
                                                                          [[DataAccess singletonInstance] setGender:gender];
                                                                          
                                                                          [[DataAccess singletonInstance] setUserLoginStatus:YES];
+                                                                         
                                                                         
                                                                          
                                                                          completion(nil, error);
@@ -348,7 +351,6 @@
     NSDictionary *headers = [DAServer AuthHeader];
     
     NSString *urlStr = [NSString stringWithFormat:@"/latest/?lat=%@&lon=%@",
-                       // @(42.000), @(42.000)];
                         @(location.latitude), @(location.longitude)];
     
     NSString *url = [[DAServer baseURL] stringByAppendingString:urlStr];
@@ -876,36 +878,162 @@
     
 }
 
-+ (void)addFoto:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion {
++(void)addUserImage:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion
+{
+    
+    NSString *token = [NSString stringWithFormat:@"Token %@", [[DataAccess singletonInstance] getSessionToken]];
+    
+    NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+    
+    NSString *encodedString = [[self base64forData:imageData] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+    
+    NSDictionary *headers = @{ @"content-type": @"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+                               @"authorization": token,
+                               @"cache-control": @"no-cache"};
+    NSArray *parameters = @[ @{ @"name": @"pic", @"fileName": @"user_photo.jpg" },
+                             @{ @"name": @"position", @"value": @(index) } ];
+    NSString *boundary = @"----WebKitFormBoundary7MA4YWxkTrZu0gW";
     
     
-    NSString *uid = [[DataAccess singletonInstance] getUserID];
+    NSError *error;
+    NSMutableString *body = [NSMutableString string];
+    for (NSDictionary *param in parameters) {
+        [body appendFormat:@"--%@\r\n", boundary];
+        if (param[@"fileName"]) {
+            [body appendFormat:@"Content-Disposition:form-data; name=\"%@\"; filename=\"%@\"\r\n", param[@"name"], param[@"fileName"]];
+            [body appendFormat:@"Content-Type: %@\r\n\r\n", param[@"contentType"]];
+            [body appendFormat:@"%@", [NSString stringWithContentsOfFile:param[@"fileName"] encoding:NSUTF8StringEncoding error:&error]];
+            if (error) {
+                NSLog(@"%@", error);
+            }
+        } else {
+            [body appendFormat:@"Content-Disposition:form-data; name=\"%@\"\r\n\r\n", param[@"name"]];
+            [body appendFormat:@"%@", param[@"value"]];
+        }
+        
+    }
     
+    [body appendFormat:@"\r\n--%@--\r\n", boundary];
+    NSData *postData = [body dataUsingEncoding:NSUTF8StringEncoding];
     
-    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
-    
-    NSString *strIndex = [NSString stringWithFormat:@"%ld", index];
+    NSString *url = [NSString stringWithFormat:@"%@/pictures/", [DAServer baseURL]];
 
-    NSString *url = @"https://www.portaldevservices.com/addFoto.php";
-    //[DAServer baseURL];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:postData];
+    
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    if (error) {
+                                                        NSLog(@"%@", error);
+                                                    } else {
+                                                        NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;
+                                                        NSLog(@"%@", httpResponse);
+                                                        
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                        if (error) {
+                                                            completion(error);
+                                                            NSLog(@"%@", error);
+                                                        } else {
+                                                            
+                                                            completion(nil);
+                                                            
+                                                        }
+                                                    }
+                                                }];
+    [dataTask resume];
+    
+}
+
++(void)uploadPhoto:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion
+{
+    NSString *url = [NSString stringWithFormat:@"%@/pictures/", [DAServer baseURL]];
+    
+    NSDictionary* args = @{ @"position" : @(index) }; //event[picture]
+    NSString* boundary = [[NSProcessInfo processInfo] globallyUniqueString];
+    NSData* imageData = [DAServer createFormDataForImage:image args:args boundary:boundary objectName:@"pic"];
+    
+    
+    NSString* content_type = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+
+        NSString *token = [NSString stringWithFormat:@"Token %@", [[DataAccess singletonInstance] getSessionToken]];
+    
+    NSDictionary *headers = @{ @"content-type": content_type,
+                               @"cache-control": @"no-cache",
+                               @"Authorization" : token
+                               };
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                            cachePolicy:NSURLRequestReloadIgnoringCacheData
                                                        timeoutInterval:10.0];
     
     [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:imageData];
     
-    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+                                                    NSInteger statusCode = [HTTPResponse statusCode];
+                                                    
+                                                    NSLog(@"response is %ld", (long)statusCode);
+                                                    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                    if (error) {
+                                                        completion(error);
+                                                        NSLog(@"%@", error);
+                                                    } else {
+                                                        
+                                                        completion(nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+}
+
++ (void)addFoto:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion
+{
+    
+    
+    NSString *token = [NSString stringWithFormat:@"Token %@", [[DataAccess singletonInstance] getSessionToken]];
+    
+    NSDictionary *headers = @{ @"content-type": @"application/x-www-form-urlencoded",
+                               @"cache-control": @"no-cache",
+                               @"Authorization" : token
+                               };
+    
+
     
     NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
     
     NSString *encodedString = [[self base64forData:imageData] stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
     
+    NSDictionary *dict = @{
+                           @"position": @(index),
+                           @"pic": encodedString,
+                           };
     
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:nil];
     
-    NSString *dataToSend = [[NSString alloc] initWithFormat:@"post=%@&uid=%@&sessionToken=%@&index=%@&image=%@", @"addLocal", uid, sessionToken, strIndex,  encodedString];
+    NSString *url = [NSString stringWithFormat:@"%@/pictures/", [DAServer baseURL]];
+
     
-    [request setHTTPBody:[dataToSend dataUsingEncoding:NSUTF8StringEncoding]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
+                                                           cachePolicy:NSURLRequestReloadIgnoringCacheData
+                                                       timeoutInterval:10.0];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:postData];
+    
+  //  [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    
 
     
     NSURLSession *session = [NSURLSession sharedSession];

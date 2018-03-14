@@ -72,7 +72,7 @@
                         <constraint firstAttribute="trailing" secondItem="PjI-7Y-doY" secondAttribute="trailing" constant="20" id="m0L-Cv-yUj"/>
                     </constraints>
                 </view>
-                <visualEffectView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N0F-ch-6F8">
+                <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N0F-ch-6F8">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="yod-VU-buC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -105,20 +105,61 @@
                     </view>
                     <blurEffect style="light"/>
                 </visualEffectView>
+                <imageView hidden="YES" userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Gradient_BG" translatesAutoresizingMaskIntoConstraints="NO" id="TUE-3z-qbg">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="128" id="a37-sF-1Rh"/>
+                    </constraints>
+                </imageView>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lqx-yB-egX">
+                    <rect key="frame" x="121.5" y="25" width="132.5" height="27.5"/>
+                    <attributedString key="attributedText">
+                        <fragment content="Neil">
+                            <attributes>
+                                <color key="NSColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.94509803921568625" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                <font key="NSFont" size="22" name="RooneySansLF-Medium"/>
+                                <font key="NSOriginalFont" size="22" name="RooneySansLF-Medium"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content=" ">
+                            <attributes>
+                                <color key="NSColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.94509803921568625" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                <font key="NSFont" size="20" name="RooneySansLF-Regular"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content="is next up">
+                            <attributes>
+                                <color key="NSColor" red="0.92156862745098034" green="0.92156862745098034" blue="0.94509803921568625" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                <font key="NSFont" size="20" name="RooneySansLF-Regular"/>
+                                <font key="NSOriginalFont" size="20" name="RooneySansLF-Regular"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="TUE-3z-qbg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7Bn-Mh-oA5"/>
                 <constraint firstItem="N0F-ch-6F8" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="APW-7O-8i1"/>
+                <constraint firstItem="TUE-3z-qbg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Fkb-kq-Oan"/>
                 <constraint firstAttribute="bottom" secondItem="N0F-ch-6F8" secondAttribute="bottom" id="NvL-NE-LO1"/>
                 <constraint firstAttribute="trailing" secondItem="N0F-ch-6F8" secondAttribute="trailing" id="S4J-2c-akb"/>
+                <constraint firstItem="lqx-yB-egX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="Sgf-yM-LgZ"/>
                 <constraint firstAttribute="bottom" secondItem="17k-iJ-4Ye" secondAttribute="bottom" id="Uvo-SC-i87"/>
                 <constraint firstItem="17k-iJ-4Ye" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="W7C-Jn-dZJ"/>
                 <constraint firstAttribute="trailing" secondItem="17k-iJ-4Ye" secondAttribute="trailing" id="X27-yV-NUw"/>
                 <constraint firstItem="N0F-ch-6F8" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="eqr-O3-rrf"/>
+                <constraint firstItem="lqx-yB-egX" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="hbu-X6-A9w"/>
+                <constraint firstAttribute="trailing" secondItem="TUE-3z-qbg" secondAttribute="trailing" id="vH5-1M-Ct3"/>
             </constraints>
             <connections>
                 <outlet property="blurView" destination="N0F-ch-6F8" id="tgf-Hi-W9t"/>
                 <outlet property="bottomView" destination="17k-iJ-4Ye" id="LJ5-4A-38o"/>
+                <outlet property="bottomViewBottom" destination="Uvo-SC-i87" id="5Z6-hX-Dr8"/>
                 <outlet property="bottomViewHeight" destination="awk-GI-EzX" id="JkF-jn-akf"/>
                 <outlet property="edu" destination="us6-fn-JCK" id="mps-1d-45R"/>
                 <outlet property="job" destination="CZX-FU-cUd" id="eKZ-FR-wd5"/>
@@ -126,12 +167,14 @@
                 <outlet property="matchedLabel" destination="j2V-NH-CY8" id="bON-XV-rCG"/>
                 <outlet property="matchedSubLabel" destination="EsD-dI-YxB" id="LR6-a4-2Re"/>
                 <outlet property="name_age" destination="4kc-dW-g7M" id="wni-a3-Wij"/>
+                <outlet property="nextLabel" destination="lqx-yB-egX" id="2BM-Xp-Bub"/>
                 <outlet property="pic" destination="31s-bc-BVA" id="C39-mD-n4N"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="85.5"/>
         </view>
     </objects>
     <resources>
+        <image name="Gradient_BG" width="1005" height="690"/>
         <image name="card_heart" width="39" height="37"/>
         <image name="lock" width="92" height="131"/>
     </resources>

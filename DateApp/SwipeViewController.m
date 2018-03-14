@@ -77,6 +77,7 @@
         self.backgroundView.emptyLabel2.text = @"Check back again soon!";
         [self.backgroundView.emptyLabel setAlpha:1.0];
         [self.backgroundView.emptyLabel2 setAlpha:1.0];
+        [self.backgroundView.stackLabels setAlpha:0.0];
     }
     else
     {

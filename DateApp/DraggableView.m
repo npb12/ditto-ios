@@ -392,7 +392,7 @@
 
 -(void)resetCard
 {
-    [UIView animateWithDuration:0.3
+    [UIView animateWithDuration:0.1
                      animations:^{
                          self.center = self.originalPoint;
                          self.transform = CGAffineTransformMakeRotation(0);
@@ -406,7 +406,7 @@
 {
     
     CGPoint finishPoint = CGPointMake(500, 2*yFromCenter +self.originalPoint.y);
-    [UIView animateWithDuration:0.2
+    [UIView animateWithDuration:0.1
                      animations:^{
                          self.center = finishPoint;
                      }completion:^(BOOL complete){
@@ -424,7 +424,7 @@
 -(void)leftAction
 {
     CGPoint finishPoint = CGPointMake(-500, 2*yFromCenter +self.originalPoint.y);
-    [UIView animateWithDuration:0.2
+    [UIView animateWithDuration:0.1
                      animations:^{
                          self.center = finishPoint;
                      }completion:^(BOOL complete){

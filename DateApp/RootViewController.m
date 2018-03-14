@@ -43,6 +43,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *likeBtn;
 @property (strong, nonatomic) IBOutlet UIButton *unmatchBtn;
 
+@property (strong, nonatomic) MenuView *menuView;
+
 @property (strong, nonatomic) IBOutlet UIView *topView;
 
 @property (strong, nonatomic) UINavigationBar *navBar;
@@ -127,6 +129,11 @@
                                                  selector: @selector(goToMessaging)
                                                      name: @"callSegue"
                                                    object: nil];
+        
+        if (self.menuView)
+        {
+            [self.menuView displayData];
+        }
     }
  
 }
@@ -230,8 +237,9 @@
     [self.pageViewController didMoveToParentViewController:self];
   //  [self.view bringSubviewToFront:self.bottomView];
     
-    self.indicatorView.frame = CGRectMake(10, self.topViewHeight.constant, width/2 - 10, 2);
-    [self addGradientLayer];
+    self.indicatorView.frame = CGRectMake(122, self.topViewHeight.constant - 15, 8, 8);
+    self.indicatorView.layer.cornerRadius = 4;
+    self.indicatorView.layer.masksToBounds = YES;
     
     self.noButton.frame = CGRectMake(self.view.frame.size.width / 4.1,bigSize * 0.125,bigSize,bigSize);
 
@@ -261,10 +269,10 @@
     self.topView.layer.shadowRadius = 1;
     self.topView.layer.shadowOpacity = 0.1; */
     
-    MenuView  *menuView =   [[[NSBundle mainBundle] loadNibNamed:@"MenuView" owner:self options:nil] firstObject];
-    menuView.parentVC = self;
-    menuView.frame = CGRectMake(0, 0, 260, 500);
-    [self.menuContainer addSubview:menuView];
+    self.menuView =   [[[NSBundle mainBundle] loadNibNamed:@"MenuView" owner:self options:nil] firstObject];
+    self.menuView.parentVC = self;
+    self.menuView.frame = CGRectMake(0, 0, 260, 500);
+    [self.menuContainer addSubview:self.menuView];
 }
 
 - (IBAction)hamburgerAction:(id)sender
@@ -841,22 +849,6 @@
 {
     return [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
 }
-
-
--(void)addGradientLayer
-{
-    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
-    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
-    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
-    
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.indicatorView.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.0,0.5);
-    gradient.endPoint = CGPointMake(1.0,0.5);
-    [self.indicatorView.layer insertSublayer:gradient atIndex:0];
-}
-
 
 
 - (void)sendMessageBack:(NSString *)message

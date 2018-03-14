@@ -239,7 +239,7 @@
     [self.activityIndicator startAnimating];
     [self.activityIndicator setHidesWhenStopped:YES];
     
-    [DAServer addFoto:croppedImage index:self.selectedIndex completion:^(NSError *error) {
+    [DAServer uploadPhoto:croppedImage index:self.selectedIndex completion:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.activityIndicator stopAnimating];
             [self performSegueWithIdentifier:@"unwindToEdit" sender:self];

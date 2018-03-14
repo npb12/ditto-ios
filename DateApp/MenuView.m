@@ -15,27 +15,6 @@
 {
     [super awakeFromNib];
     
-    self.user = [User currentUser];
-    
-    if (!self.user)
-    {
-        [DAServer getProfile:^(User *settings, NSError *error) {
-            // here, update the UI to say "Not busy anymore"
-            if (!error) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self loadPhoto];
-                    [self setNameLabel];
-                });
-            } else {
-                // update UI to indicate error or take remedial action
-            }
-        }];
-    }
-    else
-    {
-        [self loadPhoto];
-        [self setNameLabel];
-    }
     
     
     self.topViewHeight.constant = [UIScreen mainScreen].bounds.size.height * 0.25;
@@ -77,6 +56,31 @@
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToprofile)];
     [self.proImage addGestureRecognizer:tapGesture2];
     
+}
+
+-(void)displayData
+{
+    self.user = [User currentUser];
+    
+    if (!self.user)
+    {
+        [DAServer getProfile:^(User *settings, NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self loadPhoto];
+                    [self setNameLabel];
+                });
+            } else {
+                // update UI to indicate error or take remedial action
+            }
+        }];
+    }
+    else
+    {
+        [self loadPhoto];
+        [self setNameLabel];
+    }
 }
 
 -(void)goToprofile

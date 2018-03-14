@@ -102,7 +102,9 @@
 
 -(void)leftClickAction;
 -(void)rightClickAction;
+@property (strong, nonatomic) IBOutlet UILabel *nextLabel;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomViewBottom;
 
 @property (strong, nonatomic) IBOutlet UILabel *edu_label;
 @property (strong, nonatomic) IBOutlet UILabel *job_label;

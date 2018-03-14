@@ -49,10 +49,48 @@ static const int MAX_BUFFER_SIZE = 2;
         self.labelTop.constant = parentHeight * 0.78;
         [self.stackLabels setHidden:NO];
     }
+    
+    [self setCardCount];
 }
 
 
+-(void)setCardCount
+{
+    NSInteger count = totalCards;
+    
+    if ([userCards count] > 0)
+    {
+        [self.stackLabels setAlpha:0.9];
+        
+        UIFont *countFont = [UIFont fontWithName:@"RooneySansLF-Medium" size:22.0];
+        UIFont *labelFont = [UIFont fontWithName:@"RooneySansLF-Regular" size:16.0];
+        NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
 
+        NSString *countStr = [NSString stringWithFormat:@"%ld ", count];
+
+        [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:countStr attributes:@{NSFontAttributeName: countFont}]];
+        
+        if (count == 1)
+        {
+            [attrString appendAttributedString:[[NSAttributedString alloc] initWithString: @"card remaining" attributes:@{NSFontAttributeName: labelFont}]];
+        }
+        else
+        {
+            [attrString appendAttributedString:[[NSAttributedString alloc] initWithString: @"cards remaining" attributes:@{NSFontAttributeName: labelFont}]];
+        }
+        
+        [UIView animateWithDuration:0.2
+                         animations:^{
+                                self.cardsLabel.attributedText = attrString;
+                         }];
+        
+        self.cardsLabel.attributedText = attrString;
+    }
+    else
+    {
+        [self.stackLabels setAlpha:0.0];
+    }
+}
 
 
 -(DraggableView *)createDraggableViewWithDataAtIndex:(NSInteger)index
@@ -83,9 +121,10 @@ static const int MAX_BUFFER_SIZE = 2;
     else
     {
         draggableView = [[DraggableView alloc] initWithUser:user viewFrame:CGRectMake(x_pad, parentHeight * 0.86, CARD_WIDTH, CARD_HEIGHT)];
-        [draggableView showBlur];
+      //  [draggableView showBlur];
         [draggableView setUserInteractionEnabled:NO];
     }
+    
 
     draggableView.noswipe_delegate = self;
     draggableView.delegate = self;
@@ -143,6 +182,10 @@ static const int MAX_BUFFER_SIZE = 2;
     {
         [self bringNextCardUp];
     }
+    else
+    {
+        [self.stackLabels setAlpha:0.0];
+    }
     
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
         [loadedCards addObject:[allCards objectAtIndex:cardsLoadedIndex]];
@@ -165,7 +208,11 @@ static const int MAX_BUFFER_SIZE = 2;
     {
         [self bringNextCardUp];
     }
-
+    else
+    {
+        [self.stackLabels setAlpha:0.0];
+    }
+    
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
         [loadedCards addObject:[allCards objectAtIndex:cardsLoadedIndex]];
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
@@ -181,7 +228,7 @@ static const int MAX_BUFFER_SIZE = 2;
 -(void)bringNextCardUp
 {
     DraggableView *view = [loadedCards objectAtIndex:0];
-    [view removeBlur];
+ //   [view removeBlur];
     [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^
      {
          CGFloat pad = (parentHeight * 0.05) / 2;
@@ -191,6 +238,7 @@ static const int MAX_BUFFER_SIZE = 2;
          CGFloat CARD_WIDTH = self.frame.size.width - 40;
          
          view.frame = CGRectMake(x_pad, pad, CARD_WIDTH, CARD_HEIGHT);
+         [self setCardCount];
          [view layoutIfNeeded];
          
      } completion:^(BOOL finished)
@@ -211,6 +259,7 @@ static const int MAX_BUFFER_SIZE = 2;
 {
    // [self.emptyLabel setAlpha:1.0];
    // [self.emptyLabel2 setAlpha:1.0];
+    [self.stackLabels setAlpha:0.0];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setLocationObserver" object:nil userInfo:nil];
 }
@@ -268,11 +317,9 @@ static const int MAX_BUFFER_SIZE = 2;
 
 //
 
--(UIColor*)lineColor{
-    
+-(UIColor*)lineColor
+{
     return [UIColor colorWithRed:0.91 green:0.91 blue:0.91 alpha:1.0];
-    
-    
 }
 
 -(void)likedCurrent:(BOOL)option{
