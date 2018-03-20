@@ -51,18 +51,12 @@ enum RequestType {
 + (void)dismissAlternateMatch:(NSString*)likedID
                    completion:(void (^)(NSError *))completion;
 
-+ (void)updateAlbum:(NSMutableArray*)array completion:(void (^)(NSError *))completion;
-
-+ (void)addFoto:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion;
-
-+ (void)addFoto:(UIImage*)image completion:(void (^)(NSError *))completion;
-
 + (void)facebookLogout;
-
-+(void)addUserImage:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion;
 
 +(void)uploadPhoto:(UIImage*)image index:(NSInteger)index completion:(void (^)(NSError *))completion;
 
++ (void)deletePhoto:(NSString*)position
+         completion:(void (^)(NSError *))completion;
 #pragma GET requests
 
 + (void)facebookAuth:(UIViewController*)vc

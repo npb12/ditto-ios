@@ -9,3 +9,6 @@
 #import "DataAccess.h"
 #import "PhotoDownloader.h"
 #import "User.h"
+#import "ProfileViewController.h"
+#import "RootViewController.h"
+#import "SwipeViewController.h"

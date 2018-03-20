@@ -18,7 +18,15 @@
     UIColor *blueColor;
 }
 
+@property (strong, nonatomic) IBOutlet UIView *headerView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *headerViewHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *scrollViewWidth;
 
+@property (strong, nonatomic) IBOutlet UIView *contentContainerView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *containerTrailingConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *containerTopConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *containerBottomConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *containerLeadingConstraint;
 
 @property (strong, nonatomic) IBOutlet UILabel *bio_label;
 
@@ -38,7 +46,6 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *edu_job;
 
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *photoHeight;
 
 @property (strong, nonatomic) UIImageView *pic;
 @property (strong, nonatomic) UIImageView *pic2;
@@ -99,9 +106,7 @@
         
     }
     
-    
-    self.photoHeight.constant = self.view.frame.size.height / 1.85;
-    
+        
     self.name_label.text = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];    
     
     if (![self.user.job isEqualToString:@""] && self.user.job != nil)
@@ -110,16 +115,14 @@
     }
     else
     {
-        self.jobLabelHeight.constant = 0;
-        self.jobLabelTop.constant = 0;
+        [self.edu_job setHidden:YES];
     }
     
     if (![self.user.edu isEqualToString:@""] && self.user.edu != nil)
     {
         self.eduLabel.text = self.user.edu;
     }else{
-        self.eduLabelHeight.constant = 0;
-        self.eduLabelTop.constant = 0;
+        [self.eduLabel setHidden:YES];
     }
     
     if (![self.user.bio isEqualToString:@""] && self.user.bio != nil)
@@ -189,6 +192,36 @@
      }];
 }
 
+#pragma animation stuff
+
+/*
+ internal func configureRoundedCorners(shouldRound: Bool) {
+ headerImageView.layer.cornerRadius = shouldRound ? 14.0 : 0.0
+ }
+ */
+
+-(void)configureRoundedCorners:(BOOL)shouldRound
+{
+    self.scrollView.layer.cornerRadius = shouldRound ? 14.0 : 0.0;
+    self.headerView.layer.cornerRadius = shouldRound ? 14.0 : 0.0;
+}
+
+-(void)setHeaderHeight:(CGFloat)height
+{
+    self.headerViewHeight.constant = height;
+    [self.view layoutIfNeeded];
+}
+
+-(void)positionContainer:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom
+{
+    self.containerLeadingConstraint.constant = left;
+    self.containerTrailingConstraint.constant = right;
+    self.containerTopConstraint.constant = top;
+    self.containerBottomConstraint.constant = bottom;
+    [self.view layoutIfNeeded];
+}
+
+
 -(void)initScrollView{
     
     pic_count = [self.user.pics count];
@@ -198,25 +231,9 @@
     
     self.scrollView.showsHorizontalScrollIndicator = NO;
     
-    /*
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    [self.view.layer insertSublayer:gradient atIndex:0];
-    gradient.frame = self.view.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([UIColor whiteColor].CGColor),(id)([UIColor colorWithRed:0.95 green:0.95 blue:0.98 alpha:1.0].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.25,0.0);
-    gradient.endPoint = CGPointMake(0.25,1.0);
-    self.view.layer.masksToBounds = YES;
-    
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    [self.view.layer insertSublayer:gradient atIndex:0];
-    gradient.frame = self.view.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([[UIColor whiteColor] colorWithAlphaComponent:1.0].CGColor),(id)([[self bgGray] colorWithAlphaComponent:1].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.5,0.0);
-    gradient.endPoint = CGPointMake(0.5,1.0);
-    self.view.layer.masksToBounds = YES;  */
-    
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+    [self.scrollView setClipsToBounds:YES];
+    self.scrollView.layer.masksToBounds = YES;
     self.tempView = [[UIView alloc] init];
     //  [self.tempView setFrame:fullScreenRect];
     self.tempView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -241,14 +258,25 @@
     [self.scrollView setExclusiveTouch:NO];
     
     //   CGFloat contentHeightModifier = 0.0;
-    CGFloat scroll_width = CGRectGetWidth([[UIScreen mainScreen] bounds]) * pic_count;
+    self.scrollViewWidth.constant = CGRectGetWidth([[UIScreen mainScreen] bounds]) * pic_count;
     
     
     
-    [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:self.photoHeight.constant]];
+    [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:self.headerViewHeight.constant]];
     
-    [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:scroll_width]];
+    [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:self.scrollViewWidth.constant]];
     
+    
+    UIColor *black = [UIColor blackColor];
+    UIColor *white = [UIColor blackColor];
+    
+    
+    CAGradientLayer *gradient = [CAGradientLayer layer];
+    gradient.frame = self.bottomView.bounds;
+    gradient.colors = [NSArray arrayWithObjects:(id)([white colorWithAlphaComponent:0.0].CGColor),(id)([black colorWithAlphaComponent:0.4].CGColor),(id)([white colorWithAlphaComponent:0.7].CGColor),nil];
+    gradient.startPoint = CGPointMake(0.25,0.0);
+    gradient.endPoint = CGPointMake(0.25,1.0);
+    [self.bottomView.layer insertSublayer:gradient atIndex:0];
     
     [self initPageController];
     
@@ -278,7 +306,7 @@
     {
         [self addPhoto5];
     }
-    
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -286,19 +314,15 @@
     // Dispose of any resources that can be recreated.
 }
 
-
-
 -(void)addPhoto{
     
     self.pic = [[UIImageView alloc]init];
     
-    self.pic.backgroundColor = [UIColor blueColor];
     //  CGFloat width = CGRectGetWidth([[UIScreen mainScreen] bounds]);
     self.pic.translatesAutoresizingMaskIntoConstraints = NO;
     [self.pic invalidateIntrinsicContentSize];
     [self.pic setClipsToBounds:YES];
     [self.pic setBackgroundColor:[UIColor lightTextColor]];
-
     
     /*
     [self.pic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
@@ -313,7 +337,7 @@
     
     if (self.user.profileImage)
     {
-        CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+        CGSize size = CGSizeMake(self.view.frame.size.width, self.headerViewHeight.constant);
         UIImage *scaledImage = [self.user.profileImage scaleImageToSize:size];
         self.pic.image = scaledImage;
     }
@@ -324,7 +348,7 @@
              if (image && !error)
              {
                  dispatch_async(dispatch_get_main_queue(), ^{
-                     CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                     CGSize size = CGSizeMake(self.view.frame.size.width, self.headerViewHeight.constant);
                      UIImage *scaledImage = [image scaleImageToSize:size];
                      self.pic.image = scaledImage;
                  });
@@ -346,7 +370,7 @@
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.headerViewHeight.constant];
     [self.tempView addConstraint:constraint3];
     
     NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
@@ -374,7 +398,7 @@
          if (image && !error)
          {
              dispatch_async(dispatch_get_main_queue(), ^{
-                 CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                 CGSize size = CGSizeMake(self.view.frame.size.width, self.headerViewHeight.constant);
                  UIImage *scaledImage = [image scaleImageToSize:size];
                  self.pic2.image = scaledImage;
              });
@@ -399,7 +423,7 @@
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.headerViewHeight.constant];
     [self.tempView addConstraint:constraint3];
     
     NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
@@ -427,7 +451,7 @@
          if (image && !error)
          {
              dispatch_async(dispatch_get_main_queue(), ^{
-                 CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                 CGSize size = CGSizeMake(self.view.frame.size.width, self.headerViewHeight.constant);
                  UIImage *scaledImage = [image scaleImageToSize:size];
                  self.pic3.image = scaledImage;
              });
@@ -448,7 +472,7 @@
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.headerViewHeight.constant];
     [self.tempView addConstraint:constraint3];
     
     NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
@@ -474,7 +498,7 @@
          if (image && !error)
          {
              dispatch_async(dispatch_get_main_queue(), ^{
-                 CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                 CGSize size = CGSizeMake(self.view.frame.size.width, self.headerViewHeight.constant);
                  UIImage *scaledImage = [image scaleImageToSize:size];
                  self.pic4.image = scaledImage;
              });
@@ -497,7 +521,7 @@
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant ];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.headerViewHeight.constant ];
     [self.tempView addConstraint:constraint3];
     
     NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
@@ -526,7 +550,7 @@
          if (image && !error)
          {
              dispatch_async(dispatch_get_main_queue(), ^{
-                 CGSize size = CGSizeMake(self.view.frame.size.width, self.photoHeight.constant);
+                 CGSize size = CGSizeMake(self.view.frame.size.width, self.headerViewHeight.constant);
                  UIImage *scaledImage = [image scaleImageToSize:size];
                  self.pic5.image = scaledImage;
              });
@@ -546,7 +570,7 @@
     [self.tempView addConstraints:constraint1];
     [self.tempView addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic5 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.photoHeight.constant ];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic5 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.headerViewHeight.constant ];
     [self.tempView addConstraint:constraint3];
     
     NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic5 attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.view.frame.size.width];
@@ -616,7 +640,24 @@
 }
 
 - (IBAction)goBack:(id)sender {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self.backIcon setAlpha:0.0];
+    
+    CGFloat pageWidth = self.view.frame.size.width;
+    int page = floor((self.scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    if (page > 0)
+    {
+        [self.scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    
+}
+
+-(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)initPageController

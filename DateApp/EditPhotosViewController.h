@@ -20,6 +20,7 @@
 
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *collectionViewWidth;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (nullable, strong, nonatomic)  NSMutableArray *pics;
 

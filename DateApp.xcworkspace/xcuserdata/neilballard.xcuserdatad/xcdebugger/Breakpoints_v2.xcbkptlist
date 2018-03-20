@@ -160,7 +160,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "542675987.503407"
+            timestampString = "543279989.196484"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "405"
@@ -176,7 +176,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "542675987.5035239"
+            timestampString = "543279989.196545"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "212"
@@ -192,7 +192,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "542675987.5036089"
+            timestampString = "543279989.196589"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "159"
@@ -208,11 +208,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "542675987.503683"
+            timestampString = "543279989.196629"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1047"
-            endingLineNumber = "1047"
+            startingLineNumber = "803"
+            endingLineNumber = "803"
             landmarkName = "+addFoto:index:completion:"
             landmarkType = "7">
          </BreakpointContent>
@@ -220,16 +220,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "DateApp/PresentStoryViewAnimationController.swift"
+            timestampString = "543279989.196671"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "transitionDuration(using:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "542675987.50376"
+            timestampString = "543279989.196751"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "940"
-            endingLineNumber = "940"
-            landmarkName = "+addUserImage:index:completion:"
+            startingLineNumber = "744"
+            endingLineNumber = "744"
+            landmarkName = "+uploadPhoto:index:completion:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

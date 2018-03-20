@@ -46,6 +46,12 @@
 
 @end
 
+@protocol NextCardProtocol <NSObject>
+
+-(void)nextCardAction;
+
+@end
+
 @protocol DraggableViewDelegate <NSObject>
 
 -(void)cardSwipedLeft:(UIView *)card;
@@ -53,11 +59,12 @@
 -(void)checkEmpty;
 @end
 
-@interface DraggableView : UIView
+@interface DraggableView : UIView<UIGestureRecognizerDelegate>
 
 @property (weak) id <DraggableViewDelegate> delegate;
 @property (nonatomic, weak) id<HasMatchDelegate> noswipe_delegate;
 @property (nonatomic, weak) id<ProfileProtocol> profile_delegate;
+@property (nonatomic, weak) id<NextCardProtocol> nextCardDelegate;
 
 - (id)initWithUser:(User*)user viewFrame:(CGRect)frame;
 

@@ -24,6 +24,8 @@
     CGFloat xFromCenter;
     CGFloat yFromCenter;
     UIColor *blueColor;
+    BOOL isPressed;
+    BOOL shouldAllowPan;
 }
 
 //delegate is instance of ViewController
@@ -53,7 +55,7 @@
         
         
         panGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(beingDragged:)];
-        
+        panGestureRecognizer.delegate = self;
         [self addGestureRecognizer:panGestureRecognizer];
         
         UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(processSingleTap:)];
@@ -111,6 +113,8 @@
     
     
     [self.bottomView  addGestureRecognizer:tapGesture];
+    
+    [self configureLongPress];
     
     NSString *name = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];
     self.name_age.text = name;
@@ -200,14 +204,14 @@
     
     [self.pic layoutIfNeeded];
     
-    
+    /*
     UIImageView *gradient = [[UIImageView alloc] initWithFrame:self.pic.frame];
     [self.pic addSubview:gradient];
     gradient.center = CGPointMake(self.pic.frame.size.width/2.0f, self.pic.frame.size.height/2.0f);
     [gradient setImage:[UIImage imageNamed:@"Gradient_BG"]];
     gradient.contentMode = UIViewContentModeScaleAspectFill;
     gradient.layer.masksToBounds = YES;
-    [gradient setAlpha:0.0];
+    [gradient setAlpha:0.0]; */
     
     /*
      UIVisualEffect *blurEffect;
@@ -274,7 +278,7 @@
     shadowView.layer.masksToBounds = NO;
     shadowView.layer.shadowRadius = 12.0;
     shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
-    [shadowView.layer setShadowOffset:CGSizeMake(-0.5, 0.6)];
+    [shadowView.layer setShadowOffset:CGSizeMake(-1, 1)];
     [shadowView.layer setShadowOpacity:0.08];
     shadowView.layer.shadowPath = shadowPath.CGPath;
     
@@ -412,6 +416,8 @@
                      }completion:^(BOOL complete){
                          [self cardResult:YES];
                          [self removeFromSuperview];
+                         id<NextCardProtocol> strongDelegate = self.nextCardDelegate;
+                         [strongDelegate nextCardAction];
                      }];
     
     
@@ -430,6 +436,8 @@
                      }completion:^(BOOL complete){
                          [self cardResult:NO];
                          [self removeFromSuperview];
+                         id<NextCardProtocol> strongDelegate = self.nextCardDelegate;
+                         [strongDelegate nextCardAction];
                      }];
     
     [delegate cardSwipedLeft:self];
@@ -531,10 +539,13 @@
 
 - (void) processSingleTap:(UITapGestureRecognizer *)sender
 {
-    
+    [self goToProfile];
+}
+
+-(void)goToProfile
+{
     id<ProfileProtocol> strongDelegate = self.profile_delegate;
     [strongDelegate profileSelected:self.user];
-    
 }
 
 
@@ -578,6 +589,60 @@
 }
 
 
+#pragma long press gesture recognizer
 
+-(void)configureLongPress
+{
+    UILongPressGestureRecognizer *press = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    press.minimumPressDuration = 0.1;
+    [self addGestureRecognizer:press];
+}
+
+-(void)handleLongPressGesture:(UILongPressGestureRecognizer*)gestureRecognizer
+{
+    
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        [self handleLongPressBegan];
+    }
+    else if(gestureRecognizer.state == UIGestureRecognizerStateCancelled ||
+            gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    {
+        [self handleLongPressEnded];
+    }
+  
+}
+
+
+-(void)handleLongPressBegan
+{
+    if (isPressed)
+    {
+        return;
+    }
+    
+    isPressed = true;
+    
+    [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:0.8 initialSpringVelocity:0.2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{self.transform = CGAffineTransformMakeScale(0.95, 0.95);} completion:nil];
+}
+
+-(void)handleLongPressEnded
+{
+    if (!isPressed)
+    {
+        return;
+    }
+    
+    [UIView animateWithDuration:0.5 delay:0.0 usingSpringWithDamping:0.4 initialSpringVelocity:0.2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{self.transform = CGAffineTransformIdentity;} completion:^(BOOL finished)
+     {
+         isPressed = false;
+     }];
+    
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
 
 @end

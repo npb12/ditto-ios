@@ -60,7 +60,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *discoverLabel;
 @property (strong, nonatomic) IBOutlet UILabel *mymatchLabel;
 
-
+@property (strong, nonatomic) PresentStoryViewAnimationController *storyVC;
+@property (strong, nonatomic) DismissStoryViewAnimationController *dismissVC;
 @end
 
 @implementation RootViewController
@@ -69,7 +70,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ //   self.storyVC = [PresentStoryViewAnimationController new];
+ //   self.dismissVC = [DismissStoryViewAnimationController new];
     [self initViewController];
+    self.storyVC = [PresentStoryViewAnimationController new];
+    self.dismissVC = [DismissStoryViewAnimationController new];
+
 }
 
 -(void)viewDidLayoutSubviews
@@ -677,8 +683,22 @@
         profileVC.match = isMatch;
         profileVC.isMine = isMine;
         profileVC.delegate = self;
-        profileVC.transitioningDelegate = self;
+
+        if (!isMine && !isMatch)
+        {
+            CGFloat width = [UIScreen mainScreen].bounds.size.width;
+            profileVC.transitioningDelegate = self;
+            profileVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+            profileVC.view.backgroundColor = [UIColor clearColor];
+            CGRect frame = CGRectMake(20, (pvcHeight * 0.05) / 2, width - 40, pvcHeight * 0.73);
+            self.storyVC.selectedCardFrame = frame;
+            self.dismissVC.selectedCardFrame = frame;
+        }
         /*
+         
+         presentStoryAnimationController.selectedCardFrame = cell.frame
+         dismissStoryAnimationController.selectedCardFrame = cell.frame
+         
          destinationViewController.transitioningDelegate = self
          destinationViewController.interactor = interactor
          */
@@ -1249,11 +1269,19 @@
     return [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
 }
 
-/*
+-(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
+{
+    return self.storyVC;
+}
+
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
 {
-    return [DismissAnimator new];
+    return self.dismissVC;
+    
 }
+
+/*
+
 
 - (id<UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id<UIViewControllerAnimatedTransitioning>)animator
 {

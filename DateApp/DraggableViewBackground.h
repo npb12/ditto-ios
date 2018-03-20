@@ -77,6 +77,8 @@
 
 -(NSInteger)getTotalCardsCount;
 
+-(void)bringNextCardUp;
+
 @end
 
 @protocol MatchSegueProtocol <NSObject>

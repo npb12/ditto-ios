@@ -23,6 +23,9 @@
 
 @property (nonatomic, weak) id<LikedProfileProtocol> delegate;
 
+@property (strong, nonatomic) IBOutlet UIImageView *backIcon;
+@property (strong, nonatomic) IBOutlet UIView *bottomView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomViewBottom;
 
 @property (nonnull,strong, nonatomic) IBOutlet NSLayoutConstraint *jobLabelHeight;
 @property (nonnull,strong, nonatomic) IBOutlet NSLayoutConstraint *eduLabelHeight;
@@ -40,4 +43,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *distanceLabel;
 
 
+-(void)setHeaderHeight:(CGFloat)height;
+-(void)positionContainer:(CGFloat)left right:(CGFloat)right top:(CGFloat)top bottom:(CGFloat)bottom;
+-(void)configureRoundedCorners:(BOOL)shouldRound;
 @end

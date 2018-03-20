@@ -64,6 +64,7 @@
     
     [self getProfile];
 
+    [self.activityIndicator setHidden:YES];
     
 /*
     UILongPressGestureRecognizer *lpgr
@@ -568,10 +569,21 @@
                                                                 preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"Yes"
                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
-                                                                  [self.photo_arary removeObjectAtIndex:tag];
-                                                                  [self.user.pics removeObjectAtIndex:tag];
-                                                                  [self.collectionView reloadData];
-                                                                  self.didChange = YES;
+                                                                  
+                                                                  NSString *pos = [NSString stringWithFormat:@"%ld", tag];
+                                                                  
+                                                                  [self.activityIndicator setHidden:NO];
+                                                                  [self.activityIndicator startAnimating];
+                                                                  
+                                                                  [DAServer deletePhoto:pos completion:^(NSError *error) {
+                                                                        dispatch_async(dispatch_get_main_queue(), ^
+                                                                                     {
+                                                                                                                                        [self.activityIndicator stopAnimating];                   [self.photo_arary removeObjectAtIndex:tag];
+                                                                                         [self.user.pics removeObjectAtIndex:tag];
+                                                                                         [self.collectionView reloadData];
+                                                                                     });
+                                                                  }];
+                                                                  
                                                                   
                                                               }];
         UIAlertAction *secondAction = [UIAlertAction actionWithTitle:@"Cancel"
@@ -695,19 +707,7 @@
     } */
     
     
-    
-    [DAServer updateAlbum:self.user.pics completion:^(NSError *error) {
-        // here, update the UI to say "Not busy anymore"
-        if (!error) {
-            dispatch_async(dispatch_get_main_queue(), ^
-                           {
-                              // [self dismissViewControllerAnimated:NO completion:nil];
-                               [[SDImageCache sharedImageCache]clearMemory];
-                           });
-        } else {
 
-        }
-    }];
     
 }
 
@@ -852,8 +852,7 @@
                 lbl.backgroundColor = [UIColor clearColor];
                 lbl.textAlignment = NSTextAlignmentLeft;
                 [lbl setNumberOfLines:1];//set line if you need
-                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:14.0]];//font size and style
-                [lbl setTextColor:[self headerColor]];
+                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:12.0]];                [lbl setTextColor:[self headerColor]];
                 [footer addSubview:lbl];
                 break;
                 
@@ -864,7 +863,7 @@
                 lbl.backgroundColor = [UIColor clearColor];
                 lbl.textAlignment = NSTextAlignmentLeft;
                 [lbl setNumberOfLines:1];//set line if you need
-                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:14.0]];//font size and style
+                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:12.0]];//font size and style
                 [lbl setTextColor:[self headerColor]];
                 [footer addSubview:lbl];
                 /*
@@ -884,7 +883,7 @@
                 lbl.backgroundColor = [UIColor clearColor];
                 lbl.textAlignment = NSTextAlignmentLeft;
                 [lbl setNumberOfLines:1];//set line if you need
-                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:14.0]];//font size and style
+                [lbl setFont:[UIFont fontWithName:@"RooneySansLF-Regular" size:12.0]];//font size and style
                 [lbl setTextColor:[self headerColor]];
                 [footer addSubview:lbl];
                 // lbl.text = @"Age Range:";
@@ -959,7 +958,7 @@
  //   self.userImage = image;
     
     
-    [DAServer addFoto:image index:selectedIndex completion:^(NSError *error) {
+    [DAServer uploadPhoto:image index:selectedIndex completion:^(NSError *error) {
         // here, update the UI to say "Not busy anymore"
         if (!error) {
             dispatch_async(dispatch_get_main_queue(), ^

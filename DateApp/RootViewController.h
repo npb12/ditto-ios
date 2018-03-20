@@ -28,6 +28,8 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *chatBtn;
 
+
+-(CGRect)getSelectedFrame;
 -(void)updateUnmatch;
 - (void)profileAction:(User*)user;
 -(void)editProfile:(User*)user;

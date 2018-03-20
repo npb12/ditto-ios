@@ -50,6 +50,8 @@
 		8C39D8262054D16E00FAE208 /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C39D8252054D16E00FAE208 /* MenuView.xib */; };
 		8C39D82A2054F25900FAE208 /* MenuTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C39D8282054F25900FAE208 /* MenuTableViewCell.m */; };
 		8C39D82B2054F25900FAE208 /* MenuTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C39D8292054F25900FAE208 /* MenuTableViewCell.xib */; };
+		8C3DFAA12058BBDC0056F763 /* DismissStoryViewAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3DFA9F2058BBDB0056F763 /* DismissStoryViewAnimationController.swift */; };
+		8C3DFAA22058BBDC0056F763 /* PresentStoryViewAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3DFAA02058BBDC0056F763 /* PresentStoryViewAnimationController.swift */; };
 		8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */; };
 		8C4117FA1DD03E1000DBC38F /* TFHeartAnimationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */; };
 		8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5657A91DD9639E0081D082 /* AlbumViewController.m */; };
@@ -191,6 +193,8 @@
 		8C39D8272054F25900FAE208 /* MenuTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuTableViewCell.h; sourceTree = "<group>"; };
 		8C39D8282054F25900FAE208 /* MenuTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MenuTableViewCell.m; sourceTree = "<group>"; };
 		8C39D8292054F25900FAE208 /* MenuTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuTableViewCell.xib; sourceTree = "<group>"; };
+		8C3DFA9F2058BBDB0056F763 /* DismissStoryViewAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissStoryViewAnimationController.swift; sourceTree = "<group>"; };
+		8C3DFAA02058BBDC0056F763 /* PresentStoryViewAnimationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentStoryViewAnimationController.swift; sourceTree = "<group>"; };
 		8C4117F61DD03E1000DBC38F /* TFHeartAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHeartAnimationView.h; sourceTree = "<group>"; };
 		8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHeartAnimationView.m; sourceTree = "<group>"; };
 		8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TFHeartAnimationView.xib; sourceTree = "<group>"; };
@@ -486,6 +490,8 @@
 				8C39D8272054F25900FAE208 /* MenuTableViewCell.h */,
 				8C39D8282054F25900FAE208 /* MenuTableViewCell.m */,
 				8C39D8292054F25900FAE208 /* MenuTableViewCell.xib */,
+				8C3DFA9F2058BBDB0056F763 /* DismissStoryViewAnimationController.swift */,
+				8C3DFAA02058BBDC0056F763 /* PresentStoryViewAnimationController.swift */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -892,6 +898,8 @@
 				8C2BE3081DE01A640042BE6B /* DistanceRangeSlider.m in Sources */,
 				8C2BE3291DEA3EA10042BE6B /* PhotoManager.m in Sources */,
 				8C21E091203CE56D00DEA088 /* UIImageCropper.swift in Sources */,
+				8C3DFAA12058BBDC0056F763 /* DismissStoryViewAnimationController.swift in Sources */,
+				8C3DFAA22058BBDC0056F763 /* PresentStoryViewAnimationController.swift in Sources */,
 				8CEF36A01E2D97F10060CAF8 /* NSUserDefaults+DemoSettings.m in Sources */,
 				8C2BE32F1DEA3FE30042BE6B /* AlbumTableViewCell.m in Sources */,
 				8C1F8AEC1FC3AA1500D927D4 /* AlbumSelectionViewController.m in Sources */,

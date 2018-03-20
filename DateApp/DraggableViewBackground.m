@@ -6,7 +6,7 @@
 
 #import "DraggableViewBackground.h"
 
-@interface DraggableViewBackground()<HasMatchDelegate, ProfileProtocol>
+@interface DraggableViewBackground()<HasMatchDelegate, ProfileProtocol, NextCardProtocol>
 
 @end
 
@@ -129,6 +129,7 @@ static const int MAX_BUFFER_SIZE = 2;
     draggableView.noswipe_delegate = self;
     draggableView.delegate = self;
     draggableView.profile_delegate = self;
+    draggableView.nextCardDelegate = self;
     return draggableView;
 }
 
@@ -178,11 +179,7 @@ static const int MAX_BUFFER_SIZE = 2;
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     totalCards--;
     
-    if ([loadedCards count] > 0)
-    {
-        [self bringNextCardUp];
-    }
-    else
+    if ([loadedCards count] < 1)
     {
         [self.stackLabels setAlpha:0.0];
     }
@@ -204,11 +201,7 @@ static const int MAX_BUFFER_SIZE = 2;
     [loadedCards removeObjectAtIndex:0]; //%%% card was swiped, so it's no longer a "loaded card"
     totalCards--;
     
-    if ([loadedCards count] > 0)
-    {
-        [self bringNextCardUp];
-    }
-    else
+    if ([loadedCards count] < 1)
     {
         [self.stackLabels setAlpha:0.0];
     }
@@ -225,27 +218,6 @@ static const int MAX_BUFFER_SIZE = 2;
 }
 
 
--(void)bringNextCardUp
-{
-    DraggableView *view = [loadedCards objectAtIndex:0];
- //   [view removeBlur];
-    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^
-     {
-         CGFloat pad = (parentHeight * 0.05) / 2;
-         CGFloat x_pad = 20;
-         
-         CGFloat CARD_HEIGHT = parentHeight * 0.73;
-         CGFloat CARD_WIDTH = self.frame.size.width - 40;
-         
-         view.frame = CGRectMake(x_pad, pad, CARD_WIDTH, CARD_HEIGHT);
-         [self setCardCount];
-         [view layoutIfNeeded];
-         
-     } completion:^(BOOL finished)
-     {
-         [view setUserInteractionEnabled:YES];
-     }];
-}
 
 -(void)checkEmpty
 {
@@ -342,6 +314,31 @@ static const int MAX_BUFFER_SIZE = 2;
 -(void)profileSelected:(User *)user{
     id<SelectedProfileProtocol> strongDelegate = self.profile_delegate;
     [strongDelegate selectedProfile:user];
+}
+
+-(void)nextCardAction
+{
+    if ([loadedCards count] > 0)
+    {
+        DraggableView *view = [loadedCards objectAtIndex:0];
+        //   [view removeBlur];
+        [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseOut animations:^
+         {
+             CGFloat pad = (parentHeight * 0.05) / 2;
+             CGFloat x_pad = 20;
+             
+             CGFloat CARD_HEIGHT = parentHeight * 0.73;
+             CGFloat CARD_WIDTH = self.frame.size.width - 40;
+             
+             view.frame = CGRectMake(x_pad, pad, CARD_WIDTH, CARD_HEIGHT);
+             [self setCardCount];
+             [view layoutIfNeeded];
+             
+         } completion:^(BOOL finished)
+         {
+             [view setUserInteractionEnabled:YES];
+         }];
+    }
 }
 
 
