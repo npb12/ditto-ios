@@ -160,11 +160,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "543279989.196484"
+            timestampString = "543355980.836183"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "405"
-            endingLineNumber = "405"
+            startingLineNumber = "406"
+            endingLineNumber = "406"
             landmarkName = "+postLocation:completion:"
             landmarkType = "7">
          </BreakpointContent>
@@ -176,11 +176,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "543279989.196545"
+            timestampString = "543355980.836283"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
             landmarkName = "+facebookLogin:completion:"
             landmarkType = "7">
          </BreakpointContent>
@@ -192,11 +192,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "543279989.196589"
+            timestampString = "543355980.836331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "159"
-            endingLineNumber = "159"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
             landmarkName = "+facebookLogin:completion:"
             landmarkType = "7">
          </BreakpointContent>
@@ -208,11 +208,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "543279989.196629"
+            timestampString = "543355980.836374"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "803"
-            endingLineNumber = "803"
+            startingLineNumber = "805"
+            endingLineNumber = "805"
             landmarkName = "+addFoto:index:completion:"
             landmarkType = "7">
          </BreakpointContent>
@@ -224,7 +224,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/PresentStoryViewAnimationController.swift"
-            timestampString = "543279989.196671"
+            timestampString = "543346605.601246"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "50"
@@ -236,17 +236,49 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "DateApp/DAServer.m"
-            timestampString = "543279989.196751"
+            timestampString = "543355980.8364379"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "744"
-            endingLineNumber = "744"
-            landmarkName = "+uploadPhoto:index:completion:"
+            startingLineNumber = "919"
+            endingLineNumber = "919"
+            landmarkName = "+getProfile:"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__23+[DAServer getProfile:]_block_invoke_2"
+                  moduleName = "DateApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/neilballard/Desktop/ditto-ios/DateApp/DAServer.m"
+                  timestampString = "543355980.923683"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "919"
+                  endingLineNumber = "919"
+                  offsetFromSymbolStart = "124">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__23+[DAServer getProfile:]_block_invoke_3"
+                  moduleName = "DateApp"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/neilballard/Desktop/ditto-ios/DateApp/DAServer.m"
+                  timestampString = "543355980.925621"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "921"
+                  endingLineNumber = "921"
+                  offsetFromSymbolStart = "56">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

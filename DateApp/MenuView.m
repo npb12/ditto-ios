@@ -41,7 +41,7 @@
     [avatarImageViewHolder.layer setShadowOpacity:0.15];
     [avatarImageViewHolder.layer setShadowColor:[UIColor lightGrayColor].CGColor];
     avatarImageViewHolder.clipsToBounds = NO;
-    self.imgFrame.clipsToBounds = NO;
+    self.imgFrame.clipsToBounds = YES;
     
     
     self.tableView.delegate = self;

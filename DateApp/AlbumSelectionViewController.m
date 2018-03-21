@@ -101,10 +101,20 @@
 - (void)didCropImageWithOriginalImage:(UIImage * _Nullable)originalImage croppedImage:(UIImage * _Nullable)croppedImage
 {
     NSLog(@"didCropImageWithOriginalImage");
+    
+    UIActivityIndicatorView *indicator = [UIActivityIndicatorView new];
+    indicator.center = CGPointMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
+    [self.cropper.view addSubview:indicator];
+    [self.cropper.view bringSubviewToFront:indicator];
+    
+    [indicator startAnimating];
+    [indicator setHidesWhenStopped:YES];
 
     
     [DAServer uploadPhoto:croppedImage index:self.selectedIndex completion:^(NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
+            [indicator stopAnimating];
+            [indicator removeFromSuperview];
             [self dismissViewControllerAnimated:YES completion:nil];
         });
     }];

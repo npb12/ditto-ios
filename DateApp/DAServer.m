@@ -83,7 +83,8 @@
                                                                          NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                                          id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                                                          
-                                                                         [DAParser myprofile:json];
+                                                                       [DAParser myprofile:json];
+                                                                         
                                                                          
                                                                          NSLog(@"%@", jsonString);
                                                                          
@@ -711,7 +712,8 @@
 {
     NSString *url = [NSString stringWithFormat:@"%@/pictures/", [DAServer baseURL]];
     
-    NSDictionary* args = @{ @"position" : @(index) }; //event[picture]
+    NSInteger serverInt = index + 1;
+    NSDictionary* args = @{ @"position" : @(serverInt) }; //event[picture]
     NSString* boundary = [[NSProcessInfo processInfo] globallyUniqueString];
     NSData* imageData = [DAServer createFormDataForImage:image args:args boundary:boundary objectName:@"pic"];
     
@@ -904,6 +906,25 @@
                                                         id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                                         
                                                         User *user = [DAParser myprofile:json];
+                                                        
+                                                        if ([user.profilePic containsString:@"fbcdn"])
+                                                        {
+                                                            //upload facebook profile photo
+                                                                if (user.profilePic)
+                                                                {
+                                                                    [PhotoDownloader downloadImage:user.profilePic completion:^(UIImage *image, NSError *error)
+                                                                     {
+                                                                         if (image && !error)
+                                                                         {
+                                                                             [DAServer uploadPhoto:image index:1 completion:^(NSError *error) {
+                                                                                 
+                                                                             }];
+                                                                         }
+                                                                         
+                                                                     }];
+                                                                }
+                                                            
+                                                        }
                                                         
                                                         completion(user, nil);
                                                         

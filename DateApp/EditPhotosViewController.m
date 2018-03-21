@@ -128,6 +128,8 @@
 
 -(void)getProfile{
 
+    [self.activityIndicator setHidesWhenStopped:YES];
+    [self.activityIndicator startAnimating];
     [self.photo_arary removeAllObjects];
     
     [DAServer getProfile:^(User *user, NSError *error) {
@@ -194,6 +196,7 @@
     
     dispatch_group_notify(group, dispatch_get_main_queue(), ^{
         [self.collectionView reloadData];
+        [self.activityIndicator stopAnimating];
     });
 }
 
@@ -570,7 +573,7 @@
         UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"Yes"
                                                               style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
                                                                   
-                                                                  NSString *pos = [NSString stringWithFormat:@"%ld", tag];
+                                                                  NSString *pos = [NSString stringWithFormat:@"%ld", tag + 1];
                                                                   
                                                                   [self.activityIndicator setHidden:NO];
                                                                   [self.activityIndicator startAnimating];

@@ -158,6 +158,11 @@
     return [UIColor colorWithRed:0.63 green:0.63 blue:0.65 alpha:1.0];
 }
 
+-(BOOL)prefersStatusBarHidden
+{
+    return YES;
+}
+
 /*
 #pragma mark - Navigation
 

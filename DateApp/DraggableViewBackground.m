@@ -231,7 +231,9 @@ static const int MAX_BUFFER_SIZE = 2;
 {
    // [self.emptyLabel setAlpha:1.0];
    // [self.emptyLabel2 setAlpha:1.0];
-    [self.stackLabels setAlpha:0.0];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.stackLabels setAlpha:0.0];
+    });
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setLocationObserver" object:nil userInfo:nil];
 }
