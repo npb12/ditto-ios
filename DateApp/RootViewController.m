@@ -11,7 +11,8 @@
 #import "MenuView.h"
 #import <DateApp-Swift.h>
 
-@interface RootViewController ()<GoToProfileProtocol,LikedProfileProtocol, UIViewControllerTransitioningDelegate>
+
+@interface RootViewController ()<GoToProfileProtocol,LikedProfileProtocol, UIViewControllerTransitioningDelegate, TwicketSegmentedControlDelegate>
 {
     int nCurIdx, nPrevIdx;
     UIColor* purpleColor;
@@ -30,6 +31,8 @@
 @property (strong, nonatomic) MatchViewController *matchVC;
 @property (strong, nonatomic) MenuViewController *menuVC;
 @property (strong, nonatomic) IBOutlet UIView *menuContainer;
+@property (strong, nonatomic) IBOutlet UIButton *matchBtn;
+@property (strong, nonatomic) IBOutlet UIImageView *matchImg;
 
 @property (strong, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) NSArray *pageTitles;
@@ -38,6 +41,7 @@
 
 @property (strong, nonatomic) NSMutableArray *altMatches;
 @property (strong, nonatomic) IBOutlet UIButton *menuButton;
+@property (strong, nonatomic) IBOutlet UIImageView *proImage;
 
 @property (strong, nonatomic) IBOutlet UIButton *profileBtn;
 @property (strong, nonatomic) IBOutlet UIButton *likeBtn;
@@ -90,6 +94,7 @@
     
     // Change the size of page view controller
     self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, pvcHeight);
+    
 }
 
 
@@ -131,6 +136,9 @@
         [[NSNotificationCenter defaultCenter]
          addObserver:self selector:@selector(setLocationObserver:) name:@"setLocationObserver" object:nil];
         
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self selector:@selector(goToMessaging) name:@"goToMessaging" object:nil];
+        
         [[NSNotificationCenter defaultCenter] addObserver: self
                                                  selector: @selector(goToMessaging)
                                                      name: @"callSegue"
@@ -141,7 +149,6 @@
             [self.menuView displayData];
         }
     }
- 
 }
 
 - (void)applicationEnteredForeground:(NSNotification *)notification {
@@ -256,24 +263,43 @@
     
     if (![[DataAccess singletonInstance] UserHasMatch])
     {
-        [self.unmatchBtn setHidden:YES];
-        [self.chatBtn setHidden:YES];
+        self.matchImg.image = [UIImage imageNamed:@"match_inactive"];
+        [self.matchBtn setUserInteractionEnabled:NO];
     
     }
     else
     {
-        [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
-        [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
-        [self.unmatchBtn setHidden:NO];
+        self.matchImg.image = [UIImage imageNamed:@"match_active"];
+        [self.matchBtn setUserInteractionEnabled:YES];
     }
 
     [self.chatBtn setAlpha:1.0];
     [self.chatBtn setHidden:YES];
+    
+    self.proImage.layer.cornerRadius = 17.5;
+    self.proImage.layer.masksToBounds = YES;
+    [self setProfileImage];
+    
+    
     /*
     self.topView.layer.masksToBounds = NO;
     self.topView.layer.shadowOffset = CGSizeMake(-1, 1);
     self.topView.layer.shadowRadius = 1;
     self.topView.layer.shadowOpacity = 0.1; */
+    
+    
+    NSArray *titles = @[@"Discover", @"My Match"];
+    
+    
+    TwicketSegmentedControl *twicketControl = [TwicketSegmentedControl new];
+    [twicketControl setSegmentItems:titles];
+    twicketControl.delegate = self;
+    CGFloat twidth = width * 0.5;
+    CGFloat theight = 37.5;
+    twicketControl.frame = CGRectMake((width / 2) - (twidth / 2), (self.topViewHeight.constant / 2) - (theight / 2) - 5, twidth, theight);
+
+    
+    [self.topView addSubview:twicketControl];
     
     self.menuView =   [[[NSBundle mainBundle] loadNibNamed:@"MenuView" owner:self options:nil] firstObject];
     self.menuView.parentVC = self;
@@ -301,6 +327,46 @@
 - (IBAction)outsideTouch:(id)sender
 {
     [self closeMenu];
+}
+
+-(void)setProfileImage
+{
+    self.user = [User currentUser];
+    
+    if (!self.user)
+    {
+        [DAServer getProfile:^(User *settings, NSError *error) {
+            // here, update the UI to say "Not busy anymore"
+            if (!error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self loadPhoto];
+                });
+            } else {
+                // update UI to indicate error or take remedial action
+            }
+        }];
+    }
+    else
+    {
+        [self loadPhoto];
+    }
+}
+
+-(void)loadPhoto
+{
+    [PhotoDownloader downloadImage:[self.user.pics objectAtIndex:0] completion:^(UIImage *image, NSError *error)
+     {
+         if (image && !error)
+         {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 self.user.profileImage = image;
+                 CGSize size = CGSizeMake(40, 40);
+                 UIImage *scaledImage = [image scaleImageToSize:size];
+                 self.proImage.image = scaledImage;
+             });
+         }
+         
+     }];
 }
 
 -(void)closeMenu
@@ -433,6 +499,8 @@
             [self.profileBtn setHidden:NO];
             [self.mymatchLabel setTextColor:[self grayColor]];
             self.discoverLabel.textColor = [self baseColor];
+            [self.mymatchLabel setAlpha:0.5];
+            [self.discoverLabel setAlpha:1.0];
             
             //[DAGradientColor gradientFromColor:self.discoverLabel.frame.size.width];
             
@@ -445,7 +513,10 @@
             [self.noButton setHidden:YES];
             [self.likeBtn setHidden:YES];
             [self.discoverLabel setTextColor:[self grayColor]];
-            self.mymatchLabel.textColor = [self baseColor];//[DAGradientColor gradientFromColor:self.mymatchLabel.frame.size.width];
+            self.mymatchLabel.textColor = [self baseColor];
+            [self.mymatchLabel setAlpha:1.0];
+            [self.discoverLabel setAlpha:0.5];
+            //[DAGradientColor gradientFromColor:self.mymatchLabel.frame.size.width];
 
             
             if (![[DataAccess singletonInstance] UserHasMatch])
@@ -683,6 +754,8 @@
         profileVC.match = isMatch;
         profileVC.isMine = isMine;
         profileVC.delegate = self;
+        profileVC.view.backgroundColor = [UIColor whiteColor];
+        
 
         if (!isMine && !isMatch)
         {
@@ -694,6 +767,19 @@
             self.storyVC.selectedCardFrame = frame;
             self.dismissVC.selectedCardFrame = frame;
         }
+        else if(!isMine && isMatch)
+        {
+            if (self.matchVC)
+            {
+                profileVC.transitioningDelegate = self;
+                profileVC.modalPresentationStyle = UIModalPresentationCurrentContext;
+                profileVC.view.backgroundColor = [UIColor clearColor];
+                CGRect frame = [self.matchVC profileFrame];
+                self.storyVC.selectedCardFrame = frame;
+                self.dismissVC.selectedCardFrame = frame;
+            }
+        }
+        
         /*
          
          presentStoryAnimationController.selectedCardFrame = cell.frame
@@ -713,13 +799,14 @@
         }
         
         NewMatchConflictViewController *matchVC = (NewMatchConflictViewController *)segue.destinationViewController;
+        matchVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         if ([[DataAccess singletonInstance] UserHasMatch] && !notif)
         {
             matchVC.isConflict = YES;
         }
         
         matchVC.altMatches = self.altMatches;
-        matchVC.view.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.8];
+        matchVC.view.backgroundColor = [UIColor clearColor];
     }
     else if ([segue.destinationViewController isKindOfClass:[SecondChancePickerViewController class]])
     {
@@ -944,8 +1031,9 @@
                             [self.swipeVC loadCards:result withHeight: pvcHeight];
                             if (![[DataAccess singletonInstance] UserHasMatch])
                             {
-                                [self.noButton setImage:[UIImage imageNamed:@"dislike_active"] forState:UIControlStateNormal];
-                                [self.likeBtn setImage:[UIImage imageNamed:@"like_active"] forState:UIControlStateNormal];
+                                
+                                self.matchImg.image = [UIImage imageNamed:@"match_inactive"];
+                                [self.matchBtn setUserInteractionEnabled:NO];
                             }
                             
                         }
@@ -962,8 +1050,6 @@
                         if (self.swipeVC)
                         {
                             [self.swipeVC showEmptyLabel:YES];
-                            [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
-                            [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
                         }
                     });
                 }
@@ -1035,8 +1121,8 @@
 
 -(void) currentMatchNotification:(NSNotification*)notification
 {
-    [self.unmatchBtn setImage:[UIImage imageNamed:@"umatch"] forState:UIControlStateNormal];
-    [self.unmatchBtn setHidden:NO];
+    self.matchImg.image = [UIImage imageNamed:@"match_active"];
+    [self.matchBtn setUserInteractionEnabled:YES];
 }
 
 -(void) noMatchNotification:(NSNotification*)notification
@@ -1107,11 +1193,8 @@
 
 -(void)updateUnmatch
 {
-    [self.noButton setUserInteractionEnabled:YES];
-    [self.likeBtn setUserInteractionEnabled:YES];
-    [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
-    [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
-    
+    self.matchImg.image = [UIImage imageNamed:@"match_inactive"];
+    [self.matchBtn setUserInteractionEnabled:NO];
     
     [self.unmatchBtn setHidden:YES];
     
@@ -1136,13 +1219,8 @@
 
 -(void)updateMatch
 {
-    
-    [self.unmatchBtn setHidden:NO];
-    [self.unmatchBtn setUserInteractionEnabled:YES];
-    [self.noButton setUserInteractionEnabled:NO];
-    [self.likeBtn setUserInteractionEnabled:NO];
-    [self.likeBtn setImage:[UIImage imageNamed:@"like_inactive"] forState:UIControlStateNormal];
-    [self.noButton setImage:[UIImage imageNamed:@"dislike_inactive"] forState:UIControlStateNormal];
+    self.matchImg.image = [UIImage imageNamed:@"match_inactive"];
+    [self.matchBtn setUserInteractionEnabled:YES];
     
     if (nCurIdx == 1)
     {
@@ -1266,7 +1344,7 @@
 
 -(UIColor*)baseColor
 {
-    return [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+    return [UIColor colorWithRed:0.22 green:0.59 blue:0.94 alpha:1.0];
 }
 
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
@@ -1278,6 +1356,18 @@
 {
     return self.dismissVC;
     
+}
+
+-(void)didSelect:(NSInteger)segmentIndex
+{
+    if (segmentIndex == 0)
+    {
+        [self discoverAction:self];
+    }
+    else
+    {
+        [self myMatchAction:self];
+    }
 }
 
 /*

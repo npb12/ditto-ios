@@ -30,46 +30,78 @@
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="17k-iJ-4Ye">
                     <rect key="frame" x="0.0" y="517" width="375" height="150"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="PIX-sk-KP8">
-                            <rect key="frame" x="15" y="68" width="345" height="67"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="PIX-sk-KP8">
+                            <rect key="frame" x="15" y="56.5" width="345" height="59.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Neil, 25" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4kc-dW-g7M">
-                                    <rect key="frame" x="0.0" y="0.0" width="80.5" height="30"/>
-                                    <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="24"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="70.5" height="26.5"/>
+                                    <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="21"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Software Engineer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CZX-FU-cUd">
-                                    <rect key="frame" x="0.0" y="31" width="113" height="17.5"/>
-                                    <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
+                                    <rect key="frame" x="0.0" y="26.5" width="105" height="16.5"/>
+                                    <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="13"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Florida State University" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="us6-fn-JCK">
-                                    <rect key="frame" x="0.0" y="49.5" width="144" height="17.5"/>
-                                    <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
+                                    <rect key="frame" x="0.0" y="43" width="134" height="16.5"/>
+                                    <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="13"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                         </stackView>
-                        <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PjI-7Y-doY">
-                            <rect key="frame" x="323" y="100" width="32" height="30"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q0i-oI-2iN">
+                            <rect key="frame" x="15" y="119" width="240" height="16"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pin" translatesAutoresizingMaskIntoConstraints="NO" id="us8-uQ-xU1">
+                                    <rect key="frame" x="3" y="5" width="5" height="8"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="7.6600000000000001" id="7fu-gt-qQu"/>
+                                        <constraint firstAttribute="width" constant="5" id="KKh-gw-gJk"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 miles away" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vjk-mN-1uD">
+                                    <rect key="frame" x="13" y="1" width="68.5" height="15"/>
+                                    <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="12"/>
+                                    <color key="textColor" white="0.66702529456880355" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="32" id="SJx-v3-hJO"/>
-                                <constraint firstAttribute="height" constant="30" id="vvK-ai-SKO"/>
+                                <constraint firstItem="us8-uQ-xU1" firstAttribute="centerY" secondItem="Q0i-oI-2iN" secondAttribute="centerY" constant="1" id="Cvy-yO-Kpy"/>
+                                <constraint firstItem="vjk-mN-1uD" firstAttribute="centerY" secondItem="Q0i-oI-2iN" secondAttribute="centerY" id="QVF-pX-fCI"/>
+                                <constraint firstItem="us8-uQ-xU1" firstAttribute="leading" secondItem="Q0i-oI-2iN" secondAttribute="leading" constant="3" id="U5e-Tl-EJV"/>
+                                <constraint firstItem="vjk-mN-1uD" firstAttribute="leading" secondItem="us8-uQ-xU1" secondAttribute="trailing" constant="5" id="Zkp-Fi-KDz"/>
+                                <constraint firstAttribute="width" constant="240" id="dYT-ei-XKz"/>
+                                <constraint firstAttribute="height" constant="16" id="q5p-S6-znE"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PjI-7Y-doY">
+                            <rect key="frame" x="318" y="95" width="42" height="40"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="42" id="SJx-v3-hJO"/>
+                                <constraint firstAttribute="height" constant="40" id="vvK-ai-SKO"/>
                             </constraints>
                             <state key="normal" image="card_heart"/>
+                            <connections>
+                                <action selector="likePressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="xGo-kD-3rc"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="PIX-sk-KP8" secondAttribute="trailing" constant="15" id="SmJ-A1-6f9"/>
-                        <constraint firstAttribute="bottom" secondItem="PjI-7Y-doY" secondAttribute="bottom" constant="20" id="YK2-sh-NlK"/>
+                        <constraint firstItem="Q0i-oI-2iN" firstAttribute="top" secondItem="PIX-sk-KP8" secondAttribute="bottom" constant="3" id="alr-kn-MgE"/>
                         <constraint firstAttribute="height" constant="150" id="awk-GI-EzX"/>
-                        <constraint firstAttribute="bottom" secondItem="PIX-sk-KP8" secondAttribute="bottom" constant="15" id="dd5-Eu-Sn0"/>
                         <constraint firstItem="PIX-sk-KP8" firstAttribute="leading" secondItem="17k-iJ-4Ye" secondAttribute="leading" constant="15" id="i6C-Xz-EDw"/>
-                        <constraint firstAttribute="trailing" secondItem="PjI-7Y-doY" secondAttribute="trailing" constant="20" id="m0L-Cv-yUj"/>
+                        <constraint firstItem="Q0i-oI-2iN" firstAttribute="leading" secondItem="17k-iJ-4Ye" secondAttribute="leading" constant="15" id="k2q-iY-Zxr"/>
+                        <constraint firstAttribute="trailing" secondItem="PjI-7Y-doY" secondAttribute="trailing" constant="15" id="m0L-Cv-yUj"/>
+                        <constraint firstItem="PjI-7Y-doY" firstAttribute="bottom" secondItem="Q0i-oI-2iN" secondAttribute="bottom" id="rbh-0x-6xT"/>
+                        <constraint firstAttribute="bottom" secondItem="Q0i-oI-2iN" secondAttribute="bottom" constant="15" id="t8U-oj-e6H"/>
                     </constraints>
                 </view>
                 <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N0F-ch-6F8">
@@ -121,8 +153,10 @@
                 <outlet property="bottomView" destination="17k-iJ-4Ye" id="LJ5-4A-38o"/>
                 <outlet property="bottomViewBottom" destination="Uvo-SC-i87" id="5Z6-hX-Dr8"/>
                 <outlet property="bottomViewHeight" destination="awk-GI-EzX" id="JkF-jn-akf"/>
+                <outlet property="distanceLabel" destination="vjk-mN-1uD" id="hKU-rf-DbS"/>
                 <outlet property="edu" destination="us6-fn-JCK" id="mps-1d-45R"/>
                 <outlet property="job" destination="CZX-FU-cUd" id="eKZ-FR-wd5"/>
+                <outlet property="likeBtn" destination="PjI-7Y-doY" id="cw3-tn-wAB"/>
                 <outlet property="lock" destination="b8x-jC-Xy4" id="azY-84-FHo"/>
                 <outlet property="matchedLabel" destination="j2V-NH-CY8" id="bON-XV-rCG"/>
                 <outlet property="matchedSubLabel" destination="EsD-dI-YxB" id="LR6-a4-2Re"/>
@@ -133,7 +167,8 @@
         </view>
     </objects>
     <resources>
-        <image name="card_heart" width="39" height="37"/>
+        <image name="card_heart" width="91" height="93"/>
         <image name="lock" width="92" height="131"/>
+        <image name="pin" width="7" height="11"/>
     </resources>
 </document>

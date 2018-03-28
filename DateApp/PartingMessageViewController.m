@@ -62,28 +62,9 @@
     
     CGFloat dimen = self.unmatchBtn.frame.size.width;
     
-    CGFloat height = (dimen - 15) / 5;
+    CGFloat height = (dimen - 15) / 6;
     
     self.unmatchBtnHeight.constant = height;
-    [self.unmatchBtn layoutIfNeeded];
-    
-    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
-    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
-    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
-    
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.unmatchBtn.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.0,0.5);
-    gradient.endPoint = CGPointMake(1.0,0.5);
-    [self.unmatchBtn.layer insertSublayer:gradient atIndex:0];
-    gradient.cornerRadius = height / 5;
-    gradient.masksToBounds = YES;
-    self.unmatchBtn.layer.masksToBounds = NO;
-    self.unmatchBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    self.unmatchBtn.layer.shadowOpacity = 0.75;
-    self.unmatchBtn.layer.shadowRadius = 3;
-    self.unmatchBtn.layer.shadowOffset = CGSizeZero;
     
 }
 
@@ -226,41 +207,67 @@
     switch (self.currentType)
     {
         case INAPPROPRIATE:
+        {
             //set text and btn state
-            [self.inappropriateBtn setTitleColor:[DAGradientColor gradientFromColor:self.inappropriateBtn.titleLabel.frame.size.width] forState:UIControlStateNormal];
-            [self.inappropriateImageView setImage:[UIImage imageNamed:@"unmatch_messages_active_icon"]];
+            [self.inappropriateBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+            UIImage *image = [UIImage imageNamed:@"unmatch_messages_active_icon"];
+            self.inappropriateImageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.inappropriateImageView setTintColor:[UIColor darkGrayColor]];
                 [self.unmatchBtn setAlpha:1];
                 [self.unmatchBtn setUserInteractionEnabled:YES];
             break;
+        }
         case CHEMISTRY:
-            [self.chemistryBtn setTitleColor:[DAGradientColor gradientFromColor:self.chemistryBtn.titleLabel.frame.size.width] forState:UIControlStateNormal];
-                [self.chemistryImageView setImage:[UIImage imageNamed:@"unmatch_chemistry_active_icon"]];
+        {
+            [self.chemistryBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+         //       [self.chemistryImageView setImage:[UIImage imageNamed:@"unmatch_chemistry_active_icon"]];
+            UIImage *image = [UIImage imageNamed:@"unmatch_chemistry_active_icon"];
+            self.self.chemistryImageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.self.chemistryImageView setTintColor:[UIColor darkGrayColor]];
                 [self.unmatchBtn setAlpha:1];
                 [self.unmatchBtn setUserInteractionEnabled:YES];
             break;
+        }
         case INTEREST:
-                [self.interestBtn setTitleColor:[DAGradientColor gradientFromColor:self.interestBtn.titleLabel.frame.size.width] forState:UIControlStateNormal];
-                    [self.interestImageView setImage:[UIImage imageNamed:@"unmatch_interest_active_icon"]];
+        {
+                [self.interestBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+              //      [self.interestImageView setImage:[UIImage imageNamed:@"unmatch_interest_active_icon"]];
+            UIImage *image = [UIImage imageNamed:@"unmatch_interest_active_icon"];
+            self.self.self.interestImageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.self.self.interestImageView setTintColor:[UIColor darkGrayColor]];
                 [self.unmatchBtn setAlpha:1];
                 [self.unmatchBtn setUserInteractionEnabled:YES];
             break;
+        }
         case RESPONSE_TIME:
-                [self.responseTimeBtn setTitleColor:[DAGradientColor gradientFromColor:self.responseTimeBtn.titleLabel.frame.size.width] forState:UIControlStateNormal];
-                [self.responseTimeImageView setImage:[UIImage imageNamed:@"unmatch_response_active_icon"]];
+        {
+                [self.responseTimeBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+            //    [self.responseTimeImageView setImage:[UIImage imageNamed:@"unmatch_response_active_icon"]];
+            UIImage *image = [UIImage imageNamed:@"unmatch_response_active_icon"];
+            self.self.self.self.responseTimeImageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.self.self.self.responseTimeImageView setTintColor:[UIColor darkGrayColor]];
                 [self.unmatchBtn setAlpha:1];
                 [self.unmatchBtn setUserInteractionEnabled:YES];
             break;
+        }
         case NO_REASON:
-                [self.noReasonBtn setTitleColor:[DAGradientColor gradientFromColor:self.noReasonBtn.titleLabel.frame.size.width] forState:UIControlStateNormal];
-                [self.noReasonImageView setImage:[UIImage imageNamed:@"unmatch_no_reason_active_icon"]];
+        {
+                [self.noReasonBtn setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+           //     [self.noReasonImageView setImage:[UIImage imageNamed:@"unmatch_no_reason_active_icon"]];
+            UIImage *image = [UIImage imageNamed:@"unmatch_no_reason_active_icon"];
+            self.self.self.self.self.noReasonImageView.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+            [self.self.self.self.self.noReasonImageView setTintColor:[UIColor darkGrayColor]];
                 [self.unmatchBtn setAlpha:1];
                 [self.unmatchBtn setUserInteractionEnabled:YES];
             break;
+        }
         default:
+        {
             self.currentType = 0;
             [self.unmatchBtn setAlpha:0.1];
             [self.unmatchBtn setUserInteractionEnabled:NO];
             break;
+        }
     }
     
     
@@ -273,6 +280,7 @@
     [self.noReasonBtn setTitleColor:inactiveColor forState:UIControlStateNormal];
     [self.interestBtn setTitleColor:inactiveColor forState:UIControlStateNormal];
     [self.responseTimeBtn setTitleColor:inactiveColor forState:UIControlStateNormal];
+    
     
     [self.inappropriateImageView setImage:[UIImage imageNamed:@"unmatch_messages_icon"]];
     [self.chemistryImageView setImage:[UIImage imageNamed:@"unmatch_chemistry_icon"]];

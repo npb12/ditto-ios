@@ -70,6 +70,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *labelTop;
 @property (strong, nonatomic) IBOutlet UIStackView *stackLabels;
 @property (strong, nonatomic) IBOutlet UILabel *cardsLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *emptyPin;
 
 -(void)updateUnmatch;
 

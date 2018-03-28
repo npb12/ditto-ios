@@ -7,6 +7,7 @@
 //
 
 #import "Includes.h"
+#import "DateApp-Swift.h"
 
 @interface MatchViewController (){
     UIColor *grayColor;
@@ -33,6 +34,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *discoverBtnHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *discoverBtnWidth;
 
+@property (strong, nonatomic) IBOutlet UIView *messageInputView;
 
 @end
 
@@ -50,9 +52,20 @@
         self.user = [MatchUser currentUser];
         
         self.topLabel.text = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];
-        self.middleLabel.text = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
+        
+        if (self.user.match_time)
+        {
+            self.middleLabel.text = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
+        }
+        else
+        {
+            self.middleLabel.text = @"Matched for 3 days";
+
+        }
         [self.discoverBtn setHidden:YES];
         [self.nomatch_image setHidden:YES];
+        [self.messageInputView setHidden:NO];
+        [self.messageButton setUserInteractionEnabled:YES];
         
     }
     else
@@ -61,6 +74,8 @@
         self.middleLabel.text = @"Go to the Discover section and\n swipe to find your next match!";
         [self.profilePic setHidden:YES];
         
+        [self.messageInputView setHidden:YES];
+        [self.messageButton setUserInteractionEnabled:NO];
     }
     
     CGFloat dimen = [[UIScreen mainScreen] bounds].size.width - 80;
@@ -78,34 +93,9 @@
     CGFloat height = (dimen - 15) / 5;
     
     self.discoverBtnHeight.constant = height;
-    
-    [self.discoverBtn layoutIfNeeded];
-    
-    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
-    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
-    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
-    
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.discoverBtn.bounds;//CGRectMake(47.5, 300, self.discoverBtnWidth.constant, self.discoverBtnHeight.constant);
-    gradient.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.0,0.5);
-    gradient.endPoint = CGPointMake(1.0,0.5);
-    [self.discoverBtn.layer insertSublayer:gradient atIndex:0];
-    gradient.cornerRadius = height / 2;
-    gradient.masksToBounds = YES;
-    self.discoverBtn.layer.masksToBounds = NO;
-    self.discoverBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    self.discoverBtn.layer.shadowOpacity = 0.75;
-    self.discoverBtn.layer.shadowRadius = 3;
-    self.discoverBtn.layer.shadowOffset = CGSizeZero;
+    self.discoverBtn.layer.cornerRadius = height / 2;
     
 
-    self.nomatch_image.layer.masksToBounds = NO;
-    self.nomatch_image.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    self.nomatch_image.layer.shadowOpacity = 0.75;
-    self.nomatch_image.layer.shadowRadius = 1;
-    self.nomatch_image.layer.shadowOffset = CGSizeZero;
-    
     [self.nomatch_image setUserInteractionEnabled:NO];
 
     
@@ -123,8 +113,7 @@
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToProfile)];
     [self.profilePic addGestureRecognizer:tapGesture];
-    
-    
+
 }
 
 -(void)profilePicFrame
@@ -208,6 +197,7 @@
 
 -(void)updateUnmatch
 {
+    [self.messageButton setUserInteractionEnabled:NO];
     [UIView animateWithDuration:2.5f animations:^
      {
          [self.profilePic  setHidden:YES];
@@ -216,11 +206,13 @@
          [self.discoverBtn setHidden:NO];
          [self.nomatch_image setHidden:NO];
          [self.profilePic setHidden:YES];
+         [self.messageInputView setHidden:YES];
      }];
 }
 
 -(void)updateMatch
 {
+    [self.messageButton setUserInteractionEnabled:YES];
     [UIView animateWithDuration:2.5f animations:^
      {
          self.user = [MatchUser currentUser];
@@ -228,6 +220,7 @@
          self.topLabel.text = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];
          self.middleLabel.text = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
          [self.nomatch_image setHidden:YES];
+         [self.messageInputView setHidden:NO];
         /* [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
                             placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
                                    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
@@ -324,13 +317,13 @@
 - (IBAction)goToMessaging:(id)sender
 {
     
-    id<SegueProtocol> strongDelegate = self.delegate;
-    [strongDelegate gotoMessage];
+  //  id<SegueProtocol> strongDelegate = self.delegate;
+  //  [strongDelegate gotoMessage];
 
     
-    /*
+    
     NSNotification* notification = [NSNotification notificationWithName:@"goToMessaging" object:self];
-    [[NSNotificationCenter defaultCenter] postNotification:notification]; */
+    [[NSNotificationCenter defaultCenter] postNotification:notification];
 }
 
 - (IBAction)unmatchAction:(id)sender
@@ -338,6 +331,17 @@
     
     id<SegueProtocol> strongDelegate = self.delegate;
     [strongDelegate unmatchUser];
+}
+
+
+-(CGRect)profileFrame
+{
+    CGFloat x = self.profilePic.frame.origin.x;
+    CGFloat y = self.profilePic.frame.origin.y;
+    UIWindow* myWindow = self.profilePic.window;
+    CGPoint pointInWindow = [self.profilePic convertPoint:CGPointMake(x, y) toView:myWindow];
+    
+    return CGRectMake(pointInWindow.x, pointInWindow.y, self.profilePic.frame.size.width, self.profilePic.frame.size.height);
 }
 
 

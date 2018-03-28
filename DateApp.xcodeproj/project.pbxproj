@@ -16,6 +16,7 @@
 		8C0AF7491F5516D0005AA0FF /* LilyScriptOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C0AF7481F5516D0005AA0FF /* LilyScriptOne-Regular.ttf */; };
 		8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */; };
 		8C1146831E7D838C003AB594 /* NewMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1146821E7D838C003AB594 /* NewMessageViewController.m */; };
+		8C18927B206AB424008C6474 /* MatchInputBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C18927A206AB424008C6474 /* MatchInputBottom.swift */; };
 		8C1B7BDA2013D96C00D39235 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B7BD92013D96C00D39235 /* ConversationViewController.swift */; };
 		8C1B7BDC2014F4C300D39235 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C1B7BDB2014F4C300D39235 /* ChatMessage.swift */; };
 		8C1F8AE61FC0EFCE00D927D4 /* PhotoDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1F8AE51FC0EFCE00D927D4 /* PhotoDownloader.m */; };
@@ -64,6 +65,9 @@
 		8C9C19D71DD800DE0074A7D0 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C19D61DD800DE0074A7D0 /* SettingsViewController.m */; };
 		8C9C19DA1DD829680074A7D0 /* MyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C19D91DD829680074A7D0 /* MyProfileViewController.m */; };
 		8C9C19DD1DD829890074A7D0 /* MenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C9C19DC1DD829890074A7D0 /* MenuViewController.m */; };
+		8C9FE9982068A29F004C8730 /* UIViewShadowExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9FE9952068A29E004C8730 /* UIViewShadowExtension.swift */; };
+		8C9FE9992068A29F004C8730 /* TwicketSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9FE9962068A29E004C8730 /* TwicketSegmentedControl.swift */; };
+		8C9FE99A2068A29F004C8730 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9FE9972068A29F004C8730 /* Palette.swift */; };
 		8CA3447C1DD76C0200BFB36F /* PhotosCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CA3447B1DD76C0200BFB36F /* PhotosCollectionViewCell.m */; };
 		8CB05FFA1DD187F300EB7BB6 /* MatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB05FF91DD187F300EB7BB6 /* MatchViewController.m */; };
 		8CB0F1791E2DCED500E62A1C /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8CB0F1781E2DCED500E62A1C /* RootViewController.m */; };
@@ -138,6 +142,7 @@
 		8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartingMessageViewController.m; sourceTree = "<group>"; };
 		8C1146811E7D838C003AB594 /* NewMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageViewController.h; sourceTree = "<group>"; };
 		8C1146821E7D838C003AB594 /* NewMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewMessageViewController.m; sourceTree = "<group>"; };
+		8C18927A206AB424008C6474 /* MatchInputBottom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchInputBottom.swift; sourceTree = "<group>"; };
 		8C1B7BD92013D96C00D39235 /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		8C1B7BDB2014F4C300D39235 /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		8C1F8AE41FC0EFCE00D927D4 /* PhotoDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoDownloader.h; sourceTree = "<group>"; };
@@ -219,6 +224,9 @@
 		8C9C19D91DD829680074A7D0 /* MyProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyProfileViewController.m; sourceTree = "<group>"; };
 		8C9C19DB1DD829890074A7D0 /* MenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuViewController.h; sourceTree = "<group>"; };
 		8C9C19DC1DD829890074A7D0 /* MenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuViewController.m; sourceTree = "<group>"; };
+		8C9FE9952068A29E004C8730 /* UIViewShadowExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewShadowExtension.swift; sourceTree = "<group>"; };
+		8C9FE9962068A29E004C8730 /* TwicketSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwicketSegmentedControl.swift; sourceTree = "<group>"; };
+		8C9FE9972068A29F004C8730 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		8CA3447A1DD76C0200BFB36F /* PhotosCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosCollectionViewCell.h; sourceTree = "<group>"; };
 		8CA3447B1DD76C0200BFB36F /* PhotosCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosCollectionViewCell.m; sourceTree = "<group>"; };
 		8CB05FF51DD175AB00EB7BB6 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
@@ -492,6 +500,10 @@
 				8C39D8292054F25900FAE208 /* MenuTableViewCell.xib */,
 				8C3DFA9F2058BBDB0056F763 /* DismissStoryViewAnimationController.swift */,
 				8C3DFAA02058BBDC0056F763 /* PresentStoryViewAnimationController.swift */,
+				8C9FE9972068A29F004C8730 /* Palette.swift */,
+				8C9FE9962068A29E004C8730 /* TwicketSegmentedControl.swift */,
+				8C9FE9952068A29E004C8730 /* UIViewShadowExtension.swift */,
+				8C18927A206AB424008C6474 /* MatchInputBottom.swift */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -900,6 +912,7 @@
 				8C21E091203CE56D00DEA088 /* UIImageCropper.swift in Sources */,
 				8C3DFAA12058BBDC0056F763 /* DismissStoryViewAnimationController.swift in Sources */,
 				8C3DFAA22058BBDC0056F763 /* PresentStoryViewAnimationController.swift in Sources */,
+				8C9FE9982068A29F004C8730 /* UIViewShadowExtension.swift in Sources */,
 				8CEF36A01E2D97F10060CAF8 /* NSUserDefaults+DemoSettings.m in Sources */,
 				8C2BE32F1DEA3FE30042BE6B /* AlbumTableViewCell.m in Sources */,
 				8C1F8AEC1FC3AA1500D927D4 /* AlbumSelectionViewController.m in Sources */,
@@ -932,11 +945,13 @@
 				8C9C19DA1DD829680074A7D0 /* MyProfileViewController.m in Sources */,
 				8C2BE32C1DEA3EE40042BE6B /* FBAlbumsViewController.m in Sources */,
 				8CEF3F1A1E3071DB00CC4485 /* MatchTableViewCell.m in Sources */,
+				8C9FE99A2068A29F004C8730 /* Palette.swift in Sources */,
 				8C1B7BDC2014F4C300D39235 /* ChatMessage.swift in Sources */,
 				8C39D81B2053B92500FAE208 /* UUGradientView.swift in Sources */,
 				8CCA5E941FE39C1400AEE99F /* ScaledImage.m in Sources */,
 				8CEB63961E58F9ED00F062A9 /* OverlayView.m in Sources */,
 				8C2BE3041DE018820042BE6B /* CERangeSliderKnobLayer.m in Sources */,
+				8C18927B206AB424008C6474 /* MatchInputBottom.swift in Sources */,
 				8C071DD41F0B1EEF00900A42 /* UserLandingViewController.m in Sources */,
 				8CB05FFA1DD187F300EB7BB6 /* MatchViewController.m in Sources */,
 				8CD2BD8B1E3EE65D00A293CE /* SettingsTableViewCell.m in Sources */,
@@ -949,6 +964,7 @@
 				8C268128202A035800F92967 /* SecondChancePickerViewController.m in Sources */,
 				8CCBF4CD1E7470D400C202CB /* User.m in Sources */,
 				8C26812B202A089600F92967 /* SecondChanceCell.m in Sources */,
+				8C9FE9992068A29F004C8730 /* TwicketSegmentedControl.swift in Sources */,
 				8CF62C7B1E1A069700BBAF0D /* NewMatchConflictViewController.m in Sources */,
 				8C76FAE32033AA9000E45880 /* SelectionViewController.m in Sources */,
 				8C21E092203CE56D00DEA088 /* UIImage+FixOrientation.swift in Sources */,

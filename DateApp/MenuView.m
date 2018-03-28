@@ -19,7 +19,7 @@
     
     self.topViewHeight.constant = [UIScreen mainScreen].bounds.size.height * 0.25;
     
-    self.frameHeight.constant = self.topViewHeight.constant * 0.6;
+    self.frameHeight.constant = self.topViewHeight.constant * 0.5;
     self.frameWidth.constant = self.frameHeight.constant;
     
     [self.imgFrame layoutIfNeeded];

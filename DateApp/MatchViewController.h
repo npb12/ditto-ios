@@ -46,6 +46,7 @@
 
 - (IBAction)imageTap:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UIButton *messageButton;
 
 @property NSUInteger pageIndex;
 
@@ -55,10 +56,12 @@
 
 @property (nonatomic, weak) id<GoDiscoverProtocol> discoverDelegate;
 
-
+-(CGRect)profileFrame;
 
 @property (strong, nonatomic) IBOutlet UIImageView *profilePic;
 
+@property (strong, nonatomic) IBOutlet UILabel *unmatchedHeader;
+@property (strong, nonatomic) IBOutlet UILabel *unmatchedSub;
 
 @property (nonatomic, weak) id<GoToProfileProtocol> profile_delegate;
 

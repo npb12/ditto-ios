@@ -39,10 +39,11 @@ import MapKit
             self.title = user.name
         }
         
+        
+        
         //self.navigationController?.navigationBar.backIndicatorImage = UIImage(named: "back")?.imageWithRenderingMode(.AlwaysOriginal)
         
-        leftBarButton.image = UIImage(named: "close_icon")?.withRenderingMode(.alwaysOriginal)
-        
+       // leftBarButton.image = UIImage(named: "close_icon")?.withRenderingMode(.alwaysOriginal)
       //  DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
             self.iMessage()
       //  })
@@ -95,7 +96,17 @@ import MapKit
                             target: self,
                             action: #selector(ConversationViewController.handleTyping))
         ] */
+        
+        
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        // Show keyboard by default
+        messageInputBar.inputTextView.becomeFirstResponder()
+    }
+
     /*
     @objc func handleTyping() {
         
@@ -199,7 +210,9 @@ import MapKit
     
     @IBAction func exitVC(_ sender: Any)
     {
-        self.parent?.dismiss(animated: true, completion: nil)
+        self.messageInputBar.alpha = 0.0
+        self.messageInputBar.removeFromSuperview()
+        self.parent?.dismiss(animated: false, completion: nil)
     }
     
     

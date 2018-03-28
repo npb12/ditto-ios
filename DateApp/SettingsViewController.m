@@ -749,7 +749,7 @@
 //
 -(UIColor*)baseColor
 {
-    return [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+    return [UIColor colorWithRed:0.22 green:0.59 blue:0.94 alpha:1.0];
 }
 
 -(UIColor*)headerColor

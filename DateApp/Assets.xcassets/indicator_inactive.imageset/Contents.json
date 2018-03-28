@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Oval 211.png",
+      "filename" : "inactivate_indicator1x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Oval 222.png",
+      "filename" : "inactivate_indicator2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Oval 233.png",
+      "filename" : "inactivate_indicator3x.png",
       "scale" : "3x"
     }
   ],

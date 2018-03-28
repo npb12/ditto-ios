@@ -16,7 +16,7 @@
 
 @protocol ConversationDelegate;
 
-@interface RootViewController : UIViewController<UIPageViewControllerDelegate, UIScrollViewDelegate,  PartingMessageDelegate, SegueProtocol, GoDiscoverProtocol>
+@interface RootViewController : UIViewController<UIPageViewControllerDelegate, UIScrollViewDelegate,  PartingMessageDelegate, SegueProtocol>
 
 -(void) goToMessaging:(id)sender;
 

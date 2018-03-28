@@ -84,6 +84,7 @@
 
 @property (strong, nonatomic) UIView *avatarImageViewHolder;
 
+@property (strong, nonatomic) IBOutlet UILabel *distanceLabel;
 
 @property (nonatomic) CGFloat width;
 @property (nonatomic) CGFloat height;
@@ -121,6 +122,7 @@
 
 @property (nonatomic, assign) BOOL isExpanded;
 
+@property (strong, nonatomic) IBOutlet UIButton *likeBtn;
 
 
 

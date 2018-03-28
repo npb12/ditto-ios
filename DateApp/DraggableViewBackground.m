@@ -60,7 +60,8 @@ static const int MAX_BUFFER_SIZE = 2;
     
     if ([userCards count] > 0)
     {
-        [self.stackLabels setAlpha:0.9];
+        [self.stackLabels setAlpha:1.0];
+        [self.emptyPin setAlpha:0.0];
         
         UIFont *countFont = [UIFont fontWithName:@"RooneySansLF-Medium" size:22.0];
         UIFont *labelFont = [UIFont fontWithName:@"RooneySansLF-Regular" size:16.0];
@@ -89,6 +90,8 @@ static const int MAX_BUFFER_SIZE = 2;
     else
     {
         [self.stackLabels setAlpha:0.0];
+        [self.emptyPin setAlpha:1.0];
+
     }
 }
 
@@ -182,6 +185,7 @@ static const int MAX_BUFFER_SIZE = 2;
     if ([loadedCards count] < 1)
     {
         [self.stackLabels setAlpha:0.0];
+        [self.emptyPin setAlpha:1.0];
     }
     
     if (cardsLoadedIndex < [allCards count]) { //%%% if we haven't reached the end of all cards, put another into the loaded cards
@@ -233,6 +237,7 @@ static const int MAX_BUFFER_SIZE = 2;
    // [self.emptyLabel2 setAlpha:1.0];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.stackLabels setAlpha:0.0];
+        [self.emptyPin setAlpha:1.0];
     });
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setLocationObserver" object:nil userInfo:nil];

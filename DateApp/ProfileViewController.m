@@ -30,6 +30,7 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *bio_label;
 
+@property (strong, nonatomic) IBOutlet UIScrollView *contentScrollView;
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) UIView *tempView;
@@ -141,6 +142,20 @@
     {
         self.distanceLabel.text = [NSString stringWithFormat:@"%ld miles away", (long)self.user.distance];
     }
+    
+    NSInteger distance = floor(self.user.distance);
+    NSString *distanceStr;
+    
+    if (distance == 1)
+    {
+        distanceStr = @" mile away";
+    }
+    else
+    {
+        distanceStr = @" miles away";
+    }
+    
+    self.distanceLabel.text = [NSString stringWithFormat:@"%ld%@", (long)distance, distanceStr];
 
     [self initScrollView];
     //   self.tableViewHeight.constant = self.view.bounds.size.height / 3;
@@ -154,43 +169,6 @@
 
 }
 
-
-- (void) viewDidAppear:(BOOL)animated
-{
-    CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    CGFloat bigSize = width / 5;
-    CGFloat height = [UIScreen mainScreen].bounds.size.height * 0.86;
-
-    
-    [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
-     {
-         self.chatBottom.constant = 50;
-         [self.view layoutIfNeeded];
-     }
-                     completion:^(BOOL finished)
-     {
-
-     }];
-    
-    [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
-     {
-        self.dislikeBtn.frame = CGRectMake(self.view.frame.size.width / 4.1,height,bigSize,bigSize);         [self.view layoutIfNeeded];
-     }
-                     completion:^(BOOL finished)
-     {
-         
-     }];
-    
-    [UIView animateWithDuration:0.25 delay:0.0 options:0 animations:^
-     {
-         self.likeBtn.frame = CGRectMake(self.view.frame.size.width / 1.9,height,bigSize,bigSize);
-        [self.view layoutIfNeeded];
-     }
-                     completion:^(BOOL finished)
-     {
-         
-     }];
-}
 
 #pragma animation stuff
 
@@ -624,8 +602,6 @@
     
     [self performSelector:@selector(onTick:) withObject:nil afterDelay:0.5];
 
-
-    
 } */
 
 -(void)addGradientLayer:(UIButton*)button{
@@ -650,14 +626,14 @@
     }
     else
     {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        [self dismissVC];
     }
     
 }
 
 -(void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissVC];
 }
 
 -(void)initPageController
@@ -796,9 +772,30 @@
 } */
 
 
+-(void)dismissVC
+{
+    if (self.match || self.isMine)
+    {
+        [self dismissViewControllerAnimated:NO completion:nil];
+    }
+    else
+    {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
 -(UIColor*)bgGray
 {
     return [UIColor colorWithRed:0.97 green:0.97 blue:0.97 alpha:1.0];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    CGFloat bottom = self.bio_label.frame.origin.y + self.bio_label.frame.size.height + 50;
+    dispatch_async (dispatch_get_main_queue(), ^
+                    {
+                        [self.contentScrollView setContentSize:CGSizeMake(0, bottom)];
+                    });
 }
 
 
