@@ -18,14 +18,6 @@ import MessageKit
         // Drawing code
         iMessage()
     }
-    /*
-    func defaultStyle() {
-        let newMessageInputBar = MessageInputBar()
-        newMessageInputBar.sendButton.tintColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
-        newMessageInputBar.delegate = self
-        messageInputBar = newMessageInputBar
-        reloadInputViews()
-    } */
     
     func iMessage() {
       //  defaultStyle()
@@ -43,7 +35,7 @@ import MessageKit
         inputTextView.scrollIndicatorInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         setRightStackViewWidthConstant(to: 36, animated: true)
         setStackViewItems([sendButton], forStack: .right, animated: true)
-        sendButton.imageView?.backgroundColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
+        sendButton.imageView?.backgroundColor = UIColor(red:0.22, green:0.59, blue:0.94, alpha:1.0)
         sendButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         sendButton.setSize(CGSize(width: 36, height: 36), animated: true)
         sendButton.image = #imageLiteral(resourceName: "send_button")

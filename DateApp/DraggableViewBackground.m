@@ -51,6 +51,7 @@ static const int MAX_BUFFER_SIZE = 2;
     }
     
     [self setCardCount];
+    [self.cardsLabel layoutIfNeeded];
 }
 
 
@@ -193,6 +194,15 @@ static const int MAX_BUFFER_SIZE = 2;
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
     }
+    
+    if ([[DataAccess singletonInstance] UserHasMatch])
+    {
+        [self updateMatch];
+    }
+    else
+    {
+        [self updateUnmatch];
+    }
 }
 
 //%%% action called when the card goes to the right.
@@ -214,6 +224,15 @@ static const int MAX_BUFFER_SIZE = 2;
         [loadedCards addObject:[allCards objectAtIndex:cardsLoadedIndex]];
         cardsLoadedIndex++;//%%% loaded a card, so have to increment count
         [self insertSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-1)] belowSubview:[loadedCards objectAtIndex:(MAX_BUFFER_SIZE-2)]];
+    }
+    
+    if ([[DataAccess singletonInstance] UserHasMatch])
+    {
+        [self updateMatch];
+    }
+    else
+    {
+        [self updateUnmatch];
     }
     
   //  id<MatchSegueProtocol> strongDelegate = self.matched_delegate;
@@ -311,6 +330,8 @@ static const int MAX_BUFFER_SIZE = 2;
     {
         [dragView leftClickAction];
     }
+    
+    [self nextCardAction];
 }
 
 -(void)noSwipingAlert{

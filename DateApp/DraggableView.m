@@ -80,13 +80,13 @@
         
         
         
-        if (![[DataAccess singletonInstance] UserHasMatch])
+        if ([[DataAccess singletonInstance] UserHasMatch])
         {
-            [self updateUnmatch];
+            [self updateMatch];
         }
         else
         {
-            [self updateMatch];
+            [self updateUnmatch];
         }
         
         
@@ -109,10 +109,10 @@
     
     self.matchedSubLabel.text = @"Unmatch with your current\nmatch to discover more people";
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(expandView:)];
+ //   UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(expandView:)];
     
     
-    [self.bottomView  addGestureRecognizer:tapGesture];
+  //  [self.bottomView  addGestureRecognizer:tapGesture];
     
     [self configureLongPress];
     

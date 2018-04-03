@@ -25,7 +25,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="140"/>
                     <subviews>
                         <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jaX-Je-W74">
-                            <rect key="frame" x="15" y="35" width="100" height="90"/>
+                            <rect key="frame" x="25" y="35" width="100" height="90"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="53B-zJ-re8">
                                     <rect key="frame" x="0.0" y="0.0" width="100" height="90"/>
@@ -46,26 +46,37 @@
                                 <constraint firstAttribute="width" constant="100" id="zPw-pG-UJq"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Neil, 26" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsD-fc-D2m">
-                            <rect key="frame" x="130" y="69" width="237" height="22"/>
-                            <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="bMT-sX-dGI">
+                            <rect key="frame" x="140" y="58" width="0.0" height="44.5"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Neil, 26" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jsD-fc-D2m">
+                                    <rect key="frame" x="0.0" y="0.0" width="0.0" height="24"/>
+                                    <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="19"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DISCOVERING" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XhP-zg-esb">
+                                    <rect key="frame" x="0.0" y="27" width="0.0" height="17.5"/>
+                                    <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="14"/>
+                                    <color key="textColor" red="0.92941176469999998" green="0.2784313725" blue="0.33725490200000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                        </stackView>
                     </subviews>
                     <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="jaX-Je-W74" firstAttribute="leading" secondItem="jxh-aC-ocd" secondAttribute="leading" constant="15" id="FG4-h9-KBZ"/>
-                        <constraint firstAttribute="trailing" secondItem="jsD-fc-D2m" secondAttribute="trailing" constant="8" id="Khz-nV-v9T"/>
+                        <constraint firstItem="jaX-Je-W74" firstAttribute="leading" secondItem="jxh-aC-ocd" secondAttribute="leading" constant="25" id="FG4-h9-KBZ"/>
+                        <constraint firstItem="bMT-sX-dGI" firstAttribute="leading" secondItem="jaX-Je-W74" secondAttribute="trailing" constant="15" id="JgE-kC-aST"/>
                         <constraint firstItem="jaX-Je-W74" firstAttribute="centerY" secondItem="jxh-aC-ocd" secondAttribute="centerY" constant="10" id="eF4-gg-hxH"/>
                         <constraint firstAttribute="height" constant="140" id="ezX-nF-R4g"/>
-                        <constraint firstItem="jsD-fc-D2m" firstAttribute="centerY" secondItem="53B-zJ-re8" secondAttribute="centerY" id="shQ-fS-baZ"/>
-                        <constraint firstItem="jsD-fc-D2m" firstAttribute="leading" secondItem="jaX-Je-W74" secondAttribute="trailing" constant="15" id="xtT-Iy-Ugx"/>
+                        <constraint firstItem="bMT-sX-dGI" firstAttribute="centerY" secondItem="jaX-Je-W74" secondAttribute="centerY" id="fh0-et-tCQ"/>
                     </constraints>
                 </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xvc-Rv-3dg">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xvc-Rv-3dg">
                     <rect key="frame" x="0.0" y="140" width="375" height="527"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -73,10 +84,10 @@
                 <constraint firstItem="xvc-Rv-3dg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="O54-Lg-4wH"/>
                 <constraint firstItem="jxh-aC-ocd" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="W12-Cu-l3b"/>
                 <constraint firstItem="jxh-aC-ocd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="W2t-zW-SKY"/>
-                <constraint firstItem="xvc-Rv-3dg" firstAttribute="top" secondItem="jxh-aC-ocd" secondAttribute="bottom" id="ZiA-th-BaP"/>
                 <constraint firstItem="jxh-aC-ocd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="c5p-SN-Dyy"/>
+                <constraint firstItem="xvc-Rv-3dg" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="cLA-nz-UDA"/>
                 <constraint firstItem="xvc-Rv-3dg" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="cxh-Me-PYh"/>
-                <constraint firstItem="xvc-Rv-3dg" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="xRb-OI-Od0"/>
+                <constraint firstItem="xvc-Rv-3dg" firstAttribute="top" secondItem="jxh-aC-ocd" secondAttribute="bottom" id="ibo-Vb-UG3"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
@@ -85,6 +96,7 @@
                 <outlet property="imgFrame" destination="jaX-Je-W74" id="5QK-c7-jJq"/>
                 <outlet property="nameLabel" destination="jsD-fc-D2m" id="azg-rR-Vh5"/>
                 <outlet property="proImage" destination="53B-zJ-re8" id="K9Z-JG-S4O"/>
+                <outlet property="statusLabel" destination="XhP-zg-esb" id="jDl-6X-9q5"/>
                 <outlet property="tableView" destination="xvc-Rv-3dg" id="eH1-RH-W4M"/>
                 <outlet property="topViewHeight" destination="ezX-nF-R4g" id="v0J-gU-Fsy"/>
             </connections>

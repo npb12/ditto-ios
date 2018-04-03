@@ -10,5 +10,6 @@
 
 @interface MenuTableViewCell : UITableViewCell
 @property (strong, nonatomic) IBOutlet UILabel *settingLabel;
+@property (strong, nonatomic) IBOutlet UIImageView *icn;
 
 @end

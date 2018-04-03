@@ -10,11 +10,6 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="RooneySansLF-Regular.otf">
-            <string>RooneySansLF-Regular</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -26,21 +21,30 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zu0-zU-ryy">
-                        <rect key="frame" x="16" y="11" width="40.5" height="21.5"/>
-                        <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="17"/>
-                        <color key="textColor" red="0.56078431370000004" green="0.5568627451" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <rect key="frame" x="74" y="10.5" width="47" height="24"/>
+                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drawer_profile_icon" translatesAutoresizingMaskIntoConstraints="NO" id="j4o-Jw-Cj6">
+                        <rect key="frame" x="31" y="9" width="23" height="25"/>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Zu0-zU-ryy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="UPb-Bb-e7e"/>
+                    <constraint firstItem="j4o-Jw-Cj6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="15" id="JP9-7N-s07"/>
+                    <constraint firstItem="Zu0-zU-ryy" firstAttribute="leading" secondItem="j4o-Jw-Cj6" secondAttribute="trailing" constant="20" id="Jvd-CL-ziC"/>
+                    <constraint firstItem="j4o-Jw-Cj6" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="n64-5o-UvT"/>
                     <constraint firstItem="Zu0-zU-ryy" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="opf-Ka-y7a"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="icn" destination="j4o-Jw-Cj6" id="jSe-Jk-jvc"/>
                 <outlet property="settingLabel" destination="Zu0-zU-ryy" id="VyP-Td-6sB"/>
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="drawer_profile_icon" width="23" height="25"/>
+    </resources>
 </document>

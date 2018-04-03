@@ -35,6 +35,8 @@
     self.backgroundView.matched_delegate = self;
     self.backgroundView.noswipe_delegate = self;
     self.backgroundView.profile_delegate = self;
+    
+    self.backgroundView.emptyLabel.text = @"No one new is currently around.\nCheck back again soon!";
 
 }
 

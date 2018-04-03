@@ -7,6 +7,7 @@
 //
 
 #import "MenuView.h"
+#import "DAGradientColor.h"
 
 @implementation MenuView
 
@@ -19,7 +20,7 @@
     
     self.topViewHeight.constant = [UIScreen mainScreen].bounds.size.height * 0.25;
     
-    self.frameHeight.constant = self.topViewHeight.constant * 0.5;
+    self.frameHeight.constant = self.topViewHeight.constant * 0.45;
     self.frameWidth.constant = self.frameHeight.constant;
     
     [self.imgFrame layoutIfNeeded];
@@ -56,6 +57,18 @@
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToprofile)];
     [self.proImage addGestureRecognizer:tapGesture2];
     
+    [self.statusLabel layoutIfNeeded];
+    
+    self.statusLabel.textColor = [DAGradientColor gradientFromColor:self.statusLabel.frame.size.width];
+
+    if ([[DataAccess singletonInstance] UserHasMatch])
+    {
+        self.statusLabel.text = @"MATCHED";
+    }
+    else
+    {
+        self.statusLabel.text = @"DISCOVERING";
+    }
 }
 
 -(void)displayData
@@ -129,7 +142,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50.0;
+    return 55.0;
 }
 
 
@@ -149,6 +162,7 @@
         else if (indexPath.row == 1)
         {
             cell.settingLabel.text = @"Settings";
+            cell.icn.image = [UIImage imageNamed:@"drawer_settings_icon"];
         }
     }
     else
@@ -156,10 +170,12 @@
         if (indexPath.row == 0)
         {
             cell.settingLabel.text = @"In App Purchases";
+            cell.icn.image = [UIImage imageNamed:@"drawer_inapp_icon"];
         }
         else if (indexPath.row == 1)
         {
             cell.settingLabel.text = @"Privacy Policy";
+            cell.icn.image = [UIImage imageNamed:@"drawer_privacy_icon"];
         }
         else if (indexPath.row == 2)
         {
@@ -208,7 +224,7 @@
     }
     
 }
-
+/*
 -(CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section {
     return 2.0;
 }
@@ -226,18 +242,29 @@
     [footer setBackgroundColor:[UIColor clearColor]];
 
     return footer;
-}
+} */
 
-/*
 -(CGFloat)tableView:(UITableView*)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 35.0;
+    if (section == 0)
+    {
+       return 35.0;
+    }
+    
+    return 0;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    if ([view isKindOfClass: [UITableViewHeaderFooterView class]]) {
+        UITableViewHeaderFooterView* castView = (UITableViewHeaderFooterView*) view;
+        castView.contentView.backgroundColor = [UIColor whiteColor];
+       // [castView.textLabel setTextColor:[UIColor grayColor]];
+    }
 }
 
 
-
-
-
+/*
 -(CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section {
     return 10.0;
 } */

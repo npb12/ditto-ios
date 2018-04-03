@@ -12,7 +12,7 @@ struct Palette {
     static let defaultTextColor = UIColor.lightGray//inactiveText()//UIColor.black//Palette.colorFromRGB(9, green: 26, blue: 51, alpha: 0.4)
     static let highlightTextColor = UIColor.black//activeText()
     static let segmentedControlBackgroundColor = bgColor()//UIColor.groupTableViewBackground
-    static let sliderColor = UIColor.white
+    static let sliderColor = bgColor()
         //Palette.colorFromRGB(44, green: 131, blue: 255)
 
     static func colorFromRGB(_ red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat = 1.0) -> UIColor {
@@ -28,7 +28,7 @@ struct Palette {
     
     static func inactiveText()-> UIColor
     {
-        return UIColor(red:0.78, green:0.78, blue:0.80, alpha:0.3)
+        return UIColor(red:0.78, green:0.78, blue:0.80, alpha:0.2)
     }
     
     static func activeText()-> UIColor

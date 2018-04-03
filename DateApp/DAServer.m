@@ -446,7 +446,7 @@
                                                     NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
                                                     NSInteger statusCode = [HTTPResponse statusCode];
                                                     
-                                                    NSLog(@"response is %ld", (long)statusCode);
+                                                    NSLog(@"response is for swipe %ld", (long)statusCode);
                                                     if (error) {
                                                         completion(error);
                                                         NSLog(@"%@", error);
@@ -513,27 +513,20 @@
        completion:(void (^)(NSError *))completion {
     
     
-    NSDictionary *headers = @{ @"content-type": @"application/json",
-                               @"cache-control": @"no-cache" };
+    NSDictionary *headers = [DAServer AuthHeader];
+
+    ///api/drop-swap/:id/
     
-    NSString *uid = [[DataAccess singletonInstance] getUserID];
-    
-    
-    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
+    NSString *str = [NSString stringWithFormat:@"/drop-swap/%@/", likedID];
+    NSString *url = [[DAServer baseURL] stringByAppendingString:str];
     
     NSDictionary *parameters = @{
-                                 @"request": @{
-                                         @"id": uid,
-                                         @"sessionToken": sessionToken,
-                                         @"post": @"confirm",
-                                         @"confirm": likedID,
-                                         @"message": @""
-                                         }
+                                 @"reason": @"",
                                  };
-    
+
     NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
@@ -568,31 +561,16 @@
            completion:(void (^)(NSError *))completion {
     
     
-    NSDictionary *headers = @{ @"content-type": @"application/json",
-                               @"cache-control": @"no-cache" };
+    NSDictionary *headers = [DAServer AuthHeader];
+
+    NSString *urlStr = [NSString stringWithFormat:@"%@/ignore-alt/%@/", [DAServer baseURL], likedID];
+
     
-    NSString *uid = [[DataAccess singletonInstance] getUserID];
-    
-    NSString *sessionToken = [[DataAccess singletonInstance] getSessionToken];
-    
-    
-    NSDictionary *parameters = @{
-                                 @"request": @{
-                                         @"id": uid,
-                                         @"sessionToken": sessionToken,
-                                         @"post": @"dropMatch",
-                                         @"drop": likedID
-                                         }
-                                 };
-    
-    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:[DAServer baseURL]]
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlStr]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
     [request setHTTPMethod:@"POST"];
     [request setAllHTTPHeaderFields:headers];
-    [request setHTTPBody:postData];
     
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
@@ -1067,15 +1045,12 @@
 + (void)getMatchesData:(BOOL)alt
          completion:(void (^)(NSError *))completion {
     
-    NSDictionary *headers = @{ @"content-type": @"application/json",
-                               @"cache-control": @"no-cache" };
+    NSDictionary *headers = [DAServer AuthHeader];
     
-    NSString *args = [NSString stringWithFormat:@"?uid=%@&get=location&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    NSString *url = [NSString stringWithFormat:@"%@/current-and-alts/", [DAServer baseURL]];
     
-    NSString *URL = [[DAServer baseURL] stringByAppendingString:args];
-    
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
+
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
 
@@ -1098,10 +1073,10 @@
                                                         
                                                         
                                                         NSDictionary *matches=[[NSDictionary alloc]init];
-                                                        matches=[json objectForKey:@"alternateMatchs"];
+                                                        matches=[json objectForKey:@"alternates"];
                                                         
                                                         NSDictionary *currentMatch=[[NSDictionary alloc]init];
-                                                        currentMatch=[json objectForKey:@"currentMatch"];
+                                                        currentMatch=[json objectForKey:@"match"];
                                                         
                                                         
                                                         if (!alt)

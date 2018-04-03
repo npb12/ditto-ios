@@ -86,7 +86,7 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
     
     NSDictionary *notif = [notification.request.content.userInfo objectForKey:@"aps"];
     
-    NSString *type = [notif objectForKey:@"type"];
+    NSString *type = [notif objectForKey:@"category"];
     
     if ([type isEqualToString:@"match"])
     {

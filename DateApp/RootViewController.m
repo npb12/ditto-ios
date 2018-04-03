@@ -66,6 +66,7 @@
 
 @property (strong, nonatomic) PresentStoryViewAnimationController *storyVC;
 @property (strong, nonatomic) DismissStoryViewAnimationController *dismissVC;
+@property (strong, nonatomic) TwicketSegmentedControl *twicketControl;
 @end
 
 @implementation RootViewController
@@ -288,22 +289,22 @@
     self.topView.layer.shadowOpacity = 0.1; */
     
     
-    NSArray *titles = @[@"Discover", @"My Match"];
+    NSArray *titles = @[@"DISCOVER", @"MY MATCH"];
     
     
-    TwicketSegmentedControl *twicketControl = [TwicketSegmentedControl new];
-    [twicketControl setSegmentItems:titles];
-    twicketControl.delegate = self;
+    self.twicketControl = [TwicketSegmentedControl new];
+    [self.twicketControl setSegmentItems:titles];
+    self.twicketControl.delegate = self;
     CGFloat twidth = width * 0.5;
     CGFloat theight = 37.5;
-    twicketControl.frame = CGRectMake((width / 2) - (twidth / 2), (self.topViewHeight.constant / 2) - (theight / 2) - 5, twidth, theight);
+    self.twicketControl.frame = CGRectMake((width / 2) - (twidth / 2), (self.topViewHeight.constant / 2) - (theight / 2) - 5, twidth, theight);
 
     
-    [self.topView addSubview:twicketControl];
+    [self.topView addSubview:self.twicketControl];
     
     self.menuView =   [[[NSBundle mainBundle] loadNibNamed:@"MenuView" owner:self options:nil] firstObject];
     self.menuView.parentVC = self;
-    self.menuView.frame = CGRectMake(0, 0, 260, 500);
+    self.menuView.frame = CGRectMake(0, 0, 300, 500);
     [self.menuContainer addSubview:self.menuView];
 }
 
@@ -311,7 +312,7 @@
 {
     if (!hamburgerMenuIsVisible)
     {
-        self.menuTrailing.constant = -260;
+        self.menuTrailing.constant = -300;
         hamburgerMenuIsVisible = YES;
         [self.menuButton setHidden:NO];
         [self.menuButton setUserInteractionEnabled:YES];
@@ -830,9 +831,9 @@
         SelectionViewController *selectionVC = segue.destinationViewController;
         
   //      selectionVC.delegate = self;
-        selectionVC.view.backgroundColor = [UIColor whiteColor];
+        selectionVC.view.backgroundColor = [UIColor clearColor];
        // [selectionVC.view setAlpha:0.97];
-     //   selectionVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        selectionVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         
     }
     else if ([segue.destinationViewController isKindOfClass:[EditPhotosViewController class]])
@@ -1189,6 +1190,7 @@
 -(void)discoverSelected
 {
     [self discoverAction:self];
+    [self.twicketControl moveTo:0];
 }
 
 -(void)updateUnmatch

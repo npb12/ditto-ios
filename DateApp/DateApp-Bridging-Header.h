@@ -12,3 +12,4 @@
 #import "ProfileViewController.h"
 #import "RootViewController.h"
 #import "SwipeViewController.h"
+#import "DAGradientColor.h"

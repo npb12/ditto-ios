@@ -92,7 +92,7 @@ import UIKit
         }
     }
 
-    open var font: UIFont = UIFont (name: "RooneySansLF-Regular", size: 16)!{
+    open var font: UIFont = UIFont (name: "RooneySansLF-Medium", size: 15)!{
         //UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.light) {
         didSet {
             updateLabelsFont(with: font)
@@ -189,9 +189,10 @@ import UIKit
         backgroundView.layer.shadowOpacity = 0.03
         backgroundView.layer.shadowOffset = CGSize(width: -0.15, height: 0.15)
 
+        /*
         if !isSliderShadowHidden {
             selectedContainerView.addShadow(with: sliderBackgroundColor)
-        }
+        } */
     }
 
     private func setupAutoresizingMasks() {
@@ -219,6 +220,28 @@ import UIKit
     }
 
     private func createLabel(with text: String, at index: Int, selected: Bool) -> UILabel {
+/*
+   //     imageView.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin]
+        var img: UIImage
+        var rect: CGRect
+        let width = UIScreen.main.bounds.width * 0.35
+        if index == 0
+        {
+            let x = (width * 0.25) - ((segmentWidth + 5) / 2)
+            rect = CGRect(x: x, y: 0, width: segmentWidth + 5, height: backgroundView.frame.height)
+            img = #imageLiteral(resourceName: "discover_active_tab")
+        }
+        else
+        {
+            img = #imageLiteral(resourceName: "match_inactive_tab")
+            rect = CGRect(x: (width * 0.75), y: 0, width: segmentWidth + 5, height: backgroundView.frame.height)
+        }
+        
+        let imageView = UIImageView(frame: rect)
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
+        imageView.image = img
+        return imageView */
+        
         let rect = CGRect(x: CGFloat(index) * segmentWidth, y: 0, width: segmentWidth, height: backgroundView.frame.height)
         let label = UILabel(frame: rect)
         label.text = text
@@ -281,14 +304,14 @@ import UIKit
         delegate?.didSelect(index)
     }
 
-    open func move(to index: Int) {
+    @objc open func move(to index: Int) {
         let correctOffset = center(at: index)
         animate(to: correctOffset)
 
         selectedSegmentIndex = index
     }
 
-    private func segmentIndex(for point: CGPoint) -> Int {
+    @objc public func segmentIndex(for point: CGPoint) -> Int {
         var index = Int(point.x / sliderView.frame.width)
         if index < 0 { index = 0 }
         if index > numberOfSegments - 1 { index = numberOfSegments - 1 }

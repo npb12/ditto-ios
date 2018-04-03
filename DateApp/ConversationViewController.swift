@@ -212,7 +212,7 @@ import MapKit
     {
         self.messageInputBar.alpha = 0.0
         self.messageInputBar.removeFromSuperview()
-        self.parent?.dismiss(animated: false, completion: nil)
+        self.parent?.dismiss(animated: true, completion: nil)
     }
     
     
@@ -318,7 +318,7 @@ import MapKit
         messageInputBar.inputTextView.scrollIndicatorInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         messageInputBar.setRightStackViewWidthConstant(to: 36, animated: true)
         messageInputBar.setStackViewItems([messageInputBar.sendButton], forStack: .right, animated: true)
-        messageInputBar.sendButton.imageView?.backgroundColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
+        messageInputBar.sendButton.imageView?.backgroundColor = UIColor(red:0.22, green:0.59, blue:0.94, alpha:1.0)
         messageInputBar.sendButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         messageInputBar.sendButton.setSize(CGSize(width: 36, height: 36), animated: true)
         messageInputBar.sendButton.image = #imageLiteral(resourceName: "send_button")
@@ -362,7 +362,8 @@ extension ConversationViewController: MessagesDataSource {
     
     func currentSender() -> Sender
     {
-        let userName = DataAccess().getName()
+        let user = User.current()
+        let userName = user?.name
         let userID = DataAccess().getUserID()
         return Sender(id: userID!, displayName: userName!)
     }

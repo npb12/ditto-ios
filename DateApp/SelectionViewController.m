@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *firstOptionBtn;
 @property (strong, nonatomic) IBOutlet UIButton *bottomOptionBtn;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *bottomBtnHeight;
+@property (strong, nonatomic) IBOutlet UILabel *heading;
 
 @end
 
@@ -27,13 +28,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.firstOptionBtn.titleLabel.textColor = [DAGradientColor gradientFromColor:self.firstOptionBtn.titleLabel.frame.size.width];
-        self.secondOptionBtn.titleLabel.textColor = [DAGradientColor gradientFromColor:self.secondOptionBtn.titleLabel.frame.size.width];
+
+    [self.bottomOptionBtn layoutIfNeeded];
+    self.bottomOptionBtn.titleLabel.textColor = [DAGradientColor gradientFromColor:self.bottomOptionBtn.titleLabel.frame.size.width];
     
     firstSelected = NO;
     secondSelected = NO;
     
-    [self.bottomOptionBtn setAlpha:0.1];
+    self.firstOptionBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.firstOptionBtn.layer.borderWidth = 0.75;
+    
+    self.secondOptionBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.secondOptionBtn.layer.borderWidth = 0.75;
+    
+    [self.bottomOptionBtn setHidden:YES];
     [self.bottomOptionBtn setUserInteractionEnabled:NO];
 }
 
@@ -41,30 +49,10 @@
 {
     
     CGFloat dimen = self.bottomOptionBtn.frame.size.width;
-    
-    CGFloat height = (dimen - 15) / 5;
-    
+    CGFloat height = (dimen - 15) / 5.5;
     self.bottomBtnHeight.constant = height;
-    [self.bottomOptionBtn layoutIfNeeded];
-    
-    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
-    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
-    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
-    
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.bottomOptionBtn.bounds;
-    gradient.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
-    gradient.startPoint = CGPointMake(0.0,0.5);
-    gradient.endPoint = CGPointMake(1.0,0.5);
-    [self.bottomOptionBtn.layer insertSublayer:gradient atIndex:0];
-    gradient.cornerRadius = height / 5;
-    gradient.masksToBounds = YES;
-    self.bottomOptionBtn.layer.masksToBounds = NO;
-    self.bottomOptionBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    self.bottomOptionBtn.layer.shadowOpacity = 0.75;
-    self.bottomOptionBtn.layer.shadowRadius = 3;
-    self.bottomOptionBtn.layer.shadowOffset = CGSizeZero;
-    
+    self.bottomOptionBtn.layer.cornerRadius = height / 2;
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,7 +71,7 @@
     else
     {
         firstSelected = YES;
-        [self.firstOptionBtn setAlpha:1.9];
+        [self.firstOptionBtn setAlpha:1.0];
         [self updateBtnStateTwoSelect];
     }
 }
@@ -108,12 +96,12 @@
 {
     if (firstSelected || secondSelected)
     {
-        [self.bottomOptionBtn setAlpha:1];
+        [self.bottomOptionBtn setHidden:NO];
         [self.bottomOptionBtn setUserInteractionEnabled:YES];
     }
     else
     {
-        [self.bottomOptionBtn setAlpha:0.1];
+        [self.bottomOptionBtn setHidden:YES];
         [self.bottomOptionBtn setUserInteractionEnabled:NO];
     }
 

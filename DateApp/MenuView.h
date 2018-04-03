@@ -24,6 +24,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
 
 @property (strong, nonatomic) RootViewController *parentVC;
+@property (strong, nonatomic) IBOutlet UILabel *statusLabel;
 
 -(void)displayData;
 @end

@@ -107,7 +107,7 @@
         user.user_id = [[key objectForKey:@"id"] integerValue];
         
         // user.name = [key objectForKey:@"fb_firstname"];
-        user.name = [key objectForKey:@"fb_firstname"];
+        user.name = [key objectForKey:@"first_name"];
         user.age = [NSString stringWithFormat: @"%d", [[key objectForKey:@"age"] integerValue]];
         NSString *edu = [key objectForKey:@"education"];
         

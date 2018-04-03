@@ -27,7 +27,40 @@
                     <rect key="frame" x="67" y="269" width="240" height="128"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
-                <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="17k-iJ-4Ye">
+                <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N0F-ch-6F8">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="yod-VU-buC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock" translatesAutoresizingMaskIntoConstraints="NO" id="b8x-jC-Xy4">
+                                <rect key="frame" x="141" y="193" width="92" height="131"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You're Matched!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j2V-NH-CY8">
+                                <rect key="frame" x="71" y="344" width="234" height="40"/>
+                                <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="32"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EsD-dI-YxB">
+                                <rect key="frame" x="188" y="399" width="0.0" height="0.0"/>
+                                <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="EsD-dI-YxB" firstAttribute="centerX" secondItem="yod-VU-buC" secondAttribute="centerX" id="49O-ym-Z82"/>
+                            <constraint firstItem="b8x-jC-Xy4" firstAttribute="centerX" secondItem="yod-VU-buC" secondAttribute="centerX" id="KMt-m2-vsj"/>
+                            <constraint firstItem="EsD-dI-YxB" firstAttribute="top" secondItem="j2V-NH-CY8" secondAttribute="bottom" constant="15" id="L10-Kt-3wz"/>
+                            <constraint firstItem="j2V-NH-CY8" firstAttribute="top" secondItem="b8x-jC-Xy4" secondAttribute="bottom" constant="20" id="WV5-1f-T9J"/>
+                            <constraint firstItem="j2V-NH-CY8" firstAttribute="centerX" secondItem="yod-VU-buC" secondAttribute="centerX" id="fid-93-cEN"/>
+                            <constraint firstItem="b8x-jC-Xy4" firstAttribute="centerY" secondItem="yod-VU-buC" secondAttribute="centerY" constant="-75" id="icy-b8-P22"/>
+                        </constraints>
+                    </view>
+                    <blurEffect style="light"/>
+                </visualEffectView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="17k-iJ-4Ye">
                     <rect key="frame" x="0.0" y="517" width="375" height="150"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="PIX-sk-KP8">
@@ -87,14 +120,23 @@
                                 <constraint firstAttribute="height" constant="40" id="vvK-ai-SKO"/>
                             </constraints>
                             <state key="normal" image="card_heart"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gWZ-X0-Phe">
+                            <rect key="frame" x="305" y="80" width="70" height="70"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="70" id="H3p-QH-Zys"/>
+                                <constraint firstAttribute="width" constant="70" id="vHo-QT-GzV"/>
+                            </constraints>
                             <connections>
-                                <action selector="likePressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="xGo-kD-3rc"/>
+                                <action selector="likePressed:" destination="iN0-l3-epB" eventType="touchUpInside" id="Oej-yE-ha5"/>
                             </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="bottom" secondItem="gWZ-X0-Phe" secondAttribute="bottom" id="Cw1-GE-HG4"/>
                         <constraint firstAttribute="trailing" secondItem="PIX-sk-KP8" secondAttribute="trailing" constant="15" id="SmJ-A1-6f9"/>
+                        <constraint firstAttribute="trailing" secondItem="gWZ-X0-Phe" secondAttribute="trailing" id="W6M-gs-XaC"/>
                         <constraint firstItem="Q0i-oI-2iN" firstAttribute="top" secondItem="PIX-sk-KP8" secondAttribute="bottom" constant="3" id="alr-kn-MgE"/>
                         <constraint firstAttribute="height" constant="150" id="awk-GI-EzX"/>
                         <constraint firstItem="PIX-sk-KP8" firstAttribute="leading" secondItem="17k-iJ-4Ye" secondAttribute="leading" constant="15" id="i6C-Xz-EDw"/>
@@ -104,39 +146,6 @@
                         <constraint firstAttribute="bottom" secondItem="Q0i-oI-2iN" secondAttribute="bottom" constant="15" id="t8U-oj-e6H"/>
                     </constraints>
                 </view>
-                <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N0F-ch-6F8">
-                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="yod-VU-buC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lock" translatesAutoresizingMaskIntoConstraints="NO" id="b8x-jC-Xy4">
-                                <rect key="frame" x="141" y="193" width="92" height="131"/>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You're Matched!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j2V-NH-CY8">
-                                <rect key="frame" x="71" y="344" width="234" height="40"/>
-                                <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="32"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EsD-dI-YxB">
-                                <rect key="frame" x="188" y="399" width="0.0" height="0.0"/>
-                                <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="16"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <constraints>
-                            <constraint firstItem="EsD-dI-YxB" firstAttribute="centerX" secondItem="yod-VU-buC" secondAttribute="centerX" id="49O-ym-Z82"/>
-                            <constraint firstItem="b8x-jC-Xy4" firstAttribute="centerX" secondItem="yod-VU-buC" secondAttribute="centerX" id="KMt-m2-vsj"/>
-                            <constraint firstItem="EsD-dI-YxB" firstAttribute="top" secondItem="j2V-NH-CY8" secondAttribute="bottom" constant="15" id="L10-Kt-3wz"/>
-                            <constraint firstItem="j2V-NH-CY8" firstAttribute="top" secondItem="b8x-jC-Xy4" secondAttribute="bottom" constant="20" id="WV5-1f-T9J"/>
-                            <constraint firstItem="j2V-NH-CY8" firstAttribute="centerX" secondItem="yod-VU-buC" secondAttribute="centerX" id="fid-93-cEN"/>
-                            <constraint firstItem="b8x-jC-Xy4" firstAttribute="centerY" secondItem="yod-VU-buC" secondAttribute="centerY" constant="-75" id="icy-b8-P22"/>
-                        </constraints>
-                    </view>
-                    <blurEffect style="light"/>
-                </visualEffectView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
