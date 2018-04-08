@@ -55,14 +55,24 @@
         
         if (self.user.match_time)
         {
-            self.middleLabel.text = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
+            NSString *matchedTime = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
+            if (matchedTime)
+            {
+                self.middleLabel.text = matchedTime;
+            }
+            else
+            {
+                self.middleLabel.text = @"";
+            }
         }
         else
         {
             self.middleLabel.text = @"Matched for 3 days";
 
         }
-        [self.discoverBtn setHidden:YES];
+   //     [self.discoverBtn setHidden:YES];
+        [self.discoverBtn setTitle:@"Matched" forState:UIControlStateNormal];
+        [self.discoverBtn setBackgroundColor:[self matchColor]];
         [self.nomatch_image setHidden:YES];
         [self.messageInputView setHidden:NO];
         [self.messageButton setUserInteractionEnabled:YES];
@@ -73,7 +83,8 @@
         self.topLabel.text = @"You're Unmatched";
         self.middleLabel.text = @"Go to the Discover section and\n swipe to find your next match!";
         [self.profilePic setHidden:YES];
-        
+        [self.discoverBtn setTitle:@"Discover a Match" forState:UIControlStateNormal];
+        [self.discoverBtn setBackgroundColor:[self singleColor]];
         [self.messageInputView setHidden:YES];
         [self.messageButton setUserInteractionEnabled:NO];
     }
@@ -203,7 +214,9 @@
          [self.profilePic  setHidden:YES];
          self.topLabel.text = @"You're Unmatched";
          self.middleLabel.text = @"Go to the Discover section and\n swipe to find your next match!";
-         [self.discoverBtn setHidden:NO];
+         [self.discoverBtn setTitle:@"Discover a Match" forState:UIControlStateNormal];
+         [self.discoverBtn setBackgroundColor:[self singleColor]];
+         //  [self.discoverBtn setHidden:NO];
          [self.nomatch_image setHidden:NO];
          [self.profilePic setHidden:YES];
          [self.messageInputView setHidden:YES];
@@ -218,7 +231,11 @@
          self.user = [MatchUser currentUser];
          
          self.topLabel.text = [NSString stringWithFormat:@"%@, %@", self.user.name, self.user.age];
-         self.middleLabel.text = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
+         NSString *matchedTime = [DADateFormatter timeAgoStringFromDate:self.user.match_time];
+         if (matchedTime)
+         {
+             self.middleLabel.text = matchedTime;
+         }
          [self.nomatch_image setHidden:YES];
          [self.messageInputView setHidden:NO];
         /* [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
@@ -250,7 +267,9 @@
          
 
          [self.profilePic setHidden:NO];
-         [self.discoverBtn setHidden:YES];
+         [self.discoverBtn setTitle:@"Matched" forState:UIControlStateNormal];
+         [self.discoverBtn setBackgroundColor:[self matchColor]];
+       //  [self.discoverBtn setHidden:YES];
          [self.nomatch_image setHidden:YES];
      }];
 }
@@ -408,4 +427,13 @@
     return [UIColor colorWithRed:0.94 green:0.94 blue:0.96 alpha:1.0];
 }
 
+-(UIColor*)matchColor
+{
+    return [UIColor colorWithRed:0.35 green:0.85 blue:0.64 alpha:1.0];
+}
+
+-(UIColor*)singleColor
+{
+    return [UIColor colorWithRed:0.22 green:0.59 blue:0.94 alpha:1.0];
+}
 @end

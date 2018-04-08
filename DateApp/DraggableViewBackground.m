@@ -240,8 +240,6 @@ static const int MAX_BUFFER_SIZE = 2;
 
 }
 
-
-
 -(void)checkEmpty
 {
     if (totalCards == 0)

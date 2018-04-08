@@ -29,8 +29,8 @@ import UIKit
    //     let toViewController = transitionContext.viewController(forKey: .to) as? RootViewController
         let toViewController = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)
         // 2
-        toViewController?.view.isHidden = true
-        containerView.addSubview((toViewController?.view)!)
+    //    toViewController?.view.isHidden = true
+     //   containerView.addSubview((toViewController?.view)!)
         
         // 3
         let duration = transitionDuration(using: transitionContext)

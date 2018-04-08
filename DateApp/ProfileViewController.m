@@ -7,6 +7,7 @@
 //
 
 #import "Includes.h"
+@import PullToDismiss;
 
 
 @interface ProfileViewController (){
@@ -65,7 +66,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatWidth;
 
-
+@property(nonatomic, nullable) PullToDismiss *pullToDismiss;
 @end
 
 @implementation ProfileViewController
@@ -75,12 +76,22 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    self.pullToDismiss = [[PullToDismiss alloc] initWithScrollView:self.contentScrollView];
+    
+    self.pullToDismiss.delegate = self;
+    self.pullToDismiss.dismissableHeightPercentage = 0.35f;
+    __weak typeof(self) wSelf = self;
+    self.pullToDismiss.dismissAction = ^{
+        NSLog(@"!!!");
+        [wSelf dismissVC];
+    };
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat bigSize = width / 5;
     
     self.chatHeight.constant = bigSize;
     self.chatWidth.constant = bigSize;
     
+
     if (self.match)
     {
         NSLog(@"View match profile");
@@ -792,6 +803,12 @@
 - (void)viewDidLayoutSubviews
 {
     CGFloat bottom = self.bio_label.frame.origin.y + self.bio_label.frame.size.height + 50;
+    
+    if (bottom < [UIScreen mainScreen].bounds.size.height)
+    {
+        bottom = [UIScreen mainScreen].bounds.size.height + 50;
+    }
+    
     dispatch_async (dispatch_get_main_queue(), ^
                     {
                         [self.contentScrollView setContentSize:CGSizeMake(0, bottom)];

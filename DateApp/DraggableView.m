@@ -290,7 +290,7 @@
     
     UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRoundedRect:shadowView.bounds cornerRadius:14.0];
     shadowView.layer.masksToBounds = NO;
-    shadowView.layer.shadowRadius = 8.0;
+    shadowView.layer.shadowRadius = 4.0;
     shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
     [shadowView.layer setShadowOffset:CGSizeZero];//CGSizeMake(0.051, -0.070)];
     [shadowView.layer setShouldRasterize:YES];
@@ -552,15 +552,38 @@
     
 }
 
-- (void) processSingleTap:(UITapGestureRecognizer *)sender
+- (void) processSingleTap:(UITapGestureRecognizer *)gesture
 {
-    [self goToProfile];
+    if ([self  checkLike:gesture])
+    {
+        [self likePressed:self];
+    }
+    else
+    {
+        [self goToProfile];
+    }
 }
 
 -(void)goToProfile
 {
     id<ProfileProtocol> strongDelegate = self.profile_delegate;
     [strongDelegate profileSelected:self.user];
+}
+
+-(BOOL)checkLike:(UITapGestureRecognizer*)gesture
+{
+    CGPoint point = [gesture locationInView:self.bottomView];
+    
+    CGRect frame = self.likeBtn.frame;
+    
+    return CGRectContainsPoint(frame, point);
+}
+
+-(BOOL)checkLikeLong:(UILongPressGestureRecognizer*)gesture
+{
+    CGPoint point = [gesture locationInView:self.bottomView];
+    
+    return CGRectContainsPoint(self.likeBtn.frame, point);
 }
 
 
@@ -613,17 +636,20 @@
     [self addGestureRecognizer:press];
 }
 
--(void)handleLongPressGesture:(UILongPressGestureRecognizer*)gestureRecognizer
+-(void)handleLongPressGesture:(UILongPressGestureRecognizer*)gesture
 {
-    
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan)
+    if(gesture.state == UIGestureRecognizerStateBegan)
     {
         [self handleLongPressBegan];
     }
-    else if(gestureRecognizer.state == UIGestureRecognizerStateCancelled ||
-            gestureRecognizer.state == UIGestureRecognizerStateEnded)
+    else if(gesture.state == UIGestureRecognizerStateCancelled ||
+            gesture.state == UIGestureRecognizerStateEnded)
     {
         [self handleLongPressEnded];
+        if ([self checkLikeLong:gesture])
+        {
+            [self likePressed:self];
+        }
     }
   
 }
@@ -661,7 +687,8 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 }
 - (IBAction)likePressed:(id)sender
 {
-    [delegate cardSwipedRight:self];
+    [self rightClickAction];
+    [self.nextCardDelegate nextCardAction];
     [[TFHeartAnimationView sharedInstance] showWithAnchorPoint:[self.likeBtn convertPoint:self.likeBtn.center toView:nil] completion:^(void)
      {
      }];

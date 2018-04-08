@@ -420,7 +420,7 @@ extension ConversationViewController: MessagesDisplayDelegate {
     // MARK: - All Messages
     
     func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-        return isFromCurrentSender(message: message) ? UIColor(red:0.57, green:0.67, blue:0.90, alpha:1.0) : UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
+        return isFromCurrentSender(message: message) ? UIColor(red:0.35, green:0.85, blue:0.64, alpha:1.0) : UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
     }
     
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {

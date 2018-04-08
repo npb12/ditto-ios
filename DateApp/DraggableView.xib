@@ -165,7 +165,7 @@
                 <outlet property="distanceLabel" destination="vjk-mN-1uD" id="hKU-rf-DbS"/>
                 <outlet property="edu" destination="us6-fn-JCK" id="mps-1d-45R"/>
                 <outlet property="job" destination="CZX-FU-cUd" id="eKZ-FR-wd5"/>
-                <outlet property="likeBtn" destination="PjI-7Y-doY" id="cw3-tn-wAB"/>
+                <outlet property="likeBtn" destination="gWZ-X0-Phe" id="Hkl-03-meN"/>
                 <outlet property="lock" destination="b8x-jC-Xy4" id="azY-84-FHo"/>
                 <outlet property="matchedLabel" destination="j2V-NH-CY8" id="bON-XV-rCG"/>
                 <outlet property="matchedSubLabel" destination="EsD-dI-YxB" id="LR6-a4-2Re"/>

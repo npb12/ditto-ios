@@ -291,7 +291,7 @@
 
 -(UIColor*)activeColor
 {
-    return [UIColor colorWithRed:0.31 green:0.70 blue:1.00 alpha:1.0];
+    return [[UIColor blackColor] colorWithAlphaComponent:0.7];//[UIColor colorWithRed:0.31 green:0.70 blue:1.00 alpha:1.0];
 }
 
 /*

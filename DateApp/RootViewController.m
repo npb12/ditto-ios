@@ -46,6 +46,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *profileBtn;
 @property (strong, nonatomic) IBOutlet UIButton *likeBtn;
 @property (strong, nonatomic) IBOutlet UIButton *unmatchBtn;
+@property (strong, nonatomic) IBOutlet UIView *matchView;
 
 @property (strong, nonatomic) MenuView *menuView;
 
@@ -66,7 +67,8 @@
 
 @property (strong, nonatomic) PresentStoryViewAnimationController *storyVC;
 @property (strong, nonatomic) DismissStoryViewAnimationController *dismissVC;
-@property (strong, nonatomic) TwicketSegmentedControl *twicketControl;
+
+
 @end
 
 @implementation RootViewController
@@ -227,9 +229,9 @@
     nCurIdx = 0;
     
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    height = [UIScreen mainScreen].bounds.size.height * 0.1;
+    height = [UIScreen mainScreen].bounds.size.height * 0.095;
     
-    self.topViewHeight.constant = [UIScreen mainScreen].bounds.size.height * 0.08;
+    self.topViewHeight.constant = [UIScreen mainScreen].bounds.size.height * 0.0875;
 
     self.nav_height.constant = 0;//[UIScreen mainScreen].bounds.size.height * 0.15;
     
@@ -251,8 +253,8 @@
     [self.pageViewController didMoveToParentViewController:self];
   //  [self.view bringSubviewToFront:self.bottomView];
     
-    self.indicatorView.frame = CGRectMake(122, self.topViewHeight.constant - 15, 8, 8);
-    self.indicatorView.layer.cornerRadius = 4;
+    self.indicatorView.frame = CGRectMake(30, self.topViewHeight.constant - 6, 30, 4);
+    self.indicatorView.layer.cornerRadius = 1;
     self.indicatorView.layer.masksToBounds = YES;
     
     self.noButton.frame = CGRectMake(self.view.frame.size.width / 4.1,bigSize * 0.125,bigSize,bigSize);
@@ -279,7 +281,7 @@
     
     self.proImage.layer.cornerRadius = 17.5;
     self.proImage.layer.masksToBounds = YES;
-    [self setProfileImage];
+ //   [self setProfileImage];
     
     
     /*
@@ -292,6 +294,7 @@
     NSArray *titles = @[@"DISCOVER", @"MY MATCH"];
     
     
+    /*
     self.twicketControl = [TwicketSegmentedControl new];
     [self.twicketControl setSegmentItems:titles];
     self.twicketControl.delegate = self;
@@ -300,7 +303,7 @@
     self.twicketControl.frame = CGRectMake((width / 2) - (twidth / 2), (self.topViewHeight.constant / 2) - (theight / 2) - 5, twidth, theight);
 
     
-    [self.topView addSubview:self.twicketControl];
+    [self.topView addSubview:self.twicketControl]; */
     
     self.menuView =   [[[NSBundle mainBundle] loadNibNamed:@"MenuView" owner:self options:nil] firstObject];
     self.menuView.parentVC = self;
@@ -312,7 +315,7 @@
 {
     if (!hamburgerMenuIsVisible)
     {
-        self.menuTrailing.constant = -300;
+        self.menuTrailing.constant = 300;
         hamburgerMenuIsVisible = YES;
         [self.menuButton setHidden:NO];
         [self.menuButton setUserInteractionEnabled:YES];
@@ -492,7 +495,8 @@
         [UIView animateWithDuration:duration animations:^{
 
             self.indicatorView.alpha = 1;
-            self.indicatorView.frame = CGRectMake(10, self.topViewHeight.constant, width/2 - 10, 2);
+ //           self.indicatorView.frame = CGRectMake(10, self.topViewHeight.constant, width/2 - 10, 2);
+            self.indicatorView.frame = CGRectMake(30, self.topViewHeight.constant - 6, 30, 4);
             [self.noButton setHidden:NO];
             [self.likeBtn setHidden:NO];
             [self.chatBtn setAlpha:0];
@@ -510,7 +514,8 @@
     } else if( i == 1 ) {
         [UIView animateWithDuration:duration animations:^{
    
-            self.indicatorView.frame = CGRectMake(width/2, self.topViewHeight.constant, width/2 - 10, 2);
+       //     self.indicatorView.frame = CGRectMake(width/2, self.topViewHeight.constant, width/2 - 10, 2);
+            self.indicatorView.frame = CGRectMake(self.matchView.frame.origin.x, self.topViewHeight.constant - 6, 30, 4);
             [self.noButton setHidden:YES];
             [self.likeBtn setHidden:YES];
             [self.discoverLabel setTextColor:[self grayColor]];
@@ -755,15 +760,15 @@
         profileVC.match = isMatch;
         profileVC.isMine = isMine;
         profileVC.delegate = self;
-        profileVC.view.backgroundColor = [UIColor whiteColor];
+        profileVC.view.backgroundColor = [UIColor clearColor];
+        profileVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+
         
 
         if (!isMine && !isMatch)
         {
             CGFloat width = [UIScreen mainScreen].bounds.size.width;
             profileVC.transitioningDelegate = self;
-            profileVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-            profileVC.view.backgroundColor = [UIColor clearColor];
             CGRect frame = CGRectMake(20, (pvcHeight * 0.05) / 2, width - 40, pvcHeight * 0.73);
             self.storyVC.selectedCardFrame = frame;
             self.dismissVC.selectedCardFrame = frame;
@@ -773,8 +778,6 @@
             if (self.matchVC)
             {
                 profileVC.transitioningDelegate = self;
-                profileVC.modalPresentationStyle = UIModalPresentationCurrentContext;
-                profileVC.view.backgroundColor = [UIColor clearColor];
                 CGRect frame = [self.matchVC profileFrame];
                 self.storyVC.selectedCardFrame = frame;
                 self.dismissVC.selectedCardFrame = frame;
@@ -968,6 +971,7 @@
 -(void)selectedProfile:(User *)user matched:(BOOL)match{
     self.user = user;
     isMatch = match;
+    isMine = NO;
     [self performSegueWithIdentifier:@"goToProfile" sender:self];
 }
 
@@ -1189,8 +1193,14 @@
 
 -(void)discoverSelected
 {
-    [self discoverAction:self];
-    [self.twicketControl moveTo:0];
+    if ([[DataAccess singletonInstance] UserHasMatch])
+    {
+        [self performSegueWithIdentifier:@"partingSegue" sender:self];
+    }
+    else
+    {
+        [self discoverAction:self];
+    }
 }
 
 -(void)updateUnmatch
@@ -1346,7 +1356,7 @@
 
 -(UIColor*)baseColor
 {
-    return [UIColor colorWithRed:0.22 green:0.59 blue:0.94 alpha:1.0];
+    return [UIColor blackColor];
 }
 
 -(id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source

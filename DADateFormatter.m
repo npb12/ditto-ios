@@ -41,7 +41,13 @@
     
     NSString *formatString = NSLocalizedString(@"Matched for %@", @"How much time has passed since match");
     
-    return [NSString stringWithFormat:formatString, [formatter stringFromDateComponents:components]];
+    if (components)
+    {
+        return [NSString stringWithFormat:formatString, [formatter stringFromDateComponents:components]];
+;
+    }
+    
+    return nil;
 }
 
 + (NSString *)timeAgoFromDate:(NSDate*)date {

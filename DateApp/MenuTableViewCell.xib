@@ -21,13 +21,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zu0-zU-ryy">
-                        <rect key="frame" x="74" y="10.5" width="47" height="24"/>
-                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="20"/>
+                        <rect key="frame" x="76" y="11.5" width="42" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drawer_profile_icon" translatesAutoresizingMaskIntoConstraints="NO" id="j4o-Jw-Cj6">
-                        <rect key="frame" x="31" y="9" width="23" height="25"/>
+                        <rect key="frame" x="31" y="9" width="25" height="25"/>
                     </imageView>
                 </subviews>
                 <constraints>
@@ -45,6 +45,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="drawer_profile_icon" width="23" height="25"/>
+        <image name="drawer_profile_icon" width="25" height="25"/>
     </resources>
 </document>

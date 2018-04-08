@@ -57,17 +57,16 @@
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToprofile)];
     [self.proImage addGestureRecognizer:tapGesture2];
     
-    [self.statusLabel layoutIfNeeded];
-    
-    self.statusLabel.textColor = [DAGradientColor gradientFromColor:self.statusLabel.frame.size.width];
 
     if ([[DataAccess singletonInstance] UserHasMatch])
     {
         self.statusLabel.text = @"MATCHED";
+        self.statusLabel.textColor = [self activeColor];
     }
     else
     {
         self.statusLabel.text = @"DISCOVERING";
+        self.statusLabel.textColor = [UIColor lightGrayColor];
     }
 }
 
@@ -83,6 +82,16 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self loadPhoto];
                     [self setNameLabel];
+                    if ([[DataAccess singletonInstance] UserHasMatch])
+                    {
+                        self.statusLabel.text = @"MATCHED";
+                        self.statusLabel.textColor = [self activeColor];
+                    }
+                    else
+                    {
+                        self.statusLabel.text = @"DISCOVERING";
+                        self.statusLabel.textColor = [UIColor lightGrayColor];
+                    }
                 });
             } else {
                 // update UI to indicate error or take remedial action
@@ -277,5 +286,10 @@
     // Drawing code
 }
 */
+
+-(UIColor*)activeColor
+{
+    return [UIColor colorWithRed:0.22 green:0.59 blue:0.94 alpha:1.0];
+}
 
 @end

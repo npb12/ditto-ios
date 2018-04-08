@@ -1,0 +1,11 @@
+framework module PullToDismiss {
+  umbrella header "PullToDismiss.h"
+
+  export *
+  module * { export * }
+}
+
+module PullToDismiss.Swift {
+    header "PullToDismiss-Swift.h"
+    requires objc
+}
