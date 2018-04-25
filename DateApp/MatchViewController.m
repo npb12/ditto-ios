@@ -429,7 +429,7 @@
 
 -(UIColor*)matchColor
 {
-    return [UIColor colorWithRed:0.35 green:0.85 blue:0.64 alpha:1.0];
+    return [UIColor colorWithRed:0.93 green:0.26 blue:0.45 alpha:1.0];
 }
 
 -(UIColor*)singleColor

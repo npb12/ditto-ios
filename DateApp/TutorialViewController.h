@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RootViewController.h"
+
+@protocol SetupDelegate;
 
 @interface TutorialViewController : UIViewController
-
+@property (nonatomic, weak) id<SetupDelegate> delegate;
 @end

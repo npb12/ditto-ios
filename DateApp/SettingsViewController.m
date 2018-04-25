@@ -32,7 +32,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *headerLabel;
 @property (strong, nonatomic) IBOutlet UIView *gradientView;
 
-
 @end
 
 @implementation SettingsViewController

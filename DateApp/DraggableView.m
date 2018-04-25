@@ -490,6 +490,7 @@
                      }completion:^(BOOL complete){
                          [self cardResult:YES];
                          [self removeFromSuperview];
+                         [self.nextCardDelegate nextCardAction];
                      }];
     
     [delegate cardSwipedRight:self];
@@ -506,6 +507,7 @@
                      }completion:^(BOOL complete){
                          [self cardResult:NO];
                          [self removeFromSuperview];
+                         [self.nextCardDelegate nextCardAction];
                      }];
     
     [delegate cardSwipedLeft:self];
@@ -531,8 +533,6 @@
     
     
 }
-
-//
 
 -(UIColor*)lineColor{
     
@@ -586,8 +586,6 @@
     return CGRectContainsPoint(self.likeBtn.frame, point);
 }
 
-
-
 -(void)updateMatch
 {
     [self.blurView setHidden:NO];
@@ -618,8 +616,6 @@
 {
     [self.blurView setHidden:NO];
 }
-
-
 
 -(UIColor*)shadowColor
 {
@@ -688,7 +684,6 @@ shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherG
 - (IBAction)likePressed:(id)sender
 {
     [self rightClickAction];
-    [self.nextCardDelegate nextCardAction];
     [[TFHeartAnimationView sharedInstance] showWithAnchorPoint:[self.likeBtn convertPoint:self.likeBtn.center toView:nil] completion:^(void)
      {
      }];

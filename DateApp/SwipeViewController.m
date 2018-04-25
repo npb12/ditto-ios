@@ -36,8 +36,16 @@
     self.backgroundView.noswipe_delegate = self;
     self.backgroundView.profile_delegate = self;
     
-    self.backgroundView.emptyLabel.text = @"No one new is currently around.\nCheck back again soon!";
-
+    self.backgroundView.emptyLabel.text = @"No one new currently around.";
+    
+    if ([[DataAccess singletonInstance] UserHasMatch])
+    {
+        self.backgroundView.emptyLabel2.text = @"Use this as an opportunity\nto get to know your match!";
+    }
+    else
+    {
+        self.backgroundView.emptyLabel2.text = @"Check back again soon to find\nyour next match!";
+    }
 }
 
 
@@ -77,7 +85,6 @@
     if (show)
     {
       //  self.backgroundView.emptyLabel.text = @"No one new currently around.";
-      //  self.backgroundView.emptyLabel2.text = @"Check back again soon!";
         [self.backgroundView.emptyLabel setAlpha:1.0];
         [self.backgroundView.emptyLabel2 setAlpha:1.0];
         [self.backgroundView.emptyPin setAlpha:1.0];
@@ -266,11 +273,13 @@
 -(void)updateMatch
 {
     [self.backgroundView updateMatch];
+    self.backgroundView.emptyLabel2.text = @"Use this as an opportunity\nto get to know your match!";
 }
 
 -(void)updateUnmatch
 {
     [self.backgroundView updateUnmatch];
+    self.backgroundView.emptyLabel2.text = @"Check back again soon to find\nyour next match!";
 }
 
 

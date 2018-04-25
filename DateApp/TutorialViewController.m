@@ -159,6 +159,8 @@
     [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:scrollHeight]];
     
     [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:0 constant:fullScreenRect.size.width * 4]];
+    
+    [self.tempView setBackgroundColor:[UIColor clearColor]];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
@@ -332,26 +334,25 @@
     self.pic.image = [UIImage imageNamed:@"landing_1"];
     
     
-    self.pic.contentMode = UIViewContentModeScaleAspectFill;
+    self.pic.contentMode = UIViewContentModeScaleAspectFit;
     self.pic.layer.masksToBounds = YES;
     
     [self.view1 addSubview:self.pic];
     
-    int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.125;
-    int widthOffset = CGRectGetWidth([[UIScreen mainScreen] bounds]) * 0.09;
-
+    int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.1;
+    
     
     NSDictionary *viewsDictionary = @{@"image":self.pic};
-    NSArray *constraint1 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:widthOffset / 2]} views:viewsDictionary];
-    [self.view1 addConstraints:constraint1];
+    NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view1 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
+    [self.view1 addConstraint:constraint1];
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
     [self.view1 addConstraints:constraint2];
     
-    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.85) - offset];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.825) - offset];
     [self.view1 addConstraint:constraint3];
     
-    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth - widthOffset];
-    [self.view1 addConstraint:constraint4];
+    NSLayoutConstraint *constraint4 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:viewWidth - offset];
+    [self.tempView addConstraint:constraint4];
     
 }
 
@@ -483,11 +484,7 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view1 addConstraints:constraint2];
     
-    [self.headingLabel layoutIfNeeded];
-    self.headingLabel.textColor = [DAGradientColor gradientFromColor:self.headingLabel.frame.size.width];
-
-
-    
+    self.headingLabel.textColor = [self baseColor];    
 }
 
 - (void)setupHeadingLabel2 {
@@ -516,8 +513,7 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view2 addConstraints:constraint2];
     
-    [self.headingLabel2 layoutIfNeeded];
-    self.headingLabel2.textColor = [DAGradientColor gradientFromColor:self.headingLabel2.frame.size.width];
+    self.headingLabel2.textColor = [self baseColor];
     
 }
 
@@ -549,8 +545,7 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view3 addConstraints:constraint2];
     
-    [self.headingLabel3 layoutIfNeeded];
-    self.headingLabel3.textColor = [DAGradientColor gradientFromColor:self.headingLabel3.frame.size.width];
+    self.headingLabel3.textColor = [self baseColor];
 
 }
 
@@ -577,8 +572,7 @@
     NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view4 addConstraints:constraint2];
     
-    [self.headingLabel4 layoutIfNeeded];
-    self.headingLabel4.textColor = [DAGradientColor gradientFromColor:self.headingLabel4.frame.size.width];
+    self.headingLabel4.textColor = [self baseColor];
 }
 
 
@@ -707,7 +701,10 @@
 
 - (IBAction)skipAction:(id)sender
 {
-    [self performSegueWithIdentifier:@"loginSegue" sender:self];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.delegate runSetupAfterLogin];
+    }];
+    
 }
 
 - (IBAction)nextAction:(id)sender
@@ -725,13 +722,21 @@
     }
     else
     {
-        [self performSegueWithIdentifier:@"loginSegue" sender:self];
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self.delegate runSetupAfterLogin];
+        }];
+        
     }
 }
 
 -(UIColor*)borderColor
 {
     return [UIColor colorWithRed:0.63 green:0.63 blue:0.65 alpha:1.0];
+}
+
+-(UIColor*)baseColor
+{
+    return [UIColor colorWithRed:0.35 green:0.85 blue:0.64 alpha:1.0];
 }
 
 /*

@@ -8,15 +8,20 @@
 
 #import "MenuView.h"
 #import "DAGradientColor.h"
+#define ACTION_MARGIN 120
 
-@implementation MenuView
+@implementation MenuView{
+    CGFloat xFromCenter;
+}
 
 
 -(void)awakeFromNib
 {
     [super awakeFromNib];
     
-    
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(beingDragged:)];
+    panGestureRecognizer.delegate = self;
+    [self addGestureRecognizer:panGestureRecognizer];
     
     self.topViewHeight.constant = [UIScreen mainScreen].bounds.size.height * 0.25;
     
@@ -57,16 +62,16 @@
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goToprofile)];
     [self.proImage addGestureRecognizer:tapGesture2];
     
+    self.statusLabel.textColor = [UIColor lightGrayColor];
+
 
     if ([[DataAccess singletonInstance] UserHasMatch])
     {
         self.statusLabel.text = @"MATCHED";
-        self.statusLabel.textColor = [self activeColor];
     }
     else
     {
         self.statusLabel.text = @"DISCOVERING";
-        self.statusLabel.textColor = [UIColor lightGrayColor];
     }
 }
 
@@ -85,12 +90,10 @@
                     if ([[DataAccess singletonInstance] UserHasMatch])
                     {
                         self.statusLabel.text = @"MATCHED";
-                        self.statusLabel.textColor = [self activeColor];
                     }
                     else
                     {
                         self.statusLabel.text = @"DISCOVERING";
-                        self.statusLabel.textColor = [UIColor lightGrayColor];
                     }
                 });
             } else {
@@ -221,14 +224,21 @@
         if (indexPath.row == 0)
         {
             //in app purchases
+            [self.parentVC goToInAppPurchaes];
         }
         else if(indexPath.row == 1)
         {
             //privacy policy
+            NSURL *url = [NSURL URLWithString:@"https://www.dittoapp.io/privacy/"];
+            UIApplication *application = [UIApplication sharedApplication];
+            [application openURL:url options:@{} completionHandler:nil];
         }
         else
         {
             //terms of service
+            NSURL *url = [NSURL URLWithString:@"https://www.dittoapp.io/new-page/"];
+            UIApplication *application = [UIApplication sharedApplication];
+            [application openURL:url options:@{} completionHandler:nil];
         }
     }
     
@@ -273,6 +283,38 @@
 }
 
 
+-(void)beingDragged:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    //%%% this extracts the coordinate data from your swipe movement. (i.e. How much did you move?)
+    xFromCenter = [gestureRecognizer translationInView:self].x; //%%% positive for right swipe, negative for left
+    
+    //%%% checks what state the gesture is in. (are you just starting, letting go, or in the middle of a swipe?)
+    switch (gestureRecognizer.state) {
+            //%%% just started swiping
+        case UIGestureRecognizerStateBegan:{
+            NSLog(@"printing x from began: %f", xFromCenter);
+            break;
+        };
+            //%%% in the middle of a swipe
+        case UIGestureRecognizerStateChanged:{
+            
+            NSLog(@"printing x from changed: %f", xFromCenter);
+            
+            break;
+        };
+            //%%% let go of the card
+        case UIGestureRecognizerStateEnded: {
+         //   [self afterSwipeAction];
+            NSLog(@"printing x from changed: %f", xFromCenter);
+            break;
+        };
+        case UIGestureRecognizerStatePossible:break;
+        case UIGestureRecognizerStateCancelled:break;
+        case UIGestureRecognizerStateFailed:break;
+    }
+}
+
+
 /*
 -(CGFloat)tableView:(UITableView*)tableView heightForFooterInSection:(NSInteger)section {
     return 10.0;
@@ -287,9 +329,5 @@
 }
 */
 
--(UIColor*)activeColor
-{
-    return [UIColor colorWithRed:0.22 green:0.59 blue:0.94 alpha:1.0];
-}
 
 @end

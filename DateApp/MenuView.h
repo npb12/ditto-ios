@@ -12,6 +12,8 @@
 #import "DAServer.h"
 #import "User.h"
 
+
+
 @interface MenuView : UIView<UITableViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *topViewHeight;
 @property (strong, nonatomic) IBOutlet UIView *imgFrame;
@@ -25,6 +27,6 @@
 
 @property (strong, nonatomic) RootViewController *parentVC;
 @property (strong, nonatomic) IBOutlet UILabel *statusLabel;
-
+@property (nonatomic)CGPoint originalPoint;
 -(void)displayData;
 @end

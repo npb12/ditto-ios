@@ -631,7 +631,7 @@
     
     CGFloat pageWidth = self.view.frame.size.width;
     int page = floor((self.scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    if (page > 0)
+    if (page > 0 && !self.isMine && !self.match)
     {
         [self.scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
     }

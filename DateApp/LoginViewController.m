@@ -53,23 +53,26 @@
     self.stackTop.constant = height * 0.15;
     self.stackBottom.constant = height * 0.15;
 
-    
-    UIColor *color1 = [UIColor colorWithRed:0.09 green:0.92 blue:0.85 alpha:1.0];
-    UIColor *color2 = [UIColor colorWithRed:0.08 green:0.77 blue:0.90 alpha:1.0];
-    UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
+    /*
+    UIColor *color1 = [UIColor whiteColor];
+    UIColor *color2 = [self baseColor];
+  //  UIColor *color3 = [UIColor colorWithRed:0.08 green:0.67 blue:0.94 alpha:1.0];
     
     [self.bgView layoutIfNeeded];
     
     CAGradientLayer *grad = [CAGradientLayer layer];
     grad.frame = self.bgView.bounds;
-    grad.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor),(id)([color2 colorWithAlphaComponent:1].CGColor),(id)([color3 colorWithAlphaComponent:1].CGColor),nil];
+    grad.colors = [NSArray arrayWithObjects:(id)([color1 colorWithAlphaComponent:1].CGColor)
+                   ,(id)([color2 colorWithAlphaComponent:1].CGColor)
+                   //,(id)([color3 colorWithAlphaComponent:1].CGColor)
+                   ,nil];
     grad.startPoint = CGPointMake(0.5,0.0);
     grad.endPoint = CGPointMake(0.5,1.0);
-    [self.bgView.layer insertSublayer:grad atIndex:0];
+    [self.bgView.layer insertSublayer:grad atIndex:0]; */
 
     self.btnWidth.constant = dimen;
     
-    CGFloat btnheight = (dimen - 15) / 6;
+    CGFloat btnheight = (dimen - 15) / 5.5;
     
     self.btnHeight.constant = btnheight;
     
@@ -78,17 +81,18 @@
     
     CAGradientLayer *gradient2 = [CAGradientLayer layer];
     gradient2.frame = self.loginBtn.bounds;
-    gradient2.backgroundColor = [self blueColor].CGColor;
+    gradient2.backgroundColor = [UIColor whiteColor].CGColor;
     gradient2.startPoint = CGPointMake(0.0,0.5);
     gradient2.endPoint = CGPointMake(1.0,0.5);
     [self.loginBtn.layer insertSublayer:gradient2 atIndex:0];
-    gradient2.cornerRadius = 5;
+    gradient2.cornerRadius = self.btnHeight.constant / 2;
     gradient2.masksToBounds = YES;
     self.loginBtn.layer.masksToBounds = NO;
     self.loginBtn.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     self.loginBtn.layer.shadowOpacity = 0.75;
     self.loginBtn.layer.shadowRadius = 1;
     self.loginBtn.layer.shadowOffset = CGSizeZero;
+    [self.loginBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     
     
@@ -99,7 +103,7 @@
     
      NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] init];
      [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"By signing up, you agree to\nour" attributes:@{NSForegroundColorAttributeName :[self grayColor], NSFontAttributeName: regularFont}]];
-     [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@" Terms " attributes:@{NSForegroundColorAttributeName : [self grayColor], NSFontAttributeName: thickFont}]];
+     [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@" Terms " attributes:@{NSForegroundColorAttributeName :[self grayColor], NSFontAttributeName: thickFont}]];
     [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@"and have read our" attributes:@{NSForegroundColorAttributeName :[self grayColor], NSFontAttributeName: regularFont}]];
          [attrString appendAttributedString:[[NSAttributedString alloc] initWithString:@" Privacy Policy." attributes:@{NSForegroundColorAttributeName : [self grayColor], NSFontAttributeName: thickFont}]];
      self.privacyLabel.attributedText = attrString;
@@ -139,7 +143,10 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 //[self dismissViewControllerAnimated:YES completion:nil];
-                [self performSegueWithIdentifier:@"loginUnwind" sender:self];
+              //  [self performSegueWithIdentifier:@"loginUnwind" sender:self];
+                [self dismissViewControllerAnimated:YES completion:^{
+                    [self.delegate runSetupAfterLogin];
+                }];
             });
             
         } else {
@@ -161,6 +168,11 @@
 -(BOOL)prefersStatusBarHidden
 {
     return YES;
+}
+
+-(UIColor*)baseColor
+{
+    return [UIColor colorWithRed:0.35 green:0.85 blue:0.64 alpha:1.0];
 }
 
 /*

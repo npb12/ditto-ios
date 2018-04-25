@@ -328,8 +328,6 @@ static const int MAX_BUFFER_SIZE = 2;
     {
         [dragView leftClickAction];
     }
-    
-    [self nextCardAction];
 }
 
 -(void)noSwipingAlert{

@@ -36,8 +36,9 @@
     FBSDKLoginManager *login = [[FBSDKLoginManager alloc] init];
     login.loginBehavior = FBSDKLoginBehaviorNative;
     [login
-     logInWithReadPermissions: @[@"email", @"public_profile",  @"user_photos", @"user_birthday",
-                                 @"user_education_history", @"user_work_history"]
+     logInWithReadPermissions: @[@"email", @"public_profile",  @"user_photos", @"user_birthday"]
+ //                                ,
+  //                               @"user_education_history", @"user_work_history"]
      fromViewController:vc
      handler:^(FBSDKLoginManagerLoginResult *result, NSError *error) {
          if (error) {

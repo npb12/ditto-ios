@@ -54,7 +54,7 @@
     if (self.edu)
         [dictionary setObject:self.edu forKey:@"education"];
     if (self.job)
-        [dictionary setObject:self.edu forKey:@"work"];
+        [dictionary setObject:self.job forKey:@"work"];
     if (self.bio)
         [dictionary setObject:self.bio forKey:@"bio"];
     if (self.profilePic)

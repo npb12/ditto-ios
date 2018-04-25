@@ -35,7 +35,7 @@ import MessageKit
         inputTextView.scrollIndicatorInsets = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         setRightStackViewWidthConstant(to: 36, animated: true)
         setStackViewItems([sendButton], forStack: .right, animated: true)
-        sendButton.imageView?.backgroundColor = UIColor(red:0.22, green:0.59, blue:0.94, alpha:1.0)
+        sendButton.imageView?.backgroundColor = UIColor(red:0.31, green:0.69, blue:1.00, alpha:1.0)
         sendButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 2, bottom: 2, right: 2)
         sendButton.setSize(CGSize(width: 36, height: 36), animated: true)
         sendButton.image = #imageLiteral(resourceName: "send_button")

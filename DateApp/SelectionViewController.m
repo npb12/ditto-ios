@@ -34,12 +34,13 @@
     
     firstSelected = NO;
     secondSelected = NO;
-    
-    self.firstOptionBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+/*
+    self.firstOptionBtn.layer.borderColor = [UIColor clearColor].CGColor;
     self.firstOptionBtn.layer.borderWidth = 0.75;
     
-    self.secondOptionBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.secondOptionBtn.layer.borderColor = [UIColor clearColor].CGColor;
     self.secondOptionBtn.layer.borderWidth = 0.75;
+  */
     
     [self.bottomOptionBtn setHidden:YES];
     [self.bottomOptionBtn setUserInteractionEnabled:NO];
@@ -65,13 +66,24 @@
     if (firstSelected)
     {
         firstSelected = NO;
-        [self.firstOptionBtn setAlpha:0.3];
+        [UIView animateWithDuration:0.1
+                         animations:^{
+                             [self.firstOptionBtn setAlpha:0.3];
+                             [self.firstOptionBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                      //       self.firstOptionBtn.layer.borderColor = [UIColor clearColor].CGColor;
+                         }];
         [self updateBtnStateTwoSelect];
     }
     else
     {
         firstSelected = YES;
-        [self.firstOptionBtn setAlpha:1.0];
+        
+        [UIView animateWithDuration:0.1
+                         animations:^{
+                             [self.firstOptionBtn setAlpha:1.0];
+                             [self.firstOptionBtn setTitleColor:[self baseColor] forState:UIControlStateNormal];
+                       //      self.firstOptionBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+                         }];
         [self updateBtnStateTwoSelect];
     }
 }
@@ -81,13 +93,23 @@
     if (secondSelected)
     {
         secondSelected = NO;
-        [self.secondOptionBtn setAlpha:0.3];
+        [UIView animateWithDuration:0.1
+                         animations:^{
+                             [self.secondOptionBtn setAlpha:0.3];
+                             [self.secondOptionBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                   //          self.secondOptionBtn.layer.borderColor = [UIColor clearColor].CGColor;
+                         }];
         [self updateBtnStateTwoSelect];
     }
     else
     {
         secondSelected = YES;
-        [self.secondOptionBtn setAlpha:1.9];
+        [UIView animateWithDuration:0.1
+                         animations:^{
+                             [self.secondOptionBtn setAlpha:1.0];
+                             [self.secondOptionBtn setTitleColor:[self baseColor] forState:UIControlStateNormal];
+                  //           self.secondOptionBtn.layer.borderColor = [UIColor whiteColor].CGColor;
+                         }];
         [self updateBtnStateTwoSelect];
     }
 }
@@ -132,7 +154,9 @@
         // here, update the UI to say "Not busy anymore"
         [[DataAccess singletonInstance] setReturningUserStatus:YES];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self dismissViewControllerAnimated:YES completion:^{
+                [self.delegate runSetupAfterLogin];
+            }];
         });
     }];
 }
@@ -146,6 +170,11 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+-(UIColor*)baseColor
+{
+    return [UIColor colorWithRed:0.35 green:0.85 blue:0.64 alpha:1.0];
+}
 
 
 

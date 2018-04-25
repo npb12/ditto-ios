@@ -7,10 +7,13 @@
 //
 
 #import "Includes.h"
+@protocol SetupDelegate;
 
 @interface LoginViewController : UIViewController
 {
     NSMutableData *_responseData;
 }
+
+@property (nonatomic, weak) id<SetupDelegate> delegate;
 
 @end

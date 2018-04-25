@@ -79,7 +79,7 @@ import MapKit
         messagesCollectionView.messageCellDelegate = self
         messageInputBar.delegate = self
         
-        messageInputBar.sendButton.tintColor = UIColor(red:0.57, green:0.67, blue:0.90, alpha:1.0)
+        messageInputBar.sendButton.tintColor = UIColor(red:0.31, green:0.69, blue:1.00, alpha:1.0)
         scrollsToBottomOnKeybordBeginsEditing = true // default false
         maintainPositionOnKeyboardFrameChanged = true // default false
         /*

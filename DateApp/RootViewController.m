@@ -10,7 +10,7 @@
 #import "DAGradientColor.h"
 #import "MenuView.h"
 #import <DateApp-Swift.h>
-
+#import "TutorialViewController.h"
 
 @interface RootViewController ()<GoToProfileProtocol,LikedProfileProtocol, UIViewControllerTransitioningDelegate, TwicketSegmentedControlDelegate>
 {
@@ -24,6 +24,7 @@
     BOOL observerActive;
     BOOL hamburgerMenuIsVisible;
     UIColor *headerColor;
+    BOOL tutorialWasShown;
 }
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
@@ -37,7 +38,6 @@
 @property (strong, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) NSArray *pageTitles;
 @property (strong, nonatomic) NSArray *pageImages;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *menuTrailing;
 
 @property (strong, nonatomic) NSMutableArray *altMatches;
 @property (strong, nonatomic) IBOutlet UIButton *menuButton;
@@ -97,14 +97,13 @@
     
     // Change the size of page view controller
     self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, pvcHeight);
-    
+   
 }
 
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
    
-    
     if (![[DataAccess singletonInstance] UserIsLoggedIn])
     {
         //[self performSegueWithIdentifier:@"tutorialSegue" sender:self];
@@ -113,12 +112,7 @@
     else
     {
         
-        if (![[DataAccess singletonInstance] IsReturningUser])
-        {
-            [self performSegueWithIdentifier:@"selectionVC" sender:self];
-            [[UIApplication sharedApplication] registerForRemoteNotifications];
-            return;
-        }
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
 
         [self setLocationObserver];
                 
@@ -151,6 +145,60 @@
         {
             [self.menuView displayData];
         }
+    }
+}
+
+
+-(void)runSetupAfterLogin
+{
+    
+    if (![[DataAccess singletonInstance] IsReturningUser])
+    {
+        if (!tutorialWasShown)
+        {
+            tutorialWasShown = YES;
+            [self performSegueWithIdentifier:@"tutorialSegue" sender:self];
+        }
+        else
+        {
+            [self performSegueWithIdentifier:@"selectionVC" sender:self];
+        }
+
+        return;
+    }
+    
+    [[UIApplication sharedApplication] registerForRemoteNotifications];
+    
+    [self setLocationObserver];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationEnteredForeground:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(altMatchesNotification:) name:@"altMatchesNotification" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(currentMatchNotification:) name:@"currentMatchNotification" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(noMatchNotification:) name:@"noMatchNotification" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(setLocationObserver:) name:@"setLocationObserver" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(goToMessaging) name:@"goToMessaging" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self
+                                             selector: @selector(goToMessaging)
+                                                 name: @"callSegue"
+                                               object: nil];
+    
+    if (self.menuView)
+    {
+        [self.menuView displayData];
     }
 }
 
@@ -305,9 +353,11 @@
     
     [self.topView addSubview:self.twicketControl]; */
     
+    CGFloat screenHeight = [UIScreen mainScreen].bounds.size.height;
+    
     self.menuView =   [[[NSBundle mainBundle] loadNibNamed:@"MenuView" owner:self options:nil] firstObject];
     self.menuView.parentVC = self;
-    self.menuView.frame = CGRectMake(0, 0, 300, 500);
+    self.menuView.frame = CGRectMake(0, 0, 300, screenHeight);
     [self.menuContainer addSubview:self.menuView];
 }
 
@@ -721,6 +771,19 @@
         UINavigationController *nc = segue.destinationViewController;
         ConversationViewController *vc = (ConversationViewController *)nc.topViewController;
     }
+    else if ([segue.destinationViewController isKindOfClass:[LoginViewController class]])
+    {
+        if (self.presentedViewController)
+        {
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+        LoginViewController *loginVC = segue.destinationViewController;
+        loginVC.delegate = self;
+        loginVC.view.backgroundColor = [UIColor clearColor];
+        loginVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        
+    }
     else if ([segue.destinationViewController isKindOfClass:[PartingMessageViewController class]])
     {
         if (self.presentedViewController)
@@ -832,10 +895,8 @@
         }
         
         SelectionViewController *selectionVC = segue.destinationViewController;
-        
-  //      selectionVC.delegate = self;
         selectionVC.view.backgroundColor = [UIColor clearColor];
-       // [selectionVC.view setAlpha:0.97];
+        selectionVC.delegate = self;
         selectionVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         
     }
@@ -848,6 +909,18 @@
         
         EditPhotosViewController *selectionVC = segue.destinationViewController;
         selectionVC.user = self.user;
+    }
+    else if ([segue.destinationViewController isKindOfClass:[TutorialViewController class]])
+    {
+        if (self.presentedViewController)
+        {
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:nil];
+        }
+        
+        TutorialViewController *tutorialVC = segue.destinationViewController;
+        tutorialVC.delegate = self;
+        tutorialVC.view.backgroundColor = [UIColor clearColor];
+        tutorialVC.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     }
 }
 
@@ -1380,6 +1453,11 @@
     {
         [self myMatchAction:self];
     }
+}
+
+-(void)goToInAppPurchaes
+{
+    [self performSegueWithIdentifier:@"purchaseSegue" sender:self];
 }
 
 /*

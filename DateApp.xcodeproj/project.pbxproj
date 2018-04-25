@@ -58,6 +58,7 @@
 		8C44BD9C207A9C63001E7BF2 /* PullToDismiss.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */; };
 		8C44BD9D207A9FB6001E7BF2 /* PullToDismiss.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */; };
 		8C44BD9E207A9FB6001E7BF2 /* PullToDismiss.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8C44BDA72087FD4B001E7BF2 /* InAppPurchaesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C44BDA62087FD4B001E7BF2 /* InAppPurchaesViewController.m */; };
 		8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5657A91DD9639E0081D082 /* AlbumViewController.m */; };
 		8C5F0E141E8D70B300C799B4 /* DAServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E131E8D70B300C799B4 /* DAServer.m */; };
 		8C5F0E191E8F2F8200C799B4 /* MatchUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E181E8F2F8200C799B4 /* MatchUser.m */; };
@@ -221,6 +222,8 @@
 		8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHeartAnimationView.m; sourceTree = "<group>"; };
 		8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TFHeartAnimationView.xib; sourceTree = "<group>"; };
 		8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PullToDismiss.framework; sourceTree = "<group>"; };
+		8C44BDA52087FD4B001E7BF2 /* InAppPurchaesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InAppPurchaesViewController.h; sourceTree = "<group>"; };
+		8C44BDA62087FD4B001E7BF2 /* InAppPurchaesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaesViewController.m; sourceTree = "<group>"; };
 		8C5657A81DD9639E0081D082 /* AlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
 		8C5657A91DD9639E0081D082 /* AlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		8C5F0E081E88749200C799B4 /* DateApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DateApp.entitlements; sourceTree = "<group>"; };
@@ -524,6 +527,8 @@
 				8C9FE9962068A29E004C8730 /* TwicketSegmentedControl.swift */,
 				8C9FE9952068A29E004C8730 /* UIViewShadowExtension.swift */,
 				8C18927A206AB424008C6474 /* MatchInputBottom.swift */,
+				8C44BDA52087FD4B001E7BF2 /* InAppPurchaesViewController.h */,
+				8C44BDA62087FD4B001E7BF2 /* InAppPurchaesViewController.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -980,6 +985,7 @@
 				8C2BE3031DE018820042BE6B /* CERangeSliderTrackLayer.m in Sources */,
 				8C1B7BDA2013D96C00D39235 /* ConversationViewController.swift in Sources */,
 				8C2BE3051DE018820042BE6B /* CERangeSlider.m in Sources */,
+				8C44BDA72087FD4B001E7BF2 /* InAppPurchaesViewController.m in Sources */,
 				8C5F0E141E8D70B300C799B4 /* DAServer.m in Sources */,
 				8C2BE31A1DE693830042BE6B /* FBPhotosViewController.m in Sources */,
 				8C0669961F1AFC5800132E14 /* UILabelDeviceClass.m in Sources */,
@@ -1163,6 +1169,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1171,6 +1178,7 @@
 				INFOPLIST_FILE = DateApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1179,6 +1187,7 @@
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 			};
 			name = Debug;
 		};
@@ -1193,6 +1202,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1201,12 +1211,31 @@
 				INFOPLIST_FILE = DateApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-iquote",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/MessageKit/MessageKit.framework/Headers\"",
+					"-iquote",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.framework/Headers\"",
+					"-iquote",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/Socket.IO-Client-Swift/SocketIO.framework/Headers\"",
+					"-iquote",
+					"\"${PODS_CONFIGURATION_BUILD_DIR}/TPKeyboardAvoiding/TPKeyboardAvoiding.framework/Headers\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Crashlytics\"",
+					"-isystem",
+					"\"${PODS_ROOT}/Headers/Public/Fabric\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "DateApp/DateApp-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 1;
+				VALID_ARCHS = "arm64 armv7 armv7s i386 x86_64";
 			};
 			name = Release;
 		};
@@ -1216,6 +1245,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = DateAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateAppTests;
@@ -1230,6 +1263,10 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = DateAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateAppTests;

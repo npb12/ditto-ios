@@ -16,7 +16,11 @@
 
 @protocol ConversationDelegate;
 
-@interface RootViewController : UIViewController<UIPageViewControllerDelegate, UIScrollViewDelegate,  PartingMessageDelegate, SegueProtocol>
+@protocol SetupDelegate <NSObject>
+-(void)runSetupAfterLogin;
+@end
+
+@interface RootViewController : UIViewController<UIPageViewControllerDelegate, UIScrollViewDelegate,  PartingMessageDelegate, SegueProtocol, SetupDelegate>
 
 -(void) goToMessaging:(id)sender;
 
@@ -28,12 +32,14 @@
 
 @property (strong, nonatomic) IBOutlet UIButton *chatBtn;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *menuTrailing;
+
 
 -(CGRect)getSelectedFrame;
 -(void)updateUnmatch;
 - (void)profileAction:(User*)user;
 -(void)editProfile:(User*)user;
 -(void)settingsAction;
-
+-(void)goToInAppPurchaes;
 
 @end

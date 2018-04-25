@@ -9,7 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "DAServer.h"
 #import "DataAccess.h"
+#import "RootViewController.h"
+
+@protocol SetupDelegate;
 
 @interface SelectionViewController : UIViewController
-
+@property (nonatomic, weak) id<SetupDelegate> delegate;
 @end
