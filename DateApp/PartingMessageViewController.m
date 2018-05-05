@@ -279,6 +279,11 @@
     //[UIColor colorWithRed:0.31 green:0.70 blue:1.00 alpha:1.0];
 }
 
+-(IBAction)dismissVC:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 /*
 #pragma mark - Navigation
 

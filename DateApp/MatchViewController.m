@@ -7,6 +7,7 @@
 //
 
 #import "Includes.h"
+#import "LastMessageView.h"
 #import "DateApp-Swift.h"
 
 @interface MatchViewController (){
@@ -35,6 +36,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *discoverBtnWidth;
 
 @property (strong, nonatomic) IBOutlet UIView *messageInputView;
+@property (strong, nonatomic) IBOutlet UIView *messagesContainer;
 
 @end
 
@@ -46,6 +48,8 @@
 
     [[NSNotificationCenter defaultCenter]
      addObserver:self selector:@selector(updateMatch) name:@"updateNewMatch" object:nil];
+    
+    NSString *str = [[DataAccess singletonInstance] getName];
     
     if ([[DataAccess singletonInstance] UserHasMatch])
     {
@@ -74,9 +78,34 @@
         [self.discoverBtn setTitle:@"Matched" forState:UIControlStateNormal];
         [self.discoverBtn setBackgroundColor:[self matchColor]];
         [self.nomatch_image setHidden:YES];
-        [self.messageInputView setHidden:NO];
-        [self.messageButton setUserInteractionEnabled:YES];
         
+        if ([[DataAccess singletonInstance] UserHasMessages])
+        {
+            LastMessageView *messagesView =   [[[NSBundle mainBundle] loadNibNamed:@"LastMessage" owner:self options:nil] firstObject];
+            //self.menuView.parentVC = self;
+            [self.messagesContainer layoutIfNeeded];
+            messagesView.frame = CGRectMake(0, 0, self.messagesContainer.frame.size.width, self.messagesContainer.frame.size.height);
+            [self.messagesContainer addSubview:messagesView];
+            
+            UIView *shadowView = [[UIView alloc] initWithFrame:CGRectMake(self.messagesContainer.bounds.origin.x, self.messagesContainer.bounds.origin.x, self.messagesContainer.bounds.size.width - (2 * self.messagesContainer.bounds.origin.x), self.messagesContainer.bounds.size.height - (2 * self.messagesContainer.bounds.origin.y))];
+            [self.messagesContainer insertSubview:shadowView atIndex:0];
+            
+            UIBezierPath *shadowPath = [UIBezierPath bezierPathWithRoundedRect:shadowView.bounds cornerRadius:14.0];
+            shadowView.layer.masksToBounds = NO;
+            shadowView.layer.shadowRadius = 4.0;
+            shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+            [shadowView.layer setShadowOffset:CGSizeZero];//CGSizeMake(0.051, -0.070)];
+            [shadowView.layer setShouldRasterize:YES];
+            [shadowView.layer setShadowOpacity:0.15];
+            shadowView.layer.shadowPath = shadowPath.CGPath;
+            [self.messageInputView setHidden:YES];
+        }
+        else
+        {
+            [self.messageInputView setHidden:NO];
+            [self.messageButton setUserInteractionEnabled:YES];
+            [self.messagesContainer setHidden:YES];
+        }
     }
     else
     {

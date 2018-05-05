@@ -64,7 +64,7 @@
                             </subviews>
                         </stackView>
                     </subviews>
-                    <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="jaX-Je-W74" firstAttribute="leading" secondItem="jxh-aC-ocd" secondAttribute="leading" constant="25" id="FG4-h9-KBZ"/>
                         <constraint firstItem="bMT-sX-dGI" firstAttribute="leading" secondItem="jaX-Je-W74" secondAttribute="trailing" constant="15" id="JgE-kC-aST"/>
@@ -74,7 +74,7 @@
                     </constraints>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="xvc-Rv-3dg">
-                    <rect key="frame" x="0.0" y="140" width="375" height="456.5"/>
+                    <rect key="frame" x="0.0" y="145" width="375" height="451.5"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </tableView>
@@ -102,7 +102,7 @@
                 <constraint firstItem="jxh-aC-ocd" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="c5p-SN-Dyy"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="xvc-Rv-3dg" secondAttribute="bottom" constant="70.5" id="cMZ-Y3-i2I"/>
                 <constraint firstItem="xvc-Rv-3dg" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="cxh-Me-PYh"/>
-                <constraint firstItem="xvc-Rv-3dg" firstAttribute="top" secondItem="jxh-aC-ocd" secondAttribute="bottom" id="ibo-Vb-UG3"/>
+                <constraint firstItem="xvc-Rv-3dg" firstAttribute="top" secondItem="53B-zJ-re8" secondAttribute="bottom" constant="20" id="lCY-wg-iX2"/>
                 <constraint firstItem="LdR-dm-MLG" firstAttribute="top" secondItem="EBA-vP-EH1" secondAttribute="bottom" id="nDA-3Q-rv5"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>

@@ -82,6 +82,23 @@
     [self initViewController];
     self.storyVC = [PresentStoryViewAnimationController new];
     self.dismissVC = [DismissStoryViewAnimationController new];
+    
+    if ([[DataAccess singletonInstance] UserIsLoggedIn])
+    {
+        if (![[DataAccess singletonInstance] UserHasMatch])
+        {
+            [DAServer getMessages:^(NSArray *messages, NSError *err){
+                if ([messages count] > 0)
+                {
+                    [[DataAccess singletonInstance] setUserHasMessages:YES];
+                }
+                else
+                {
+                    [[DataAccess singletonInstance] setUserHasMessages:NO];
+                }
+            }];
+        }
+    }
 
 }
 
@@ -97,7 +114,6 @@
     
     // Change the size of page view controller
     self.pageViewController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, pvcHeight);
-   
 }
 
 

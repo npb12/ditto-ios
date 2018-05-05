@@ -94,7 +94,7 @@
                                                                          
                                                                          
                                                                          NSString *long_token = [json objectForKey:@"ll_token"];
-                                                                         NSString *first_name = [json objectForKey:@"name"];
+                                                                         NSString *first_name = [json objectForKey:@"first_name"];
                                                                          
                                                                          NSString *gender = [json objectForKey:@"gender"];
                                                                          
@@ -852,6 +852,57 @@
 }
 
 
+//bio, occupation, education, d_token
++ (void)sendMessage:(NSString*)message completion:(void (^)(NSError *))completion
+{
+    NSDictionary *headers = [DAServer AuthHeader];
+        
+    MatchUser *matchUser = [MatchUser currentUser];
+    
+    NSString *uidStr = [NSString stringWithFormat:@"%ld", (long)matchUser.user_id];
+    
+    NSDictionary *parameters = @{
+                                 @"to_user": uidStr,
+                                 @"message": message
+                                 };
+    
+    NSData *postData = [NSJSONSerialization dataWithJSONObject:parameters options:0 error:nil];
+    
+    NSString *urlStr = [NSString stringWithFormat:@"%@/messages/", [DAServer baseURL]];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlStr]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"POST"];
+    [request setAllHTTPHeaderFields:headers];
+    [request setHTTPBody:postData];
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+                                                    NSInteger statusCode = [HTTPResponse statusCode];
+                                                    
+                                                    NSLog(@"response is %ld", (long)statusCode);
+                                                    if (error) {
+                                                        completion(error);
+                                                        NSLog(@"%@", error);
+                                                    } else {
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                        
+                                                        NSLog(@"json response: %@", jsonString);
+                                                        NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+                                                        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                                        
+                                                        completion(nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+    
+    
+}
+
 #pragma GET Requests
 
 
@@ -955,11 +1006,11 @@
 
 + (void)getMessages:(void (^)(NSArray *, NSError *))completion {
     
-    NSDictionary *headers = @{ @"content-type": @"application/json",
-                               @"cache-control": @"no-cache" };
+    NSDictionary *headers = [DAServer AuthHeader];
+
+    MatchUser *matchUser = [MatchUser currentUser];
     
-    
-    NSString *args = [NSString stringWithFormat:@"?uid=%@&get=message&sessionToken=%@", [[DataAccess singletonInstance] getUserID], [[DataAccess singletonInstance] getSessionToken]];
+    NSString *args = [NSString stringWithFormat:@"/conversation/%ld/", matchUser.user_id];
     
     NSString *URL = [[DAServer baseURL] stringByAppendingString:args];
     
@@ -967,7 +1018,6 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
-
     [request setHTTPMethod:@"GET"];
     [request setAllHTTPHeaderFields:headers];
     
@@ -976,9 +1026,15 @@
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
                                                 completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
                                                     
+                                                    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+                                                    NSInteger statusCode = [HTTPResponse statusCode];
+                                                    
+                                                    NSLog(@"response is %ld", (long)statusCode);
+                                                    
                                                     if (error) {
                                                         completion(nil, error);
                                                     } else {
+                                                       
                                                         NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                                         
                                                         NSLog(@"json:: %@", jsonString);
@@ -986,10 +1042,12 @@
                                                         NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
                                                         id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                                                         
-                                                        NSDictionary *dict = [json objectForKey:@"messages"];
-
-                                                        NSArray *messages =  [DAParser messages:dict];
+                                                        NSArray *messages = nil;
                                                         
+                                                        if ([json count] > 0)
+                                                        {
+                                                            messages =  [DAParser messages:json];
+                                                        }
                                                         
                                                         completion(messages, nil);
                                                         
@@ -1054,7 +1112,7 @@
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]
                                                            cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                        timeoutInterval:10.0];
-
+    
     [request setHTTPMethod:@"GET"];
     [request setAllHTTPHeaderFields:headers];
     

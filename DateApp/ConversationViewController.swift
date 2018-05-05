@@ -25,12 +25,12 @@ import MapKit
     var userAvatar: UIImage? = nil
     var isTyping = false
     weak var delegate: ConversationDelegate?
-    var socket: DASocket? = nil
+ //   var socket: DASocket? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        socket = DASocket()
+    //    socket = DASocket()
         
         NotificationCenter.default.addObserver(self, selector: #selector(newMessageReceived(notification:)), name: NSNotification.Name(rawValue: "newMessageReceived"), object: nil)
         
@@ -57,10 +57,31 @@ import MapKit
                         self.messageList = self.initData(list: list as! [Message])
                         self.messagesCollectionView.reloadData()
                         self.messagesCollectionView.scrollToBottom()
+                        DataAccess().setUserHasMessages(true)
                     }
                 }
             }
         })
+        
+        _ = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) {
+            (_) in
+            DAServer.getMessages({(messages, error) in
+                DispatchQueue.main.async {
+                    if (error == nil)
+                    {
+                        if let list = messages
+                        {
+                            self.messageList = self.initData(list: list as! [Message])
+                            self.messagesCollectionView.reloadData()
+                            self.messagesCollectionView.scrollToBottom()
+                            DataAccess().setUserHasMessages(true)
+                        }
+                    }
+                }
+            })
+        }
+        
+
 
         /*
         DispatchQueue.global(qos: .userInitiated).async {
@@ -168,7 +189,7 @@ import MapKit
     override func viewWillDisappear(_ animated: Bool)
     {
         super.viewWillAppear(true)
-        socket?.disconnectSocket()
+      //  socket?.disconnectSocket()
     }
     
     func initItem(item: Message) -> ChatMessage
@@ -197,7 +218,7 @@ import MapKit
             }
             else
             {
-                sender = Sender(id: userID!, displayName: userName!)
+                sender = Sender(id: userID!, displayName: (userName)!)
             }
             
             let date = Date(timeIntervalSince1970: TimeInterval(item.timestamp))
@@ -404,7 +425,7 @@ extension ConversationViewController: MessagesDisplayDelegate {
     // MARK: - Text Messages
     
     func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-        return isFromCurrentSender(message: message) ? .lightText : .darkGray
+        return isFromCurrentSender(message: message) ? .white : .black
     }
     
     
@@ -420,7 +441,7 @@ extension ConversationViewController: MessagesDisplayDelegate {
     // MARK: - All Messages
     
     func backgroundColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
-        return isFromCurrentSender(message: message) ? UIColor(red:0.35, green:0.85, blue:0.64, alpha:1.0) : UIColor(red:0.96, green:0.96, blue:0.96, alpha:1.0)
+        return isFromCurrentSender(message: message) ? UIColor(red:0.27, green:0.60, blue:0.98, alpha:1.0) : UIColor(red:0.94, green:0.94, blue:0.94, alpha:1.0)
     }
     
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
@@ -660,7 +681,11 @@ extension ConversationViewController: MessageInputBarDelegate {
             let message = ChatMessage(attributedText: attributedText, sender: currentSender(), messageId: UUID().uuidString, date: Date())
             messageList.append(message)
             messagesCollectionView.insertSections([messageList.count - 1])
-            socket?.sendMessage(text)
+          //  socket?.sendMessage(text)
+            
+            DAServer.sendMessage(text, completion: (({ (error) in
+                
+            })))
             /*
             if let image = component as? UIImage {
                 

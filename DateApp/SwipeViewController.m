@@ -40,7 +40,7 @@
     
     if ([[DataAccess singletonInstance] UserHasMatch])
     {
-        self.backgroundView.emptyLabel2.text = @"Use this as an opportunity\nto get to know your match!";
+        self.backgroundView.emptyLabel2.text = @"Use this as an opportunity to\nget to know your match!";
     }
     else
     {
@@ -273,7 +273,7 @@
 -(void)updateMatch
 {
     [self.backgroundView updateMatch];
-    self.backgroundView.emptyLabel2.text = @"Use this as an opportunity\nto get to know your match!";
+    self.backgroundView.emptyLabel2.text = @"Use this as an opportunity to\nget to know your match!";
 }
 
 -(void)updateUnmatch

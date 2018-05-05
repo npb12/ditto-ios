@@ -59,6 +59,8 @@
 		8C44BD9D207A9FB6001E7BF2 /* PullToDismiss.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */; };
 		8C44BD9E207A9FB6001E7BF2 /* PullToDismiss.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8C44BDA72087FD4B001E7BF2 /* InAppPurchaesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C44BDA62087FD4B001E7BF2 /* InAppPurchaesViewController.m */; };
+		8C47BDEA209817010005CB7D /* LastMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C47BDE9209817010005CB7D /* LastMessageView.m */; };
+		8C47BDEC209817260005CB7D /* LastMessage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C47BDEB209817260005CB7D /* LastMessage.xib */; };
 		8C5657AA1DD9639E0081D082 /* AlbumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5657A91DD9639E0081D082 /* AlbumViewController.m */; };
 		8C5F0E141E8D70B300C799B4 /* DAServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E131E8D70B300C799B4 /* DAServer.m */; };
 		8C5F0E191E8F2F8200C799B4 /* MatchUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5F0E181E8F2F8200C799B4 /* MatchUser.m */; };
@@ -224,6 +226,9 @@
 		8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PullToDismiss.framework; sourceTree = "<group>"; };
 		8C44BDA52087FD4B001E7BF2 /* InAppPurchaesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InAppPurchaesViewController.h; sourceTree = "<group>"; };
 		8C44BDA62087FD4B001E7BF2 /* InAppPurchaesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaesViewController.m; sourceTree = "<group>"; };
+		8C47BDE8209817010005CB7D /* LastMessageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LastMessageView.h; sourceTree = "<group>"; };
+		8C47BDE9209817010005CB7D /* LastMessageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LastMessageView.m; sourceTree = "<group>"; };
+		8C47BDEB209817260005CB7D /* LastMessage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LastMessage.xib; sourceTree = "<group>"; };
 		8C5657A81DD9639E0081D082 /* AlbumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlbumViewController.h; sourceTree = "<group>"; };
 		8C5657A91DD9639E0081D082 /* AlbumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlbumViewController.m; sourceTree = "<group>"; };
 		8C5F0E081E88749200C799B4 /* DateApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DateApp.entitlements; sourceTree = "<group>"; };
@@ -529,6 +534,9 @@
 				8C18927A206AB424008C6474 /* MatchInputBottom.swift */,
 				8C44BDA52087FD4B001E7BF2 /* InAppPurchaesViewController.h */,
 				8C44BDA62087FD4B001E7BF2 /* InAppPurchaesViewController.m */,
+				8C47BDE8209817010005CB7D /* LastMessageView.h */,
+				8C47BDE9209817010005CB7D /* LastMessageView.m */,
+				8C47BDEB209817260005CB7D /* LastMessage.xib */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -734,6 +742,7 @@
 				8C0AF7491F5516D0005AA0FF /* LilyScriptOne-Regular.ttf in Resources */,
 				8CE1D92B1F0355B00002A510 /* RooneySansLF-Medium.otf in Resources */,
 				8CC00FF21D9F2B1500BE487A /* LaunchScreen.storyboard in Resources */,
+				8C47BDEC209817260005CB7D /* LastMessage.xib in Resources */,
 				8CEB63991E5902A400F062A9 /* DraggableView.xib in Resources */,
 				8C39D82B2054F25900FAE208 /* MenuTableViewCell.xib in Resources */,
 				8CC00FEF1D9F2B1500BE487A /* Assets.xcassets in Resources */,
@@ -960,6 +969,7 @@
 				8C2BE3201DE9297E0042BE6B /* LoginViewController.m in Sources */,
 				8CE1D9221F0214680002A510 /* DAGradientColor.m in Sources */,
 				8C5F0E1C1E8F30EE00C799B4 /* DAParser.m in Sources */,
+				8C47BDEA209817010005CB7D /* LastMessageView.m in Sources */,
 				8C2BE3171DE55B030042BE6B /* DataAccess.m in Sources */,
 				8C2BE30B1DE20C0E0042BE6B /* EditPhotosViewController.m in Sources */,
 				8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */,
@@ -1178,7 +1188,7 @@
 				INFOPLIST_FILE = DateApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

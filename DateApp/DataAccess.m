@@ -120,6 +120,17 @@ static NSString * const kSettingOutgoingAvatar = @"kSettingOutgoingAvatar";
     [[NSUserDefaults standardUserDefaults] setBool:status forKey:@"hasMatch"];
 }
 
+- (BOOL)UserHasMessages {
+    if([[NSUserDefaults standardUserDefaults] boolForKey:@"hasMessages"]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)setUserHasMessages:(BOOL)status {
+    [[NSUserDefaults standardUserDefaults] setBool:status forKey:@"hasMessages"];
+}
+
 
 - (void)setMatchProfileImageStatus:(BOOL)status {
     DataAccess *Data = [DataAccess singletonInstance];

@@ -390,9 +390,16 @@
     for(id key in messages_dict)
     {
         Message *message = [Message new];
-        message.timestamp = [[key objectForKey:@"time_stamp"] floatValue];
-        message.message = [key objectForKey:@"content"];
-        if ([uid isEqualToString:[key objectForKey:@"uid1"]])
+        NSString *formattedTime = [key objectForKey:@"date_stamp"];
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"YYYY-MM-dd'T'HH:mm:ss.SSS"];
+        NSDate *myDate = [df dateFromString: formattedTime];
+        message.timestamp = [myDate timeIntervalSince1970];
+       // message.timestamp = [[key objectForKey:@"date_stamp"] floatValue];
+        message.message = [key objectForKey:@"message"];
+        NSInteger intVal = [[key objectForKey:@"from_user"] integerValue];
+        NSString *fromUser = [NSString stringWithFormat:@"%ld", (long)intVal];
+        if ([uid isEqualToString:fromUser])
         {
             message.type = SENT_MESSAGE;
         }
@@ -405,39 +412,19 @@
         [conversation addObject:message];
     }
     
+    if ([conversation count] > 0)
+    {
+        [DAParser setLastMessage:[conversation lastObject]];
+    }
+    
     return conversation;
-    
-    /*
-    for(id key in sent_dict)
-    {
-        Messages *message = [Messages new];
-        message.timestamp = [[key objectForKey:@"time_stamp"] floatValue];
-        message.message = [key objectForKey:@"content"];
-        message.type = SENT_MESSAGE;
-        [conversation addObject:message];
-    }
-    
-    for(id key in recieved_dict)
-    {
-        Messages *message = [Messages new];
-        message.timestamp = [[key objectForKey:@"time_stamp"] floatValue];
-        message.message = [key objectForKey:@"content"];
-        message.type = RECEIVED_MESSAGE;
-        [conversation addObject:message];
-        
-        if (message.timestamp > curr)
-        {
-            curr = message.timestamp;
-        }
-    }
-    
-    [[DataAccess singletonInstance] setLastMessage:curr];
-    
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:YES];
-    NSArray *orderedConversation = [conversation sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    
-    return orderedConversation; */
-    
+}
+
++(void)setLastMessage:(Message*)message
+{
+    MatchUser *matchUser = [MatchUser currentUser];
+    matchUser.lastMessage = message;
+    [MatchUser updateCurrentMatch:matchUser];
 }
 
 +(bool)messageNew:(NSDictionary*)recieved_dict sent:(NSDictionary*)sent_dict

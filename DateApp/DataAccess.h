@@ -112,6 +112,9 @@
 - (BOOL)UserHasMatch;
 - (void)setUserHasMatch:(BOOL)status;
 
+- (BOOL)UserHasMessages;
+- (void)setUserHasMessages:(BOOL)status;
+
 -(void)setMatchName:(NSString*)name;
 -(NSString*)getMatchName;
 

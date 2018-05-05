@@ -69,6 +69,9 @@ enum RequestType {
 
 + (void)getMessages:(void (^)(NSArray *, NSError *))completion;
 
++ (void)sendMessage:(NSString*)message completion:(void (^)(NSError *))completion;
+
+
 + (void)LastMessageNew:(NSString *)param
             completion:(void (^)(bool, NSError *))completion;
 

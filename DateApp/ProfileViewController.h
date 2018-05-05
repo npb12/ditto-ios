@@ -11,6 +11,8 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImage+Scale.h"
 
+@import PullToDismiss;
+
 @protocol LikedProfileProtocol <NSObject>
 -(void)likeCurrent:(BOOL)option;
 @end
