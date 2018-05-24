@@ -11,6 +11,7 @@
 #import "DADateFormatter.h"
 #import "User.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import "MatchUser.h"
 
 
 @protocol GoToProfileProtocol <NSObject>
@@ -58,6 +59,9 @@
 
 -(CGRect)profileFrame;
 
+@property (strong, nonatomic) MatchUser *user;
+
+
 @property (strong, nonatomic) IBOutlet UIImageView *profilePic;
 
 @property (strong, nonatomic) IBOutlet UILabel *unmatchedHeader;
@@ -65,6 +69,7 @@
 
 @property (nonatomic, weak) id<GoToProfileProtocol> profile_delegate;
 
+-(void)setMessageUI;
 -(void)updateUnmatch;
 -(void)updateMatch;
 

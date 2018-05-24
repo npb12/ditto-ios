@@ -41,5 +41,6 @@
 -(void)editProfile:(User*)user;
 -(void)settingsAction;
 -(void)goToInAppPurchaes;
+-(void)updateLastMessageUI;
 
 @end
