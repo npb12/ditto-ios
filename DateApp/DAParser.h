@@ -7,6 +7,7 @@
 //
 
 #import "Includes.h"
+#import "MatchMessages.h"
 
 @interface DAParser : NSObject
 

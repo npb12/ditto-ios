@@ -18,6 +18,6 @@ typedef NS_ENUM(NSUInteger, message_type) {
 @property (nonatomic, assign) NSInteger type;
 @property (nullable, nonatomic, retain) NSString *message;
 @property (nonatomic, assign) long timestamp;
-
+@property (nonatomic, assign) BOOL unread;
 
 @end

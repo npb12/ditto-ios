@@ -54,7 +54,6 @@
         
         user.distance = [[key objectForKey:@"distance"] integerValue];
         
-        
         user.pics = [NSMutableArray new];
         
         NSString *pic1 = [key objectForKey:@"pic1"];
@@ -188,8 +187,6 @@
 
 +(void)currentMatch:(NSDictionary*)dict notif:(BOOL)notification
 {
-    
-    
     MatchUser *user = [MatchUser new];
 
     user.user_id = [[dict objectForKey:@"id"] integerValue];
@@ -201,7 +198,6 @@
     
     user.distance = [[dict objectForKey:@"distance"] integerValue];
 
-    
     if (edu == nil || [DAParser nsnullCheck:edu])
     {
         edu = @"";
@@ -224,12 +220,13 @@
     }
     user.bio = bio;
     
-    
+
     NSString *dateStr = [dict objectForKey:@"date_matched"];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"YYYY-MM-dd'T'HH:mm:ss"];
-    
-    user.match_time = [dateFormat dateFromString:dateStr];
+    [dateFormat setDateFormat:@"YYYY-MM-dd'T'HH:mm:ss'Z'"];
+    NSString *str = [dateFormat stringFromDate:[[dateFormat dateFromString:dateStr] dateByAddingTimeInterval:dateFormat.timeZone.secondsFromGMT]];
+    NSDate *matchDate = [dateFormat dateFromString: str];
+    user.match_time = matchDate;
     
     user.pics = [NSMutableArray new];
     
@@ -392,11 +389,12 @@
         Message *message = [Message new];
         NSString *formattedTime = [key objectForKey:@"date_stamp"];
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        [df setDateFormat:@"YYYY-MM-dd'T'HH:mm:ss.SSS"];
+        [df setDateFormat:@"YYYY-MM-dd'T'HH:mm:ss.SSS'Z'"];
         NSDate *myDate = [df dateFromString: formattedTime];
         message.timestamp = [myDate timeIntervalSince1970];
        // message.timestamp = [[key objectForKey:@"date_stamp"] floatValue];
         message.message = [key objectForKey:@"message"];
+        NSLog(@" message content: %@ + time formatted %@", message.message, formattedTime);
         NSInteger intVal = [[key objectForKey:@"from_user"] integerValue];
         NSString *fromUser = [NSString stringWithFormat:@"%ld", (long)intVal];
         if ([uid isEqualToString:fromUser])
@@ -414,17 +412,12 @@
     
     if ([conversation count] > 0)
     {
-        [DAParser setLastMessage:[conversation lastObject]];
+        MatchMessages *message = [MatchMessages new];
+        message.lastMessage = [conversation lastObject];
+        [MatchMessages saveAsLastMessage:message];
     }
     
     return conversation;
-}
-
-+(void)setLastMessage:(Message*)message
-{
-    MatchUser *matchUser = [MatchUser currentUser];
-    matchUser.lastMessage = message;
-    [MatchUser updateCurrentMatch:matchUser];
 }
 
 +(bool)messageNew:(NSDictionary*)recieved_dict sent:(NSDictionary*)sent_dict

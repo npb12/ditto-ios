@@ -15,20 +15,13 @@
     [[NSUserDefaults standardUserDefaults] setObject:nil forKey:@"::DATINGAPP_SAVED_MATCH_DATA::"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     [[DataAccess singletonInstance] setUserHasMatch:NO];
-    [[DataAccess singletonInstance] setUserHasMessages:NO];
+    [MatchMessages removeLastMessage];
+    
 
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"noMatchNotification" object:nil userInfo:nil];
     });
-}
-
-+ (void) updateCurrentMatch:(MatchUser*)currentMatch
-{
-    NSDictionary* userDictionary = [currentMatch toDictionary];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:userDictionary forKey:@"::DATINGAPP_SAVED_MATCH_DATA::"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 + (void) saveAsCurrentMatch:(MatchUser*)currentMatch
@@ -83,21 +76,6 @@
     if (self.distance)
         [dictionary setObject:[NSNumber numberWithDouble: self.distance] forKey:@"distance"];
     
-    //messaging
-    if (self.lastMessage)
-    {
-        [dictionary setObject:self.lastMessage.message forKey:@"content"];
-        [dictionary setObject:@(self.lastMessage.timestamp) forKey:@"message_timestamp"];
-        if (self.lastMessage.type == RECEIVED_MESSAGE)
-        {
-            [dictionary setObject:@(0) forKey:@"sender_val"];
-        }
-        else
-        {
-            [dictionary setObject:@(1) forKey:@"sender_val"];
-        }
-
-    }
     
     return @{ @"match" : dictionary };
 }
@@ -126,24 +104,6 @@
     NSNumber *distance = [userDictionary objectForKey:@"distance"];
     user.distance = [distance integerValue];
     
-    //last message
-    Message* message = [Message new];
-
-    long messageTime = [[userDictionary objectForKey:@"message_timestamp"] longValue];
-    message.timestamp = messageTime;
-    message.message = [userDictionary objectForKey:@"content"];
-    NSInteger senderVal = [[userDictionary objectForKey:@"sender_val"] integerValue];
-    if (senderVal == 0)
-    {
-        message.type = RECEIVED_MESSAGE;
-    }
-    else
-    {
-        message.type = SENT_MESSAGE;
-    }
-    
-    user.lastMessage = message;
-
     return user;
 }
 

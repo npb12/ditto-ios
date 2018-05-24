@@ -34,6 +34,8 @@ import MapKit
         
         NotificationCenter.default.addObserver(self, selector: #selector(newMessageReceived(notification:)), name: NSNotification.Name(rawValue: "newMessageReceived"), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(checkForMessages), name: NSNotification.Name(rawValue: "newMessage"), object: nil)
+        
         if let user = MatchUser.current()
         {
             self.title = user.name
@@ -63,22 +65,9 @@ import MapKit
             }
         })
         
-        _ = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) {
+        _ = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) {
             (_) in
-            DAServer.getMessages({(messages, error) in
-                DispatchQueue.main.async {
-                    if (error == nil)
-                    {
-                        if let list = messages
-                        {
-                            self.messageList = self.initData(list: list as! [Message])
-                            self.messagesCollectionView.reloadData()
-                            self.messagesCollectionView.scrollToBottom()
-                            DataAccess().setUserHasMessages(true)
-                        }
-                    }
-                }
-            })
+                self.checkForMessages()
         }
         
 
@@ -119,6 +108,24 @@ import MapKit
         ] */
         
         
+    }
+    
+    @objc func checkForMessages() -> Void
+    {
+        DAServer.getMessages({(messages, error) in
+            DispatchQueue.main.async {
+                if (error == nil)
+                {
+                    if let list = messages
+                    {
+                        self.messageList = self.initData(list: list as! [Message])
+                        self.messagesCollectionView.reloadData()
+                        self.messagesCollectionView.scrollToBottom()
+                        DataAccess().setUserHasMessages(true)
+                    }
+                }
+            }
+        })
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -684,7 +691,12 @@ extension ConversationViewController: MessageInputBarDelegate {
           //  socket?.sendMessage(text)
             
             DAServer.sendMessage(text, completion: (({ (error) in
-                
+                //get last message to update matchVC once user goes back
+                DAServer.getMessages({(messages, error) in
+                    if let _ = messages{
+                        DataAccess().setUserHasMessages(true)
+                    }
+                })
             })))
             /*
             if let image = component as? UIImage {

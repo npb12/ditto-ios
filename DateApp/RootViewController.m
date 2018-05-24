@@ -85,7 +85,7 @@
     
     if ([[DataAccess singletonInstance] UserIsLoggedIn])
     {
-        if (![[DataAccess singletonInstance] UserHasMatch])
+        if ([[DataAccess singletonInstance] UserHasMatch])
         {
             [DAServer getMessages:^(NSArray *messages, NSError *err){
                 if ([messages count] > 0)
@@ -99,6 +99,7 @@
             }];
         }
     }
+    
 
 }
 
@@ -131,7 +132,7 @@
         [[UIApplication sharedApplication] registerForRemoteNotifications];
 
         [self setLocationObserver];
-                
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationEnteredForeground:)
                                                      name:UIApplicationWillEnterForegroundNotification
@@ -139,6 +140,9 @@
         
         [[NSNotificationCenter defaultCenter]
          addObserver:self selector:@selector(altMatchesNotification:) name:@"altMatchesNotification" object:nil];
+        
+        [[NSNotificationCenter defaultCenter]
+         addObserver:self selector:@selector(updateLastMessageUI) name:@"newMessage" object:nil];
         
         [[NSNotificationCenter defaultCenter]
          addObserver:self selector:@selector(currentMatchNotification:) name:@"currentMatchNotification" object:nil];
@@ -156,6 +160,7 @@
                                                  selector: @selector(goToMessaging)
                                                      name: @"callSegue"
                                                    object: nil];
+        
         
         if (self.menuView)
         {
@@ -270,6 +275,30 @@
             observerActive = YES;
         }
     }
+}
+
+-(void)updateLastMessageUI
+{
+    [DAServer getMessages:^(NSArray *messages, NSError *err){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (![self.navigationController.topViewController isKindOfClass:[ConversationViewController class]])
+            {
+                Message *message = [messages lastObject];
+                if(message.type == RECEIVED_MESSAGE)
+                {
+                    message.unread = YES;
+                    MatchMessages *matchMessage = [MatchMessages new];
+                    matchMessage.lastMessage = message;
+                    [MatchMessages saveAsLastMessage:matchMessage];
+                }
+            }
+            
+            if (self.matchVC)
+            {
+                [self.matchVC setMessageUI];
+            }
+        });
+    }];
 }
 
 -(void)initViewController{
@@ -1148,11 +1177,6 @@
                     });
                 }
                 
-                if ([[DataAccess singletonInstance] UserHasMatch])
-                {
-                    [self checkForNewMessage];
-                }
-                
             } else {
                 // update UI to indicate error or take remedial action
             }
@@ -1160,19 +1184,6 @@
     }
 }
 
--(void)checkForNewMessage
-{
-    [DAServer LastMessageNew:@"" completion:^(bool message, NSError *error) {
-        // here, update the UI to say "Not busy anymore"
-        if (!error && message) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.chatBtn setImage:[UIImage imageNamed:@"chat_full_message"] forState:UIControlStateNormal];
-            });
-        } else {
-            // update UI to indicate error or take remedial action
-        }
-    }];
-}
 
 -(void) altMatchesNotification:(NSNotification*)notification
 {

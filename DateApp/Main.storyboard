@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aFf-Nm-VTW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="aFf-Nm-VTW">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="HelveticaNeue.ttc">
-            <string>HelveticaNeue</string>
-        </array>
         <array key="LilyScriptOne-Regular.ttf">
             <string>LilyScriptOne-Regular</string>
         </array>
@@ -343,16 +340,16 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="237"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="gho-eS-V5h">
-                                        <rect key="frame" x="15" y="98.5" width="375" height="98.5"/>
+                                        <rect key="frame" x="15" y="98.5" width="345" height="98.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ditto" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="raJ-Pu-ccV">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="76"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="345" height="76"/>
                                                 <fontDescription key="fontDescription" name="LilyScriptOne-Regular" family="Lily Script One" pointSize="55"/>
                                                 <color key="textColor" red="0.34901960780000002" green="0.85098039219999999" blue="0.64313725489999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sublabl" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z90-v0-Li3">
-                                                <rect key="frame" x="0.0" y="76" width="375" height="22.5"/>
+                                                <rect key="frame" x="0.0" y="76" width="345" height="22.5"/>
                                                 <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="18"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
@@ -368,7 +365,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1dq-7H-Yr4">
-                                <rect key="frame" x="187.5" y="536.5" width="280" height="30"/>
+                                <rect key="frame" x="47.5" y="536.5" width="280" height="30"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="08f-Kt-xnu"/>
@@ -383,13 +380,13 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="edA-dK-5Qx">
-                                <rect key="frame" x="16" y="621.5" width="375" height="20.5"/>
+                                <rect key="frame" x="16" y="621.5" width="343" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will never post to your Faceobok timeline" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UKH-cX-Bbf">
-                                <rect key="frame" x="48" y="576.5" width="375" height="15"/>
+                                <rect key="frame" x="48" y="576.5" width="279" height="15"/>
                                 <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="12"/>
                                 <color key="textColor" red="0.62745098039215685" green="0.62745098039215685" blue="0.6470588235294118" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -926,6 +923,13 @@
                                     <constraint firstAttribute="bottom" secondItem="rbQ-Lm-Tqe" secondAttribute="bottom" id="nfD-ft-T5K"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MG9-zx-KpX">
+                                <rect key="frame" x="20" y="577" width="335" height="70"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="KOe-m4-2Yi"/>
+                                </constraints>
+                            </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aND-FL-kws">
                                 <rect key="frame" x="0.0" y="592" width="375" height="75"/>
                                 <constraints>
@@ -935,13 +939,6 @@
                                     <action selector="goToMessaging:" destination="iTs-2Z-VN4" eventType="touchUpInside" id="bIX-Tq-l97"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MG9-zx-KpX">
-                                <rect key="frame" x="20" y="577" width="335" height="70"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="70" id="KOe-m4-2Yi"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1539,7 +1536,7 @@
                                         <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="19"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="30" maxY="0.0"/>
                                         <state key="normal" title="Inappropriate messages">
-                                            <color key="titleColor" red="0.7803921568627451" green="0.7803921568627451" blue="0.80392156862745101" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.7803921568627451" green="0.7803921568627451" blue="0.80392156862745101" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="inappropriateAction:" destination="AN8-VE-ckM" eventType="touchUpInside" id="V4M-nJ-eAj"/>
@@ -1560,7 +1557,7 @@
                                         <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="19"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="50" maxY="0.0"/>
                                         <state key="normal" title="Not enough chemistry">
-                                            <color key="titleColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.80392156859999997" alpha="0.5" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="chemistryAction:" destination="AN8-VE-ckM" eventType="touchUpInside" id="F3M-hd-yY7"/>
@@ -1581,7 +1578,7 @@
                                         <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="19"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="40" maxY="0.0"/>
                                         <state key="normal" title="Showed little interest">
-                                            <color key="titleColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.80392156859999997" alpha="0.5" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="interestAction:" destination="AN8-VE-ckM" eventType="touchUpInside" id="rht-yh-ryQ"/>
@@ -1633,7 +1630,7 @@
                                         <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="19"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="40" maxY="0.0"/>
                                         <state key="normal" title="Long response times">
-                                            <color key="titleColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.80392156859999997" alpha="0.5" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="responseAction:" destination="AN8-VE-ckM" eventType="touchUpInside" id="Xmz-uA-SfK"/>
@@ -1654,7 +1651,7 @@
                                         <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="19"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="40" maxY="0.0"/>
                                         <state key="normal" title="No real reason">
-                                            <color key="titleColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.80392156859999997" alpha="0.5" colorSpace="calibratedRGB"/>
                                         </state>
                                         <connections>
                                             <action selector="noReasonAction:" destination="AN8-VE-ckM" eventType="touchUpInside" id="udW-fh-3AK"/>
@@ -2696,12 +2693,12 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coming soon!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wzX-rz-CWj">
-                                        <rect key="frame" x="8" y="259.5" width="359" height="30"/>
+                                        <rect key="frame" x="8" y="251" width="359" height="30"/>
                                         <fontDescription key="fontDescription" name="RooneySansLF-Medium" family="RooneySansLF" pointSize="24"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stay tuned for some exciting features coming in our next release. Check back soon!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yT-0f-j2V">
-                                        <rect key="frame" x="28" y="304.5" width="327" height="18"/>
+                                        <rect key="frame" x="28" y="296" width="327" height="35"/>
                                         <fontDescription key="fontDescription" name="RooneySansLF-Regular" family="RooneySansLF" pointSize="14"/>
                                         <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>

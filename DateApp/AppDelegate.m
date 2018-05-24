@@ -116,13 +116,15 @@ notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions o
     }
     else if([type isEqualToString:@"message"])
     {
-        if (self.rootVC)
-        {
             dispatch_async(dispatch_get_main_queue(), ^{
-            [self.rootVC.chatBtn setImage:[UIImage imageNamed:@"chat_full_message"] forState:UIControlStateNormal];
+                if (self.rootVC)
+                {
+                    [self.rootVC updateLastMessageUI];
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"newMessage" object:nil userInfo:nil];
             });
 
-        }
     }
     else if([type isEqualToString:@"drop"])
     {

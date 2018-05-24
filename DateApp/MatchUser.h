@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "DataAccess.h"
-#import "Message.h"
+#import "MatchMessages.h"
 
 
 @interface MatchUser : NSObject
@@ -18,7 +18,6 @@
 - (NSDictionary*) toDictionary;
 + (void) saveAsCurrentMatch:(MatchUser*)currentMatch;
 + (void) removeCurrentMatch;
-+ (void) updateCurrentMatch:(MatchUser*)currentMatch;
 
 @property (nullable, nonatomic, retain) NSString *name;
 @property (nullable, nonatomic, retain) NSString *education;
@@ -30,6 +29,5 @@
 @property (nonatomic, assign) NSDate *match_time;
 @property (nullable, nonatomic, retain) NSMutableArray *pics;
 @property (nonatomic, strong) UIImage *profileImage;
-@property (nonatomic, strong) Message *lastMessage;
 
 @end
