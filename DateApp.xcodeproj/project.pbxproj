@@ -14,6 +14,8 @@
 		8C071DD41F0B1EEF00900A42 /* UserLandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C071DD31F0B1EEF00900A42 /* UserLandingViewController.m */; };
 		8C08FA151EA7115500A41FF5 /* DADateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C08FA141EA7115500A41FF5 /* DADateFormatter.m */; };
 		8C0AF7491F5516D0005AA0FF /* LilyScriptOne-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8C0AF7481F5516D0005AA0FF /* LilyScriptOne-Regular.ttf */; };
+		8C0F2C8820B6651800E9692E /* MatchMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F2C8720B6651800E9692E /* MatchMessages.m */; };
+		8C0F2C9220B904E500E9692E /* Interactor.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C0F2C9120B904E500E9692E /* Interactor.m */; };
 		8C1146801E7CC069003AB594 /* PartingMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */; };
 		8C1146831E7D838C003AB594 /* NewMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C1146821E7D838C003AB594 /* NewMessageViewController.m */; };
 		8C18927B206AB424008C6474 /* MatchInputBottom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C18927A206AB424008C6474 /* MatchInputBottom.swift */; };
@@ -55,9 +57,6 @@
 		8C3DFAA22058BBDC0056F763 /* PresentStoryViewAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C3DFAA02058BBDC0056F763 /* PresentStoryViewAnimationController.swift */; };
 		8C4117F91DD03E1000DBC38F /* TFHeartAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */; };
 		8C4117FA1DD03E1000DBC38F /* TFHeartAnimationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */; };
-		8C44BD9C207A9C63001E7BF2 /* PullToDismiss.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */; };
-		8C44BD9D207A9FB6001E7BF2 /* PullToDismiss.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */; };
-		8C44BD9E207A9FB6001E7BF2 /* PullToDismiss.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8C44BDA72087FD4B001E7BF2 /* InAppPurchaesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C44BDA62087FD4B001E7BF2 /* InAppPurchaesViewController.m */; };
 		8C47BDEA209817010005CB7D /* LastMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C47BDE9209817010005CB7D /* LastMessageView.m */; };
 		8C47BDEC209817260005CB7D /* LastMessage.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8C47BDEB209817260005CB7D /* LastMessage.xib */; };
@@ -134,7 +133,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8C44BD9E207A9FB6001E7BF2 /* PullToDismiss.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -158,6 +156,10 @@
 		8C08FA131EA7115500A41FF5 /* DADateFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DADateFormatter.h; path = ../DADateFormatter.h; sourceTree = "<group>"; };
 		8C08FA141EA7115500A41FF5 /* DADateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DADateFormatter.m; path = ../DADateFormatter.m; sourceTree = "<group>"; };
 		8C0AF7481F5516D0005AA0FF /* LilyScriptOne-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LilyScriptOne-Regular.ttf"; sourceTree = "<group>"; };
+		8C0F2C8620B6651800E9692E /* MatchMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchMessages.h; sourceTree = "<group>"; };
+		8C0F2C8720B6651800E9692E /* MatchMessages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchMessages.m; sourceTree = "<group>"; };
+		8C0F2C9020B904E500E9692E /* Interactor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Interactor.h; sourceTree = "<group>"; };
+		8C0F2C9120B904E500E9692E /* Interactor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Interactor.m; sourceTree = "<group>"; };
 		8C11467E1E7CC069003AB594 /* PartingMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartingMessageViewController.h; sourceTree = "<group>"; };
 		8C11467F1E7CC069003AB594 /* PartingMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartingMessageViewController.m; sourceTree = "<group>"; };
 		8C1146811E7D838C003AB594 /* NewMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewMessageViewController.h; sourceTree = "<group>"; };
@@ -223,7 +225,6 @@
 		8C4117F61DD03E1000DBC38F /* TFHeartAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHeartAnimationView.h; sourceTree = "<group>"; };
 		8C4117F71DD03E1000DBC38F /* TFHeartAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHeartAnimationView.m; sourceTree = "<group>"; };
 		8C4117F81DD03E1000DBC38F /* TFHeartAnimationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TFHeartAnimationView.xib; sourceTree = "<group>"; };
-		8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = PullToDismiss.framework; sourceTree = "<group>"; };
 		8C44BDA52087FD4B001E7BF2 /* InAppPurchaesViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InAppPurchaesViewController.h; sourceTree = "<group>"; };
 		8C44BDA62087FD4B001E7BF2 /* InAppPurchaesViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InAppPurchaesViewController.m; sourceTree = "<group>"; };
 		8C47BDE8209817010005CB7D /* LastMessageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LastMessageView.h; sourceTree = "<group>"; };
@@ -326,12 +327,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CCF3D9A1E42706500CC4750 /* CoreLocation.framework in Frameworks */,
-				8C44BD9D207A9FB6001E7BF2 /* PullToDismiss.framework in Frameworks */,
 				8C2BE3221DE930F00042BE6B /* FBSDKLoginKit.framework in Frameworks */,
 				8C2BE3241DE9342B0042BE6B /* FBSDKCoreKit.framework in Frameworks */,
 				8C2BE3261DE938E10042BE6B /* Bolts.framework in Frameworks */,
 				2D2A5289B615F0BF70D252A9 /* Pods_DateApp.framework in Frameworks */,
-				8C44BD9C207A9C63001E7BF2 /* PullToDismiss.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,6 +536,10 @@
 				8C47BDE8209817010005CB7D /* LastMessageView.h */,
 				8C47BDE9209817010005CB7D /* LastMessageView.m */,
 				8C47BDEB209817260005CB7D /* LastMessage.xib */,
+				8C0F2C8620B6651800E9692E /* MatchMessages.h */,
+				8C0F2C8720B6651800E9692E /* MatchMessages.m */,
+				8C0F2C9020B904E500E9692E /* Interactor.h */,
+				8C0F2C9120B904E500E9692E /* Interactor.m */,
 			);
 			path = DateApp;
 			sourceTree = "<group>";
@@ -596,7 +599,6 @@
 		F77B26EB49B6B14628888455 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8C44BD9B207A9C63001E7BF2 /* PullToDismiss.framework */,
 				8CCF3D991E42706500CC4750 /* CoreLocation.framework */,
 				8C2BE3251DE938E10042BE6B /* Bolts.framework */,
 				8C2BE3231DE9342B0042BE6B /* FBSDKCoreKit.framework */,
@@ -993,6 +995,7 @@
 				8CB05FFA1DD187F300EB7BB6 /* MatchViewController.m in Sources */,
 				8CD2BD8B1E3EE65D00A293CE /* SettingsTableViewCell.m in Sources */,
 				8C2BE3031DE018820042BE6B /* CERangeSliderTrackLayer.m in Sources */,
+				8C0F2C9220B904E500E9692E /* Interactor.m in Sources */,
 				8C1B7BDA2013D96C00D39235 /* ConversationViewController.swift in Sources */,
 				8C2BE3051DE018820042BE6B /* CERangeSlider.m in Sources */,
 				8C44BDA72087FD4B001E7BF2 /* InAppPurchaesViewController.m in Sources */,
@@ -1013,6 +1016,7 @@
 				8CA3447C1DD76C0200BFB36F /* PhotosCollectionViewCell.m in Sources */,
 				8CB0F1791E2DCED500E62A1C /* RootViewController.m in Sources */,
 				8CEF96991DCC3B1B004D76A7 /* ProfileViewController.m in Sources */,
+				8C0F2C8820B6651800E9692E /* MatchMessages.m in Sources */,
 				8C9C19DD1DD829890074A7D0 /* MenuViewController.m in Sources */,
 				8CF62C7E1E1E204000BBAF0D /* NewMatchViewController.m in Sources */,
 				8CF286111E9B3C0B005B94E9 /* Message.m in Sources */,
@@ -1110,7 +1114,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1159,7 +1163,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 4.0;
@@ -1179,14 +1183,14 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = DateApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.neil.DateApp;
@@ -1212,14 +1216,14 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = KYUNTCYL2V;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				INFOPLIST_FILE = DateApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (

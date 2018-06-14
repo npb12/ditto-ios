@@ -44,7 +44,7 @@
 
     self.currentType = 0;
     inactiveColor = self.inappropriateBtn.titleLabel.textColor;
-
+    
     
     [self.unmatchBtn setAlpha:0.0];
     [self.unmatchBtn setUserInteractionEnabled:NO];
@@ -54,6 +54,7 @@
     UITapGestureRecognizer *cancelGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(noAction:)];
     [self.bgView addGestureRecognizer:cancelGesture];
     
+    [self unsetAll];
     
 }
 
@@ -212,6 +213,8 @@
             [self.inappropriateImageView setTintColor:[self activeColor]];
                 [self.unmatchBtn setAlpha:1];
                 [self.unmatchBtn setUserInteractionEnabled:YES];
+            [self.inapropriateCheck setHidden:NO];
+            [self.inappropriateImageView setAlpha:1.0];
             break;
         }
         case CHEMISTRY:
@@ -220,6 +223,8 @@
             [self.chemistryImageView setTintColor:[self activeColor]];
                 [self.unmatchBtn setAlpha:1];
                 [self.unmatchBtn setUserInteractionEnabled:YES];
+            [self.chemistryCheck setHidden:NO];
+            [self.chemistryImageView setAlpha:1.0];
             break;
         }
         case INTEREST:
@@ -228,14 +233,19 @@
             [self.interestImageView setTintColor:[self activeColor]];
                 [self.unmatchBtn setAlpha:1];
                 [self.unmatchBtn setUserInteractionEnabled:YES];
+            [self.interestCheck setHidden:NO];
+            [self.interestImageView setAlpha:1.0];
+
             break;
         }
         case RESPONSE_TIME:
         {
                 [self.responseTimeBtn setTitleColor:[self activeColor] forState:UIControlStateNormal];
             [self.responseTimeImageView setTintColor:[self activeColor]];
-                [self.unmatchBtn setAlpha:1];
-                [self.unmatchBtn setUserInteractionEnabled:YES];
+            [self.unmatchBtn setAlpha:1];
+            [self.unmatchBtn setUserInteractionEnabled:YES];
+            [self.responseCheck setHidden:NO];
+            [self.responseTimeImageView setAlpha:1.0];
             break;
         }
         case NO_REASON:
@@ -244,6 +254,8 @@
             [self.noReasonImageView setTintColor:[self activeColor]];
                 [self.unmatchBtn setAlpha:1];
                 [self.unmatchBtn setUserInteractionEnabled:YES];
+            [self.noReasonCheck setHidden:NO];
+            [self.noReasonImageView setAlpha:1.0];
             break;
         }
         default:
@@ -271,11 +283,26 @@
     [self.responseTimeImageView setTintColor:inactiveColor];
     [self.interestImageView setTintColor:inactiveColor];
     [self.noReasonImageView setTintColor:inactiveColor];
+    
+    CGFloat alpha = 0.4;
+    
+    [self.interestImageView setAlpha:alpha];
+    [self.chemistryImageView setAlpha:alpha];
+    [self.responseTimeImageView setAlpha:alpha];
+    [self.interestImageView setAlpha:alpha];
+    [self.noReasonImageView setAlpha:alpha];
+
+    
+    [self.inapropriateCheck setHidden:YES];
+    [self.chemistryCheck setHidden:YES];
+    [self.noReasonCheck setHidden:YES];
+    [self.interestCheck setHidden:YES];
+    [self.responseCheck setHidden:YES];
 }
 
 -(UIColor*)activeColor
 {
-    return [UIColor colorWithRed:0.35 green:0.85 blue:0.64 alpha:1.0];
+    return [UIColor whiteColor];
     //[UIColor colorWithRed:0.31 green:0.70 blue:1.00 alpha:1.0];
 }
 

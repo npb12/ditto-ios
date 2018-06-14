@@ -66,7 +66,6 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *chatWidth;
 
-@property(nonatomic, nullable) PullToDismiss *pullToDismiss;
 @end
 
 @implementation ProfileViewController
@@ -76,15 +75,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.pullToDismiss = [[PullToDismiss alloc] initWithScrollView:self.contentScrollView];
     
-    self.pullToDismiss.delegate = self;
-    self.pullToDismiss.dismissableHeightPercentage = 0.35f;
-    __weak typeof(self) wSelf = self;
-    self.pullToDismiss.dismissAction = ^{
-        NSLog(@"!!!");
-        [wSelf dismissVC];
-    };
     CGFloat width = [UIScreen mainScreen].bounds.size.width;
     CGFloat bigSize = width / 5;
     
@@ -177,7 +168,8 @@
     UIPanGestureRecognizer * pan1 = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(moveObject:)];
     pan1.minimumNumberOfTouches = 1;
     [self.scrollView addGestureRecognizer:pan1]; */
-
+    self.interactor = [Interactor new];
+    [self.contentScrollView.panGestureRecognizer addTarget:self action:@selector(handleGesture:)];
 }
 
 
@@ -787,7 +779,7 @@
 {
     if (self.match || self.isMine)
     {
-        [self dismissViewControllerAnimated:NO completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
     else
     {
@@ -813,6 +805,56 @@
                     {
                         [self.contentScrollView setContentSize:CGSizeMake(0, bottom)];
                     });
+}
+
+-(CGFloat)progressAlongAxis:(CGFloat)pointOnAxis len:(CGFloat)axisLength
+{
+    CGFloat movementOnAxis = pointOnAxis / axisLength;
+    CGFloat positiveMovementOnAxis = fmaxf(movementOnAxis, 0.0);
+    CGFloat positiveMovementOnAxisPercent = fminf(positiveMovementOnAxis, 1.0);
+    return positiveMovementOnAxisPercent;
+}
+
+-(void)handleGesture:(UIPanGestureRecognizer *)sender
+{
+    
+    CGFloat percentThreshold = 0.3;
+    CGPoint translation = [sender translationInView:self.view];
+    CGFloat progress = [self progressAlongAxis:translation.y len:self.view.bounds.size.height];
+    
+    UIView *originView = sender.view;
+    
+
+    if(originView == self.contentScrollView)
+    {
+        if (self.contentScrollView.contentOffset.y > 0)
+        {
+            return;
+        }
+        
+        switch (sender.state)
+        {
+            case UIGestureRecognizerStateBegan:
+                self.interactor.hasStarted = YES;
+                [self dismissVC];
+            case UIGestureRecognizerStateChanged:
+                self.interactor.shouldFinish = progress > percentThreshold;
+                [self.interactor updateInteractiveTransition:progress];
+            case UIGestureRecognizerStateCancelled:
+                self.interactor.hasStarted = NO;
+                [self.interactor cancelInteractiveTransition];
+            case UIGestureRecognizerStateEnded:
+                self.interactor.hasStarted = NO;
+                self.interactor.shouldFinish ? [self.interactor finishInteractiveTransition] : [self.interactor cancelInteractiveTransition];
+            default:
+                break;
+        }
+    }
+    else
+    {
+        return;
+    }
+
 }
 
 

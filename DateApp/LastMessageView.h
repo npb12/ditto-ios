@@ -25,6 +25,9 @@
 @property (strong, nonatomic) User *user;
 @property (strong, nonatomic) MatchViewController *parentVC;
 
+@property (strong, nonatomic) UIView *avatarImageViewHolder;
+
+
 -(void)setData;
 @property (strong, nonatomic) IBOutlet UILabel *unreadLabel;
 

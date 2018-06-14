@@ -21,16 +21,16 @@
     
     [self.imgView layoutIfNeeded];
     
-    UIView *avatarImageViewHolder = [[UIView alloc] initWithFrame:self.imgView.frame];
-    avatarImageViewHolder.backgroundColor = [UIColor clearColor];
-    [self.imgView.superview addSubview:avatarImageViewHolder];
+    self.avatarImageViewHolder = [[UIView alloc] initWithFrame:self.imgView.frame];
+    self.avatarImageViewHolder.backgroundColor = [UIColor clearColor];
+    [self.imgView.superview addSubview:self.avatarImageViewHolder];
     
-    [avatarImageViewHolder addSubview:self.imgView];
-    self.imgView.center = CGPointMake(avatarImageViewHolder.frame.size.width/2.0f, avatarImageViewHolder.frame.size.height/2.0f);
+    [self.avatarImageViewHolder addSubview:self.imgView];
+    self.imgView.center = CGPointMake(self.avatarImageViewHolder.frame.size.width/2.0f, self.avatarImageViewHolder.frame.size.height/2.0f);
     
     
     self.imgView.layer.masksToBounds = YES;
-    avatarImageViewHolder.layer.masksToBounds = NO;
+    self.avatarImageViewHolder.layer.masksToBounds = NO;
     
     
     // set avatar image corner
@@ -41,11 +41,11 @@
     
     // set holder shadow
     
-    [avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
-    [avatarImageViewHolder.layer setShadowOpacity:0.5];
-    [avatarImageViewHolder.layer setShadowColor:[UIColor lightGrayColor].CGColor];
+    [self.avatarImageViewHolder.layer setShadowOffset:CGSizeZero];
+    [self.avatarImageViewHolder.layer setShadowOpacity:0.5];
+    [self.avatarImageViewHolder.layer setShadowColor:[UIColor lightGrayColor].CGColor];
     //  avatarImageViewHolder.layer.shouldRasterize = YES;
-    avatarImageViewHolder.clipsToBounds = NO;
+    self.avatarImageViewHolder.clipsToBounds = NO;
 
    // [self setData];
 }

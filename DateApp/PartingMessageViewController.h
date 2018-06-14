@@ -27,6 +27,11 @@ enum PartingType {
 @property (nonatomic, weak) id<PartingMessageDelegate> delegate;
 
 @property (nonatomic, assign) NSInteger alternate_id;
+@property (strong, nonatomic) IBOutlet UIImageView *inapropriateCheck;
+@property (strong, nonatomic) IBOutlet UIImageView *chemistryCheck;
+@property (strong, nonatomic) IBOutlet UIImageView *responseCheck;
+@property (strong, nonatomic) IBOutlet UIImageView *interestCheck;
+@property (strong, nonatomic) IBOutlet UIImageView *noReasonCheck;
 
 
 @end

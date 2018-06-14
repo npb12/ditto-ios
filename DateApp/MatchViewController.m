@@ -274,6 +274,7 @@
          [self.nomatch_image setHidden:NO];
          [self.profilePic setHidden:YES];
          [self.messageInputView setHidden:YES];
+         [self.messagesContainer setHidden:YES];
          if (self.messagesView)
          {
              [self.messagesView setHidden:YES];
@@ -296,15 +297,6 @@
          }
          [self.nomatch_image setHidden:YES];
          [self.messageInputView setHidden:NO];
-        /* [self.profilePic sd_setImageWithURL:[NSURL URLWithString:[self.user.pics objectAtIndex:0]]
-                            placeholderImage:[UIImage imageNamed:@"Gradient_BG"]
-                                   completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                                       if (!error) {
-                                           self.profilePic.layer.borderWidth = 0;
-                                           self.profilePic.layer.borderColor = [UIColor clearColor].CGColor;
-                                           
-                                       }
-                                   }]; */
          
          if ([self.user.pics count] > 0)
          {
@@ -329,6 +321,18 @@
          [self.discoverBtn setBackgroundColor:[self matchColor]];
        //  [self.discoverBtn setHidden:YES];
          [self.nomatch_image setHidden:YES];
+         
+         if ([[DataAccess singletonInstance] UserHasMessages])
+         {
+             [self setMessageUI];
+         }
+         else
+         {
+             [self setMessageUI];
+             [self.messageInputView setHidden:NO];
+             [self.messageButton setUserInteractionEnabled:YES];
+             [self.messagesContainer setHidden:YES];
+         }
      }];
 }
 

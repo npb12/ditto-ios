@@ -78,4 +78,6 @@ enum RequestType {
 + (void)getMatchesData:(BOOL)alt
             completion:(void (^)(NSError *))completion;
 
++ (void)isMatchAvailable:(NSString*)likedID complete:(void (^)(bool, NSError *))completion;
+
 @end

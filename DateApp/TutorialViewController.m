@@ -69,7 +69,7 @@
     
     self.skipWidth.constant = dimen;
     self.skipHeight.constant = dimen / 2.25;
-    self.skipBtn.layer.borderWidth = 1;
+//    self.skipBtn.layer.borderWidth = 1;
     self.skipBtn.layer.masksToBounds = YES;
     self.skipBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.skipBtn.layer.cornerRadius = self.skipHeight.constant / 2;
@@ -78,7 +78,7 @@
     
     self.nextWidth.constant = dimen;
     self.nextHeight.constant = dimen / 2.25;
-    self.nextBtn.layer.borderWidth = 1;
+ //   self.nextBtn.layer.borderWidth = 1;
     self.nextBtn.layer.masksToBounds = YES;
     self.nextBtn.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.nextBtn.layer.cornerRadius = self.skipHeight.constant / 2;
@@ -93,8 +93,8 @@
     header4 = @"Decision";
 
 
-    text1 = @"Ditto helps find people nearby and\nmatches you with the ones\nthat you’re interested in.";
-    text2 = @"Match with only one person at a\ntime, so you and your match have\neach others complete attention.";
+    text1 = @"Ditto helps you find people nearby and\nmatches you with the ones\nthat you’re interested in.";
+    text2 = @"Match with only one person at a\ntime, so you and your match have\neach other's complete attention.";
     text3 = @"Swiping is disabled while matched,\nallowing for a sincere connection\nbetween two people.";
     text4 = @"Your connection will be put to the\ntest when a new match occurs.\nChoose wisely ;)";
     
@@ -103,6 +103,11 @@
     [self addView2];
     [self addView3];
     [self addView4];
+    
+    [self setupExplainLabel];
+    [self setupExplainLabel2];
+    [self setupExplainLabel3];
+    [self setupExplainLabel4];
     [self addPhoto];
     [self addPhoto2];
     [self addPhoto3];
@@ -111,10 +116,6 @@
     [self setupHeadingLabel2];
     [self setupHeadingLabel3];
     [self setupHeadingLabel4];
-    [self setupExplainLabel];
-    [self setupExplainLabel2];
-    [self setupExplainLabel3];
-    [self setupExplainLabel4];
     
 }
 
@@ -144,7 +145,8 @@
     [self.scrollView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tempView]|" options:0 metrics: 0 views:viewsDictionary]];
     [self.tempView addConstraint:[NSLayoutConstraint constraintWithItem:self.tempView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:fullScreenRect.size.width * 4]];
     
-    scrollHeight = [[UIScreen mainScreen] bounds].size.height * 0.77;
+    
+    scrollHeight = [[UIScreen mainScreen] bounds].size.height * 0.82;
     
     screenWidth = fullScreenRect.size.width;
     
@@ -342,10 +344,10 @@
     int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.1;
     
     
-    NSDictionary *viewsDictionary = @{@"image":self.pic};
+    NSDictionary *viewsDictionary = @{@"image":self.pic, @"label": self.explainLabel};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view1 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view1 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view1 addConstraints:constraint2];
     
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.825) - offset];
@@ -377,10 +379,10 @@
     int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.1;
     
     
-    NSDictionary *viewsDictionary = @{@"image":self.pic2, @"pic1":self.pic};
+    NSDictionary *viewsDictionary = @{@"image":self.pic2, @"label":self.explainLabel2};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view2 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view2 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view2 addConstraints:constraint2];
     
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic2 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.825) - offset];
@@ -411,10 +413,10 @@
     int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.1;
     
     
-    NSDictionary *viewsDictionary = @{@"image":self.pic3, @"pic2":self.pic2};
+    NSDictionary *viewsDictionary = @{@"image":self.pic3, @"label":self.explainLabel3};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view3 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view3 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view3 addConstraints:constraint2];
     
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic3 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.825) - offset];
@@ -443,10 +445,10 @@
     int offset = CGRectGetHeight([[UIScreen mainScreen] bounds]) * 0.1;
     
     
-    NSDictionary *viewsDictionary = @{@"image":self.pic4, @"pic3":self.pic3};
+    NSDictionary *viewsDictionary = @{@"image":self.pic4, @"label":self.explainLabel4};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view4 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view4 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:0]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view4 addConstraints:constraint2];
     
     NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self.pic4 attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:(scrollHeight * 0.825) - offset];
@@ -481,7 +483,7 @@
     NSDictionary *viewsDictionary = @{@"label" : self.headingLabel, @"image": self.pic};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.headingLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view1 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view1 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view1 addConstraints:constraint2];
     
     self.headingLabel.textColor = [self baseColor];    
@@ -510,7 +512,7 @@
     NSDictionary *viewsDictionary = @{@"label" : self.headingLabel2, @"image": self.pic2};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.headingLabel2 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view2 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view2 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view2 addConstraints:constraint2];
     
     self.headingLabel2.textColor = [self baseColor];
@@ -542,7 +544,7 @@
     NSDictionary *viewsDictionary = @{@"label" : self.headingLabel3, @"image": self.pic3};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.headingLabel3 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view3 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view3 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view3 addConstraints:constraint2];
     
     self.headingLabel3.textColor = [self baseColor];
@@ -569,7 +571,7 @@
     NSDictionary *viewsDictionary = @{@"label" : self.headingLabel4, @"image": self.pic4};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.headingLabel4 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view4 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view4 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[image]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-[image]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view4 addConstraints:constraint2];
     
     self.headingLabel4.textColor = [self baseColor];
@@ -583,7 +585,7 @@
     self.explainLabel = [[UILabel alloc] init];
     [self.explainLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.explainLabel invalidateIntrinsicContentSize];
-    self.explainLabel.textColor = [self borderColor];
+    self.explainLabel.textColor = [UIColor whiteColor];
     self.explainLabel.numberOfLines = 3;
     self.explainLabel.textAlignment = NSTextAlignmentCenter;
     self.explainLabel.font = [UIFont fontWithName:@"RooneySansLF-Regular" size:18];
@@ -597,10 +599,10 @@
     
     [self.view1 addSubview:self.explainLabel];
     
-    NSDictionary *viewsDictionary = @{@"label" : self.explainLabel, @"header": self.headingLabel};
+    NSDictionary *viewsDictionary = @{@"label" : self.explainLabel};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.explainLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view1 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view1 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[header]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:8]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view1 addConstraints:constraint2];
     
 }
@@ -611,7 +613,7 @@
     self.explainLabel2 = [[UILabel alloc] init];
     [self.explainLabel2 setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.explainLabel2 invalidateIntrinsicContentSize];
-    self.explainLabel2.textColor = [self borderColor];
+    self.explainLabel2.textColor = [UIColor whiteColor];
     self.explainLabel2.numberOfLines = 3;
     self.explainLabel2.textAlignment = NSTextAlignmentCenter;
     self.explainLabel2.font = [UIFont fontWithName:@"RooneySansLF-Regular" size:18];
@@ -624,10 +626,10 @@
     
     [self.view2 addSubview:self.explainLabel2];
     
-    NSDictionary *viewsDictionary = @{@"label" : self.explainLabel2, @"header": self.headingLabel2};
+    NSDictionary *viewsDictionary = @{@"label" : self.explainLabel2};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.explainLabel2 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view2 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view2 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[header]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:8]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view2 addConstraints:constraint2];
     
 }
@@ -638,7 +640,7 @@
     self.explainLabel3 = [[UILabel alloc] init];
     [self.explainLabel3 setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.explainLabel3 invalidateIntrinsicContentSize];
-    self.explainLabel3.textColor = [self borderColor];
+    self.explainLabel3.textColor = [UIColor whiteColor];
     self.explainLabel3.numberOfLines = 3;
     self.explainLabel3.textAlignment = NSTextAlignmentCenter;
     self.explainLabel3.font = [UIFont fontWithName:@"RooneySansLF-Regular" size:18];
@@ -651,10 +653,10 @@
     
     [self.view3 addSubview:self.explainLabel3];
     
-    NSDictionary *viewsDictionary = @{@"label" : self.explainLabel3, @"heading": self.headingLabel3};
+    NSDictionary *viewsDictionary = @{@"label" : self.explainLabel3};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.explainLabel3 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view3 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view3 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[heading]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:8]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view3 addConstraints:constraint2];
     
 }
@@ -665,7 +667,7 @@
     self.explainLabel4 = [[UILabel alloc] init];
     [self.explainLabel4 setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.explainLabel4 invalidateIntrinsicContentSize];
-    self.explainLabel4.textColor = [self borderColor];
+    self.explainLabel4.textColor = [UIColor whiteColor];
     self.explainLabel4.numberOfLines = 3;
     self.explainLabel4.textAlignment = NSTextAlignmentCenter;
     self.explainLabel4.font = [UIFont fontWithName:@"RooneySansLF-Regular" size:18];
@@ -677,10 +679,10 @@
     
     [self.view4 addSubview:self.explainLabel4];
     
-    NSDictionary *viewsDictionary = @{@"label" : self.explainLabel4, @"heading": self.headingLabel4};
+    NSDictionary *viewsDictionary = @{@"label" : self.explainLabel4};
     NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self.explainLabel4 attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view4 attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0];
     [self.view4 addConstraint:constraint1];
-    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[heading]-pad-[label]" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:8]} views:viewsDictionary];
+    NSArray *constraint2 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label]-pad-|" options:0 metrics:@{@"pad":[NSNumber numberWithFloat:15]} views:viewsDictionary];
     [self.view4 addConstraints:constraint2];
 }
 

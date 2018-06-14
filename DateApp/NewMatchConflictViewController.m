@@ -251,36 +251,71 @@
     {
         NSString *uid = [NSString stringWithFormat:@"%ld", (long)self.match_user.user_id];
         
-        [DAServer dropSwapMatch:uid completion:^(NSError *error) {
-            // here, update the UI to say "Not busy anymore"
-            if (!error)
+        [DAServer isMatchAvailable:uid complete:^(bool available, NSError *error) {
+            if (!error && available)
             {
-                //convert user to MatchUser
-                //save result as match to nsuserdefaults
+                [DAServer dropSwapMatch:uid completion:^(NSError *error) {
+                    // here, update the UI to say "Not busy anymore"
+                    if (!error)
+                    {
+                        //convert user to MatchUser
+                        //save result as match to nsuserdefaults
+                        
+                        [self saveUser:self.match_user];
+                        
+                        //send nsnotif to matchvc to update
+                        
+                        [self.altMatches removeObjectAtIndex:0];
+                        
+                        
+                        if ([self.altMatches count] < 1)
+                        {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self dismissViewControllerAnimated:YES completion:nil];
+                            });
+                        }
+                        else
+                        {
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [self loadUserDataConflict];
+                            });
+                        }
+                        
+                    } else {
+                        // update UI to indicate error or take remedial action
+                    }
+                }];
+            }
+            else
+            {
                 
-                [self saveUser:self.match_user];
-                
-                [self.altMatches removeObjectAtIndex:0];
-                
-                
-                if ([self.altMatches count] < 1)
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                    });
-                }
-                else
-                {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self loadUserDataConflict];
-                    });
-                }
-                
-            } else {
-                // update UI to indicate error or take remedial action
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Bad timing!"
+                                                                                   message:@"Unfortunately this match is no longer available."
+                                                                            preferredStyle:UIAlertControllerStyleAlert]; // 1
+                    UIAlertAction *firstAction = [UIAlertAction actionWithTitle:@"OKAY"
+                                                                          style:UIAlertActionStyleCancel handler:^(UIAlertAction * action) {
+                                                                              [self.altMatches removeObjectAtIndex:0];
+
+                                                                              if ([self.altMatches count] < 1)
+                                                                              {
+                                                                                  [self dismissViewControllerAnimated:YES completion:nil];
+                                                                              }
+                                                                              else
+                                                                              {
+                                                                                  //reload data for new user
+                                                                                  [self loadUserDataConflict];
+                                                                              }
+                                                                              
+                                                                          }]; // 2
+                    
+                    
+                    [alert addAction:firstAction]; // 4
+                    
+                    [self presentViewController:alert animated:YES completion:nil];
+                });
             }
         }];
-        
     }
     else
     {

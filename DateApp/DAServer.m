@@ -549,6 +549,8 @@
                                                         
                                                     //    NSLog(@"json response: %@", jsonString);
                                                         
+                                                        [MatchMessages removeLastMessage];
+                                                        
                                                         completion(nil);
                                                         
                                                     }
@@ -904,6 +906,43 @@
 }
 
 #pragma GET Requests
+
++ (void)isMatchAvailable:(NSString*)likedID complete:(void (^)(bool, NSError *))completion {
+    
+    NSDictionary *headers = [DAServer AuthHeader];
+    
+    NSString *args = [NSString stringWithFormat:@"/is-available/%@/", likedID];
+    
+    NSString *URL = [[DAServer baseURL] stringByAppendingString:args];
+    
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:URL]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:10.0];
+    [request setHTTPMethod:@"GET"];
+    [request setAllHTTPHeaderFields:headers];
+    
+    
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request
+                                                completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                                                    if (error) {
+                                                        completion(nil, error);
+                                                    } else {
+                                                        NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                        NSLog(@"json response: %@", jsonString);
+                                                        
+                                                        NSData *data = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+                                                        id json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                                                        
+                                                        bool available = [[json objectForKey:@"message"] boolValue];
+                                                        
+                                                        completion(available, nil);
+                                                        
+                                                    }
+                                                }];
+    [dataTask resume];
+}
 
 
 + (void)getProfile:(void (^)(User *, NSError *))completion {

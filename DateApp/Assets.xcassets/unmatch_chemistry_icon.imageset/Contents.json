@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "chemistry1x.png",
+      "filename" : "🔬 Nuclear.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "chemistry2x.png",
+      "filename" : "🔬 Nuclear@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "chemistry3x.png",
+      "filename" : "🔬 Nuclear@3x.png",
       "scale" : "3x"
     }
   ],

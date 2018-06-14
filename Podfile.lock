@@ -1,8 +1,8 @@
 PODS:
-  - Crashlytics (3.10.1):
-    - Fabric (~> 1.7.5)
-  - Fabric (1.7.6)
-  - MessageKit (0.13.4)
+  - Crashlytics (3.10.2):
+    - Fabric (~> 1.7.7)
+  - Fabric (1.7.7)
+  - MessageKit (0.13.5)
   - SDWebImage (4.3.3):
     - SDWebImage/Core (= 4.3.3)
   - SDWebImage/Core (4.3.3)
@@ -18,13 +18,13 @@ DEPENDENCIES:
   - TPKeyboardAvoiding
 
 SPEC CHECKSUMS:
-  Crashlytics: aee1a064cbbf99b32efa3f056a5f458d846bc8ff
-  Fabric: f8d42c893bb187326a7968b62abe55c36a987a46
-  MessageKit: b600e3f466632f93c0333c78fd9006c960c8cbe2
+  Crashlytics: 0360624eea1c978a743feddb2fb1ef8b37fb7a0d
+  Fabric: bda89e242bce1b7b8ab264248cf3407774ce0095
+  MessageKit: c4bd50e285a0f0761bc23a2e982aa7840873c4f5
   SDWebImage: de4d90b5bff3571eae7bd16202b1f43135409fa5
   Socket.IO-Client-Swift: a2faffdbde89c63aebc5d631041530c1068b02b8
   TPKeyboardAvoiding: cb69d5ddbe90ce0170e4bc2db1e5e41d4a3ad9a4
 
-PODFILE CHECKSUM: d57956b9c5f42d22a607be174de2c0ca547d074e
+PODFILE CHECKSUM: a99a88d978a7aee36532241b0a4fe70c0483df95
 
 COCOAPODS: 1.4.0

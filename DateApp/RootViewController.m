@@ -123,13 +123,12 @@
    
     if (![[DataAccess singletonInstance] UserIsLoggedIn])
     {
-        //[self performSegueWithIdentifier:@"tutorialSegue" sender:self];
+       // [self performSegueWithIdentifier:@"tutorialSegue" sender:self];
         [self performSegueWithIdentifier:@"loginSegue" sender:self];
     }
     else
     {
-        
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        [(AppDelegate *)[[UIApplication sharedApplication] delegate] registerForRemoteNotifications];
 
         [self setLocationObserver];
         
@@ -188,8 +187,8 @@
         return;
     }
     
-    [[UIApplication sharedApplication] registerForRemoteNotifications];
-    
+    [(AppDelegate *)[[UIApplication sharedApplication] delegate] registerForRemoteNotifications];
+
     [self setLocationObserver];
     
     [[NSNotificationCenter defaultCenter] addObserver:self

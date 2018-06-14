@@ -10,8 +10,8 @@
 #import "User.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "UIImage+Scale.h"
+#import "Interactor.h"
 
-@import PullToDismiss;
 
 @protocol LikedProfileProtocol <NSObject>
 -(void)likeCurrent:(BOOL)option;
@@ -43,6 +43,8 @@
 
 
 @property (strong, nonatomic) IBOutlet UILabel *distanceLabel;
+
+@property (strong, nonatomic) Interactor *interactor;
 
 
 -(void)setHeaderHeight:(CGFloat)height;
